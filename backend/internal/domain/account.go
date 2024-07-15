@@ -1,0 +1,35 @@
+package domain
+
+import "context"
+
+type SignupModel struct {
+	Name     string `form:"name" binding:"required"`
+	Phone    string `form:"phone" binding:"required"`
+	Email    string `form:"email" binding:"required"`
+	Password string `form:"password" binding:"required"`
+}
+
+type LoginModel struct {
+	UserName string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type RestPasswordModel struct {
+	UserName    string `form:"username" binding:"required"`
+	Email       string `form:"email" binding:"required"`
+	NewPassword string `form:"newpassword" binding:"required"`
+}
+
+type AccountRepository[K Auth] interface {
+	Login(c context.Context, data LoginModel) (int64, error)
+	GetRole(c context.Context, id int64) (int64, error)
+	//SignUp(c context.Context, siginupRequest *SignupRequest) (SignupResponse, error)
+}
+
+type AccountUsecase[K Auth] interface {
+	Login(c context.Context, data LoginModel) (int64, error)
+	GetRole(c context.Context, id int64) (int64, error)
+	//SignUp(c context.Context, siginupRequest *SignupRequest) (SignupResponse, error)
+	//Login(c context.Context, loginRequest *LoginRequest) (LoginResponse, error)
+}
