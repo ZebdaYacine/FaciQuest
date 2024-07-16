@@ -27,6 +27,7 @@ func Setup(db *sql.DB, gin *gin.Engine) {
 	public.NewTestRouter(db, publicRouter)
 	public.NewLoginRouter(db, publicRouter)
 	public.NewSignUpRouter(db, publicRouter)
+	public.NewConfirmaAccountRouter(db, publicRouter)
 
 	// protectedRouter := gin.Group("/profile")
 	// // Middleware to verify AccessToken

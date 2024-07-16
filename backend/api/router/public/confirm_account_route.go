@@ -10,11 +10,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewSignUpRouter(db *sql.DB, group *gin.RouterGroup) {
-	ir := repository.NewAccountRepository[domain.SignupModel](db)
-	uc := usecase.NewAccountUsecase[domain.SignupModel](ir, "")
+func NewConfirmaAccountRouter(db *sql.DB, group *gin.RouterGroup) {
+	ir := repository.NewAccountRepository[domain.LoginModel](db)
+	uc := usecase.NewAccountUsecase[domain.LoginModel](ir, "")
 	ic := &controller.AccountController{
 		UserUsecase: uc, // usecase for insured operations
 	}
-	group.POST("signup", ic.SignUpRequest)
+	group.POST("confirm-account", ic.ConfirmeAccountRequest)
 }

@@ -11,7 +11,7 @@ type accountUsecase[T domain.Auth] struct {
 	collection string
 }
 
-func NewAccountUsecase[T domain.LoginModel](repo domain.AccountRepository[T], collection string) domain.AccountUsecase[T] {
+func NewAccountUsecase[T domain.Auth](repo domain.AccountRepository[T], collection string) domain.AccountUsecase[T] {
 	return &accountUsecase[T]{
 		repo:       repo,
 		collection: collection,

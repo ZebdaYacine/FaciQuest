@@ -14,7 +14,7 @@ type TestController struct {
 }
 
 func (ic *TestController) TestRequest(c *gin.Context) {
-	log.Println(">>>>>>>>>", c.Request.Body)
+	log.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>  RECEVING SIGNUP REQUEST")
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "TEST IS WORKE SUCCESSFULY",
 		Data:    ".......",

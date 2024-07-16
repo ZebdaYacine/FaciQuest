@@ -1,7 +1,16 @@
 package domain
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
+type ConfirmationModel struct {
+	Code         string      `json:"code"`
+	IP           string      `json:"ip"`
+	Time_Sending time.Time   `json:"sendingAt"`
+	SgnModel     SignupModel `json:"signupModel"`
+}
 type SignupModel struct {
 	UserName string `json:"username" binding:"required"`
 	Phone    string `json:"phone"`
