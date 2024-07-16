@@ -15,7 +15,7 @@ func InitGinServer(db *sql.DB) {
 	server := gin.Default()
 
 	router.Setup(db, server)
-	err := server.Run(pkg.GetUrl())
+	err := server.Run(pkg.Get_URL())
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 		return

@@ -3,10 +3,10 @@ package domain
 import "context"
 
 type SignupModel struct {
-	Name     string `form:"name" binding:"required"`
-	Phone    string `form:"phone" binding:"required"`
-	Email    string `form:"email" binding:"required"`
-	Password string `form:"password" binding:"required"`
+	UserName string `json:"username" binding:"required"`
+	Phone    string `json:"phone"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password"`
 }
 
 type LoginModel struct {

@@ -16,6 +16,23 @@ type AccountController struct {
 	UserUsecase domain.AccountUsecase[domain.LoginModel]
 }
 
+// SEND SIGN UP REQUEST AND RETURN ERROR OR TOKEN IF IS REQUEST IS VALIDATED
+func (ic *AccountController) SignUpRequest(c *gin.Context) {
+	log.Println("RECEVING SIGNUP REQUEST REQUEST")
+	log.Println(">>>>>>>>>", c.Request.Body)
+	var signupModel domain.SignupModel
+	err := c.ShouldBindJSON(&signupModel)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: err.Error()})
+		return
+	}
+	log.Print(signupModel)
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "TEST IS WORKE SUCCESSFULY",
+		Data:    signupModel,
+	})
+}
+
 // SEND LOGIN REQUEST AND RETURN ERROR OR TOKEN IS REQUEST IS VALIDATED
 func (ic *AccountController) LoginRequest(c *gin.Context) {
 	log.Println("LOGIN POST REQUEST")
@@ -34,7 +51,7 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 			Message: err.Error(),
 		})
 	} else {
-		secret := pkg.GetServerSetting().SECRET_KEY
+		secret := pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY
 		role_id, err := ic.UserUsecase.GetRole(c, id)
 		role := util.GenerateRole(role_id)
 		token, err := util.CreateAccessToken(strconv.FormatInt(id, 10), secret, 2, role)
@@ -48,19 +65,4 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 			Data:    token,
 		})
 	}
-}
-
-func (ic *AccountController) TestRequest(c *gin.Context) {
-	log.Println(">>>>>>>>>", c.Request.Body)
-	var loginParms domain.LoginModel
-	err := c.ShouldBindJSON(&loginParms)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: err.Error()})
-		return
-	}
-	log.Print(loginParms)
-	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "TEST IS WORKE SUCCESSFULY",
-		Data:    ".......",
-	})
 }
