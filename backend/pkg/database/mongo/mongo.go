@@ -2,49 +2,78 @@ package mongo
 
 import (
 	"context"
-	"fmt"
-	"log"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-func ConnectMongo() (*mongo.Client, error) {
-	// Set MongoDB client options
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+type Database interface {
+	Collection(string) Collection
+	Client() Client
+}
 
-	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-	if err != nil {
-		log.Fatal(err)
-	}
+type Collection interface {
+	InsertOne(context.Context, interface{}) (interface{}, error)
+}
 
-	// Check the connection
-	err = client.Ping(context.TODO(), nil)
+type SingleResult interface {
+	Decode(interface{}) error
+}
+
+type Client interface {
+	Database(string) Database
+	Connect(context.Context) error
+	Disconnect(context.Context) error
+	Ping(context.Context) error
+}
+
+type mongoClient struct {
+	cl *mongo.Client
+}
+type mongoDatabase struct {
+	db *mongo.Database
+}
+type mongoCollection struct {
+	coll *mongo.Collection
+}
+
+func NewClient(connection string) (Client, error) {
+	c, err := mongo.NewClient(options.Client().ApplyURI(connection))
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
-	fmt.Println("Connected to MongoDB!")
-	return client, nil
+	return &mongoClient{cl: c}, nil
 }
-func CreateUser(db *mongo.Client) error {
-	// // Choose database and collection
-	collection := db.Database("FaciQuest").Collection("users")
 
-	// Insert a document
-	user := bson.D{
-		{Key: "username", Value: "ZedYacine"},
-		{Key: "email", Value: "zebdaadam1996@gmail.com"},
-		{Key: "password", Value: ""},
-	}
+func (mc *mongoClient) Ping(ctx context.Context) error {
+	return mc.cl.Ping(ctx, readpref.Primary())
+}
 
-	insertResult, err := collection.InsertOne(context.TODO(), user)
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
-	return nil
+func (mc *mongoClient) Database(dbName string) Database {
+	db := mc.cl.Database(dbName)
+	return &mongoDatabase{db: db}
+}
+
+func (mc *mongoClient) Connect(ctx context.Context) error {
+	return mc.cl.Connect(ctx)
+}
+
+func (mc *mongoClient) Disconnect(ctx context.Context) error {
+	return mc.cl.Disconnect(ctx)
+}
+
+func (md *mongoDatabase) Collection(colName string) Collection {
+	collection := md.db.Collection(colName)
+	return &mongoCollection{coll: collection}
+}
+
+func (md *mongoDatabase) Client() Client {
+	client := md.db.Client()
+	return &mongoClient{cl: client}
+}
+
+func (mc *mongoCollection) InsertOne(ctx context.Context, document interface{}) (interface{}, error) {
+	id, err := mc.coll.InsertOne(ctx, document)
+	return id.InsertedID, err
 }

@@ -21,6 +21,7 @@ type DB_SERVER struct {
 	USER_DB           string
 	PASSWORD_DB       string
 	SERVER_ADDRESS_DB string
+	DB_NAME           string
 }
 
 type ROOT_SERVER struct {
@@ -51,6 +52,7 @@ func GET_DB_SERVER_SEETING() DB_SERVER {
 		USER_DB:           os.Getenv("USER_DB"),
 		PASSWORD_DB:       os.Getenv("PASSWORD_DB"),
 		SERVER_ADDRESS_DB: os.Getenv("SERVER_ADDRESS_DB"),
+		DB_NAME:           os.Getenv("DB_NAME"),
 	}
 }
 
