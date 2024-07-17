@@ -7,13 +7,13 @@ import (
 	// "github.com/gin-contrib/cors"
 
 	"back-end/api/router/public"
-	"database/sql"
+	"back-end/pkg/database"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-func Setup(db *sql.DB, gin *gin.Engine) {
+func Setup(db *database.Database, gin *gin.Engine) {
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"} // Change to your Flutter web app's URL

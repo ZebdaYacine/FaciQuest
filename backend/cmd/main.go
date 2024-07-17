@@ -2,16 +2,12 @@ package main
 
 import (
 	"back-end/api/server"
-	"back-end/pkg/database/oracle"
+	"back-end/pkg/database/mongo"
 )
 
 func main() {
-	db, err := oracle.Connect()
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
-	server.InitGinServer(db)
+	db := mongo.ConnectionDb()
+	server.InitGinServer(&db)
 
 }
 

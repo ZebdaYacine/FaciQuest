@@ -5,12 +5,12 @@ import (
 	"back-end/internal/domain"
 	"back-end/internal/repository"
 	"back-end/internal/usecase"
-	"database/sql"
+	"back-end/pkg/database"
 
 	"github.com/gin-gonic/gin"
 )
 
-func NewSignUpRouter(db *sql.DB, group *gin.RouterGroup) {
+func NewSignUpRouter(db *database.Database, group *gin.RouterGroup) {
 	ir := repository.NewAccountRepository[domain.SignupModel](db)
 	uc := usecase.NewAccountUsecase[domain.SignupModel](ir, "")
 	ic := &controller.AccountController{
