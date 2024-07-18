@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Setup(db *database.Database, gin *gin.Engine) {
+func Setup(db database.Database, gin *gin.Engine) {
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"} // Change to your Flutter web app's URL

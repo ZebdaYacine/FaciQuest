@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewSignUpRouter(db *database.Database, group *gin.RouterGroup) {
+func NewSignUpRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewAccountRepository[domain.SignupModel](db)
 	uc := usecase.NewAccountUsecase[domain.SignupModel](ir, "")
 	ic := &controller.AccountController{

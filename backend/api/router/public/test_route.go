@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewTestRouter(db *database.Database, group *gin.RouterGroup) {
+func NewTestRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewAccountRepository[domain.LoginModel](db)
 	uc := usecase.NewAccountUsecase[domain.LoginModel](ir, "")
 	ic := &controller.TestController{

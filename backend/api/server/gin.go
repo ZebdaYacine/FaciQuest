@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitGinServer(db *database.Database) {
+func InitGinServer(db database.Database) {
 	//gin.SetMode(gin.ReleaseMode)
 
 	server := gin.Default()

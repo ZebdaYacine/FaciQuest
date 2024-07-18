@@ -7,6 +7,7 @@ import (
 	"log"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -61,7 +62,8 @@ func (md *mongoDatabase) Client() database.Client {
 
 func (mc *mongoCollection) InsertOne(ctx context.Context, document interface{}) (interface{}, error) {
 	id, err := mc.coll.InsertOne(ctx, document)
-	return id.InsertedID, err
+	objectID := id.InsertedID.(primitive.ObjectID)
+	return objectID.Hex(), err
 }
 
 func ConnectionDb() database.Database {
@@ -77,5 +79,6 @@ func ConnectionDb() database.Database {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
 	}
 	// Get the database and collection
+	log.Print("_________________________CONNECT TO DATABASE_________________________")
 	return client.Database(db_opt.DB_NAME)
 }

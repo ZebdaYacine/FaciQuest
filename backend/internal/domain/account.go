@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"context"
 	"time"
 )
 
@@ -31,11 +32,11 @@ type RestPasswordModel struct {
 
 type AccountRepository[K Auth] interface {
 	//Login(c context.Context, data LoginModel) (int64, error)
-	//SignUp(c context.Context, siginupRequest *SignupRequest) (SignupResponse, error)
+	SignUp(c context.Context, data *SignupModel) (interface{}, error)
 }
 
 type AccountUsecase[K Auth] interface {
 	//Login(c context.Context, data LoginModel) (int64, error)
-	//SignUp(c context.Context, siginupRequest *SignupRequest) (SignupResponse, error)
+	SignUp(c context.Context, data *SignupModel) (interface{}, error)
 	//Login(c context.Context, loginRequest *LoginRequest) (LoginResponse, error)
 }

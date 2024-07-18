@@ -1,6 +1,7 @@
 package controller
 
 import (
+	shared "back-end/Shared"
 	"back-end/api/controller/model"
 	"back-end/internal/domain"
 	"back-end/util"
@@ -13,7 +14,7 @@ import (
 )
 
 type AccountController struct {
-	UserUsecase domain.AccountUsecase[domain.LoginModel]
+	UserUsecase domain.AccountUsecase[domain.SignupModel]
 }
 
 var codeStore = make(map[string]domain.ConfirmationModel)
@@ -30,8 +31,8 @@ func isDataRequestSupported[T domain.Auth](data *T, c *gin.Context) bool {
 }
 
 // HANDLE WITH CONFIRAMTION ACCOUNT REQUEST
-func (ic *AccountController) ConfirmeAccountRequest(c *gin.Context) {
-	log.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> RECEVING CONFIRAMTION REQUEST")
+func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
+	log.Println("_____________________________________RECEVING CONFIRAMTION REQUEST_____________________________________")
 	var cnfrMdlRecevied domain.ConfirmationModel
 	if !isDataRequestSupported(&cnfrMdlRecevied, c) {
 		return
@@ -45,7 +46,6 @@ func (ic *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "No code generated for this client"})
 		return
 	}
-	log.Println(">>>>>>>>>>>>>>>>>>>>>>>>", cnfrMdlStored.Time_Sending)
 	if cnfrMdlRecevied.Code != cnfrMdlStored.Code {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Invalid code"})
 		return
@@ -55,17 +55,21 @@ func (ic *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Code expired"})
 		return
 	}
-	log.Println("DIFFERNCE BETWEEN TOW DATE ", cnfrMdlStored)
-	// TODO: USER  CONFIRMED CAN CREATE ACCOUNT NOW  DB SECTION
-	// if confirmModel.Time_Sending != codeStore[clientIP].Time_Sending {
-	// 	c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Invalid code"})
-	// 	return
-	// }
+	insertedID, err := ac.UserUsecase.SignUp(c, &cnfrMdlRecevied.SgnModel)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: err.Error()})
+		return
+	}
+	token, err := util.CreateAccessToken(insertedID.(string), shared.RootServer.SECRET_KEY, 2, "user")
+	log.Printf("TOKEN %s", token)
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "SIGNUP USER SUCCESSFULY",
+		Data:    token,
+	})
 }
 
 // HANDLE WITH SIGNUP REQUEST
 func (ic *AccountController) SignUpRequest(c *gin.Context) {
-	log.Printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>  RECEVING SIGNUP REQUEST %s: ", c.ClientIP())
 	var signupModel domain.SignupModel
 	if !isDataRequestSupported(&signupModel, c) {
 		return

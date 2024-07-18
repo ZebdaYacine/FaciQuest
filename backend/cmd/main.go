@@ -7,7 +7,7 @@ import (
 
 func main() {
 	db := mongo.ConnectionDb()
-	server.InitGinServer(&db)
+	server.InitGinServer(db)
 
 }
 
