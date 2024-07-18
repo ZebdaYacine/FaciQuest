@@ -5,15 +5,15 @@ import (
 	"back-end/internal/domain"
 	"back-end/internal/repository"
 	"back-end/internal/usecase"
-	"database/sql"
+	"back-end/pkg/database"
 
 	"github.com/gin-gonic/gin"
 )
 
-func NewTestRouter(db *sql.DB, group *gin.RouterGroup) {
+func NewTestRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewAccountRepository[domain.LoginModel](db)
 	uc := usecase.NewAccountUsecase[domain.LoginModel](ir, "")
-	ic := &controller.AccountController{
+	ic := &controller.TestController{
 		UserUsecase: uc, // usecase for insured operations
 	}
 	group.POST("test", ic.TestRequest)

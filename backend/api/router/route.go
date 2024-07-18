@@ -5,17 +5,15 @@ import (
 	// "database/sql"
 
 	// "github.com/gin-contrib/cors"
-	"back-end/api/controller/middleware"
-	"back-end/api/router/private"
+
 	"back-end/api/router/public"
-	"back-end/pkg"
-	"database/sql"
+	"back-end/pkg/database"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-func Setup(db *sql.DB, gin *gin.Engine) {
+func Setup(db database.Database, gin *gin.Engine) {
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"} // Change to your Flutter web app's URL
@@ -28,13 +26,15 @@ func Setup(db *sql.DB, gin *gin.Engine) {
 	// All Public APIs
 	public.NewTestRouter(db, publicRouter)
 	public.NewLoginRouter(db, publicRouter)
+	public.NewSignUpRouter(db, publicRouter)
+	public.NewConfirmaAccountRouter(db, publicRouter)
 
-	protectedRouter := gin.Group("/profile")
-	// Middleware to verify AccessToken
-	protectedRouter.Use(middleware.JwtAuthMiddleware(
-		pkg.GetServerSetting().SECRET_KEY,
-		"Admin"))
-	// All Private APIs
-	//private.NewInsuredRouter(db, protectedRouter)
-	private.NewUserRouter(db, protectedRouter)
+	// protectedRouter := gin.Group("/profile")
+	// // Middleware to verify AccessToken
+	// protectedRouter.Use(middleware.JwtAuthMiddleware(
+	// 	pkg.GetServerSetting().SECRET_KEY,
+	// 	"Admin"))
+	// // All Private APIs
+	// //private.NewInsuredRouter(db, protectedRouter)
+	// private.NewUserRouter(db, protectedRouter)
 }

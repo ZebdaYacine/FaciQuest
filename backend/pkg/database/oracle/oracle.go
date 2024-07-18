@@ -10,10 +10,11 @@ import (
 )
 
 func Connect() (*sql.DB, error) {
+	var SETTING = pkg.GET_DB_SERVER_SEETING()
 	var (
-		username      = pkg.GetServerSetting().USER_DB
-		password      = pkg.GetServerSetting().PASSWORD_DB
-		connectString = pkg.GetServerSetting().SERVER_ADDRESS_DB
+		username      = SETTING.USER_DB
+		password      = SETTING.PASSWORD_DB
+		connectString = SETTING.SERVER_ADDRESS_DB
 	)
 	// Create data source name (DSN)
 	dsn := fmt.Sprintf("%s/%s@%s", username, password, connectString)

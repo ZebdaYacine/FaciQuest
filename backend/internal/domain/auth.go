@@ -1,5 +1,5 @@
 package domain
 
 type Auth interface {
-	SignupModel | LoginModel | RestPasswordModel
+	SignupModel | LoginModel | RestPasswordModel | ConfirmationModel
 }

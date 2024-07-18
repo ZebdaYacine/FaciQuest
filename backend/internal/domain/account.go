@@ -1,12 +1,21 @@
 package domain
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
+type ConfirmationModel struct {
+	Code         string      `json:"code"`
+	IP           string      `json:"ip"`
+	Time_Sending time.Time   `json:"sendingAt"`
+	SgnModel     SignupModel `json:"signupModel"`
+}
 type SignupModel struct {
-	Name     string `form:"name" binding:"required"`
-	Phone    string `form:"phone" binding:"required"`
-	Email    string `form:"email" binding:"required"`
-	Password string `form:"password" binding:"required"`
+	UserName string `json:"username" binding:"required"`
+	Phone    string `json:"phone"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password"`
 }
 
 type LoginModel struct {
@@ -22,14 +31,12 @@ type RestPasswordModel struct {
 }
 
 type AccountRepository[K Auth] interface {
-	Login(c context.Context, data LoginModel) (int64, error)
-	GetRole(c context.Context, id int64) (int64, error)
-	//SignUp(c context.Context, siginupRequest *SignupRequest) (SignupResponse, error)
+	//Login(c context.Context, data LoginModel) (int64, error)
+	SignUp(c context.Context, data *SignupModel) (interface{}, error)
 }
 
 type AccountUsecase[K Auth] interface {
-	Login(c context.Context, data LoginModel) (int64, error)
-	GetRole(c context.Context, id int64) (int64, error)
-	//SignUp(c context.Context, siginupRequest *SignupRequest) (SignupResponse, error)
+	//Login(c context.Context, data LoginModel) (int64, error)
+	SignUp(c context.Context, data *SignupModel) (interface{}, error)
 	//Login(c context.Context, loginRequest *LoginRequest) (LoginResponse, error)
 }

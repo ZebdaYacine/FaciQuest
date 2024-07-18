@@ -10,11 +10,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewLoginRouter(db database.Database, group *gin.RouterGroup) {
-	ir := repository.NewAccountRepository[domain.LoginModel](db)
-	uc := usecase.NewAccountUsecase[domain.LoginModel](ir, "")
+func NewSignUpRouter(db database.Database, group *gin.RouterGroup) {
+	ir := repository.NewAccountRepository[domain.SignupModel](db)
+	uc := usecase.NewAccountUsecase[domain.SignupModel](ir, "")
 	ic := &controller.AccountController{
 		UserUsecase: uc, // usecase for insured operations
 	}
-	group.POST("login", ic.LoginRequest)
+	group.POST("signup", ic.SignUpRequest)
 }
