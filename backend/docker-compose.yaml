@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: back-end
-    container_name: back-end
+    image: app
+    container_name: app 
     restart: unless-stopped
     env_file: .env
     ports:

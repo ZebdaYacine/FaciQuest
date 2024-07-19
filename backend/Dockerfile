@@ -1,26 +1,21 @@
-# Use the official Go image to build the Go application
 FROM golang:1.22.0 AS builder
-
-RUN mkdir /app
-
-ADD . /app
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
+COPY go.*  ./
 
 RUN go mod download
 
-RUN go mod tidy
+COPY . ./
 
-COPY . ./app
-
+COPY .env ./
 
 RUN go build -o main cmd/main.go
+
+# FROM alpine:latest
+
+# WORKDIR /app
 
 EXPOSE 9000
 
 CMD ["/app/main"]
-
-
-
