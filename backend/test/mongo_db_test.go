@@ -1,37 +1,55 @@
 package test
 
 import (
-	"back-end/pkg/database/mongo"
+	"back-end/pkg/database"
 	"context"
+	"encoding/json"
 	"log"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
-
-// import (
-// 	"back-end/internal/domain"
-// 	"back-end/internal/repository"
-// 	"back-end/pkg/database/oracle"
-// 	"context"
-// 	"fmt"
-// 	"log"
-// 	"testing"
-
-// 	"github.com/stretchr/testify/assert"
-// )
 
 func TestMongoDBConnection(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
-		ctx := context.Background()
-		db := mongo.ConnectionDb()
-		collection := db.Collection("users")
+		// ctx := context.Background()
+		// db := database.ConnectionDb()
+		// collection := db.Collection("users")
+		// filtter := bson.D{
+		// 	{Key: "username", Value: "zed yacine"},
+		// 	{Key: "email", Value: "zebdaadam1996@gmail.com"},
+		// }
+		// var resulat bson.M
 
-		userID, err1 := collection.InsertOne(ctx, struct{ id int }{10})
-		if err1 != nil {
-			log.Fatalf("Failed to inset to UserAgent: %v", err1)
+		// err := collection.FindOne(ctx, filtter).Decode(&resulat)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// id := resulat["_id"].(primitive.ObjectID).Hex()
+		// fmt.Println("Found document with _id:", id)
+
+		//assert.NoError(t, err1)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		c := context.Background()
+		db := database.ConnectionDb()
+		collection := db.Collection("users")
+		id, err := primitive.ObjectIDFromHex("66977cee4f013719f6c0f437")
+		if err != nil {
+			log.Fatal(err)
 		}
-		log.Printf("Create user agent with id %v", userID)
-		assert.NoError(t, err1)
+		var result bson.M
+		err1 := collection.FindOne(c, bson.M{"_id": id}).Decode(&result)
+		if err1 != nil {
+			log.Fatalf("Failed to inset to UserAgent: %v", err)
+		}
+		jsonBytes, err := json.Marshal(result["role_id"])
+		if err != nil {
+			log.Println(err)
+		}
+		log.Println(string(jsonBytes))
+		//assert.NoError(t, err1)
 	})
 }

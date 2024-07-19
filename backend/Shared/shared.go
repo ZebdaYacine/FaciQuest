@@ -1,4 +1,4 @@
-package shared
+package Shared
 
 import "back-end/pkg"
 

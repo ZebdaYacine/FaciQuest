@@ -2,11 +2,11 @@ package main
 
 import (
 	"back-end/api/server"
-	"back-end/pkg/database/mongo"
+	"back-end/pkg/database"
 )
 
 func main() {
-	db := mongo.ConnectionDb()
+	db := database.ConnectionDb()
 	server.InitGinServer(db)
 
 }
