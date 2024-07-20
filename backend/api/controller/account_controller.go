@@ -1,9 +1,9 @@
 package controller
 
 import (
-	shared "back-end/Shared"
 	"back-end/api/controller/model"
 	"back-end/internal/domain"
+	shared "back-end/shared"
 	"back-end/util"
 	"log"
 	"net/http"
@@ -24,7 +24,7 @@ func isDataRequestSupported[T domain.Auth](data *T, c *gin.Context) bool {
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		log.Panicf(err.Error())
-		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "data not supported"})
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "data not supported....///"})
 		return false
 	}
 	return true
@@ -60,7 +60,7 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: err.Error()})
 		return
 	}
-	token, err := util.CreateAccessToken(insertedID, shared.RootServer.SECRET_KEY, 2, "user")
+	token, _ := util.CreateAccessToken(insertedID, shared.RootServer.SECRET_KEY, 2, "user")
 	log.Printf("TOKEN %s", token)
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "SIGNUP USER SUCCESSFULY",
@@ -92,6 +92,7 @@ func (ic *AccountController) SignUpRequest(c *gin.Context) {
 	mu.Lock()
 	codeStore[clientIP] = domain.ConfirmationModel{Code: code, IP: clientIP, Time_Sending: time.Now()}
 	mu.Unlock()
+	log.Print(codeStore[clientIP])
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "we send six-degit to your email check to confirm you account",
 		Data:    signupModel,
@@ -114,7 +115,7 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 		})
 	} else {
 		secret := shared.RootServer.SECRET_KEY
-		role_id, err := ic.UserUsecase.GetRole(c, userId)
+		role_id, _ := ic.UserUsecase.GetRole(c, userId)
 		role := util.GenerateRole(role_id)
 		token, err := util.CreateAccessToken(userId, secret, 2, role)
 		if err != nil {
