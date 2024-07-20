@@ -8,7 +8,7 @@ import (
 func main() {
 	db := database.ConnectionDb()
 	server.InitGinServer(db)
-
+	//log.Println("STRINGING SERVER %s", Shared.RootServer.SECRET_KEY)
 }
 
 // package main

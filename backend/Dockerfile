@@ -1,10 +1,11 @@
 FROM golang:1.22.0 AS builder
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY go.*  ./
+COPY go.mod go.sum  ./
 
 RUN go mod download
+RUN go mod tidy
 
 COPY . ./
 
@@ -16,6 +17,7 @@ RUN go build -o main cmd/main.go
 
 # WORKDIR /app
 
-EXPOSE 9000
-
-CMD ["/app/main"]
+EXPOSE 3000
+#RUN go run cmd/main.go
+#ENTRYPOINT [ "/app/main" ]
+CMD ["go","run","cmd/main.go"]
