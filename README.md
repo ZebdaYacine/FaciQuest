@@ -3,6 +3,6 @@
 $ cd backend <br>
 $ go run main.go <br>
 $ docker build -t app <br>
-$ docker-compose.exe up -d <br>
+$ docker-compose up -d <br>
 
 
