@@ -11,14 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func primitiveMToJSONString(doc primitive.M) (string, error) {
-	jsonBytes, err := json.Marshal(doc)
-	if err != nil {
-		return "", err
-	}
-	return string(jsonBytes), nil
-}
-
 type accountRepository[K domain.Auth] struct {
 	database database.Database
 }
@@ -34,7 +26,8 @@ func (ar *accountRepository[K]) SignUp(c context.Context, data *domain.SignupMod
 	collection := ar.database.Collection("users")
 	userID, err1 := collection.InsertOne(c, data)
 	if err1 != nil {
-		log.Fatalf("Failed to inset to UserAgent: %v", err1)
+		log.Printf("Failed to insert user: %v", err1)
+		return "", err1
 	}
 	log.Printf("Create user agent with id %v", userID)
 	return userID.(string), nil
@@ -46,7 +39,8 @@ func (ar *accountRepository[K]) Login(c context.Context, data *domain.LoginModel
 	var resulat bson.M
 	err := collection.FindOne(c, data).Decode(&resulat)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		return "", err
 	}
 	id := resulat["_id"].(primitive.ObjectID).Hex()
 	return id, nil
@@ -57,16 +51,19 @@ func (ar *accountRepository[K]) GetRole(c context.Context, userId string) (strin
 	collection := ar.database.Collection("users")
 	id, err := primitive.ObjectIDFromHex(userId)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		return "", err
 	}
 	var result bson.M
 	err1 := collection.FindOne(c, bson.M{"_id": id}).Decode(&result)
 	if err1 != nil {
-		log.Fatalf("Failed to find to user: %v", err)
+		log.Printf("Failed to find to user: %v", err)
+		return "", err1
 	}
 	jsonBytes, err := json.Marshal(result["role_id"])
 	if err != nil {
 		log.Println(err)
+		return "", err
 	}
 	return string(jsonBytes), nil
 }

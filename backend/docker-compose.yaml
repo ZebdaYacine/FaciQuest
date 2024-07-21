@@ -10,19 +10,20 @@ services:
     env_file: .env
     ports:
       - "9000:$SERVER_PORT"
-    depends_on:
-      - mongodb
+#     depends_on:
+#       - mongodb
+#     environment:
+#       MONGO_URL: mongodb://localhost:27017/FaciQuest
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    restart: unless-stopped
-    env_file: .env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: "$PASSWORD_USER"
-      MONGO_INITDB_ROOT_PASSWORD: "$PASSWORD_DB"
-    volumes:
-      - dbdata:/data/db
+#   mongodb:
+#     image: mongo:latest
+#     container_name: mongodb
+#     restart: unless-stopped
+#     env_file: .env
+#     ports:
+#       - 7000:27017  
+#     volumes:
+#       - dbdata:/data/db
 
-volumes:
-  dbdata:
+# volumes:
+#   dbdata:

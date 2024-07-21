@@ -24,7 +24,7 @@ func isDataRequestSupported[T domain.Auth](data *T, c *gin.Context) bool {
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		log.Panicf(err.Error())
-		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "data not supported....///"})
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Data sent not supported the api format "})
 		return false
 	}
 	return true
@@ -55,7 +55,7 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Code expired"})
 		return
 	}
-	insertedID, err := ac.UserUsecase.SignUp(c, &cnfrMdlRecevied.SgnModel)
+	insertedID, err := ac.UserUsecase.SignUp(c, &cnfrMdlStored.SgnModel)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: err.Error()})
 		return
@@ -90,7 +90,12 @@ func (ic *AccountController) SignUpRequest(c *gin.Context) {
 	}
 	clientIP := c.ClientIP()
 	mu.Lock()
-	codeStore[clientIP] = domain.ConfirmationModel{Code: code, IP: clientIP, Time_Sending: time.Now()}
+	codeStore[clientIP] = domain.ConfirmationModel{
+		Code:         code,
+		IP:           clientIP,
+		Time_Sending: time.Now(),
+		SgnModel:     signupModel,
+	}
 	mu.Unlock()
 	log.Print(codeStore[clientIP])
 	c.JSON(http.StatusOK, model.SuccessResponse{
@@ -102,16 +107,15 @@ func (ic *AccountController) SignUpRequest(c *gin.Context) {
 // // HANDLE WITH LOGIN ACCOUNT REQUEST
 func (ic *AccountController) LoginRequest(c *gin.Context) {
 	log.Println("LOGIN POST REQUEST")
-	var loginParms *domain.LoginModel
-	err := c.ShouldBindJSON(&loginParms)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: err.Error()})
+	var loginParms domain.LoginModel
+	if !isDataRequestSupported(&loginParms, c) {
 		return
 	}
-	userId, err := ic.UserUsecase.Login(c, loginParms)
+	log.Println(loginParms)
+	userId, err := ic.UserUsecase.Login(c, &loginParms)
 	if err != nil {
-		c.JSON(http.StatusOK, model.ErrorResponse{
-			Message: err.Error(),
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: "Incorrect credentials",
 		})
 	} else {
 		secret := shared.RootServer.SECRET_KEY

@@ -4,7 +4,6 @@ import (
 	"back-end/pkg"
 	"context"
 	"log"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -51,7 +50,8 @@ func (sr *mongoSingleResult) Decode(v interface{}) error {
 }
 
 func NewClient(connection string) (Client, error) {
-	c, err := mongo.NewClient(options.Client().ApplyURI(connection))
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+	c, err := mongo.NewClient(options.Client().ApplyURI(connection).SetServerAPIOptions(serverAPI))
 	if err != nil {
 		return nil, err
 	}
@@ -99,16 +99,19 @@ func (mc *mongoCollection) FindOne(ctx context.Context, filter interface{}) Sing
 func ConnectionDb() Database {
 	client, err := NewClient(db_opt.SERVER_ADDRESS_DB)
 	if err != nil {
-		log.Fatalf("Failed to create MongoDB client: %v", err)
+		log.Fatal(err)
 	}
-	// Create a context with a timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	// Connect to the MongoDB server
-	if err := client.Connect(ctx); err != nil {
-		log.Fatalf("Failed to connect to MongoDB: %v", err)
+	ctx := context.TODO()
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Print("Connection error")
+		log.Fatal(err)
 	}
-	// Get the database and collection
+	err = client.Ping(ctx)
+	if err != nil {
+		log.Print("Ping error")
+		log.Fatal(err)
+	}
 	log.Print("_________________________CONNECT TO DATABASE_________________________")
 	return client.Database(db_opt.DB_NAME)
 }

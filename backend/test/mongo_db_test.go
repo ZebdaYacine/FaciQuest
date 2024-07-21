@@ -1,14 +1,15 @@
 package test
 
 import (
-	"back-end/pkg/database"
+	// "back-end/internal/domain"
+
 	"context"
-	"encoding/json"
-	"log"
+	"fmt"
 	"testing"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func TestMongoDBConnection(t *testing.T) {
@@ -33,23 +34,22 @@ func TestMongoDBConnection(t *testing.T) {
 	})
 
 	t.Run("success", func(t *testing.T) {
-		c := context.Background()
-		db := database.ConnectionDb()
-		collection := db.Collection("users")
-		id, err := primitive.ObjectIDFromHex("66977cee4f013719f6c0f437")
+		serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+		opts := options.Client().ApplyURI("mongodb+srv://root:root@db.wkzekin.mongodb.net/?retryWrites=true&w=majority&appName=db").SetServerAPIOptions(serverAPI)
+		// Create a new client and connect to the server
+		client, err := mongo.Connect(context.TODO(), opts)
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
-		var result bson.M
-		err1 := collection.FindOne(c, bson.M{"_id": id}).Decode(&result)
-		if err1 != nil {
-			log.Fatalf("Failed to inset to UserAgent: %v", err)
+		defer func() {
+			if err = client.Disconnect(context.TODO()); err != nil {
+				panic(err)
+			}
+		}()
+		// Send a ping to confirm a successful connection
+		if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Err(); err != nil {
+			panic(err)
 		}
-		jsonBytes, err := json.Marshal(result["role_id"])
-		if err != nil {
-			log.Println(err)
-		}
-		log.Println(string(jsonBytes))
-		//assert.NoError(t, err1)
+		fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 	})
 }
