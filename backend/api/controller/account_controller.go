@@ -2,8 +2,8 @@ package controller
 
 import (
 	"back-end/api/controller/model"
+	"back-end/common"
 	"back-end/internal/domain"
-	shared "back-end/shared"
 	"back-end/util"
 	"log"
 	"net/http"
@@ -60,7 +60,7 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: err.Error()})
 		return
 	}
-	token, _ := util.CreateAccessToken(insertedID, shared.RootServer.SECRET_KEY, 2, "user")
+	token, _ := util.CreateAccessToken(insertedID, common.RootServer.SECRET_KEY, 2, "user")
 	log.Printf("TOKEN %s", token)
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "SIGNUP USER SUCCESSFULY",
@@ -118,7 +118,7 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 			Message: "Incorrect credentials",
 		})
 	} else {
-		secret := shared.RootServer.SECRET_KEY
+		secret := common.RootServer.SECRET_KEY
 		role_id, _ := ic.UserUsecase.GetRole(c, userId)
 		role := util.GenerateRole(role_id)
 		token, err := util.CreateAccessToken(userId, secret, 2, role)
