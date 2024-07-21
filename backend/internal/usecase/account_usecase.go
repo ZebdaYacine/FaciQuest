@@ -18,6 +18,16 @@ func NewAccountUsecase[T domain.Auth](repo domain.AccountRepository[T], collecti
 }
 
 // SignUp implements domain.AccountUsecase.
-func (au *accountUsecase[T]) SignUp(c context.Context, data *domain.SignupModel) (interface{}, error) {
+func (au *accountUsecase[T]) SignUp(c context.Context, data *domain.SignupModel) (string, error) {
 	return au.repo.SignUp(c, data)
+}
+
+// Login implements domain.AccountUsecase.
+func (au *accountUsecase[T]) Login(c context.Context, data *domain.LoginModel) (string, error) {
+	return au.repo.Login(c, data)
+}
+
+// GetRole implements domain.AccountUsecase.
+func (au *accountUsecase[T]) GetRole(c context.Context, data string) (string, error) {
+	return au.repo.GetRole(c, data)
 }

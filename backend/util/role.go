@@ -1,10 +1,10 @@
 package util
 
-func GenerateRole(role_id int64) string {
+func GenerateRole(role_id string) string {
 	switch role_id {
-	case 1:
+	case "1":
 		return "Admin"
-	case 2:
+	case "2":
 		return "User"
 	default:
 		return "Guest"
