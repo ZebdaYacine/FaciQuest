@@ -1,9 +1,9 @@
 package controller
 
 import (
-	shared "back-end/Shared"
 	"back-end/api/controller/model"
 	"back-end/internal/domain"
+	shared "back-end/shared"
 	"back-end/util"
 	"log"
 	"net/http"
@@ -24,7 +24,7 @@ func isDataRequestSupported[T domain.Auth](data *T, c *gin.Context) bool {
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		log.Panicf(err.Error())
-		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "data not supported"})
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Data sent not supported the api format "})
 		return false
 	}
 	return true
@@ -55,12 +55,12 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Code expired"})
 		return
 	}
-	insertedID, err := ac.UserUsecase.SignUp(c, &cnfrMdlRecevied.SgnModel)
+	insertedID, err := ac.UserUsecase.SignUp(c, &cnfrMdlStored.SgnModel)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: err.Error()})
 		return
 	}
-	token, err := util.CreateAccessToken(insertedID.(string), shared.RootServer.SECRET_KEY, 2, "user")
+	token, _ := util.CreateAccessToken(insertedID, shared.RootServer.SECRET_KEY, 2, "user")
 	log.Printf("TOKEN %s", token)
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "SIGNUP USER SUCCESSFULY",
@@ -90,8 +90,14 @@ func (ic *AccountController) SignUpRequest(c *gin.Context) {
 	}
 	clientIP := c.ClientIP()
 	mu.Lock()
-	codeStore[clientIP] = domain.ConfirmationModel{Code: code, IP: clientIP, Time_Sending: time.Now()}
+	codeStore[clientIP] = domain.ConfirmationModel{
+		Code:         code,
+		IP:           clientIP,
+		Time_Sending: time.Now(),
+		SgnModel:     signupModel,
+	}
 	mu.Unlock()
+	log.Print(codeStore[clientIP])
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "we send six-degit to your email check to confirm you account",
 		Data:    signupModel,
@@ -100,34 +106,30 @@ func (ic *AccountController) SignUpRequest(c *gin.Context) {
 
 // // HANDLE WITH LOGIN ACCOUNT REQUEST
 func (ic *AccountController) LoginRequest(c *gin.Context) {
-	// 	log.Println("LOGIN POST REQUEST")
-	// 	log.Println(">>>>>>>>>", c.Request.Body)
-	// 	var loginParms domain.LoginModel
-	// 	err := c.ShouldBindJSON(&loginParms)
-	// 	if err != nil {
-	// 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: err.Error()})
-	// 		return
-	// 	}
-	// 	//TODO: CHECK IF THE LOGING REQUEST SENT BY USERAGNET OR INSURED
-	// 	//TODO: USE USERNAME INCLUED IN >>>> LOGIN REQUEST
-	// 	id, err := ic.UserUsecase.Login(c, loginParms)
-	// 	if err != nil {
-	// 		c.JSON(http.StatusOK, model.ErrorResponse{
-	// 			Message: err.Error(),
-	// 		})
-	// 	} else {
-	// 		secret := pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY
-	// 		role_id, err := ic.UserUsecase.GetRole(c, id)
-	// 		role := util.GenerateRole(role_id)
-	// 		token, err := util.CreateAccessToken(strconv.FormatInt(id, 10), secret, 2, role)
-	// 		if err != nil {
-	// 			c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: err.Error()})
-	// 			return
-	// 		}
-	// 		log.Printf("TOKEN %s", token)
-	// 		c.JSON(http.StatusOK, model.SuccessResponse{
-	// 			Message: "LOGIN USERT SUCCESSFULY",
-	// 			Data:    token,
-	// 		})
-	// 	}
+	log.Println("LOGIN POST REQUEST")
+	var loginParms domain.LoginModel
+	if !isDataRequestSupported(&loginParms, c) {
+		return
+	}
+	log.Println(loginParms)
+	userId, err := ic.UserUsecase.Login(c, &loginParms)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: "Incorrect credentials",
+		})
+	} else {
+		secret := shared.RootServer.SECRET_KEY
+		role_id, _ := ic.UserUsecase.GetRole(c, userId)
+		role := util.GenerateRole(role_id)
+		token, err := util.CreateAccessToken(userId, secret, 2, role)
+		if err != nil {
+			c.JSON(500, model.ErrorResponse{Message: err.Error()})
+			return
+		}
+		log.Printf("TOKEN %s", token)
+		c.JSON(http.StatusOK, model.SuccessResponse{
+			Message: "LOGIN USERT SUCCESSFULY",
+			Data:    token,
+		})
+	}
 }

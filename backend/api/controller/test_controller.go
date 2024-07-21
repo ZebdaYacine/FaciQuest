@@ -19,4 +19,5 @@ func (ic *TestController) TestRequest(c *gin.Context) {
 		Message: "TEST IS WORKE SUCCESSFULY",
 		Data:    ".......",
 	})
+	//insertedID, err := ic.UserUsecase.SignUp(c&{})
 }

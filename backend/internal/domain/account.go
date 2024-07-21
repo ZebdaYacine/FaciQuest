@@ -30,13 +30,24 @@ type RestPasswordModel struct {
 	NewPassword string `form:"newpassword" binding:"required"`
 }
 
+type User struct {
+	ID       string `json:"_id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	PassWord string `json:"password"`
+	Role     string `json:"role"`
+}
+
 type AccountRepository[K Auth] interface {
-	//Login(c context.Context, data LoginModel) (int64, error)
-	SignUp(c context.Context, data *SignupModel) (interface{}, error)
+	Login(c context.Context, data *LoginModel) (string, error)
+	SignUp(c context.Context, data *SignupModel) (string, error)
+	GetRole(c context.Context, data string) (string, error)
 }
 
 type AccountUsecase[K Auth] interface {
-	//Login(c context.Context, data LoginModel) (int64, error)
-	SignUp(c context.Context, data *SignupModel) (interface{}, error)
+	Login(c context.Context, data *LoginModel) (string, error)
+	SignUp(c context.Context, data *SignupModel) (string, error)
+	GetRole(c context.Context, data string) (string, error)
 	//Login(c context.Context, loginRequest *LoginRequest) (LoginResponse, error)
 }
