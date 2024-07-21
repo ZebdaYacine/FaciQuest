@@ -12,7 +12,7 @@ COPY . ./
 
 COPY .env ./
 
-RUN go build -o main cmd/main.go
+# RUN go build -o main cmd/main.go
 
 # FROM alpine:latest
 
