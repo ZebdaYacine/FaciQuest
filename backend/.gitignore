@@ -18,8 +18,8 @@ vendor/
 *.log
 *.test
 *.cover
-*.mod
-*.sum
+# *.mod
+# *.sum
 
 # IDEs and editors
 ### Goland ###
