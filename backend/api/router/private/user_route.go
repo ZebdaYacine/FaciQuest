@@ -1,4 +1,4 @@
-package public
+package private
 
 import (
 	"back-end/api/controller"
@@ -9,11 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewSignUpRouter(db database.Database, group *gin.RouterGroup) {
+func NewRsetPwdRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewUserRepository(db)
 	uc := usecase.NewUserUsecase(ir, "")
 	ic := &controller.AccountController{
 		UserUsecase: uc, // usecase for insured operations
 	}
-	group.POST("signup", ic.SignUpRequest)
+	group.POST("rset-pwd", ic.RestPwdRequest)
 }

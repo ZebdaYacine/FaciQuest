@@ -10,7 +10,7 @@ import (
 )
 
 type TestController struct {
-	UserUsecase domain.AccountUsecase[domain.LoginModel]
+	UserUsecase domain.UserUsecase
 }
 
 func (ic *TestController) TestRequest(c *gin.Context) {

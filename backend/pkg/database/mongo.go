@@ -21,6 +21,7 @@ type Database interface {
 type Collection interface {
 	InsertOne(context.Context, interface{}) (interface{}, error)
 	FindOne(context.Context, interface{}) SingleResult
+	UpdateOne(context.Context, interface{}, interface{}, ...*options.UpdateOptions) (*mongo.UpdateResult, error)
 }
 
 type Client interface {
@@ -94,6 +95,10 @@ func (mc *mongoCollection) InsertOne(ctx context.Context, document interface{}) 
 func (mc *mongoCollection) FindOne(ctx context.Context, filter interface{}) SingleResult {
 	singleResult := mc.coll.FindOne(ctx, filter)
 	return &mongoSingleResult{sr: singleResult}
+}
+
+func (mc *mongoCollection) UpdateOne(ctx context.Context, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {
+	return mc.coll.UpdateOne(ctx, filter, update, opts[:]...)
 }
 
 func ConnectionDb() Database {

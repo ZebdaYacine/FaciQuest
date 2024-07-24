@@ -1,12 +1,10 @@
 package router
 
 import (
-	// "back-end/api/router/public"
-	// "database/sql"
-
-	// "github.com/gin-contrib/cors"
-
+	"back-end/api/controller/middleware"
+	"back-end/api/router/private"
 	"back-end/api/router/public"
+	"back-end/pkg"
 	"back-end/pkg/database"
 
 	"github.com/gin-contrib/cors"
@@ -29,12 +27,11 @@ func Setup(db database.Database, gin *gin.Engine) {
 	public.NewSignUpRouter(db, publicRouter)
 	public.NewConfirmaAccountRouter(db, publicRouter)
 
-	// protectedRouter := gin.Group("/profile")
-	// // Middleware to verify AccessToken
-	// protectedRouter.Use(middleware.JwtAuthMiddleware(
-	// 	pkg.GetServerSetting().SECRET_KEY,
-	// 	"Admin"))
-	// // All Private APIs
-	// //private.NewInsuredRouter(db, protectedRouter)
-	// private.NewUserRouter(db, protectedRouter)
+	protectedRouter := gin.Group("/profile")
+	//Middleware to verify AccessToken
+	protectedRouter.Use(middleware.JwtAuthMiddleware(
+		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
+		"User"))
+
+	private.NewRsetPwdRouter(db, protectedRouter)
 }

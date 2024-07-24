@@ -29,7 +29,7 @@ func SendEmail(to string, subject string, body string) error {
 	m.SetHeader("From", SETTING.SMTP_USER)
 	m.SetHeader("To", to)
 	m.SetHeader("Subject", subject)
-	m.SetBody("text/plain", body)
+	m.SetBody("text/html", body)
 	d := gomail.NewDialer(SETTING.SMTP_HOST, SETTING.SMTP_PORT, SETTING.SMTP_USER, SETTING.SMTP_PASS)
 
 	// Send the email
