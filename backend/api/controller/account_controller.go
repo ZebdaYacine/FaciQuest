@@ -75,6 +75,10 @@ func (ic *AccountController) SignUpRequest(c *gin.Context) {
 		return
 	}
 	log.Print(signupModel)
+	if ok, err := ic.UserUsecase.IsAlreadyExist(c, &signupModel); ok {
+		c.JSON(500, model.ErrorResponse{Message: err.Error()})
+		return
+	}
 	code, err := util.GenerateDigit()
 	if err != nil {
 		log.Panicf(err.Error())
@@ -162,5 +166,25 @@ func (ic *AccountController) RestPwdRequest(c *gin.Context) {
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "REST PWD REQUEST DONE SUCCESSFULY",
 		Data:    "",
+	})
+}
+
+func (ic *AccountController) UpdateProfileRequest(c *gin.Context) {
+	log.Println("UPDATE PROFILE POST REQUEST")
+	var UserUpdated domain.User
+	if !isDataRequestSupported(&UserUpdated, c) {
+		return
+	}
+	log.Println(UserUpdated)
+	user, err := ic.UserUsecase.UpdateProfile(c, &UserUpdated)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: "Failed to Update Profile",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "REST PWD REQUEST DONE SUCCESSFULY",
+		Data:    user,
 	})
 }

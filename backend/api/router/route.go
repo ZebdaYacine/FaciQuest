@@ -34,4 +34,5 @@ func Setup(db database.Database, gin *gin.Engine) {
 		"User"))
 
 	private.NewRsetPwdRouter(db, protectedRouter)
+	private.NewUpdateProfileRouter(db, protectedRouter)
 }

@@ -61,15 +61,19 @@ type User struct {
 }
 
 type UserRepository interface {
+	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	Login(c context.Context, data *LoginModel) (*User, error)
 	SignUp(c context.Context, data *SignupModel) (*User, error)
 	// GetRole(c context.Context, data string) (string, error)
 	RsetPassword(c context.Context, data *RestPasswordModel) (*User, error)
+	UpdateProfile(c context.Context, data *User) (*User, error)
 }
 
 type UserUsecase interface {
+	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	Login(c context.Context, data *LoginModel) (*User, error)
 	SignUp(c context.Context, data *SignupModel) (*User, error)
 	// GetRole(c context.Context, data string) (string, error)
 	RsetPassword(c context.Context, data *RestPasswordModel) (*User, error)
+	UpdateProfile(c context.Context, data *User) (*User, error)
 }

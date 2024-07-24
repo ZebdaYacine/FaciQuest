@@ -17,6 +17,16 @@ func NewUserUsecase(repo domain.UserRepository, collection string) domain.UserUs
 	}
 }
 
+// UpdateProfile implements domain.UserRepository.
+func (au *userUsecase) UpdateProfile(c context.Context, data *domain.User) (*domain.User, error) {
+	return au.repo.UpdateProfile(c, data)
+}
+
+// IsAlreadyExist implements domain.UserRepository.
+func (au *userUsecase) IsAlreadyExist(c context.Context, data *domain.SignupModel) (bool, error) {
+	return au.repo.IsAlreadyExist(c, data)
+}
+
 // RsetPassword implements domain.UserUsecase.
 func (au *userUsecase) RsetPassword(c context.Context, data *domain.RestPasswordModel) (*domain.User, error) {
 	return au.repo.RsetPassword(c, data)

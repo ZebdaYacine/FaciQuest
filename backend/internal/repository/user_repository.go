@@ -42,13 +42,7 @@ func convertBsonToStruct[T domain.Account](bsonData primitive.M) (*T, error) {
 	return model, err
 }
 
-// RsetPassword implements domain.UserRepository.
-func (ar *userRepository) RsetPassword(c context.Context, data *domain.RestPasswordModel) (*domain.User, error) {
-	collection := ar.database.Collection("users")
-	filterUpdate := bson.D{{Key: "email", Value: data.Email}}
-	update := bson.M{
-		"$set": bson.M{"password": data.NewPassword},
-	}
+func updateDoc(c context.Context, collection database.Collection, update primitive.M, filterUpdate primitive.D) (*domain.User, error) {
 	_, err := collection.UpdateOne(c, filterUpdate, update)
 	if err != nil {
 		log.Panic(err)
@@ -60,7 +54,7 @@ func (ar *userRepository) RsetPassword(c context.Context, data *domain.RestPassw
 		log.Panic("Error finding updated document:", err)
 		return nil, fmt.Errorf("error was happend")
 	}
-	fmt.Print("Password is updated successfuly")
+	fmt.Print("Document is updated successfuly")
 	updatedUser, err := convertBsonToStruct[domain.User](updatedDocument)
 	if err != nil {
 		log.Printf("Failed to convert bson to struct: %v", err)
@@ -69,16 +63,57 @@ func (ar *userRepository) RsetPassword(c context.Context, data *domain.RestPassw
 	return updatedUser, nil
 }
 
-// SignUp implements domain.AccountRepository.
-func (ar *userRepository) SignUp(c context.Context, data *domain.SignupModel) (*domain.User, error) {
+// UpdateProfile implements domain.UserRepository.
+func (ar *userRepository) UpdateProfile(c context.Context, data *domain.User) (*domain.User, error) {
+	collection := ar.database.Collection("users")
+	filterUpdate := bson.D{{Key: "email", Value: data.Email}}
+	update := bson.M{
+		"$set": bson.M{
+			"firstname":    data.FirstName,
+			"lastname":     data.LastName,
+			"phone":        data.Phone,
+			"birthDate":    data.Birthdate,
+			"age":          data.Age,
+			"birthPlace":   data.BirthPlace,
+			"country":      data.Country,
+			"municipal":    data.Municipal,
+			"education":    data.Education,
+			"workerAt":     data.WorkerAt,
+			"institution":  data.Institution,
+			"socialStatus": data.SocialStatus,
+			// "profilePicture": data.ProfilePicture,
+		},
+	}
+	return updateDoc(c, collection, update, filterUpdate)
+}
+
+// IsAlreadyExist implements domain.UserRepository.
+func (ar *userRepository) IsAlreadyExist(c context.Context, data *domain.SignupModel) (bool, error) {
 	collection := ar.database.Collection("users")
 	var resulat bson.M
 	filter := bson.D{{Key: "email", Value: data.Email}}
 	err := collection.FindOne(c, filter).Decode(&resulat)
 	if err != mongo.ErrNoDocuments {
-		return nil, fmt.Errorf("user already exist")
+		return true, fmt.Errorf("user already exist")
 	}
-	log.Println("No documents found matching the filter")
+	return false, nil
+}
+
+// RsetPassword implements domain.UserRepository.
+func (ar *userRepository) RsetPassword(c context.Context, data *domain.RestPasswordModel) (*domain.User, error) {
+	collection := ar.database.Collection("users")
+	filterUpdate := bson.D{{Key: "email", Value: data.Email}}
+	update := bson.M{
+		"$set": bson.M{
+			"password": data.NewPassword,
+		},
+	}
+	return updateDoc(c, collection, update, filterUpdate)
+}
+
+// SignUp implements domain.AccountRepository.
+func (ar *userRepository) SignUp(c context.Context, data *domain.SignupModel) (*domain.User, error) {
+	collection := ar.database.Collection("users")
 	data.Role = "User"
 	userID, err1 := collection.InsertOne(c, data)
 	if err1 != nil {

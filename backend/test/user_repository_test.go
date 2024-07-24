@@ -4,11 +4,11 @@ import (
 	"back-end/pkg/database"
 	"context"
 	"fmt"
-	"log"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func TestUserRepository(t *testing.T) {
@@ -17,21 +17,12 @@ func TestUserRepository(t *testing.T) {
 		db.Collection("users")
 		ctx := context.Background()
 		collection := db.Collection("users")
-		filterUpdate := bson.D{{Key: "email", Value: "medYaine996@gmail.com"}}
-		update := bson.M{
-			"$set": bson.M{"password": "medFed"},
+		var resulat bson.M
+		filter := bson.D{{Key: "email", Value: "zeddbdaadam1996@gmail.com"}}
+		err := collection.FindOne(ctx, filter).Decode(&resulat)
+		if err != mongo.ErrNoDocuments {
+			fmt.Print("user already exist")
 		}
-		r, err := collection.UpdateOne(ctx, filterUpdate, update)
-		if err != nil {
-			log.Fatal(err)
-		}
-		var updatedDocument bson.M
-		err = collection.FindOne(ctx, filterUpdate).Decode(&updatedDocument)
-		if err != nil {
-			log.Fatal("Error finding updated document:", err)
-		}
-		fmt.Print("updatedDocument", updatedDocument)
-		fmt.Printf("Matched %v documents and updated %v documents.\n", r, r.ModifiedCount)
 		assert.NoError(t, err)
 	})
 }
