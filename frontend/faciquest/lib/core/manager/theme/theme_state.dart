@@ -1,11 +1,24 @@
 part of 'theme_bloc.dart';
 
 class ThemeState extends Equatable {
-  const ThemeState({
-    this.themeMode = ThemeMode.light,
-    this.lightTheme,
-    this.darkTheme,
-  });
+  ThemeState({
+    this.themeMode = ThemeMode.system,
+    ThemeData? lightTheme,
+    ThemeData? darkTheme,
+  })  : lightTheme = lightTheme ??
+            ThemeData.from(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.blue,
+                brightness: Brightness.light,
+              ),
+            ),
+        darkTheme = darkTheme ??
+            ThemeData.from(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.blue,
+                brightness: Brightness.dark,
+              ),
+            );
 
   ///
   final ThemeMode themeMode;

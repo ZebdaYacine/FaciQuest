@@ -8,6 +8,12 @@ import 'package:go_router/go_router.dart';
 enum AppRoutes {
   splash('/splash', 'Splash', SplashPage()),
   auth('/auth', 'Auth', WelcomeView()),
+  forgotPassword('forgot-password', 'Forgot Password', ForgotPasswordView()),
+  setNewPassword('set-new-password', 'Set New Password', SetNewPasswordView()),
+  signIn('sign-in', 'Sign In', SignInView()),
+  signUp('sign-up', 'Sign Up', SignUpView()),
+  verifyOtp('verify-otp', 'Verify OTP', VerifyOtpView()),
+
   home('/home', 'Home', HomeView()),
   ;
 
@@ -52,6 +58,34 @@ enum AppRoutes {
               key: state.pageKey,
             );
           },
+    );
+  }
+
+  Future<T?> push<T>(
+    BuildContext context, {
+    Map<String, String> pathParameters = const <String, String>{},
+    Map<String, dynamic> queryParameters = const <String, dynamic>{},
+    Object? extra,
+  }) async {
+    return context.pushNamed<T>(
+      name,
+      pathParameters: pathParameters,
+      queryParameters: queryParameters,
+      extra: extra,
+    );
+  }
+
+  Future<void> pushReplacement(
+    BuildContext context, {
+    Map<String, String> pathParameters = const <String, String>{},
+    Map<String, dynamic> queryParameters = const <String, dynamic>{},
+    Object? extra,
+  }) async {
+    return context.pushReplacementNamed(
+      name,
+      pathParameters: pathParameters,
+      queryParameters: queryParameters,
+      extra: extra,
     );
   }
 }
