@@ -10,6 +10,6 @@ registerAuth(GetIt getIt) {
       () => AuthRepositoryImpl(authDataSource: getIt<AuthDataSource>()),
     )
     ..registerLazySingleton(
-      () => AuthBloc(getIt<AuthRepository>()),
+      () => AuthBloc(getIt<AuthRepository>())..add(AuthenticationStarted()),
     );
 }
