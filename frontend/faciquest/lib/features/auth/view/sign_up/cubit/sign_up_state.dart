@@ -4,10 +4,14 @@ class SignUpState extends Equatable {
   final UserEntity user;
   final String cPassword;
   final bool agreeToTerms;
+  final Status status;
+  final String? msg;
   const SignUpState({
     this.user = UserEntity.empty,
     this.cPassword = '',
     this.agreeToTerms = false,
+    this.status = Status.initial,
+    this.msg,
   });
   @override
   List<Object> get props => [user, agreeToTerms, cPassword];
@@ -27,6 +31,8 @@ class SignUpState extends Equatable {
     String? lastName,
     String? phone,
     bool? agreeToTerms,
+    Status? status,
+    String? msg,
   }) {
     return SignUpState(
       agreeToTerms: agreeToTerms ?? this.agreeToTerms,
@@ -38,6 +44,8 @@ class SignUpState extends Equatable {
         lastName: lastName,
         phone: phone,
       ),
+      status: status ?? Status.initial,
+      msg: msg,
     );
   }
 }

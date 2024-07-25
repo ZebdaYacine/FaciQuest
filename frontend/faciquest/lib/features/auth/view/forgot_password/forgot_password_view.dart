@@ -10,11 +10,11 @@ class ForgotPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ForgotPasswordCubit(),
+      create: (context) => ForgotPasswordCubit(getIt()),
       child: BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
         listener: (context, state) {
           if (state.status.isSuccess) {
-            context.pop();
+            AppRoutes.verifyOtp.push(context);
           }
         },
         child: const _Body(),
@@ -28,6 +28,7 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ForgotPasswordCubit>();
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -51,7 +52,7 @@ class _Body extends StatelessWidget {
               BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
                 builder: (context, state) {
                   return ElevatedButton(
-                    onPressed: state.isValid ? () {} : null,
+                    onPressed: state.isValid ? cubit.submit : null,
                     child: const Center(child: Text('Reset Password')),
                   );
                 },

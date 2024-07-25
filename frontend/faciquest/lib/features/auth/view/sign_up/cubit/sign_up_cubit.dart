@@ -1,13 +1,31 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/auth/auth.dart';
 import 'package:faciquest/features/features.dart';
 
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit() : super(const SignUpState());
+  SignUpCubit(this.authRepository) : super(const SignUpState());
+
+  final AuthRepository authRepository;
+
+  void submit() async {
+    emit(state.copyWith(status: Status.showLoading));
+    try {
+      await authRepository.signUp(state.user);
+      emit(state.copyWith(status: Status.success));
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: Status.failure,
+          msg: e.toString(),
+        ),
+      );
+    }
+  }
 
   void onAgreeToTermsChanged(bool? value) {
     emit(state.copyWith(agreeToTerms: value));
