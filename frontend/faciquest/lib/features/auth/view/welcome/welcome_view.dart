@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -5,6 +6,12 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return  Scaffold(
+        body: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        
+      ],
+    ));
   }
 }

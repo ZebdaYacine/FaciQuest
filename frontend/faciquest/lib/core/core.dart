@@ -5,3 +5,5 @@ export 'enums/enums.dart';
 export 'services/services.dart';
 export 'utils/utils.dart';
 export 'manager/manager.dart';
+export 'context_extension.dart';
+export 'mixins.dart';

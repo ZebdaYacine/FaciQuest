@@ -6,22 +6,33 @@ import 'package:equatable/equatable.dart';
 class UserEntity extends Equatable {
   final String id;
   final String email;
-  final String name;
+  final String firstName, lastName, phone, password;
+
+  static const empty = UserEntity();
   const UserEntity({
     this.id = '',
     this.email = '',
-    this.name = '',
+    this.firstName = '',
+    this.lastName = '',
+    this.phone = '',
+    this.password = '',
   });
 
   UserEntity copyWith({
     String? id,
     String? email,
-    String? name,
+    String? phone,
+    String? lastName,
+    String? firstName,
+    String? password,
   }) {
     return UserEntity(
       id: id ?? this.id,
       email: email ?? this.email,
-      name: name ?? this.name,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      phone: phone ?? this.phone,
+      password: password ?? this.password,
     );
   }
 
@@ -29,7 +40,10 @@ class UserEntity extends Equatable {
     return <String, dynamic>{
       'id': id,
       'email': email,
-      'name': name,
+      'firstName': firstName,
+      'lastName': lastName,
+      'phone': phone,
+      'password': password,
     };
   }
 
@@ -37,7 +51,9 @@ class UserEntity extends Equatable {
     return UserEntity(
       id: map['id'] as String? ?? '',
       email: map['email'] as String? ?? '',
-      name: map['name'] as String? ?? '',
+      firstName: map['name'] as String? ?? '',
+      lastName: map['lastName'] as String? ?? '',
+      phone: map['phone'] as String? ?? '',
     );
   }
 
@@ -50,5 +66,5 @@ class UserEntity extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [id, email, name];
+  List<Object> get props => [id, email, firstName, lastName, phone, password];
 }
