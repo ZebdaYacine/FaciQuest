@@ -29,6 +29,7 @@ Future<void> setupDependencies() async {
     ..registerLazySingleton(
       () => flutterSecureStorage,
     )
+    ..registerLazySingleton(() => AppBloc())
 
     /// Theme
     ..registerSingleton(ThemeBloc())

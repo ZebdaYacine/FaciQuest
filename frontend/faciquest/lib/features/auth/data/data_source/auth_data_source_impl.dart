@@ -10,8 +10,11 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   AuthDataSourceImpl({required this.dioService})
       : _controller = StreamController<UserEntity?>.broadcast() {
-    final user = getUserFromLocal();
-    _controller.sink.add(user);
+    getUserFromLocal().then(
+      (value) {
+        _controller.sink.add(value);
+      },
+    );
   }
   @override
   Future<void> forgotPassword(String email) {
@@ -38,8 +41,9 @@ class AuthDataSourceImpl implements AuthDataSource {
         );
         if (response.statusCode == 200) {
           logSuccess('Sign In Successful');
-          final user=  UserEntity.fromJson(response.data);
+          final user = UserEntity.fromJson(response.data);
           _controller.sink.add(user);
+          saveUserToLocal(user);
           return user;
         } else {
           throw Exception('Failed to login');
@@ -58,6 +62,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         if (response.statusCode == 200) {
           logSuccess('Sign Out Successful');
           _controller.sink.add(null);
+          saveUserToLocal(null);
           return;
         } else {
           throw Exception('Failed to signOut');
@@ -90,7 +95,23 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Stream<UserEntity?> get user => _controller.stream;
 
-  UserEntity? getUserFromLocal() {
-    return null;
+  Future<UserEntity?> getUserFromLocal() async {
+    try {
+      final result = (await SecuredStorageKeys.user.getStoredValue()) as String?;
+      if (result == null) {
+        return null;
+      }
+      return UserEntity.fromJson(result);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> saveUserToLocal(UserEntity? user) async {
+    if(user == null) {
+      await SecuredStorageKeys.user.delete();
+    return;
+    } 
+    await SecuredStorageKeys.user.setValue(user.toJson());
   }
 }

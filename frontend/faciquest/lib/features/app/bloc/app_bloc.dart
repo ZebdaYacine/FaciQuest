@@ -23,7 +23,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) async {
     logInfo('AppBloc: _onSetupApp');
-    getIt<AuthBloc>().add(AuthenticationStarted());
     //? INFO: Load old settings here
     final storedTheme = (await StorageKeys.themeMode.storedValue) as String?;
     final theme = ThemeMode.values
@@ -31,9 +30,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     if (theme != null) {
       getIt<ThemeBloc>().add(ThemeModeChanged(themeMode: theme));
     }
-
-    // TODO(YG): listen to user connectivity
-
     emit(state.copyWith(appStatus: AppStatus.complete));
   }
 
