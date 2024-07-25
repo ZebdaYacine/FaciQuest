@@ -2,7 +2,6 @@ package public
 
 import (
 	"back-end/api/controller"
-	"back-end/internal/domain"
 	"back-end/internal/repository"
 	"back-end/internal/usecase"
 	"back-end/pkg/database"
@@ -11,8 +10,8 @@ import (
 )
 
 func NewSignUpRouter(db database.Database, group *gin.RouterGroup) {
-	ir := repository.NewAccountRepository[domain.SignupModel](db)
-	uc := usecase.NewAccountUsecase[domain.SignupModel](ir, "")
+	ir := repository.NewUserRepository(db)
+	uc := usecase.NewUserUsecase(ir, "")
 	ic := &controller.AccountController{
 		UserUsecase: uc, // usecase for insured operations
 	}
