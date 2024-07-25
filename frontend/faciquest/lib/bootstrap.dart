@@ -28,6 +28,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         providers: [
           BlocProvider(create: (_) => getIt<AppBloc>()),
           BlocProvider(create: (_) => getIt<AuthBloc>()),
+          BlocProvider(create: (_) => getIt<ThemeBloc>()),
         ],
         child: await builder(),
       ),
