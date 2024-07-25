@@ -10,8 +10,8 @@ class SignUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignUpCubit(),
-      child: BlocListener<SignInCubit, SignInState>(
+      create: (context) => SignUpCubit(getIt()),
+      child: BlocListener<SignUpCubit, SignUpState>(
         listener: (context, state) {
           if (state.status.isSuccess) {
             statusHandler(context, state.status);

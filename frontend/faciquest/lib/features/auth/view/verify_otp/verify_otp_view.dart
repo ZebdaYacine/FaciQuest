@@ -5,14 +5,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 
+enum VerifyOtpFrom {
+  forgotPassword,
+  signUp,
+}
+
 class VerifyOtpView extends StatelessWidget {
-  const VerifyOtpView({super.key});
+  const VerifyOtpView({
+    super.key,
+    this.from = VerifyOtpFrom.signUp,
+  });
+  final VerifyOtpFrom from;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => VerifyOtpCubit(),
-      child: const _Body(),
+      create: (context) => VerifyOtpCubit(getIt()),
+      child: BlocListener<VerifyOtpCubit, VerifyOtpState>(
+        listener: (context, state) {
+          if (state.status.isSuccess) {
+            switch (from) {
+              case VerifyOtpFrom.forgotPassword:
+                AppRoutes.setNewPassword.push(context);
+                break;
+              case VerifyOtpFrom.signUp:
+                statusHandler(context, state.status, msg: state.msg);
+              // TODO: To discuss go directly to home page or return to sign in page
+            }
+          }
+        },
+        child: const _Body(),
+      ),
     );
   }
 }

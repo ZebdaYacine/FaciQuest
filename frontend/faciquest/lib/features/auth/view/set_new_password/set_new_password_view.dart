@@ -1,7 +1,6 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +10,7 @@ class SetNewPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SetNewPasswordCubit(),
+      create: (context) => SetNewPasswordCubit(getIt()),
       child: const _Body(),
     );
   }

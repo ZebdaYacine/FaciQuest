@@ -10,7 +10,7 @@ class SignInView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignInCubit(),
+      create: (context) => SignInCubit(getIt()),
       child: BlocListener<SignInCubit, SignInState>(
         listener: (context, state) {
           statusHandler(context, state.status);
@@ -70,7 +70,7 @@ class _Body extends StatelessWidget {
               AppSpacing.spacing_2.heightBox,
               GestureDetector(
                 onTap: () {
-                  AppRoutes.verifyOtp.push(context);
+                  AppRoutes.forgotPassword.push(context);
                 },
                 child: const Text(
                   'Forgot password?',
@@ -88,7 +88,7 @@ class _Body extends StatelessWidget {
               BlocBuilder<SignInCubit, SignInState>(
                 builder: (context, state) {
                   return ElevatedButton(
-                    onPressed: state.isValid ? cubit.onSignIn : null,
+                    onPressed: state.isValid ? cubit.submit : null,
                     child: const Center(child: Text('Login')),
                   );
                 },

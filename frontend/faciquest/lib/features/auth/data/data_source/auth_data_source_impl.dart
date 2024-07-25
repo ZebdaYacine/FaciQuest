@@ -72,14 +72,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<void> signUp(String email, String password) {
+  Future<void> signUp(UserEntity user) {
     return dioService.handleRequest(
       () async {
         final response = await dioClient.post(
           AppUrls.authSignUpUrl,
           data: {
-            'email': email,
-            'password': password,
+            'email': user.email,
+            'password': user.password,
           },
         );
         if (response.statusCode == 200) {
@@ -97,7 +97,8 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   Future<UserEntity?> getUserFromLocal() async {
     try {
-      final result = (await SecuredStorageKeys.user.getStoredValue()) as String?;
+      final result =
+          (await SecuredStorageKeys.user.getStoredValue()) as String?;
       if (result == null) {
         return null;
       }
@@ -108,10 +109,46 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   Future<void> saveUserToLocal(UserEntity? user) async {
-    if(user == null) {
+    if (user == null) {
       await SecuredStorageKeys.user.delete();
-    return;
-    } 
+      return;
+    }
     await SecuredStorageKeys.user.setValue(user.toJson());
+  }
+
+  @override
+  Future<void> setNewPassword(String password) {
+    return dioService.handleRequest(
+      () async {
+        final response = await dioClient.post(
+          AppUrls.authSetNewPasswordUrl,
+          data: {'password': password},
+        );
+        if (response.statusCode == 200) {
+          logSuccess('Set New Password Successful');
+        }
+      },
+    );
+  }
+
+  @override
+  Future<void> verifyOtp(String otp) {
+    return dioService.handleRequest(
+      () async {
+        final response = await dioClient.post(
+          AppUrls.authVerifyOtpUrl,
+          data: {'otp': otp},
+        );
+        if (response.statusCode == 200) {
+          logSuccess('Verify OTP Successful');
+        }
+      },
+    );
+  }
+  
+  @override
+  Future<UserEntity?> signInWithCredentials(String token) {
+    // TODO: implement signInWithCredentials
+    throw UnimplementedError();
   }
 }

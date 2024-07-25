@@ -19,10 +19,25 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signUp(String email, String password) {
-    return authDataSource.signUp(email, password);
+  Future<void> signUp(UserEntity user) {
+    return authDataSource.signUp(user);
   }
 
   @override
   Stream<UserEntity?> get user => authDataSource.user;
+
+  @override
+  Future<void> setNewPassword(String password) {
+    return authDataSource.setNewPassword(password);
+  }
+
+  @override
+  Future<void> verifyOtp(String otp) {
+    return authDataSource.verifyOtp(otp);
+  }
+
+  @override
+  Future<UserEntity?> signInWithCredentials(String token) {
+    return authDataSource.signInWithCredentials(token);
+  }
 }
