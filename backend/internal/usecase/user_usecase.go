@@ -17,6 +17,21 @@ func NewUserUsecase(repo domain.UserRepository, collection string) domain.UserUs
 	}
 }
 
+// CheckMyWallet implements domain.UserUsecase.
+func (au *userUsecase) CheckMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
+	panic("unimplemented")
+}
+
+// InitMyWallet implements domain.UserUsecase.
+func (au *userUsecase) InitMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
+	return au.repo.InitMyWallet(c, user)
+}
+
+// UpdateMyWallet implements domain.UserUsecase.
+func (au *userUsecase) UpdateMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
+	panic("unimplemented")
+}
+
 // UpdateProfile implements domain.UserRepository.
 func (au *userUsecase) UpdateProfile(c context.Context, data *domain.User) (*domain.User, error) {
 	return au.repo.UpdateProfile(c, data)
@@ -41,8 +56,3 @@ func (au *userUsecase) SignUp(c context.Context, data *domain.SignupModel) (*dom
 func (au *userUsecase) Login(c context.Context, data *domain.LoginModel) (*domain.User, error) {
 	return au.repo.Login(c, data)
 }
-
-// GetRole implements domain.AccountUsecase.
-// func (au *userUsecase) GetRole(c context.Context, data string) (string, error) {
-// 	return au.repo.GetRole(c, data)
-// }

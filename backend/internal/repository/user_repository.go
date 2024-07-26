@@ -26,6 +26,36 @@ func NewUserRepository(db database.Database) domain.UserRepository {
 	}
 }
 
+// InitMyWallet implements domain.UserRepository.
+func (ar *userRepository) InitMyWallet(c context.Context, data *domain.User) (*domain.Wallet, error) {
+	collection := ar.database.Collection("wallet")
+	wallet := &domain.Wallet{
+		Amount:        0,
+		NbrSurveys:    0,
+		CCP:           "",
+		PaymentMethod: "",
+		UserID:        data.ID,
+	}
+	walletID, err1 := collection.InsertOne(c, wallet)
+	if err1 != nil {
+		log.Printf("Failed to init wallet: %v", err1)
+		return nil, err1
+	}
+	log.Printf("Init wallet  with id %v", walletID)
+	wallet.ID = walletID.(string)
+	return wallet, nil
+}
+
+// UpdateMyWallet implements domain.UserRepository.
+func (ar *userRepository) UpdateMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
+	panic("unimplemented")
+}
+
+// CheckMyWallet implements domain.UserRepository.
+func (ar *userRepository) CheckMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
+	panic("unimplemented")
+}
+
 func convertBsonToStruct[T domain.Account](bsonData primitive.M) (*T, error) {
 	var model *T
 	bsonBytes, err := bson.Marshal(bsonData)
@@ -135,6 +165,7 @@ func (ar *userRepository) SignUp(c context.Context, data *domain.SignupModel) (*
 func (ar *userRepository) Login(c context.Context, data *domain.LoginModel) (*domain.User, error) {
 	collection := ar.database.Collection("users")
 	var resulat bson.M
+	log.Print(data)
 	err := collection.FindOne(c, data).Decode(&resulat)
 	if err != nil {
 		log.Print(err)
@@ -144,30 +175,10 @@ func (ar *userRepository) Login(c context.Context, data *domain.LoginModel) (*do
 	Role := resulat["role"].(string)
 	User.ID = id
 	User.Email = data.Email
-	User.Username = data.UserName
-	User.PassWord = data.Password
+	User.Username = resulat["username"].(string)
+	User.FirstName = resulat["firstname"].(string)
+	User.LastName = resulat["lastname"].(string)
+	User.Phone = resulat["phone"].(string)
 	User.Role = Role
 	return User, nil
 }
-
-// GetRole implements domain.AccountRepository.
-// func (ar *userRepository) GetRole(c context.Context, userId string) (string, error) {
-// 	collection := ar.database.Collection("users")
-// 	id, err := primitive.ObjectIDFromHex(userId)
-// 	if err != nil {
-// 		log.Print(err)
-// 		return "", err
-// 	}
-// 	var result bson.M
-// 	err1 := collection.FindOne(c, bson.M{"_id": id}).Decode(&result)
-// 	if err1 != nil {
-// 		log.Printf("Failed to find to user: %v", err)
-// 		return "", err1
-// 	}
-// 	jsonBytes, err := json.Marshal(result["role_id"])
-// 	if err != nil {
-// 		log.Println(err)
-// 		return "", err
-// 	}
-// 	return string(jsonBytes), nil
-// }

@@ -9,11 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewSignUpRouter(db database.Database, group *gin.RouterGroup) {
+func NewForgetPwdRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewUserRepository(db)
 	uc := usecase.NewUserUsecase(ir, "")
 	ic := &controller.AccountController{
 		UserUsecase: uc, // usecase for insured operations
 	}
-	group.POST("sign-up", ic.SignUpRequest)
+	group.POST("forget-pwd", ic.ForgetPwdRequest)
 }

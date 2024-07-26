@@ -2,42 +2,7 @@ package domain
 
 import (
 	"context"
-	"time"
 )
-
-type HtlmlMsg struct {
-	FirstName string
-	LastName  string
-	Code      string
-}
-
-type ConfirmationModel struct {
-	Code         string      `json:"code"`
-	IP           string      `json:"ip"`
-	Time_Sending time.Time   `json:"sendingAt"`
-	SgnModel     SignupModel `json:"signupModel"`
-}
-type SignupModel struct {
-	UserName  string `json:"username" binding:"required"`
-	Phone     string `json:"phone"`
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
-	Email     string `json:"email" binding:"required"`
-	Role      string `json:"role"`
-	PassWord  string `json:"password"`
-}
-
-type LoginModel struct {
-	UserName string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-type RestPasswordModel struct {
-	UserName    string `form:"username"`
-	Email       string `form:"email"`
-	NewPassword string `form:"newpassword"`
-}
 
 type User struct {
 	ID             string `json:"_id"`
@@ -61,19 +26,29 @@ type User struct {
 }
 
 type UserRepository interface {
+	//AUTH FUNCTIONS
 	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	Login(c context.Context, data *LoginModel) (*User, error)
 	SignUp(c context.Context, data *SignupModel) (*User, error)
-	// GetRole(c context.Context, data string) (string, error)
+	//SETTING PROFILE FUNCTIONS
 	RsetPassword(c context.Context, data *RestPasswordModel) (*User, error)
 	UpdateProfile(c context.Context, data *User) (*User, error)
+	//WALLET FUNCTIONS
+	InitMyWallet(c context.Context, user *User) (*Wallet, error)
+	UpdateMyWallet(c context.Context, user *User) (*Wallet, error)
+	CheckMyWallet(c context.Context, user *User) (*Wallet, error)
 }
 
 type UserUsecase interface {
+	//AUTH FUNCTIONS
 	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	Login(c context.Context, data *LoginModel) (*User, error)
 	SignUp(c context.Context, data *SignupModel) (*User, error)
-	// GetRole(c context.Context, data string) (string, error)
+	//SETTING PROFILE FUNCTIONS
 	RsetPassword(c context.Context, data *RestPasswordModel) (*User, error)
 	UpdateProfile(c context.Context, data *User) (*User, error)
+	//WALLET FUNCTIONS
+	InitMyWallet(c context.Context, user *User) (*Wallet, error)
+	UpdateMyWallet(c context.Context, user *User) (*Wallet, error)
+	CheckMyWallet(c context.Context, user *User) (*Wallet, error)
 }

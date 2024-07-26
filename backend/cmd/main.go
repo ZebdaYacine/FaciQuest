@@ -13,56 +13,25 @@ func main() {
 
 // package main
 
-// import (
-// 	"back-end/api/controller/model"
-// 	"back-end/internal/domain"
-// 	"encoding/json"
-// 	"log"
-// 	"net/http"
+// type Form struct {
+// 	Pwd string `json:"pwd"`
+// }
 
-// 	"github.com/gin-gonic/gin"
-// )
+// func formHandler(c *gin.Context) {
+// 	// Get form values
+// 	test := Form{
+// 		Pwd: "",
+// 	}
+// 	err := c.ShouldBindJSON(&test)
+// 	if err != nil {
+// 		log.Panicf(err.Error())
+// 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Data sent not supported the api format "})
+// 	}
+// 	c.JSON(200, test.Pwd)
+// }
 
 // func main() {
-// 	router := gin.Default()
-
-// 	// Enable CORS
-// 	router.Use(func(c *gin.Context) {
-// 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-// 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-// 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-// 		if c.Request.Method == "OPTIONS" {
-// 			c.AbortWithStatus(204)
-// 			return
-// 		}
-// 		c.Next()
-// 	})
-
-// 	// Define your routes
-// 	router.GET("/login", func(c *gin.Context) {
-// 		log.Println(c.PostForm("dd"))
-// 		var tt domain.LoginModel
-// 		json.Unmarshal([]byte(c.PostForm("dd")), tt)
-// 		log.Println(tt)
-
-// 		// username := c.Query("username")
-// 		// email := c.Query("email")
-// 		// password := c.Query("password")
-// 		// log.Printf("Username: %s, Email: %s, Password: %s", username, email, password)
-// 		// log.Print(c.Request.Body)
-// 		c.JSON(http.StatusOK, gin.H{"message": "Login successful", "data": tt})
-// 	})
-
-// 	router.GET("/", func(c *gin.Context) {
-// 		var json domain.LoginModel
-// 		log.Println(c.GetPostForm("email"))
-// 		c.ShouldBindJSON(&json)
-// 		log.Println(">>>>>>>>> %s: ", json.Password)
-// 		c.JSON(http.StatusOK, model.SuccessResponse{
-// 			Message: "TEST IS WORKE SUCCESSFULY",
-// 			Data:    ".......",
-// 		})
-// 	})
-
-// 	router.Run("127.0.0.1:3005")
+// 	r := gin.Default()
+// 	r.POST("/forget-pwd", formHandler)
+// 	r.Run(":3000") // listen and serve on 0.0.0.0:8080
 // }

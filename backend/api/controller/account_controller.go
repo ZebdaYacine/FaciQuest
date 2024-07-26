@@ -62,9 +62,19 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 	}
 	token, _ := util.CreateAccessToken(user.ID, common.RootServer.SECRET_KEY, 2, "user")
 	log.Printf("TOKEN %s", token)
+	_, err1 := ac.UserUsecase.InitMyWallet(c, user)
+	if err1 != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: err1.Error()})
+		return
+	}
+	user.ID = ""
+	user.PassWord = ""
+	var Response model.Response
+	Response.Token = token
+	Response.UserData = user
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "SIGNUP USER SUCCESSFULY",
-		Data:    token,
+		Data:    Response,
 	})
 }
 
@@ -135,9 +145,14 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 		return
 	}
 	log.Printf("TOKEN %s", token)
+	user.ID = ""
+	user.PassWord = ""
+	var Response model.Response
+	Response.Token = token
+	Response.UserData = user
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "LOGIN USERT SUCCESSFULY",
-		Data:    token,
+		Data:    Response,
 	})
 
 }
@@ -187,4 +202,10 @@ func (ic *AccountController) UpdateProfileRequest(c *gin.Context) {
 		Message: "REST PWD REQUEST DONE SUCCESSFULY",
 		Data:    user,
 	})
+}
+
+func (ic *AccountController) ForgetPwdRequest(c *gin.Context) {
+	log.Println("FORGET PWD POST REQUEST")
+	name := c.PostForm("pwd")
+	log.Println(name)
 }

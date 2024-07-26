@@ -26,13 +26,14 @@ func Setup(db database.Database, gin *gin.Engine) {
 	public.NewLoginRouter(db, publicRouter)
 	public.NewSignUpRouter(db, publicRouter)
 	public.NewConfirmaAccountRouter(db, publicRouter)
+	public.NewForgetPwdRouter(db, publicRouter)
 
 	protectedRouter := gin.Group("/profile")
 	//Middleware to verify AccessToken
 	protectedRouter.Use(middleware.JwtAuthMiddleware(
 		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
 		"User"))
-
+	// All Private APIs
 	private.NewRsetPwdRouter(db, protectedRouter)
 	private.NewUpdateProfileRouter(db, protectedRouter)
 }

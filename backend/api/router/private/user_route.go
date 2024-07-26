@@ -24,5 +24,5 @@ func NewUpdateProfileRouter(db database.Database, group *gin.RouterGroup) {
 	ic := &controller.AccountController{
 		UserUsecase: uc, // usecase for insured operations
 	}
-	group.POST("update", ic.UpdateProfileRequest)
+	group.POST("update-profile", ic.UpdateProfileRequest)
 }
