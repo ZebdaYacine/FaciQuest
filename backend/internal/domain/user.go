@@ -28,6 +28,7 @@ type User struct {
 type UserRepository interface {
 	//AUTH FUNCTIONS
 	Login(c context.Context, data *LoginModel) (*User, error)
+	// Logout(c context.Context) error
 	SignUp(c context.Context, data *SignupModel) (*User, error)
 	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	//SETTING PROFILE FUNCTIONS
@@ -42,9 +43,10 @@ type UserRepository interface {
 
 type UserUsecase interface {
 	//AUTH FUNCTIONS
-	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	Login(c context.Context, data *LoginModel) (*User, error)
+	// Logout(c context.Context) error
 	SignUp(c context.Context, data *SignupModel) (*User, error)
+	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	//SETTING PROFILE FUNCTIONS
 	GetUserByEmail(c context.Context, email string) (*User, error)
 	SetNewPassword(c context.Context, data *User) (*User, error)

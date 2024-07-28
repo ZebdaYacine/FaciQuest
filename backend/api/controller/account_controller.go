@@ -2,6 +2,7 @@ package controller
 
 import (
 	"back-end/api/controller/model"
+	"back-end/cache"
 	"back-end/common"
 	"back-end/internal/domain"
 	"back-end/util"
@@ -12,11 +13,13 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	redis "github.com/go-redis/redis/v8"
 )
 
 type AccountController struct {
 	UserUsecase domain.UserUsecase
 	Reason      string
+	Rdb         *redis.Client
 }
 
 var codeStore = make(map[string]domain.ConfirmationModel)
@@ -181,6 +184,33 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "LOGIN USERT SUCCESSFULY",
 		Data:    Response,
+	})
+
+}
+
+// HANDLE WITH LOGIN ACCOUNT REQUEST
+func (ic *AccountController) LogoutRequest(c *gin.Context) {
+	log.Println("LOGOUT REQUEST")
+	authHeader := c.Request.Header.Get("Authorization")
+	log.Println(authHeader)
+	t := strings.Split(authHeader, " ")
+	token := t[1]
+	// Check if the token is empty
+	if token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header is missing"})
+		return
+	}
+	expiration, _ := util.ExtractFieldFromToken(token, common.RootServer.SECRET_KEY, "exp")
+	timestamp := int64(expiration.(float64))
+	f := time.Unix(timestamp, 0)
+	now := time.Now()
+	duration := f.Sub(now)
+	seconds := duration.Seconds()
+	exp := time.Duration(seconds) * time.Second
+	cache.AddKey(ic.Rdb, token, token, exp)
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "LOGOUT USER SUCCESSFULY",
+		Data:    "",
 	})
 
 }

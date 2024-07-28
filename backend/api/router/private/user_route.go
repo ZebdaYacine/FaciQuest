@@ -7,6 +7,7 @@ import (
 	"back-end/pkg/database"
 
 	"github.com/gin-gonic/gin"
+	redis "github.com/go-redis/redis/v8"
 )
 
 func NewSetNewPwdRouter(db database.Database, group *gin.RouterGroup) {
@@ -25,4 +26,14 @@ func NewUpdateProfileRouter(db database.Database, group *gin.RouterGroup) {
 		UserUsecase: uc, // usecase for insured operations
 	}
 	group.POST("update-profile", ic.UpdateProfileRequest)
+}
+
+func NewLogoutRouterRouter(db database.Database, group *gin.RouterGroup, redis *redis.Client) {
+	ir := repository.NewUserRepository(db)
+	uc := usecase.NewUserUsecase(ir, "")
+	ic := &controller.AccountController{
+		UserUsecase: uc, // usecase for insured operations
+		Rdb:         redis,
+	}
+	group.POST("logout", ic.LogoutRequest)
 }

@@ -37,6 +37,10 @@ type SMTP_SERVER struct {
 	SMTP_PASS string
 }
 
+type REDIS_SERVER struct {
+	REDIS_HOST string
+}
+
 func GET_ROOT_SERVER_SEETING() ROOT_SERVER {
 	LoadEnv()
 	return ROOT_SERVER{
@@ -69,6 +73,13 @@ func GET_SMTP_SERVER_SEETING() SMTP_SERVER {
 		SMTP_PORT: PORT,
 		SMTP_USER: os.Getenv("SMTP_USER"),
 		SMTP_PASS: os.Getenv("SMTP_PASS"),
+	}
+}
+
+func GET_REDIS_SERVER_SEETING() REDIS_SERVER {
+	LoadEnv()
+	return REDIS_SERVER{
+		REDIS_HOST: os.Getenv("REDIS_HOST"),
 	}
 }
 

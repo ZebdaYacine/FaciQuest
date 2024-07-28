@@ -38,7 +38,7 @@ func IsAuthorized(requestToken string, secret string) (bool, error) {
 	return true, nil
 }
 
-func ExtractFieldFromToken(requestToken string, secret string, feild string) (string, error) {
+func ExtractFieldFromToken(requestToken string, secret string, feild string) (any, error) {
 	token, err := jwt.Parse(requestToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -55,17 +55,16 @@ func ExtractFieldFromToken(requestToken string, secret string, feild string) (st
 	if !ok && !token.Valid {
 		return "", fmt.Errorf("invalid Token")
 	}
-	// val, ok := claims[feild]
-	// switch v := val.(type) {
-	// case string:
-	// 	fmt.Println("string ", v)
-	// case float64:
-	// 	fmt.Println("float ", v)
-	// default:
-	// 	fmt.Println("**********")
-	// }
-	// log.Panicln(val, " ", ok)
-	return claims[feild].(string), nil
+	val, ok := claims[feild]
+	switch val.(type) {
+	case string:
+		return claims[feild].(string), nil
+	case float64:
+		return claims[feild].(float64), nil
+	default:
+		return nil, nil
+	}
+
 }
 
 func ExtractIDFromToken(requestToken string, secret string) (string, error) {

@@ -39,4 +39,5 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	// All Private APIs
 	private.NewSetNewPwdRouter(db, protectedRouter)
 	private.NewUpdateProfileRouter(db, protectedRouter)
+	private.NewLogoutRouterRouter(db, protectedRouter, redis)
 }
