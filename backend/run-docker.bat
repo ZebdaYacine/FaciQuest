@@ -1,3 +1,3 @@
 docker.exe system prune
-docker.exe build -t app .
-docker-compose.exe up -d 
+docker inspect backend-cache-1 | grep.exe "IPAddress"
+docker-compose up --build
