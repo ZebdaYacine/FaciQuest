@@ -53,7 +53,7 @@ func JwtAuthMiddleware(secret string, action string) gin.HandlerFunc {
 			}
 			accessDenied(c, err.Error())
 		}
-		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: "Not valide token"})
+		//c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: "Not valide token"})
 		c.Abort()
 	}
 }

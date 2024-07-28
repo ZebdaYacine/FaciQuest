@@ -1,8 +1,10 @@
 package cache
 
 import (
+	"back-end/common"
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	redis "github.com/go-redis/redis/v8"
@@ -11,12 +13,13 @@ import (
 // Function to check the Redis connection
 func CheckRedisConnection() (*redis.Client, error) {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // Redis server address
-		Password: "",               // No password set
-		DB:       0,                // Use default DB
+		Addr:     common.RediServer.REDIS_HOST, // Redis server address
+		Password: "",                           // No password set
+		DB:       0,                            // Use default DB
 	})
 	pong, err := rdb.Ping(context.Background()).Result()
 	if err != nil {
+		log.Print()
 		return nil, fmt.Errorf("could not connect to Redis: %v", err)
 	}
 	fmt.Printf("Redis connected: %s\n", pong)
