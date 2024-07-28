@@ -11,10 +11,9 @@ import (
 )
 
 func accessDenied(c *gin.Context, err string) {
-	log.Printf(err)
+	log.Print(err)
 	c.JSON(http.StatusUnauthorized, model.ErrorResponse{Message: err})
 	c.Abort()
-	return
 }
 
 func JwtAuthMiddleware(secret string, action string) gin.HandlerFunc {
@@ -54,7 +53,7 @@ func JwtAuthMiddleware(secret string, action string) gin.HandlerFunc {
 			}
 			accessDenied(c, err.Error())
 		}
-		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Message: "Not authorized--"})
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: "Not valide token"})
 		c.Abort()
 	}
 }

@@ -9,9 +9,10 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	redis "github.com/go-redis/redis/v8"
 )
 
-func Setup(db database.Database, gin *gin.Engine) {
+func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"} // Change to your Flutter web app's URL
@@ -33,6 +34,8 @@ func Setup(db database.Database, gin *gin.Engine) {
 	protectedRouter.Use(middleware.JwtAuthMiddleware(
 		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
 		"User"))
+	//Middleware to verify is token in black list
+	protectedRouter.Use(middleware.JwtBlackListMiddleware(redis))
 	// All Private APIs
 	private.NewSetNewPwdRouter(db, protectedRouter)
 	private.NewUpdateProfileRouter(db, protectedRouter)
