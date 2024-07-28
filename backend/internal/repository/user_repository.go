@@ -25,6 +25,24 @@ func NewUserRepository(db database.Database) domain.UserRepository {
 		database: db,
 	}
 }
+func getUser(data any, collection database.Collection, c context.Context) (*domain.User, error) {
+	var resulat bson.M
+	log.Print(data)
+	err := collection.FindOne(c, data).Decode(&resulat)
+	if err != nil {
+		log.Print(err)
+		return nil, err
+	}
+	id := resulat["_id"].(primitive.ObjectID).Hex()
+	Role := resulat["role"].(string)
+	User.ID = id
+	User.Username = resulat["username"].(string)
+	User.FirstName = resulat["firstname"].(string)
+	User.LastName = resulat["lastname"].(string)
+	User.Phone = resulat["phone"].(string)
+	User.Role = Role
+	return User, nil
+}
 
 // InitMyWallet implements domain.UserRepository.
 func (ar *userRepository) InitMyWallet(c context.Context, data *domain.User) (*domain.Wallet, error) {
@@ -129,13 +147,13 @@ func (ar *userRepository) IsAlreadyExist(c context.Context, data *domain.SignupM
 	return false, nil
 }
 
-// RsetPassword implements domain.UserRepository.
-func (ar *userRepository) RsetPassword(c context.Context, data *domain.RestPasswordModel) (*domain.User, error) {
+// SetPassword implements domain.UserRepository.
+func (ar *userRepository) SetNewPassword(c context.Context, data *domain.User) (*domain.User, error) {
 	collection := ar.database.Collection("users")
 	filterUpdate := bson.D{{Key: "email", Value: data.Email}}
 	update := bson.M{
 		"$set": bson.M{
-			"password": data.NewPassword,
+			"password": data.PassWord,
 		},
 	}
 	return updateDoc(c, collection, update, filterUpdate)
@@ -158,27 +176,33 @@ func (ar *userRepository) SignUp(c context.Context, data *domain.SignupModel) (*
 	User.Email = data.Email
 	User.Role = data.Role
 	return User, nil
+}
 
+// Login implements domain.AccountRepository.
+func (ar *userRepository) GetUserByEmail(c context.Context, email string) (*domain.User, error) {
+	collection := ar.database.Collection("users")
+	// Define the filter
+	filter := bson.D{{Key: "email", Value: email}}
+	user, err := getUser(filter, collection, c)
+	if err != nil {
+		log.Print(err)
+		return nil, err
+	}
+	user.Email = email
+	return User, nil
 }
 
 // Login implements domain.AccountRepository.
 func (ar *userRepository) Login(c context.Context, data *domain.LoginModel) (*domain.User, error) {
 	collection := ar.database.Collection("users")
-	var resulat bson.M
+	// Define the filter
+	filter := bson.D{{Key: "email", Value: data.Email}, {Key: "password", Value: data.Password}}
 	log.Print(data)
-	err := collection.FindOne(c, data).Decode(&resulat)
+	user, err := getUser(filter, collection, c)
 	if err != nil {
 		log.Print(err)
 		return nil, err
 	}
-	id := resulat["_id"].(primitive.ObjectID).Hex()
-	Role := resulat["role"].(string)
-	User.ID = id
-	User.Email = data.Email
-	User.Username = resulat["username"].(string)
-	User.FirstName = resulat["firstname"].(string)
-	User.LastName = resulat["lastname"].(string)
-	User.Phone = resulat["phone"].(string)
-	User.Role = Role
-	return User, nil
+	user.Email = data.Email
+	return user, nil
 }

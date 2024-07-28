@@ -27,11 +27,12 @@ type User struct {
 
 type UserRepository interface {
 	//AUTH FUNCTIONS
-	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	Login(c context.Context, data *LoginModel) (*User, error)
 	SignUp(c context.Context, data *SignupModel) (*User, error)
+	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
 	//SETTING PROFILE FUNCTIONS
-	RsetPassword(c context.Context, data *RestPasswordModel) (*User, error)
+	GetUserByEmail(c context.Context, email string) (*User, error)
+	SetNewPassword(c context.Context, data *User) (*User, error)
 	UpdateProfile(c context.Context, data *User) (*User, error)
 	//WALLET FUNCTIONS
 	InitMyWallet(c context.Context, user *User) (*Wallet, error)
@@ -45,7 +46,8 @@ type UserUsecase interface {
 	Login(c context.Context, data *LoginModel) (*User, error)
 	SignUp(c context.Context, data *SignupModel) (*User, error)
 	//SETTING PROFILE FUNCTIONS
-	RsetPassword(c context.Context, data *RestPasswordModel) (*User, error)
+	GetUserByEmail(c context.Context, email string) (*User, error)
+	SetNewPassword(c context.Context, data *User) (*User, error)
 	UpdateProfile(c context.Context, data *User) (*User, error)
 	//WALLET FUNCTIONS
 	InitMyWallet(c context.Context, user *User) (*Wallet, error)

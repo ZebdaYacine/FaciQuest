@@ -34,6 +34,6 @@ func Setup(db database.Database, gin *gin.Engine) {
 		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
 		"User"))
 	// All Private APIs
-	private.NewRsetPwdRouter(db, protectedRouter)
+	private.NewSetNewPwdRouter(db, protectedRouter)
 	private.NewUpdateProfileRouter(db, protectedRouter)
 }

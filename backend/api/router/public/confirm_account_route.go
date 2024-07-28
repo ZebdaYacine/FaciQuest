@@ -13,7 +13,7 @@ func NewConfirmaAccountRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewUserRepository(db)
 	uc := usecase.NewUserUsecase(ir, "")
 	ic := &controller.AccountController{
-		UserUsecase: uc, // usecase for insured operations
+		UserUsecase: uc,
 	}
 	group.POST("confirm-account", ic.ConfirmeAccountRequest)
 }

@@ -8,6 +8,7 @@ type HtlmlMsg struct {
 	Code      string
 }
 type ConfirmationModel struct {
+	Reason       string      `json:"reason"`
 	Code         string      `json:"code"`
 	IP           string      `json:"ip"`
 	Time_Sending time.Time   `json:"sendingAt"`
@@ -15,6 +16,7 @@ type ConfirmationModel struct {
 }
 
 type SignupModel struct {
+	Id        string `json:"_id"`
 	UserName  string `json:"username"`
 	Phone     string `json:"phone"`
 	FirstName string `json:"firstname"`
@@ -30,23 +32,18 @@ type LoginModel struct {
 	Password string `json:"password"`
 }
 
-type RestPasswordModel struct {
+type SetNewPasswordModel struct {
 	// UserName    string `form:"username"`
-	Email       string `form:"email"`
+	// Token       string `form:"token"`
 	NewPassword string `form:"newpassword"`
 }
 
-type ForgetPasswordReqModel struct {
+type ForgetPasswordModel struct {
 	// UserName    string `form:"username"`
 	Email string `form:"email"`
 	// NewPassword string `form:"newpassword"`
 }
 
-type ForgetPasswordModel struct {
-	// UserName    string `form:"username"`
-	// Email string `form:"email"`
-	NewPassword string `form:"newpassword"`
-}
 type Account interface {
-	SignupModel | LoginModel | ConfirmationModel | RestPasswordModel | User | ForgetPasswordReqModel | ForgetPasswordModel
+	SignupModel | LoginModel | ConfirmationModel | SetNewPasswordModel | User | ForgetPasswordModel
 }

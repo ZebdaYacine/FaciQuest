@@ -20,7 +20,6 @@ func accessDenied(c *gin.Context, err string) {
 func JwtAuthMiddleware(secret string, action string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
-		log.Println(authHeader)
 		t := strings.Split(authHeader, " ")
 		if len(t) == 2 {
 			authToken := t[1]
@@ -28,6 +27,7 @@ func JwtAuthMiddleware(secret string, action string) gin.HandlerFunc {
 			if authorized {
 				userID, err := util.ExtractFieldFromToken(authToken, secret, "id")
 				userAction, err1 := util.ExtractFieldFromToken(authToken, secret, "action")
+				//log.Print(userAction + " " + action)
 				if err != nil {
 					c.JSON(http.StatusUnauthorized, model.ErrorResponse{Message: err.Error()})
 					c.Abort()

@@ -42,9 +42,9 @@ func (au *userUsecase) IsAlreadyExist(c context.Context, data *domain.SignupMode
 	return au.repo.IsAlreadyExist(c, data)
 }
 
-// RsetPassword implements domain.UserUsecase.
-func (au *userUsecase) RsetPassword(c context.Context, data *domain.RestPasswordModel) (*domain.User, error) {
-	return au.repo.RsetPassword(c, data)
+// SetNewPassword implements domain.UserUsecase.
+func (au *userUsecase) SetNewPassword(c context.Context, data *domain.User) (*domain.User, error) {
+	return au.repo.SetNewPassword(c, data)
 }
 
 // SignUp implements domain.AccountUsecase.
@@ -55,4 +55,9 @@ func (au *userUsecase) SignUp(c context.Context, data *domain.SignupModel) (*dom
 // Login implements domain.AccountUsecase.
 func (au *userUsecase) Login(c context.Context, data *domain.LoginModel) (*domain.User, error) {
 	return au.repo.Login(c, data)
+}
+
+// GetUserByEmail implements domain.UserUsecase.
+func (au *userUsecase) GetUserByEmail(c context.Context, data string) (*domain.User, error) {
+	return au.repo.GetUserByEmail(c, data)
 }
