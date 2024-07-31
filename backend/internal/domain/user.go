@@ -1,9 +1,5 @@
 package domain
 
-import (
-	"context"
-)
-
 type User struct {
 	ID             string `json:"_id"`
 	Username       string `json:"username"`
@@ -23,36 +19,4 @@ type User struct {
 	SocialStatus   string `json:"socialStatus"`
 	Role           string `json:"role"`
 	ProfilePicture string `json:"profilePicture"`
-}
-
-type UserRepository interface {
-	//AUTH FUNCTIONS
-	Login(c context.Context, data *LoginModel) (*User, error)
-	// Logout(c context.Context) error
-	SignUp(c context.Context, data *SignupModel) (*User, error)
-	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
-	//SETTING PROFILE FUNCTIONS
-	GetUserByEmail(c context.Context, email string) (*User, error)
-	SetNewPassword(c context.Context, data *User) (*User, error)
-	UpdateProfile(c context.Context, data *User) (*User, error)
-	//WALLET FUNCTIONS
-	InitMyWallet(c context.Context, user *User) (*Wallet, error)
-	UpdateMyWallet(c context.Context, user *User) (*Wallet, error)
-	CheckMyWallet(c context.Context, user *User) (*Wallet, error)
-}
-
-type UserUsecase interface {
-	//AUTH FUNCTIONS
-	Login(c context.Context, data *LoginModel) (*User, error)
-	// Logout(c context.Context) error
-	SignUp(c context.Context, data *SignupModel) (*User, error)
-	IsAlreadyExist(c context.Context, data *SignupModel) (bool, error)
-	//SETTING PROFILE FUNCTIONS
-	GetUserByEmail(c context.Context, email string) (*User, error)
-	SetNewPassword(c context.Context, data *User) (*User, error)
-	UpdateProfile(c context.Context, data *User) (*User, error)
-	//WALLET FUNCTIONS
-	InitMyWallet(c context.Context, user *User) (*Wallet, error)
-	UpdateMyWallet(c context.Context, user *User) (*Wallet, error)
-	CheckMyWallet(c context.Context, user *User) (*Wallet, error)
 }

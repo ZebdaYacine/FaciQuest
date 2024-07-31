@@ -2,34 +2,46 @@ package usecase
 
 import (
 	"back-end/internal/domain"
+	"back-end/internal/repository"
 	"context"
+	"fmt"
 )
 
+type UserParams struct {
+	Data any
+}
+
+type UserResulat struct {
+	Data *domain.User
+	Err  error
+}
+
+var (
+	userResulat = &UserResulat{}
+)
+
+type UserUsecase interface {
+	//AUTH FUNCTIONS
+	Login(c context.Context, data *UserParams) *UserResulat
+	// Logout(c context.Context) error
+	SignUp(c context.Context, data *UserParams) *UserResulat
+	IsAlreadyExist(c context.Context, data *domain.SignupModel) (bool, error)
+	//SETTING PROFILE FUNCTIONS
+	GetUserByEmail(c context.Context, email string) (*domain.User, error)
+	SetNewPassword(c context.Context, data *domain.User) (*domain.User, error)
+	UpdateProfile(c context.Context, data *domain.User) (*domain.User, error)
+}
+
 type userUsecase struct {
-	repo       domain.UserRepository
+	repo       repository.UserRepository
 	collection string
 }
 
-func NewUserUsecase(repo domain.UserRepository, collection string) domain.UserUsecase {
+func NewUserUsecase(repo repository.UserRepository, collection string) UserUsecase {
 	return &userUsecase{
 		repo:       repo,
 		collection: collection,
 	}
-}
-
-// CheckMyWallet implements domain.UserUsecase.
-func (au *userUsecase) CheckMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
-	panic("unimplemented")
-}
-
-// InitMyWallet implements domain.UserUsecase.
-func (au *userUsecase) InitMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
-	return au.repo.InitMyWallet(c, user)
-}
-
-// UpdateMyWallet implements domain.UserUsecase.
-func (au *userUsecase) UpdateMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
-	panic("unimplemented")
 }
 
 // UpdateProfile implements domain.UserRepository.
@@ -48,13 +60,33 @@ func (au *userUsecase) SetNewPassword(c context.Context, data *domain.User) (*do
 }
 
 // SignUp implements domain.AccountUsecase.
-func (au *userUsecase) SignUp(c context.Context, data *domain.SignupModel) (*domain.User, error) {
-	return au.repo.SignUp(c, data)
+func (au *userUsecase) SignUp(c context.Context, query *UserParams) *UserResulat {
+	if query.Data == nil {
+		userResulat.Err = fmt.Errorf("data is required")
+		return userResulat
+	}
+	signupModel := query.Data.(domain.SignupModel)
+	user, err := au.repo.SignUp(c, &signupModel)
+	if err != nil {
+		userResulat.Err = err
+	}
+	userResulat.Data = user
+	return userResulat
 }
 
 // Login implements domain.AccountUsecase.
-func (au *userUsecase) Login(c context.Context, data *domain.LoginModel) (*domain.User, error) {
-	return au.repo.Login(c, data)
+func (au *userUsecase) Login(c context.Context, query *UserParams) *UserResulat {
+	if query.Data == nil {
+		userResulat.Err = fmt.Errorf("data is required")
+		return userResulat
+	}
+	loginModel := query.Data.(domain.LoginModel)
+	user, err := au.repo.Login(c, &loginModel)
+	if err != nil {
+		userResulat.Err = err
+	}
+	userResulat.Data = user
+	return userResulat
 }
 
 // GetUserByEmail implements domain.UserUsecase.

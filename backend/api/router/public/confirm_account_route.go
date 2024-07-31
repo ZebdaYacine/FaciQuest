@@ -12,8 +12,11 @@ import (
 func NewConfirmaAccountRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewUserRepository(db)
 	uc := usecase.NewUserUsecase(ir, "")
+	wr := repository.NewWalletRepository(db)
+	wc := usecase.NewWalletUsecase(wr, "")
 	ic := &controller.AccountController{
-		UserUsecase: uc,
+		UserUsecase:   uc,
+		WalletUseCase: wc,
 	}
 	group.POST("confirm-account", ic.ConfirmeAccountRequest)
 }

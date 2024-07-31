@@ -5,6 +5,7 @@ import (
 	"back-end/cache"
 	"back-end/common"
 	"back-end/internal/domain"
+	"back-end/internal/usecase"
 	"back-end/util"
 	"log"
 	"net/http"
@@ -17,9 +18,10 @@ import (
 )
 
 type AccountController struct {
-	UserUsecase domain.UserUsecase
-	Reason      string
-	Rdb         *redis.Client
+	UserUsecase   usecase.UserUsecase
+	WalletUseCase usecase.WalletUseCase
+	Reason        string
+	Rdb           *redis.Client
 }
 
 var codeStore = make(map[string]domain.ConfirmationModel)
@@ -112,18 +114,23 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 	switch cnfrMdlRecevied.Reason {
 	case "sing-up":
 		log.Println("CONFIRM ACCOUNT FOR SINGUP REASON")
-		user, err := ac.UserUsecase.SignUp(c, &cnfrMdlStored.SgnModel)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: err.Error()})
+		userParams := &usecase.UserParams{}
+		userParams.Data = cnfrMdlStored.SgnModel
+		resulatU := ac.UserUsecase.SignUp(c, userParams)
+		if resulatU.Err != nil {
+			c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: resulatU.Err.Error()})
 			return
 		}
-		_, err1 := ac.UserUsecase.InitMyWallet(c, user)
-		if err1 != nil {
-			log.Println(err1.Error())
+		walletParams := &usecase.WalletParams{}
+		walletParams.Data = resulatU.Data
+		resulatW := ac.WalletUseCase.InitMyWallet(c, walletParams)
+		if resulatW.Err != nil {
+			log.Println(resulatW.Err)
 			return
 		}
+		user = *resulatU.Data
 		Message = "SIGNUP USER SUCCESSFULY"
-		Response.UserData = user
+		Response.UserData = resulatU
 	case "reset-pwd":
 		log.Println("CONFIRM ACCOUNT FOR RESET NEW PASSWORD REASON")
 		user.ID = cnfrMdlStored.SgnModel.Id
@@ -162,25 +169,27 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 		return
 	}
 	log.Println(loginParms)
-	user, err := ic.UserUsecase.Login(c, &loginParms)
-	if err != nil {
+	userParams := &usecase.UserParams{}
+	userParams.Data = loginParms
+	resulat := ic.UserUsecase.Login(c, userParams)
+	if resulat.Err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: "Incorrect credentials",
 		})
 		return
 	}
 	secret := common.RootServer.SECRET_KEY
-	token, err := util.CreateAccessToken(user.ID, secret, 2, user.Role)
+	token, err := util.CreateAccessToken(resulat.Data.ID, secret, 2, resulat.Data.Role)
 	if err != nil {
 		c.JSON(500, model.ErrorResponse{Message: err.Error()})
 		return
 	}
 	log.Printf("TOKEN %s", token)
-	user.ID = ""
-	user.PassWord = ""
+	resulat.Data.ID = ""
+	resulat.Data.PassWord = ""
 	var Response model.Response
 	Response.Token = token
-	Response.UserData = user
+	Response.UserData = resulat
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "LOGIN USERT SUCCESSFULY",
 		Data:    Response,

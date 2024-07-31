@@ -16,15 +16,28 @@ var (
 	User = &domain.User{}
 )
 
+type UserRepository interface {
+	//AUTH FUNCTIONS
+	Login(c context.Context, data *domain.LoginModel) (*domain.User, error)
+	// Logout(c context.Context) error
+	SignUp(c context.Context, data *domain.SignupModel) (*domain.User, error)
+	IsAlreadyExist(c context.Context, data *domain.SignupModel) (bool, error)
+	//SETTING PROFILE FUNCTIONS
+	GetUserByEmail(c context.Context, email string) (*domain.User, error)
+	SetNewPassword(c context.Context, data *domain.User) (*domain.User, error)
+	UpdateProfile(c context.Context, data *domain.User) (*domain.User, error)
+}
+
 type userRepository struct {
 	database database.Database
 }
 
-func NewUserRepository(db database.Database) domain.UserRepository {
+func NewUserRepository(db database.Database) UserRepository {
 	return &userRepository{
 		database: db,
 	}
 }
+
 func getUser(data any, collection database.Collection, c context.Context) (*domain.User, error) {
 	var resulat bson.M
 	log.Print(data)
@@ -42,36 +55,6 @@ func getUser(data any, collection database.Collection, c context.Context) (*doma
 	User.Phone = resulat["phone"].(string)
 	User.Role = Role
 	return User, nil
-}
-
-// InitMyWallet implements domain.UserRepository.
-func (ar *userRepository) InitMyWallet(c context.Context, data *domain.User) (*domain.Wallet, error) {
-	collection := ar.database.Collection("wallet")
-	wallet := &domain.Wallet{
-		Amount:        0,
-		NbrSurveys:    0,
-		CCP:           "",
-		PaymentMethod: "",
-		UserID:        data.ID,
-	}
-	walletID, err1 := collection.InsertOne(c, wallet)
-	if err1 != nil {
-		log.Printf("Failed to init wallet: %v", err1)
-		return nil, err1
-	}
-	log.Printf("Init wallet  with id %v", walletID)
-	wallet.ID = walletID.(string)
-	return wallet, nil
-}
-
-// UpdateMyWallet implements domain.UserRepository.
-func (ar *userRepository) UpdateMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
-	panic("unimplemented")
-}
-
-// CheckMyWallet implements domain.UserRepository.
-func (ar *userRepository) CheckMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error) {
-	panic("unimplemented")
 }
 
 func convertBsonToStruct[T domain.Account](bsonData primitive.M) (*T, error) {

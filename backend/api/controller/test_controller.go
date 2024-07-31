@@ -2,7 +2,7 @@ package controller
 
 import (
 	"back-end/api/controller/model"
-	"back-end/internal/domain"
+	"back-end/internal/usecase"
 	"log"
 	"net/http"
 
@@ -10,7 +10,7 @@ import (
 )
 
 type TestController struct {
-	UserUsecase domain.UserUsecase
+	UserUsecase usecase.UserUsecase
 }
 
 func (ic *TestController) TestRequest(c *gin.Context) {
