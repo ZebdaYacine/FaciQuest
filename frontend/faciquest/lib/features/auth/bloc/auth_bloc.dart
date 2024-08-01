@@ -14,6 +14,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthenticationStarted>(_onAuthenticationStarted);
     on<SignOutRequested>(_onSignOutRequested);
     on<UserStateChanged>(_onUserStateChanged);
+    on<RefreshRoute>((event, emit) {
+      logInfo('AuthBloc: _onRefreshRoute');
+      emit(state.copyWith(refreshRoute: event.refreshRoute));
+    });
   }
 
   final AuthRepository authRepository;
@@ -44,13 +48,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) {
     logInfo('AuthBloc: _onUserStateChanged user:${event.user}');
     emit(
-      AuthState(
+      state.copyWith(
         user: event.user,
         authStatus: event.user == null
             ? AuthStatus.unauthenticated
             : AuthStatus.authenticated,
       ),
     );
-    getIt<RouteService>().refresh();
+    if (state.refreshRoute) {
+      getIt<RouteService>().refresh();
+    }
   }
 }

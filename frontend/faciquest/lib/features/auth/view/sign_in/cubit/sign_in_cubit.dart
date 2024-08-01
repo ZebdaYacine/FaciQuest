@@ -1,6 +1,7 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/core/core.dart';
+import 'package:faciquest/core/utils/utils.dart';
 import 'package:faciquest/features/auth/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,21 +25,23 @@ class SignInCubit extends Cubit<SignInState> {
   }
 
   submit() async {
+    if (!state.isValid) return;
     emit(state.copyWith(status: Status.showLoading));
     try {
       final user = await authRepository.signIn(
         state.email,
         state.password,
       );
-
+      emit(state.copyWith(status: Status.hideLoading));
       emit(state.copyWith(
         status: Status.success,
         msg: 'welcome ${user.firstName}',
       ));
-    } catch (e) {
+    } on ApiException catch (e) {
+      emit(state.copyWith(status: Status.hideLoading));
       emit(state.copyWith(
         status: Status.failure,
-        msg: e.toString(),
+        msg: e.message,
       ));
     }
   }

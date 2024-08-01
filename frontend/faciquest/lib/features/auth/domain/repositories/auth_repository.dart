@@ -1,4 +1,4 @@
-import 'package:faciquest/features/auth/domain/entities/user_entity.dart';
+import 'package:faciquest/features/features.dart';
 
 abstract class AuthRepository {
   Stream<UserEntity?> get user;
@@ -7,6 +7,7 @@ abstract class AuthRepository {
   Future<void> signOut();
   Future<void> forgotPassword(String email);
   Future<void> setNewPassword(String password);
-  Future<void> verifyOtp(String otp);
+  Future<void> verifyOtp(String otp,
+      {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp});
   Future<UserEntity?> signInWithCredentials(String token);
 }

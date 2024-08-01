@@ -13,7 +13,7 @@ class SignInView extends StatelessWidget {
       create: (context) => SignInCubit(getIt()),
       child: BlocListener<SignInCubit, SignInState>(
         listener: (context, state) {
-          statusHandler(context, state.status);
+          statusHandler(context, state.status, msg: state.msg);
         },
         child: const _Body(),
       ),

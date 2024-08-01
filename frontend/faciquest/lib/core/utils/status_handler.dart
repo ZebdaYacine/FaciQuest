@@ -55,10 +55,16 @@ void statusHandler(
       if (handleInfo) {
         if (msg != null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              backgroundColor: Colors.transparent,
+            SnackBar(
+              backgroundColor: context.colorScheme.surfaceContainer,
               elevation: 0,
-              content: SizedBox(),
+              content: Text(
+                msg,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colorScheme.onSurface,
+                ),
+              ),
+              duration: duration,
             ),
           );
         }
@@ -68,9 +74,14 @@ void statusHandler(
         if (msg != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: context.colorScheme.errorContainer,
               elevation: 0,
-              content: const SizedBox(),
+              content: Text(
+                msg,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colorScheme.onErrorContainer,
+                ),
+              ),
               duration: duration,
             ),
           );

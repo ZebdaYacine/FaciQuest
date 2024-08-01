@@ -8,6 +8,25 @@ import 'package:pinput/pinput.dart';
 enum VerifyOtpFrom {
   forgotPassword,
   signUp,
+  ;
+
+  String get name => toString().split('.').last;
+  ConfirmAccountReasons get toReason {
+    switch (this) {
+      case VerifyOtpFrom.forgotPassword:
+        return ConfirmAccountReasons.resetPwd;
+      case VerifyOtpFrom.signUp:
+        return ConfirmAccountReasons.singUp;
+    }
+  }
+
+  String get route => '/verify-otp/$name';
+  static VerifyOtpFrom fromMap(String? from) {
+    return VerifyOtpFrom.values.firstWhere(
+      (element) => element.name == from,
+      orElse: () => VerifyOtpFrom.signUp,
+    );
+  }
 }
 
 class VerifyOtpView extends StatelessWidget {
@@ -20,7 +39,7 @@ class VerifyOtpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => VerifyOtpCubit(getIt()),
+      create: (context) => VerifyOtpCubit(getIt(), reason: from.toReason),
       child: BlocListener<VerifyOtpCubit, VerifyOtpState>(
         listener: (context, state) {
           if (state.status.isSuccess) {
@@ -30,9 +49,15 @@ class VerifyOtpView extends StatelessWidget {
                 break;
               case VerifyOtpFrom.signUp:
                 statusHandler(context, state.status, msg: state.msg);
-              // TODO: To discuss go directly to home page or return to sign in page
+                break;
             }
           }
+          statusHandler(
+            context,
+            state.status,
+            msg: state.msg,
+            handleSuccess: false,
+          );
         },
         child: const _Body(),
       ),

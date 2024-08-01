@@ -32,8 +32,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> verifyOtp(String otp) {
-    return authDataSource.verifyOtp(otp);
+  Future<void> verifyOtp(String otp,
+      {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp}) {
+    return authDataSource.verifyOtp(otp, reason: reason);
   }
 
   @override

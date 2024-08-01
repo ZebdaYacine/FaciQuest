@@ -13,8 +13,14 @@ class ForgotPasswordView extends StatelessWidget {
       create: (context) => ForgotPasswordCubit(getIt()),
       child: BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
         listener: (context, state) {
+          statusHandler(context, state.status, msg: state.msg);
           if (state.status.isSuccess) {
-            AppRoutes.verifyOtp.push(context);
+            AppRoutes.verifyOtp.push(
+              context,
+              pathParameters: {
+                'from': VerifyOtpFrom.forgotPassword.name,
+              },
+            );
           }
         },
         child: const _Body(),

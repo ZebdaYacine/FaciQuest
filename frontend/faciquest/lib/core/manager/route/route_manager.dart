@@ -1,5 +1,6 @@
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class RouteManager {
@@ -21,7 +22,17 @@ class RouteManager {
         AppRoutes.setNewPassword.goRoute(),
         AppRoutes.signIn.goRoute(),
         AppRoutes.signUp.goRoute(),
-        AppRoutes.verifyOtp.goRoute(),
+        AppRoutes.verifyOtp.goRoute(
+          [],
+          (context, goRouterState) {
+            return MaterialPage(
+              child: VerifyOtpView(
+                from:
+                    VerifyOtpFrom.fromMap(goRouterState.pathParameters['from']),
+              ),
+            );
+          },
+        ),
       ]),
       AppRoutes.home.goRoute(),
     ],

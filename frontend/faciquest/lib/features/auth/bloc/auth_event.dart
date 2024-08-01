@@ -17,3 +17,12 @@ class UserStateChanged extends AuthEvent {
   @override
   List<Object?> get props => [user];
 }
+
+class RefreshRoute extends AuthEvent {
+  final bool refreshRoute;
+
+  RefreshRoute(this.refreshRoute);
+
+  @override
+  List<Object?> get props => [refreshRoute];
+}

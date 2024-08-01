@@ -14,9 +14,10 @@ class SignUpState extends Equatable {
     this.msg,
   });
   @override
-  List<Object> get props => [user, agreeToTerms, cPassword];
+  List<Object?> get props => [user, agreeToTerms, cPassword, status, msg];
 
   bool get isValid =>
+      user.username.isNotEmpty &&
       user.email.isNotEmpty &&
       user.email.isEmail &&
       user.password.isNotEmpty &&
@@ -24,6 +25,7 @@ class SignUpState extends Equatable {
       user.password == cPassword &&
       agreeToTerms;
   SignUpState copyWith({
+    String? username,
     String? email,
     String? password,
     String? cPassword,
@@ -38,6 +40,7 @@ class SignUpState extends Equatable {
       agreeToTerms: agreeToTerms ?? this.agreeToTerms,
       cPassword: cPassword ?? this.cPassword,
       user: user.copyWith(
+        username: username,
         email: email,
         password: password,
         firstName: firstName,

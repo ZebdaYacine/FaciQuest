@@ -7,7 +7,7 @@ abstract class AuthDataSource {
   Future<void> signOut();
   Future<void> forgotPassword(String email);
   Future<void> setNewPassword(String password);
-  Future<void> verifyOtp(String otp);
+  Future<void> verifyOtp(String otp,
+      {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp});
   Future<UserEntity?> signInWithCredentials(String token);
-
 }

@@ -6,10 +6,11 @@ import 'package:equatable/equatable.dart';
 class UserEntity extends Equatable {
   final String id;
   final String email;
-  final String firstName, lastName, phone, password;
+  final String firstName, lastName, phone, password, username;
 
   static const empty = UserEntity();
   const UserEntity({
+    this.username = '',
     this.id = '',
     this.email = '',
     this.firstName = '',
@@ -19,6 +20,7 @@ class UserEntity extends Equatable {
   });
 
   UserEntity copyWith({
+    String? username,
     String? id,
     String? email,
     String? phone,
@@ -27,6 +29,7 @@ class UserEntity extends Equatable {
     String? password,
   }) {
     return UserEntity(
+      username: username ?? this.username,
       id: id ?? this.id,
       email: email ?? this.email,
       firstName: firstName ?? this.firstName,
@@ -38,16 +41,18 @@ class UserEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      if (id != '') 'id': id,
+      'username': username,
       'email': email,
       'firstName': firstName,
       'lastName': lastName,
       'phone': phone,
-      'password': password,
+      if (password != '') 'password': password,
     };
   }
 
   factory UserEntity.fromMap(Map<String, dynamic> map) {
+
     return UserEntity(
       id: map['id'] as String? ?? '',
       email: map['email'] as String? ?? '',
@@ -66,5 +71,6 @@ class UserEntity extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [id, email, firstName, lastName, phone, password];
+  List<Object> get props =>
+      [id, email, firstName, lastName, phone, password, username];
 }

@@ -16,8 +16,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(status: Status.showLoading));
     try {
       await authRepository.signUp(state.user);
+      emit(state.copyWith(status: Status.hideLoading));
       emit(state.copyWith(status: Status.success));
     } catch (e) {
+      emit(state.copyWith(status: Status.hideLoading));
       emit(
         state.copyWith(
           status: Status.failure,
@@ -59,5 +61,9 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   void onCPasswordChanged(String value) {
     emit(state.copyWith(cPassword: value));
+  }
+
+  void onUsernameChanged(String value) {
+    emit(state.copyWith(username: value));
   }
 }

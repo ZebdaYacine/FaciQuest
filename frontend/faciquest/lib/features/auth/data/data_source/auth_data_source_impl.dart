@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 
@@ -23,9 +24,12 @@ class AuthDataSourceImpl implements AuthDataSource {
         final response = await dioClient.post(
           AppUrls.authForgotPasswordUrl,
           data: {'email': email},
+          options: Options(contentType: Headers.formUrlEncodedContentType),
         );
         if (response.statusCode == 200) {
           logSuccess('Forgot Password Successful');
+          saveUserToLocal(null, response.data['date']['token']);
+          return;
         }
       },
     );
@@ -37,13 +41,13 @@ class AuthDataSourceImpl implements AuthDataSource {
       () async {
         final response = await dioClient.post(
           AppUrls.authLoginUrl,
-          data: {'email': email},
+          data: {'email': email, 'password': password},
         );
         if (response.statusCode == 200) {
           logSuccess('Sign In Successful');
-          final user = UserEntity.fromJson(response.data);
-          _controller.sink.add(user);
-          saveUserToLocal(user);
+          final user = UserEntity.fromMap(response.data['date']['userdata']);
+
+          saveUserToLocal(user, response.data['date']['token']);
           return user;
         } else {
           throw Exception('Failed to login');
@@ -61,8 +65,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         );
         if (response.statusCode == 200) {
           logSuccess('Sign Out Successful');
-          _controller.sink.add(null);
-          saveUserToLocal(null);
+          saveUserToLocal(null, null);
           return;
         } else {
           throw Exception('Failed to signOut');
@@ -77,10 +80,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       () async {
         final response = await dioClient.post(
           AppUrls.authSignUpUrl,
-          data: {
-            'email': user.email,
-            'password': user.password,
-          },
+          data: user.toMap(),
         );
         if (response.statusCode == 200) {
           logSuccess('Sign Up Successful');
@@ -108,12 +108,19 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
-  Future<void> saveUserToLocal(UserEntity? user) async {
+  Future<void> saveUserToLocal(UserEntity? user, String? token) async {
     if (user == null) {
       await SecuredStorageKeys.user.delete();
-      return;
+      _controller.sink.add(null);
+    } else {
+      await SecuredStorageKeys.user.setValue(user.toJson());
+      _controller.sink.add(user);
     }
-    await SecuredStorageKeys.user.setValue(user.toJson());
+    if (token == null) {
+      await SecuredStorageKeys.token.delete();
+    } else {
+      await SecuredStorageKeys.token.setValue(token);
+    }
   }
 
   @override
@@ -122,33 +129,61 @@ class AuthDataSourceImpl implements AuthDataSource {
       () async {
         final response = await dioClient.post(
           AppUrls.authSetNewPasswordUrl,
-          data: {'password': password},
+          data: {'newpassword': password},
         );
         if (response.statusCode == 200) {
           logSuccess('Set New Password Successful');
+          final user = UserEntity.fromMap(response.data['date']['userdata']);
+          saveUserToLocal(user, response.data['date']['token']);
+          return;
         }
       },
     );
   }
 
   @override
-  Future<void> verifyOtp(String otp) {
+  Future<void> verifyOtp(String otp,
+      {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp}) {
     return dioService.handleRequest(
       () async {
         final response = await dioClient.post(
           AppUrls.authVerifyOtpUrl,
-          data: {'otp': otp},
+          data: {
+            'code': otp,
+            'reason': reason.value,
+            // 'sendingAt': DateTime.now(),
+          },
         );
         if (response.statusCode == 200) {
-          logSuccess('Verify OTP Successful');
+          saveUserToLocal(
+            response.data['date']['userdata'] == null
+                ? null
+                : UserEntity.fromMap(response.data['date']['userdata']),
+            response.data['date']['token'],
+          );
         }
       },
     );
   }
-  
+
   @override
   Future<UserEntity?> signInWithCredentials(String token) {
     // TODO: implement signInWithCredentials
     throw UnimplementedError();
+  }
+}
+
+enum ConfirmAccountReasons {
+  singUp,
+  resetPwd,
+  ;
+
+  String get value {
+    switch (this) {
+      case ConfirmAccountReasons.singUp:
+        return 'sing-up';
+      case ConfirmAccountReasons.resetPwd:
+        return 'reset-pwd';
+    }
   }
 }

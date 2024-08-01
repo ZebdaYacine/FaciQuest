@@ -12,9 +12,9 @@ enum AppRoutes {
   setNewPassword('set-new-password', 'Set New Password', SetNewPasswordView()),
   signIn('sign-in', 'Sign In', SignInView()),
   signUp('sign-up', 'Sign Up', SignUpView()),
-  verifyOtp('verify-otp', 'Verify OTP', VerifyOtpView()),
+  verifyOtp('verify-otp/:from', 'Verify OTP', VerifyOtpView()),
 
-  home('/home', 'Home', HomeView()),
+  home('/', 'Home', HomeView()),
   ;
 
   const AppRoutes(

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 
-
 class AuthInterceptor extends Interceptor {
   AuthInterceptor();
 
@@ -13,7 +12,7 @@ class AuthInterceptor extends Interceptor {
   ) async {
     final token = await SecuredStorageKeys.token.getStoredValue() as String?;
     options.headers.addAll({
-      'Authorization': 'Bearer $token',
+      if (token != null) 'Token': token,
     });
     return handler.next(options);
   }

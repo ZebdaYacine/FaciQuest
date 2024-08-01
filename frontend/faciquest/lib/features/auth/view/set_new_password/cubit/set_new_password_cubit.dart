@@ -21,6 +21,7 @@ class SetNewPasswordCubit extends Cubit<SetNewPasswordState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: Status.showLoading));
     try {
+      getIt<AuthBloc>().add(RefreshRoute(true));
       await authRepository.setNewPassword(state.password!);
       emit(state.copyWith(status: Status.success));
     } catch (e) {

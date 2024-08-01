@@ -14,9 +14,21 @@ class SignUpView extends StatelessWidget {
       child: BlocListener<SignUpCubit, SignUpState>(
         listener: (context, state) {
           if (state.status.isSuccess) {
-            statusHandler(context, state.status);
-            AppRoutes.verifyOtp.push(context);
+            statusHandler(context, state.status, msg: state.msg);
+            AppRoutes.verifyOtp.push(
+              context,
+              pathParameters: {
+                'from': VerifyOtpFrom.signUp.name,
+              },
+            );
           }
+
+          statusHandler(
+            context,
+            state.status,
+            msg: state.msg,
+            handleSuccess: false,
+          );
         },
         child: const _Body(),
       ),
@@ -99,7 +111,7 @@ class _Body extends StatelessWidget {
               BlocBuilder<SignUpCubit, SignUpState>(
                 builder: (context, state) {
                   return ElevatedButton(
-                    onPressed: state.isValid ? () {} : null,
+                    onPressed: state.isValid ? cubit.submit : null,
                     child: const Center(child: Text('Sign Up')),
                   );
                 },
@@ -135,6 +147,7 @@ class _SignUpFormState extends State<_SignUpForm> with BuildFormMixin {
     final cubit = context.read<SignUpCubit>();
     return Column(
       children: [
+        buildInputForm('Username', false, onChange: cubit.onUsernameChanged),
         buildInputForm('First Name', false, onChange: cubit.onFirstNameChanged),
         buildInputForm('Last Name', false, onChange: cubit.onLastNameChanged),
         buildInputForm('Email', false, onChange: cubit.onEmailChanged),

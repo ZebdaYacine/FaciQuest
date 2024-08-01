@@ -18,9 +18,13 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   Future<void> submit() async {
     emit(state.copyWith(status: Status.showLoading));
     try {
+      getIt<AuthBloc>().add(RefreshRoute(false));
       await authRepository.forgotPassword(state.email);
+
+      emit(state.copyWith(status: Status.hideLoading));
       emit(state.copyWith(status: Status.success));
     } catch (e) {
+      emit(state.copyWith(status: Status.hideLoading));
       emit(
         state.copyWith(
           status: Status.failure,
