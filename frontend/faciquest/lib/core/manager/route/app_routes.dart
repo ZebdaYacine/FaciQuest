@@ -13,8 +13,22 @@ enum AppRoutes {
   signIn('sign-in', 'Sign In', SignInView()),
   signUp('sign-up', 'Sign Up', SignUpView()),
   verifyOtp('verify-otp/:from', 'Verify OTP', VerifyOtpView()),
-
+// -----------------------------------
   home('/', 'Home', HomeView()),
+  profile('profile', 'Profile', ProfileView()),
+  personalInfo('personal-info', 'Personal Info', PersonalInfoView()),
+  wallet('wallet', 'Wallet', WalletView()),
+  // activity('activity', 'Activity', ActivityView()),
+  howItWorks('how-it-works', 'How It Works', HowItWorksView()),
+
+  //
+  newSurvey('new-survey', 'New Survey', NewSurveyView()),
+  survey('survey/:id', 'Survey', SurveyView()),
+  manageMySurveys(
+    'manage-my-surveys',
+    'Manage My Surveys',
+    ManageMySurveysView(),
+  ),
   ;
 
   const AppRoutes(

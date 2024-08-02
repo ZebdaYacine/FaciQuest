@@ -34,7 +34,15 @@ class RouteManager {
           },
         ),
       ]),
-      AppRoutes.home.goRoute(),
+      AppRoutes.home.goRoute([
+        AppRoutes.profile.goRoute(),
+        AppRoutes.personalInfo.goRoute(),
+        AppRoutes.wallet.goRoute(),
+        AppRoutes.howItWorks.goRoute(),
+        AppRoutes.newSurvey.goRoute(),
+        AppRoutes.survey.goRoute(),
+        AppRoutes.manageMySurveys.goRoute(),
+      ]),
     ],
     redirect: (context, state) {
       logInfo('RouteManager: redirect ${state.fullPath}');
