@@ -147,15 +147,16 @@ class _SignUpFormState extends State<_SignUpForm> with BuildFormMixin {
     final cubit = context.read<SignUpCubit>();
     return Column(
       children: [
-        buildInputForm('Username', false, onChange: cubit.onUsernameChanged),
-        buildInputForm('First Name', false, onChange: cubit.onFirstNameChanged),
-        buildInputForm('Last Name', false, onChange: cubit.onLastNameChanged),
-        buildInputForm('Email', false, onChange: cubit.onEmailChanged),
-        buildInputForm('Phone', false, onChange: cubit.onPhoneChanged),
-        buildInputForm('Password', true, onChange: cubit.onPasswordChanged),
+        buildInputForm('Username', onChange: cubit.onUsernameChanged),
+        buildInputForm('First Name', onChange: cubit.onFirstNameChanged),
+        buildInputForm('Last Name', onChange: cubit.onLastNameChanged),
+        buildInputForm('Email', onChange: cubit.onEmailChanged),
+        buildInputForm('Phone', onChange: cubit.onPhoneChanged),
+        buildInputForm('Password',
+            pass: true, onChange: cubit.onPasswordChanged),
         buildInputForm(
           'Confirm Password',
-          true,
+          pass: true,
           onChange: cubit.onCPasswordChanged,
         ),
       ],

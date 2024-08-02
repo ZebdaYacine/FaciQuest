@@ -5,8 +5,8 @@ mixin BuildFormMixin<T extends StatefulWidget> on State<T> {
   bool _isObscure = true;
 
   Widget buildInputForm(
-    String label,
-    bool pass, {
+    String label, {
+    bool pass = false,
     ValueChanged<String>? onChange,
   }) {
     return Padding(

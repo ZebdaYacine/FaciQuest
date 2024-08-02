@@ -73,12 +73,12 @@ class __ResetFormState extends State<_ResetForm> with BuildFormMixin {
       children: [
         buildInputForm(
           'Password',
-          true,
+          pass: true,
           onChange: (value) => cubit.setPassword(value),
         ),
         buildInputForm(
           'Confirm Password',
-          true,
+          pass: true,
           onChange: (value) => cubit.setCPassword(value),
         ),
       ],

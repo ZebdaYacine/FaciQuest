@@ -126,12 +126,11 @@ class _LogInFormState extends State<_LogInForm> with BuildFormMixin {
       children: [
         buildInputForm(
           'Email',
-          false,
           onChange: (value) => cubit.onEmailChanged(value),
         ),
         buildInputForm(
           'Password',
-          true,
+          pass: true,
           onChange: (value) => cubit.onPasswordChanged(value),
         ),
       ],
