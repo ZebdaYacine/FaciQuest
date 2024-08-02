@@ -9,7 +9,7 @@ enum AppRoutes {
   splash('/splash', 'Splash', SplashPage()),
   auth('/auth', 'Auth', WelcomeView()),
   forgotPassword('forgot-password', 'Forgot Password', ForgotPasswordView()),
-  setNewPassword('set-new-password', 'Set New Password', SetNewPasswordView()),
+  setNewPassword('/set-new-password', 'Set New Password', SetNewPasswordView()),
   signIn('sign-in', 'Sign In', SignInView()),
   signUp('sign-up', 'Sign Up', SignUpView()),
   verifyOtp('verify-otp/:from', 'Verify OTP', VerifyOtpView()),

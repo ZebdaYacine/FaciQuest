@@ -17,9 +17,9 @@ class RouteManager {
         redirect: (context, goState) => '/auth/${AppRoutes.signIn.path}',
       ),
       AppRoutes.splash.goRoute(),
+      AppRoutes.setNewPassword.goRoute(),
       AppRoutes.auth.goRoute([
         AppRoutes.forgotPassword.goRoute(),
-        AppRoutes.setNewPassword.goRoute(),
         AppRoutes.signIn.goRoute(),
         AppRoutes.signUp.goRoute(),
         AppRoutes.verifyOtp.goRoute(

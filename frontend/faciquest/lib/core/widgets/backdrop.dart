@@ -1,8 +1,8 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 
-class SDSBackDrop extends StatelessWidget {
-  const SDSBackDrop({
+class AppBackDrop extends StatelessWidget {
+  const AppBackDrop({
     super.key,
     this.showHeader = true,
     this.title,
