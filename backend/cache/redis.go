@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"back-end/common"
+	"back-end/core"
 	"context"
 	"fmt"
 	"log"
@@ -13,9 +13,9 @@ import (
 // Function to check the Redis connection
 func CheckRedisConnection() (*redis.Client, error) {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     common.RediServer.REDIS_HOST, // Redis server address
-		Password: "",                           // No password set
-		DB:       0,                            // Use default DB
+		Addr:     core.RediServer.REDIS_HOST, // Redis server address
+		Password: "",                         // No password set
+		DB:       0,                          // Use default DB
 	})
 	pong, err := rdb.Ping(context.Background()).Result()
 	if err != nil {

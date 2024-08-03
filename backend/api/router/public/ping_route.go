@@ -9,11 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewForgetPwdRouter(db database.Database, group *gin.RouterGroup) {
+func NewPingRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewUserRepository(db)
 	uc := usecase.NewUserUsecase(ir, "")
-	ic := &controller.AccountController{
+	ic := &controller.TestController{
 		UserUsecase: uc, // usecase for insured operations
 	}
-	group.POST("forget-pwd", ic.ForgetPwdRequest)
+	group.POST("ping", ic.PingRequest)
 }

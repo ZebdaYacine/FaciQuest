@@ -13,8 +13,8 @@ type TestController struct {
 	UserUsecase usecase.UserUsecase
 }
 
-func (ic *TestController) TestRequest(c *gin.Context) {
-	log.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>  RECEVING SIGNUP REQUEST")
+func (ic *TestController) PingRequest(c *gin.Context) {
+	log.Println("__________________________RECEVING PING REQUEST__________________________")
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "TEST IS WORKE SUCCESSFULY",
 		Data:    ".......",

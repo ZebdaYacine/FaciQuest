@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/pkg/database"
 	"context"
@@ -57,45 +58,9 @@ func getUser(data any, collection database.Collection, c context.Context) (*doma
 	return User, nil
 }
 
-func convertBsonToStruct[T domain.Account](bsonData primitive.M) (*T, error) {
-	var model *T
-	bsonBytes, err := bson.Marshal(bsonData)
-	if err != nil {
-		log.Panic("Error marshalling bson.M:", err)
-		return nil, err
-	}
-
-	err = bson.Unmarshal(bsonBytes, &model)
-	if err != nil {
-		log.Panic("Error unmarshalling to struct:", err)
-		return nil, err
-	}
-	return model, err
-}
-
-func updateDoc(c context.Context, collection database.Collection, update primitive.M, filterUpdate primitive.D) (*domain.User, error) {
-	_, err := collection.UpdateOne(c, filterUpdate, update)
-	if err != nil {
-		log.Panic(err)
-		return nil, fmt.Errorf("error was happend")
-	}
-	var updatedDocument bson.M
-	err = collection.FindOne(c, filterUpdate).Decode(&updatedDocument)
-	if err != nil {
-		log.Panic("Error finding updated document:", err)
-		return nil, fmt.Errorf("error was happend")
-	}
-	fmt.Print("Document is updated successfuly")
-	updatedUser, err := convertBsonToStruct[domain.User](updatedDocument)
-	if err != nil {
-		log.Printf("Failed to convert bson to struct: %v", err)
-		return nil, err
-	}
-	return updatedUser, nil
-}
-
 // UpdateProfile implements domain.UserRepository.
 func (ar *userRepository) UpdateProfile(c context.Context, data *domain.User) (*domain.User, error) {
+	log.Println("LAUNCHE UPDATE PROFILE REPOSITORY")
 	collection := ar.database.Collection("users")
 	filterUpdate := bson.D{{Key: "email", Value: data.Email}}
 	update := bson.M{
@@ -112,10 +77,13 @@ func (ar *userRepository) UpdateProfile(c context.Context, data *domain.User) (*
 			"workerAt":     data.WorkerAt,
 			"institution":  data.Institution,
 			"socialStatus": data.SocialStatus,
-			// "profilePicture": data.ProfilePicture,
+			"imageUrl":     data.ImageUrl,
+			"bdd":          data.BDD,
 		},
 	}
-	return updateDoc(c, collection, update, filterUpdate)
+	log.Println(filterUpdate)
+	log.Println(update)
+	return core.UpdateDoc[domain.User](c, collection, update, filterUpdate)
 }
 
 // IsAlreadyExist implements domain.UserRepository.
@@ -139,7 +107,7 @@ func (ar *userRepository) SetNewPassword(c context.Context, data *domain.User) (
 			"password": data.PassWord,
 		},
 	}
-	return updateDoc(c, collection, update, filterUpdate)
+	return core.UpdateDoc[domain.User](c, collection, update, filterUpdate)
 }
 
 // SignUp implements domain.AccountRepository.
@@ -177,10 +145,11 @@ func (ar *userRepository) GetUserByEmail(c context.Context, email string) (*doma
 
 // Login implements domain.AccountRepository.
 func (ar *userRepository) Login(c context.Context, data *domain.LoginModel) (*domain.User, error) {
+	log.Println("LAUNCHE LOGIN REPOSITORY")
 	collection := ar.database.Collection("users")
 	// Define the filter
 	filter := bson.D{{Key: "email", Value: data.Email}, {Key: "password", Value: data.Password}}
-	log.Print(data)
+	log.Println(data)
 	user, err := getUser(filter, collection, c)
 	if err != nil {
 		log.Print(err)

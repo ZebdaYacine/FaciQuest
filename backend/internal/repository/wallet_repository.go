@@ -1,15 +1,18 @@
 package repository
 
 import (
+	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/pkg/database"
 	"context"
 	"log"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type WalletRepository interface {
-	//WALLET FUNCTIONS
 	InitMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error)
+	UpdateMyWallet(c context.Context, wallet *domain.Wallet) (*domain.Wallet, error)
 }
 
 type walletRepository struct {
@@ -29,6 +32,7 @@ func (wr *walletRepository) InitMyWallet(c context.Context, data *domain.User) (
 		Amount:        0,
 		NbrSurveys:    0,
 		CCP:           "",
+		RIP:           "",
 		PaymentMethod: "",
 		UserID:        data.ID,
 	}
@@ -40,4 +44,21 @@ func (wr *walletRepository) InitMyWallet(c context.Context, data *domain.User) (
 	log.Printf("Init wallet  with id %v", walletID)
 	wallet.ID = walletID.(string)
 	return wallet, nil
+}
+
+// UpdateMyWallet implements WalletRepository.
+func (wr *walletRepository) UpdateMyWallet(c context.Context, data *domain.Wallet) (*domain.Wallet, error) {
+	collection := wr.database.Collection("wallet")
+	filterUpdate := bson.D{{Key: "userid", Value: data.UserID}}
+	update := bson.M{
+		"$set": bson.M{
+			"amount":          data.Amount,
+			"nbrsurveys":      data.NbrSurveys,
+			"ccp":             data.CCP,
+			"rip":             data.RIP,
+			"userid":          data.UserID,
+			"PaiementMethode": data.PaymentMethod,
+		},
+	}
+	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)
 }

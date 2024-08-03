@@ -3,10 +3,13 @@ package controller
 import (
 	"back-end/api/controller/model"
 	"back-end/cache"
-	"back-end/common"
+	"back-end/core"
+	common "back-end/core"
 	"back-end/internal/domain"
 	"back-end/internal/usecase"
-	"back-end/util"
+	"back-end/util/email"
+	"back-end/util/email/html"
+	util "back-end/util/token"
 	"log"
 	"net/http"
 	"strings"
@@ -28,19 +31,19 @@ var codeStore = make(map[string]domain.ConfirmationModel)
 var mu sync.Mutex
 
 func sendOTP(signupModel domain.SignupModel, c *gin.Context, header string) {
-	code, err := util.GenerateDigit()
+	code, err := email.GenerateDigit()
 	if err != nil {
 		log.Panicf(err.Error())
 		c.JSON(500, model.ErrorResponse{Message: err.Error()})
 		return
 	}
 	//SEND EMAIL TO USER WITH CODE
-	var htmlMsg domain.HtlmlMsg
+	var htmlMsg html.HtlmlMsg
 	htmlMsg.Code = code
 	htmlMsg.FirstName = signupModel.FirstName
 	htmlMsg.LastName = signupModel.LastName
-	body := util.HtmlMessageConfirmAccount(htmlMsg)
-	err = util.SendEmail(signupModel.Email, header, body)
+	body := html.HtmlMessageConfirmAccount(htmlMsg)
+	err = email.SendEmail(signupModel.Email, header, body)
 	if err != nil {
 		log.Panicf(err.Error())
 		c.JSON(500, model.ErrorResponse{Message: "Can't send confirmation code"})
@@ -84,16 +87,6 @@ func verifyOTP(cnfrMdlRecevied domain.ConfirmationModel, c *gin.Context) (bool, 
 	return true, &cnfrMdlStored
 }
 
-func isDataRequestSupported[T domain.Account](data *T, c *gin.Context) bool {
-	err := c.ShouldBindJSON(data)
-	if err != nil {
-		log.Panicf(err.Error())
-		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Data sent not supported the api format "})
-		return false
-	}
-	return true
-}
-
 // HANDLE WITH CONFIRAMTION ACCOUNT REQUEST
 func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 	log.Println("_____________________________________RECEVING CONFIRAMTION REQUEST_____________________________________")
@@ -102,7 +95,7 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 	var user domain.User
 	token := ""
 	Message := ""
-	if !isDataRequestSupported(&cnfrMdlRecevied, c) {
+	if !core.IsDataRequestSupported(&cnfrMdlRecevied, c) {
 		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: "request body not supported "})
 		return
 	}
@@ -113,6 +106,10 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 	}
 	switch cnfrMdlRecevied.Reason {
 	case "sing-up":
+		if ok, err := ac.UserUsecase.IsAlreadyExist(c, &cnfrMdlStored.SgnModel); ok {
+			c.JSON(500, model.ErrorResponse{Message: err.Error()})
+			return
+		}
 		log.Println("CONFIRM ACCOUNT FOR SINGUP REASON")
 		userParams := &usecase.UserParams{}
 		userParams.Data = cnfrMdlStored.SgnModel
@@ -150,7 +147,7 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 // HANDLE WITH SIGNUP REQUEST
 func (ic *AccountController) SignUpRequest(c *gin.Context) {
 	var signupModel domain.SignupModel
-	if !isDataRequestSupported(&signupModel, c) {
+	if !core.IsDataRequestSupported(&signupModel, c) {
 		return
 	}
 	log.Print(signupModel)
@@ -163,12 +160,11 @@ func (ic *AccountController) SignUpRequest(c *gin.Context) {
 
 // HANDLE WITH LOGIN ACCOUNT REQUEST
 func (ic *AccountController) LoginRequest(c *gin.Context) {
-	log.Println("LOGIN POST REQUEST")
+	log.Println("RECIEVE LOGIN REQUEST")
 	var loginParms domain.LoginModel
-	if !isDataRequestSupported(&loginParms, c) {
+	if !core.IsDataRequestSupported(&loginParms, c) {
 		return
 	}
-	log.Println(loginParms)
 	userParams := &usecase.UserParams{}
 	userParams.Data = loginParms
 	resulat := ic.UserUsecase.Login(c, userParams)
@@ -227,7 +223,7 @@ func (ic *AccountController) LogoutRequest(c *gin.Context) {
 func (ic *AccountController) SetNewPwdRequest(c *gin.Context) {
 	log.Println("REST PWD POST REQUEST")
 	var RestPwdParms domain.SetNewPasswordModel
-	if !isDataRequestSupported(&RestPwdParms, c) {
+	if !core.IsDataRequestSupported(&RestPwdParms, c) {
 		return
 	}
 	log.Print(RestPwdParms)
@@ -262,8 +258,8 @@ func (ic *AccountController) SetNewPwdRequest(c *gin.Context) {
 		})
 		return
 	}
-	body := util.HtmlMessageRestPwd(user)
-	err = util.SendEmail(data.Email, "Rest New Password", body)
+	body := html.HtmlMessageRestPwd(user)
+	err = email.SendEmail(data.Email, "Rest New Password", body)
 	if err != nil {
 		log.Panicf(err.Error())
 		c.JSON(500, model.ErrorResponse{Message: "Error while sending REST PWD Email"})
@@ -279,12 +275,14 @@ func (ic *AccountController) SetNewPwdRequest(c *gin.Context) {
 func (ic *AccountController) UpdateProfileRequest(c *gin.Context) {
 	log.Println("UPDATE PROFILE POST REQUEST")
 	var UserUpdated domain.User
-	if !isDataRequestSupported(&UserUpdated, c) {
+	if !core.IsDataRequestSupported(&UserUpdated, c) {
 		return
 	}
 	log.Println(UserUpdated)
-	user, err := ic.UserUsecase.UpdateProfile(c, &UserUpdated)
-	if err != nil {
+	userParams := &usecase.UserParams{}
+	userParams.Data = UserUpdated
+	resulat := ic.UserUsecase.UpdateProfile(c, userParams)
+	if resulat.Err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: "Failed to Update Profile",
 		})
@@ -292,7 +290,7 @@ func (ic *AccountController) UpdateProfileRequest(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "REST PWD REQUEST DONE SUCCESSFULY",
-		Data:    user,
+		Data:    resulat,
 	})
 }
 

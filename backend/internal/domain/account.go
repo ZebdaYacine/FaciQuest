@@ -2,11 +2,6 @@ package domain
 
 import "time"
 
-type HtlmlMsg struct {
-	FirstName string
-	LastName  string
-	Code      string
-}
 type ConfirmationModel struct {
 	Reason       string      `json:"reason"`
 	Code         string      `json:"code"`
@@ -45,5 +40,7 @@ type ForgetPasswordModel struct {
 }
 
 type Account interface {
-	SignupModel | LoginModel | ConfirmationModel | SetNewPasswordModel | User | ForgetPasswordModel
+	SignupModel | LoginModel | ConfirmationModel |
+		Wallet | SetNewPasswordModel | User |
+		ForgetPasswordModel
 }

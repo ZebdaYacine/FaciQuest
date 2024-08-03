@@ -1,4 +1,4 @@
-package util
+package html
 
 import (
 	"back-end/internal/domain"

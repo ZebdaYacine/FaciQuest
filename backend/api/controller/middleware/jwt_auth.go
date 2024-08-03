@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"back-end/api/controller/model"
-	"back-end/util"
+	util "back-end/util/token"
 	"log"
 	"net/http"
 	"strings"

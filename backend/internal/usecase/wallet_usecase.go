@@ -24,7 +24,7 @@ type WalletUseCase interface {
 
 	//WALLET FUNCTIONS
 	InitMyWallet(c context.Context, wallet *WalletParams) *WalletResulat
-	// UpdateMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error)
+	UpdateMyWallet(c context.Context, wallet *WalletParams) *WalletResulat
 	// CheckMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error)
 }
 
@@ -52,5 +52,19 @@ func (wu *walletUsecase) InitMyWallet(c context.Context, query *WalletParams) *W
 
 	}
 	walletResulat.Data = wallet
+	return walletResulat
+}
+
+// UpdateMyWallet implements WalletUseCase.
+func (wu *walletUsecase) UpdateMyWallet(c context.Context, query *WalletParams) *WalletResulat {
+	if query.Data == nil {
+		walletResulat.Err = fmt.Errorf("data requeried")
+	}
+	wallet := query.Data.(domain.Wallet)
+	result, err := wu.repo.UpdateMyWallet(c, &wallet)
+	if err == nil {
+		walletResulat.Err = err
+	}
+	walletResulat.Data = result
 	return walletResulat
 }

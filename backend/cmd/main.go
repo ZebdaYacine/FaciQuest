@@ -3,7 +3,7 @@ package main
 import (
 	"back-end/api/server"
 	"back-end/cache"
-	"back-end/common"
+	common "back-end/core"
 	"back-end/pkg/database"
 	"log"
 )

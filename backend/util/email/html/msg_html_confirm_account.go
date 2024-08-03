@@ -1,13 +1,12 @@
-package util
+package html
 
 import (
-	"back-end/internal/domain"
 	"bytes"
 	"html/template"
 	"log"
 )
 
-func HtmlMessageConfirmAccount(data domain.HtlmlMsg) string {
+func HtmlMessageConfirmAccount(data HtlmlMsg) string {
 
 	tmpl, err := template.New("email").Parse(`
     <html>

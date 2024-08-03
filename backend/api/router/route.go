@@ -23,7 +23,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	publicRouter := gin.Group("/")
 
 	// All Public APIs
-	public.NewTestRouter(db, publicRouter)
+	public.NewPingRouter(db, publicRouter)
 	public.NewLoginRouter(db, publicRouter)
 	public.NewSignUpRouter(db, publicRouter)
 	public.NewConfirmaAccountRouter(db, publicRouter)
@@ -40,4 +40,5 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewSetNewPwdRouter(db, protectedRouter)
 	private.NewUpdateProfileRouter(db, protectedRouter)
 	private.NewLogoutRouterRouter(db, protectedRouter, redis)
+	private.NewUpdateWalletRouter(db, protectedRouter)
 }
