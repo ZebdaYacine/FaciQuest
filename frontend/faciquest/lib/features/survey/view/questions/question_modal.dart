@@ -19,6 +19,10 @@ Future<void> showQuestionModal(
       body: EditView(
         question: question,
       ),
+      actions: FilledButton(
+        onPressed: () {},
+        child: Center(child: Text('Submit')),
+      ),
     ),
   );
 }
@@ -61,7 +65,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   (e) {
                     return DropdownMenuItem(
                       value: e,
-                      child: Text(e.name),
+                      child: Row(
+                        children: [
+                          Icon(e.icon),
+                          AppSpacing.spacing_1.widthBox,
+                          Text(e.name),
+                        ],
+                      ),
                     );
                   },
                 ).toList(),
@@ -83,7 +93,9 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                         title: question?.title ?? '',
                       );
                     case QuestionType.dropdown:
-                    // question = const DropdownQuestion();
+                      question = DropdownQuestion(
+                        title: question?.title ?? '',
+                      );
                     case QuestionType.fileUpload:
                     // question = const FileUploadQuestion();
                     case QuestionType.imageChoice:
@@ -103,7 +115,11 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 style: context.textTheme.headlineSmall,
               ),
               switch (question) {
-                null => Text('Select a Type first'),
+                null => Text(
+                    'Select a Type first',
+                    style: context.textTheme.bodyLarge
+                        ?.copyWith(color: Colors.red),
+                  ),
                 StarRatingQuestion() => StarRatingQuestionBuilder(
                     question: question as StarRatingQuestion,
                     onChanged: (value) {
@@ -120,6 +136,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   ),
                 CheckboxesQuestion() => CheckboxesQuestionBuilder(
                     question: question as CheckboxesQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
+                DropdownQuestion() => DropdownQuestionBuilder(
+                    question: question as DropdownQuestion,
                     onChanged: (value) {
                       question = value;
                       setState(() {});
