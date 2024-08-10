@@ -25,6 +25,7 @@ dependencies:
   awesome_extensions: ^2.0.16
   pinput: ^5.0.0
   survey_kit: ^1.0.0-dev.5
+  file_picker: ^8.0.0+1
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,13 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:faciquest/features/app/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 
 part 'questions/star_rating_question.dart';
 part 'questions/multiple_choice_question.dart';
 part 'questions/checkboxes_question.dart';
 part 'questions/dropdown_question.dart';
+part 'questions/file_upload_question.dart';
 
 enum QuestionType {
   starRating,
@@ -23,19 +26,19 @@ enum QuestionType {
   IconData get icon {
     switch (this) {
       case QuestionType.starRating:
-        return Icons.star;
+        return Icons.star_outline_rounded;
       case QuestionType.multipleChoice:
         return Icons.radio_button_checked;
       case QuestionType.checkboxes:
         return Icons.check_box_outlined;
       case QuestionType.dropdown:
-        return Icons.arrow_drop_down;
+        return Icons.arrow_drop_down_circle_outlined;
       case QuestionType.fileUpload:
-        return Icons.file_upload;
+        return Icons.cloud_upload_outlined;
       case QuestionType.imageChoice:
-        return Icons.image;
+        return Icons.image_outlined;
       case QuestionType.commentBox:
-        return Icons.comment;
+        return Icons.comment_outlined;
       case QuestionType.slider:
         return Icons.slideshow;
       case QuestionType.dateTime:
@@ -60,8 +63,6 @@ sealed class QuestionEntity extends Equatable {
     String? title,
   });
 }
-
-class FileUploadQuestion {}
 
 class ImageChoiceQuestion {}
 

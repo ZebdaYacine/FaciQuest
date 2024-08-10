@@ -97,7 +97,9 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                         title: question?.title ?? '',
                       );
                     case QuestionType.fileUpload:
-                    // question = const FileUploadQuestion();
+                      question = FileUploadQuestion(
+                        title: question?.title ?? '',
+                      );
                     case QuestionType.imageChoice:
                     // question = const ImageChoiceQuestion();
                     case QuestionType.commentBox:
@@ -143,6 +145,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   ),
                 DropdownQuestion() => DropdownQuestionBuilder(
                     question: question as DropdownQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
+                FileUploadQuestion() => FileUploadQuestionBuilder(
+                    question: question as FileUploadQuestion,
                     onChanged: (value) {
                       question = value;
                       setState(() {});
