@@ -79,7 +79,9 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                         title: question?.title ?? '',
                       );
                     case QuestionType.checkboxes:
-                    // question = const CheckboxesQuestion();
+                      question = CheckboxesQuestion(
+                        title: question?.title ?? '',
+                      );
                     case QuestionType.dropdown:
                     // question = const DropdownQuestion();
                     case QuestionType.fileUpload:
@@ -111,6 +113,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   ),
                 MultipleChoiceQuestion() => MultipleChoiceQuestionBuilder(
                     question: question as MultipleChoiceQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
+                CheckboxesQuestion() => CheckboxesQuestionBuilder(
+                    question: question as CheckboxesQuestion,
                     onChanged: (value) {
                       question = value;
                       setState(() {});

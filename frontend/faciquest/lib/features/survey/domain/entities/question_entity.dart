@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 part 'questions/star_rating_question.dart';
 part 'questions/multiple_choice_question.dart';
+part 'questions/checkboxes_question.dart';
 
 enum QuestionType {
   starRating,
@@ -58,8 +59,6 @@ sealed class QuestionEntity extends Equatable {
     String? title,
   });
 }
-
-class CheckboxesQuestion {}
 
 class DropdownQuestion {}
 
