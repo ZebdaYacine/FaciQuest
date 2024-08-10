@@ -3,7 +3,6 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/core/widgets/widgets.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileView extends StatelessWidget {

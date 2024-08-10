@@ -7,11 +7,21 @@ mixin BuildFormMixin<T extends StatefulWidget> on State<T> {
   Widget buildInputForm(
     String label, {
     bool pass = false,
+    Key? key,
+    String? initialValue,
     ValueChanged<String>? onChange,
+    bool? enabled,
+    TextInputType? keyboardType,
+    int? maxLines,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: TextFormField(
+        key: key,
+        initialValue: initialValue,
+        enabled: enabled,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
         obscureText: pass ? _isObscure : false,
         onChanged: onChange,
         decoration: InputDecoration(

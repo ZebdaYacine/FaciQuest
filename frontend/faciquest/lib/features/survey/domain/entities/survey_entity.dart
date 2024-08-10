@@ -1,0 +1,107 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
+
+class SurveyEntity extends Equatable {
+  final String name;
+  final String? description;
+  final List<String> languages;
+  final List<String> topics;
+  final LikertScale? likertScale;
+  const SurveyEntity({
+    this.name = '',
+    this.description,
+    this.languages = const [],
+    this.topics = const [],
+    this.likertScale,
+  });
+
+  SurveyEntity copyWith({
+    String? name,
+    String? description,
+    List<String>? languages,
+    List<String>? topics,
+    LikertScale? likertScale,
+  }) {
+    return SurveyEntity(
+      name: name ?? this.name,
+      description: description ?? this.description,
+      languages: languages ?? this.languages,
+      topics: topics ?? this.topics,
+      likertScale: likertScale ?? this.likertScale,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'description': description,
+      'languages': languages,
+      'topics': topics,
+      'likertScale': likertScale?.name,
+    };
+  }
+
+  factory SurveyEntity.fromMap(Map<String, dynamic> map) {
+    return SurveyEntity(
+      name: map['name'] as String,
+      description:
+          map['description'] != null ? map['description'] as String : null,
+      languages: List<String>.from((map['languages'] as List<String>)),
+      topics: List<String>.from((map['topics'] as List<String>)),
+      likertScale: map['likertScale'] != null
+          ? LikertScale.fromMap(map['likertScale'] as String)
+          : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory SurveyEntity.fromJson(String source) =>
+      SurveyEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props {
+    return [
+      name,
+      description,
+      languages,
+      topics,
+      likertScale,
+    ];
+  }
+}
+
+enum LikertScale {
+  twoPoints,
+  threePoints,
+  // fourPoints,
+  fivePoints,
+  // sixPoints,
+  sevenPoints,
+  ;
+
+  String getValue() {
+    switch (this) {
+      case LikertScale.twoPoints:
+        return '2-point Likert scale';
+      case LikertScale.threePoints:
+        return '3-point Likert scale';
+      case LikertScale.fivePoints:
+        return '5-point Likert scale';
+      case LikertScale.sevenPoints:
+        return '7-point Likert scale';
+    }
+  }
+
+  static LikertScale fromMap(String name) {
+    return LikertScale.values.firstWhere(
+      (element) => element.name == name,
+      orElse: () => LikertScale.twoPoints,
+    );
+  }
+}

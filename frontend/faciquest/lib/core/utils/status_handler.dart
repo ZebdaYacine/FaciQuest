@@ -15,7 +15,6 @@ void statusHandler(
   duration ??= 2.seconds;
   switch (status) {
     case Status.initial:
-    // TODO(YG): Handle this case.
     case Status.success:
       if (handleSuccess) {
         if (msg != null) {

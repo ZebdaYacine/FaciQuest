@@ -1,7 +1,6 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/core/core.dart';
-import 'package:faciquest/core/utils/utils.dart';
 import 'package:faciquest/features/auth/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
