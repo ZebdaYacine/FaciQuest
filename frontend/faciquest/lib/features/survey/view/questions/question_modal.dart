@@ -100,10 +100,14 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                       question = FileUploadQuestion(
                         title: question?.title ?? '',
                       );
-                    case QuestionType.imageChoice:
-                    // question = const ImageChoiceQuestion();
+                    case QuestionType.audioRecord:
+                    // question = const AudioRecordQuestion();
                     case QuestionType.commentBox:
                     // question = const CommentBoxQuestion();
+                    case QuestionType.shortAnswer:
+                    // question = ShortAnswerQuestion(
+                    //   title: question?.title ?? '',
+                    // );
                     case QuestionType.slider:
                     // question = const SliderQuestion();
                     case QuestionType.dateTime:
@@ -152,6 +156,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   ),
                 FileUploadQuestion() => FileUploadQuestionBuilder(
                     question: question as FileUploadQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
+                AudioRecordQuestion() => AudioRecordQuestionBuilder(
+                    question: question as AudioRecordQuestion,
                     onChanged: (value) {
                       question = value;
                       setState(() {});

@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:faciquest/features/app/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 
 part 'questions/star_rating_question.dart';
@@ -8,6 +7,7 @@ part 'questions/multiple_choice_question.dart';
 part 'questions/checkboxes_question.dart';
 part 'questions/dropdown_question.dart';
 part 'questions/file_upload_question.dart';
+part 'questions/audio_record_question.dart';
 
 enum QuestionType {
   starRating,
@@ -15,13 +15,37 @@ enum QuestionType {
   checkboxes,
   dropdown,
   fileUpload,
-  imageChoice,
+  audioRecord,
+  shortAnswer,
   commentBox,
   slider,
   dateTime,
   ;
 
-  String get name => toString().split('.').last;
+  String get name {
+    switch (this) {
+      case QuestionType.starRating:
+        return 'Star Rating';
+      case QuestionType.multipleChoice:
+        return 'Multiple Choice';
+      case QuestionType.checkboxes:
+        return 'Checkboxes';
+      case QuestionType.dropdown:
+        return 'Dropdown';
+      case QuestionType.fileUpload:
+        return 'File Upload';
+      case QuestionType.commentBox:
+        return 'Comment Box';
+      case QuestionType.slider:
+        return 'Slider';
+      case QuestionType.dateTime:
+        return 'Date / Time';
+      case QuestionType.audioRecord:
+        return 'Audio Record';
+      case QuestionType.shortAnswer:
+        return 'Short Answer';
+    }
+  }
 
   IconData get icon {
     switch (this) {
@@ -35,14 +59,16 @@ enum QuestionType {
         return Icons.arrow_drop_down_circle_outlined;
       case QuestionType.fileUpload:
         return Icons.cloud_upload_outlined;
-      case QuestionType.imageChoice:
-        return Icons.image_outlined;
       case QuestionType.commentBox:
         return Icons.comment_outlined;
       case QuestionType.slider:
         return Icons.slideshow;
       case QuestionType.dateTime:
         return Icons.calendar_today;
+      case QuestionType.audioRecord:
+        return Icons.mic_outlined;
+      case QuestionType.shortAnswer:
+        return Icons.short_text_outlined;
     }
   }
 }
