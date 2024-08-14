@@ -12,7 +12,7 @@ type WalletParams struct {
 }
 
 type WalletResulat struct {
-	Data *domain.Wallet
+	Data any
 	Err  error
 }
 
@@ -25,6 +25,8 @@ type WalletUseCase interface {
 	//WALLET FUNCTIONS
 	InitMyWallet(c context.Context, wallet *WalletParams) *WalletResulat
 	UpdateMyWallet(c context.Context, wallet *WalletParams) *WalletResulat
+	GetWallet(c context.Context, query *WalletParams) *WalletResulat
+	CashOutMyWallet(c context.Context, query *WalletParams) *WalletResulat
 	// CheckMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error)
 }
 
@@ -37,6 +39,50 @@ func NewWalletUsecase(repo repository.WalletRepository, collection string) Walle
 	return &walletUsecase{
 		repo:       repo,
 		collection: collection,
+	}
+}
+
+// CashOutMyWallet implements WalletUseCase.
+func (wu *walletUsecase) CashOutMyWallet(c context.Context, query *WalletParams) *WalletResulat {
+	if query.Data == nil {
+		return &WalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("data requeried"),
+		}
+	}
+	wallet := query.Data.(*domain.Wallet)
+	record, err := wu.repo.CashOutMyWallet(c, wallet)
+	if err != nil {
+		return &WalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("internal error: %v", err),
+		}
+	}
+	return &WalletResulat{
+		Data: record,
+		Err:  nil,
+	}
+}
+
+// GetWalletCashable implements WalletUseCase.
+func (wu *walletUsecase) GetWallet(c context.Context, query *WalletParams) *WalletResulat {
+	if query.Data == nil {
+		return &WalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("data requeried"),
+		}
+	}
+	userId := query.Data.(string)
+	wallet, err := wu.repo.GetWallet(c, userId)
+	if err != nil {
+		return &WalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("internal error: %v", err),
+		}
+	}
+	return &WalletResulat{
+		Data: wallet,
+		Err:  nil,
 	}
 }
 

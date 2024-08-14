@@ -78,7 +78,6 @@ func (ar *userRepository) UpdateProfile(c context.Context, data *domain.User) (*
 			"institution":  data.Institution,
 			"socialStatus": data.SocialStatus,
 			"imageUrl":     data.ImageUrl,
-			"bdd":          data.BDD,
 		},
 	}
 	log.Println(filterUpdate)

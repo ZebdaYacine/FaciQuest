@@ -8,4 +8,5 @@ type Wallet struct {
 	RIP           string  `json:"rip"`
 	UserID        string  `json:"userid"`
 	PaymentMethod string  `json:"paiementMethode"`
+	IsCashable    bool    `json:"iscashable"`
 }

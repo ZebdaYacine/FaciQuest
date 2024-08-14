@@ -31,6 +31,7 @@ type UserUsecase interface {
 	GetUserByEmail(c context.Context, email string) (*domain.User, error)
 	SetNewPassword(c context.Context, data *domain.User) (*domain.User, error)
 	UpdateProfile(c context.Context, data *UserParams) *UserResulat
+	//SETTING WALLET
 }
 
 type userUsecase struct {

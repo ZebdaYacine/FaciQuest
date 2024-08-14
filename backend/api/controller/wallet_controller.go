@@ -33,6 +33,6 @@ func (wc *WalletController) UpdateWalletRequest(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "UPDATE WALLET REQUEST DONE SUCCESSFULY",
-		Data:    resulat.Data,
+		Data:    resulat.Data.(domain.Wallet),
 	})
 }
