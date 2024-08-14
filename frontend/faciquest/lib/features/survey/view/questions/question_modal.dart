@@ -185,6 +185,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                       setState(() {});
                     },
                   ),
+                SliderQuestion() => SliderQuestionBuilder(
+                    question: question as SliderQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
               }
             ],
           ),

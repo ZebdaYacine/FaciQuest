@@ -10,7 +10,7 @@ part 'questions/file_upload_question.dart';
 part 'questions/audio_record_question.dart';
 part 'questions/short_answer_question.dart';
 part 'questions/comment_box_question.dart';
-// part 'questions/slider_question.dart';
+part 'questions/slider_question.dart';
 // part 'questions/date_time_question.dart';
 
 enum QuestionType {
@@ -95,8 +95,6 @@ sealed class QuestionEntity extends Equatable {
 }
 
 class ImageChoiceQuestion {}
-
-class SliderQuestion {}
 
 class DateTimeQuestion {}
 
