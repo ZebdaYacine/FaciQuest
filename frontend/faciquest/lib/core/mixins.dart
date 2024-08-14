@@ -21,7 +21,7 @@ mixin BuildFormMixin<T extends StatefulWidget> on State<T> {
         initialValue: initialValue,
         enabled: enabled,
         keyboardType: keyboardType,
-        maxLines: maxLines,
+        maxLines: _isObscure ? 1 : maxLines,
         obscureText: pass ? _isObscure : false,
         onChanged: onChange,
         decoration: InputDecoration(

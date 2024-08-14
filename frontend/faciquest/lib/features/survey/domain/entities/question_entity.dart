@@ -11,7 +11,7 @@ part 'questions/audio_record_question.dart';
 part 'questions/short_answer_question.dart';
 part 'questions/comment_box_question.dart';
 part 'questions/slider_question.dart';
-// part 'questions/date_time_question.dart';
+part 'questions/date_time_question.dart';
 
 enum QuestionType {
   starRating,
@@ -93,10 +93,6 @@ sealed class QuestionEntity extends Equatable {
     String? title,
   });
 }
-
-class ImageChoiceQuestion {}
-
-class DateTimeQuestion {}
 
 final Map<String, List<List<String>>> scaleOptions = {
   'Agree - Disagree': [
