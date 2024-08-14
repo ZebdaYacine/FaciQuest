@@ -101,13 +101,15 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                         title: question?.title ?? '',
                       );
                     case QuestionType.audioRecord:
-                    // question = const AudioRecordQuestion();
+                      question = AudioRecordQuestion(
+                        title: question?.title ?? '',
+                      );
                     case QuestionType.commentBox:
                     // question = const CommentBoxQuestion();
                     case QuestionType.shortAnswer:
-                    // question = ShortAnswerQuestion(
-                    //   title: question?.title ?? '',
-                    // );
+                      question = ShortAnswerQuestion(
+                        title: question?.title ?? '',
+                      );
                     case QuestionType.slider:
                     // question = const SliderQuestion();
                     case QuestionType.dateTime:
@@ -120,6 +122,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 'Settings :',
                 style: context.textTheme.headlineSmall,
               ),
+              AppSpacing.spacing_1.heightBox,
               switch (question) {
                 null => Text(
                     'Select a Type first',
@@ -163,6 +166,20 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   ),
                 AudioRecordQuestion() => AudioRecordQuestionBuilder(
                     question: question as AudioRecordQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
+                ShortAnswerQuestion() => ShortAnswerQuestionBuilder(
+                    question: question as ShortAnswerQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
+                CommentBoxQuestion() => CommentBoxQuestionBuilder(
+                    question: question as CommentBoxQuestion,
                     onChanged: (value) {
                       question = value;
                       setState(() {});

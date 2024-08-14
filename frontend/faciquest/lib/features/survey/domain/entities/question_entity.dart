@@ -8,6 +8,10 @@ part 'questions/checkboxes_question.dart';
 part 'questions/dropdown_question.dart';
 part 'questions/file_upload_question.dart';
 part 'questions/audio_record_question.dart';
+part 'questions/short_answer_question.dart';
+part 'questions/comment_box_question.dart';
+// part 'questions/slider_question.dart';
+// part 'questions/date_time_question.dart';
 
 enum QuestionType {
   starRating,
@@ -91,8 +95,6 @@ sealed class QuestionEntity extends Equatable {
 }
 
 class ImageChoiceQuestion {}
-
-class CommentBoxQuestion {}
 
 class SliderQuestion {}
 

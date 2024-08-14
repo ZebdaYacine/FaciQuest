@@ -4,3 +4,5 @@ export 'checkboxes_question_builder.dart';
 export 'dropdown_question_builder.dart';
 export 'file_upload_question_builder.dart';
 export 'audio_record_question_builder.dart';
+export 'short_text_question_builder.dart';
+export 'comment_box_question_builder.dart';
