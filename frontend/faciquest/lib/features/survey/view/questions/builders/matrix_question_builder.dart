@@ -28,8 +28,8 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
   }) {
     widget.onChanged?.call(
       widget.question.copyWith(
-        rows: [...rows ?? []],
-        cols: [...cols ?? []],
+        rows: rows,
+        cols: cols,
         useCheckbox: useCheckbox,
       ),
     );
@@ -42,33 +42,24 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('Rows :', style: context.textTheme.bodyLarge),
+        Text('Rows :', style: context.textTheme.headlineSmall),
         AppSpacing.spacing_1.heightBox,
         ...widget.question.rows.mapIndexed((index, item) {
           return Row(
             children: [
               Expanded(
-                  child: Row(
-                children: [
-                  Checkbox(
-                    value: false,
-                    onChanged: null,
-                  ),
-                  Expanded(
-                    child: buildInputForm(
-                      '',
-                      key: UniqueKey(),
-                      initialValue: item,
-                      onChange: (value) {
-                        onChange(
-                          rows: widget.question.rows
-                            ..replaceRange(index, index + 1, [value]),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              )),
+                child: buildInputForm(
+                  '',
+                  key: UniqueKey(),
+                  initialValue: item,
+                  onChange: (value) {
+                    onChange(
+                      rows: widget.question.rows
+                        ..replaceRange(index, index + 1, [value]),
+                    );
+                  },
+                ),
+              ),
               AppSpacing.spacing_1.widthBox,
               IconButton.filled(
                 onPressed: () {
@@ -93,37 +84,33 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
         RadioListTile(
           value: true,
           groupValue: widget.question.useCheckbox,
+          toggleable: true,
+          title:
+              const Text('Allow multiple responses per row (use checkboxes)'),
           onChanged: (value) {
-            onChange(useCheckbox: value);
+            onChange(
+              useCheckbox: !widget.question.useCheckbox,
+            );
           },
         ),
-        Text('Columns :', style: context.textTheme.bodyLarge),
+        Text('Columns :', style: context.textTheme.headlineSmall),
         AppSpacing.spacing_1.heightBox,
         ...widget.question.cols.mapIndexed((index, item) {
           return Row(
             children: [
               Expanded(
-                  child: Row(
-                children: [
-                  Checkbox(
-                    value: false,
-                    onChanged: null,
-                  ),
-                  Expanded(
-                    child: buildInputForm(
-                      '',
-                      key: UniqueKey(),
-                      initialValue: item,
-                      onChange: (value) {
-                        onChange(
-                          cols: widget.question.cols
-                            ..replaceRange(index, index + 1, [value]),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              )),
+                child: buildInputForm(
+                  '',
+                  key: UniqueKey(),
+                  initialValue: item,
+                  onChange: (value) {
+                    onChange(
+                      cols: widget.question.cols
+                        ..replaceRange(index, index + 1, [value]),
+                    );
+                  },
+                ),
+              ),
               AppSpacing.spacing_1.widthBox,
               IconButton.filled(
                 onPressed: () {
