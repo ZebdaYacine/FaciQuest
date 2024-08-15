@@ -1,9 +1,11 @@
 part of '../question_entity.dart';
 
+/// Multiple Choice is a simple closed-ended question type that lets 
+/// respondents select a single answer from a defined list of choices.
 class MultipleChoiceQuestion extends QuestionEntity {
   const MultipleChoiceQuestion({
     required super.title,
-    this.choices = const [],
+    this.choices = const [''],
   });
   final List<String> choices;
 

@@ -1,9 +1,11 @@
 part of '../question_entity.dart';
 
+///
+
 class CheckboxesQuestion extends QuestionEntity {
   const CheckboxesQuestion({
     required super.title,
-    this.choices = const [],
+    this.choices = const [''],
   });
   final List<String> choices;
 

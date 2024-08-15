@@ -12,12 +12,12 @@ class RouteManager {
     debugLogDiagnostics: true,
     initialLocation: AppRoutes.splash.path,
     routes: [
+      AppRoutes.splash.goRoute(),
+      AppRoutes.setNewPassword.goRoute(),
       GoRoute(
         path: '/auth',
         redirect: (context, goState) => '/auth/${AppRoutes.signIn.path}',
       ),
-      AppRoutes.splash.goRoute(),
-      AppRoutes.setNewPassword.goRoute(),
       AppRoutes.auth.goRoute([
         AppRoutes.forgotPassword.goRoute(),
         AppRoutes.signIn.goRoute(),

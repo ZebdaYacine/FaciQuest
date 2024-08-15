@@ -12,12 +12,14 @@ part 'questions/short_answer_question.dart';
 part 'questions/comment_box_question.dart';
 part 'questions/slider_question.dart';
 part 'questions/date_time_question.dart';
+part 'questions/matrix_question.dart';
 
 enum QuestionType {
   starRating,
   multipleChoice,
   checkboxes,
   dropdown,
+  matrix,
   fileUpload,
   audioRecord,
   shortAnswer,
@@ -48,6 +50,8 @@ enum QuestionType {
         return 'Audio Record';
       case QuestionType.shortAnswer:
         return 'Short Answer';
+      case QuestionType.matrix:
+        return 'Matrix';
     }
   }
 
@@ -73,6 +77,8 @@ enum QuestionType {
         return Icons.mic_outlined;
       case QuestionType.shortAnswer:
         return Icons.short_text_outlined;
+      case QuestionType.matrix:
+        return Icons.table_rows_outlined;
     }
   }
 }
@@ -93,6 +99,20 @@ sealed class QuestionEntity extends Equatable {
     String? title,
   });
 }
+
+class ImageChoiceQuestion {}
+
+class NameQuestion {}
+
+class EmailAddressQuestion {}
+
+class PhoneQuestion {}
+
+class AddressQuestion {}
+
+class TextQuestion {}
+
+class ImageQuestion {}
 
 final Map<String, List<List<String>>> scaleOptions = {
   'Agree - Disagree': [

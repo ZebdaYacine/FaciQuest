@@ -114,6 +114,10 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                     // question = const SliderQuestion();
                     case QuestionType.dateTime:
                     // question = const DateTimeQuestion();
+                    case QuestionType.matrix:
+                      question = MatrixQuestion(
+                        title: question?.title ?? '',
+                      );
                   }
                   setState(() {});
                 },
@@ -194,6 +198,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   ),
                 DateTimeQuestion() => DateTimeQuestionBuilder(
                     question: question as DateTimeQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
+                MatrixQuestion() => MatrixQuestionBuilder(
+                    question: question as MatrixQuestion,
                     onChanged: (value) {
                       question = value;
                       setState(() {});
