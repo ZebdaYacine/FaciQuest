@@ -16,6 +16,7 @@ part 'questions/slider_question.dart';
 part 'questions/date_time_question.dart';
 part 'questions/matrix_question.dart';
 part 'questions/image_choice_question.dart';
+part 'questions/name_question.dart';
 
 enum QuestionType {
   starRating,
@@ -30,6 +31,12 @@ enum QuestionType {
   commentBox,
   slider,
   dateTime,
+  nameType,
+  emailAddress,
+  phoneNumber,
+  address,
+  text,
+  image,
   ;
 
   String get name {
@@ -58,6 +65,18 @@ enum QuestionType {
         return 'Matrix';
       case QuestionType.imageChoice:
         return 'Image Choice';
+      case QuestionType.nameType:
+        return 'Name';
+      case QuestionType.emailAddress:
+        return 'Email Address';
+      case QuestionType.phoneNumber:
+        return 'Phone Number';
+      case QuestionType.address:
+        return 'Address';
+      case QuestionType.text:
+        return 'Text';
+      case QuestionType.image:
+        return 'Image';
     }
   }
 
@@ -87,6 +106,18 @@ enum QuestionType {
         return Icons.table_rows_outlined;
       case QuestionType.imageChoice:
         return Icons.image_outlined;
+      case QuestionType.nameType:
+        return Icons.person_outline;
+      case QuestionType.emailAddress:
+        return Icons.email_outlined;
+      case QuestionType.phoneNumber:
+        return Icons.phone_outlined;
+      case QuestionType.address:
+        return Icons.location_on_outlined;
+      case QuestionType.text:
+        return Icons.text_fields_outlined;
+      case QuestionType.image:
+        return Icons.image_outlined;
     }
   }
 }
@@ -107,8 +138,6 @@ sealed class QuestionEntity extends Equatable {
     String? title,
   });
 }
-
-class NameQuestion {}
 
 class EmailAddressQuestion {}
 

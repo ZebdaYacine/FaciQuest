@@ -77,54 +77,9 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 ).toList(),
                 onChanged: (questionType) {
                   this.questionType = questionType;
-                  switch (questionType) {
-                    case null:
-                      return;
-                    case QuestionType.starRating:
-                      question = StarRatingQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.multipleChoice:
-                      question = MultipleChoiceQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.checkboxes:
-                      question = CheckboxesQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.dropdown:
-                      question = DropdownQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.fileUpload:
-                      question = FileUploadQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.audioRecord:
-                      question = AudioRecordQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.commentBox:
-                      question = CommentBoxQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.shortAnswer:
-                      question = ShortAnswerQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.slider:
-                    // question = const SliderQuestion();
-                    case QuestionType.dateTime:
-                    // question = const DateTimeQuestion();
-                    case QuestionType.matrix:
-                      question = MatrixQuestion(
-                        title: question?.title ?? '',
-                      );
-                    case QuestionType.imageChoice:
-                      question = ImageChoiceQuestion(
-                        title: question?.title ?? '',
-                      );
-                  }
+                  if (questionType == null) return;
+                  question = questionType
+                      .newQuestion(question ?? StarRatingQuestion(title: ''));
                   setState(() {});
                 },
               ),
@@ -223,11 +178,62 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                       setState(() {});
                     },
                   ),
+                NameQuestion() => NameQuestionBuilder(
+                    question: question as NameQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
               }
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+extension on QuestionType {
+  QuestionEntity? newQuestion(QuestionEntity question) {
+    switch (this) {
+      case QuestionType.starRating:
+        return StarRatingQuestion(title: question.title);
+      case QuestionType.multipleChoice:
+        return MultipleChoiceQuestion(title: question.title);
+      case QuestionType.checkboxes:
+        return CheckboxesQuestion(title: question.title);
+      case QuestionType.dropdown:
+        return DropdownQuestion(title: question.title);
+      case QuestionType.fileUpload:
+        return FileUploadQuestion(title: question.title);
+      case QuestionType.audioRecord:
+        return AudioRecordQuestion(title: question.title);
+      case QuestionType.shortAnswer:
+        return ShortAnswerQuestion(title: question.title);
+      case QuestionType.commentBox:
+        return CommentBoxQuestion(title: question.title);
+      case QuestionType.slider:
+        return SliderQuestion(title: question.title);
+      case QuestionType.dateTime:
+        return DateTimeQuestion(title: question.title);
+      case QuestionType.matrix:
+        return MatrixQuestion(title: question.title);
+      case QuestionType.imageChoice:
+        return ImageChoiceQuestion(title: question.title);
+      case QuestionType.nameType:
+        return NameQuestion(title: question.title);
+      case QuestionType.emailAddress:
+      // TODO: Handle this case.
+      case QuestionType.phoneNumber:
+      // TODO: Handle this case.
+      case QuestionType.address:
+      // TODO: Handle this case.
+      case QuestionType.text:
+      // TODO: Handle this case.
+      case QuestionType.image:
+      // TODO: Handle this case.
+    }
+    return null;
   }
 }
