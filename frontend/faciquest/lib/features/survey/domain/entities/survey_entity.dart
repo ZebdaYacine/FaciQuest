@@ -3,15 +3,19 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+enum surveyStatus { draft, published, deleted }
+
 class SurveyEntity extends Equatable {
   final String name;
   final String? description;
+  final surveyStatus status;
   final List<String> languages;
   final List<String> topics;
   final LikertScale? likertScale;
   const SurveyEntity({
     this.name = '',
     this.description,
+    this.status = surveyStatus.draft,
     this.languages = const [],
     this.topics = const [],
     this.likertScale,
@@ -20,6 +24,7 @@ class SurveyEntity extends Equatable {
   SurveyEntity copyWith({
     String? name,
     String? description,
+    surveyStatus? status,
     List<String>? languages,
     List<String>? topics,
     LikertScale? likertScale,
@@ -27,6 +32,7 @@ class SurveyEntity extends Equatable {
     return SurveyEntity(
       name: name ?? this.name,
       description: description ?? this.description,
+      status: status ?? this.status,
       languages: languages ?? this.languages,
       topics: topics ?? this.topics,
       likertScale: likertScale ?? this.likertScale,
@@ -37,6 +43,7 @@ class SurveyEntity extends Equatable {
     return <String, dynamic>{
       'name': name,
       'description': description,
+      'status': status.name,
       'languages': languages,
       'topics': topics,
       'likertScale': likertScale?.name,
@@ -48,6 +55,10 @@ class SurveyEntity extends Equatable {
       name: map['name'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,
+      status: surveyStatus.values.firstWhere(
+        (element) => element.name == map['status'] as String?,
+        orElse: () => surveyStatus.draft,
+      ),
       languages: List<String>.from((map['languages'] as List<String>)),
       topics: List<String>.from((map['topics'] as List<String>)),
       likertScale: map['likertScale'] != null
@@ -66,22 +77,14 @@ class SurveyEntity extends Equatable {
 
   @override
   List<Object?> get props {
-    return [
-      name,
-      description,
-      languages,
-      topics,
-      likertScale,
-    ];
+    return [name, description, languages, topics, likertScale, status];
   }
 }
 
 enum LikertScale {
   twoPoints,
   threePoints,
-  // fourPoints,
   fivePoints,
-  // sixPoints,
   sevenPoints,
   ;
 
