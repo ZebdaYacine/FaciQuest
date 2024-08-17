@@ -24,10 +24,11 @@ class ImageChoiceQuestion extends QuestionEntity {
     );
   }
 
- static QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return ImageChoiceQuestion(
       title: map['title'],
-      choices: List<ImageChoice>.from(map['choices']),
+      choices: List<ImageChoice>.from(
+          map['choices'].map((e) => ImageChoice.fromMap(e))),
       useCheckbox: map['useCheckbox'],
     );
   }
@@ -78,7 +79,7 @@ class ImageChoice with EquatableMixin {
     );
   }
 
-  ImageChoice fromMap(Map<String, dynamic> map) {
+  static ImageChoice fromMap(Map<String, dynamic> map) {
     return ImageChoice(
       caption: map['caption'],
       altText: map['altText'],

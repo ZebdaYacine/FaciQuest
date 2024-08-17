@@ -7,3 +7,4 @@ export 'utils/utils.dart';
 export 'manager/manager.dart';
 export 'context_extension.dart';
 export 'mixins.dart';
+export 'widgets/widgets.dart';
