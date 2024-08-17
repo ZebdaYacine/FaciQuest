@@ -185,6 +185,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                       setState(() {});
                     },
                   ),
+                EmailAddressQuestion() => EmailAddressQuestionBuilder(
+                    question: question as EmailAddressQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
               }
             ],
           ),
@@ -224,7 +231,7 @@ extension on QuestionType {
       case QuestionType.nameType:
         return NameQuestion(title: question.title);
       case QuestionType.emailAddress:
-      // TODO: Handle this case.
+        return EmailAddressQuestion(title: question.title);
       case QuestionType.phoneNumber:
       // TODO: Handle this case.
       case QuestionType.address:
