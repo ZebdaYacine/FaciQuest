@@ -54,9 +54,11 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildInputForm(
-                'Q*:',
-              ),
+              if ((question.runtimeType != TextQuestion &&
+                  question.runtimeType != ImageQuestion))
+                buildInputForm(
+                  'Q*:',
+                ),
               AppSpacing.spacing_1.heightBox,
               DropdownButton(
                 value: questionType,
