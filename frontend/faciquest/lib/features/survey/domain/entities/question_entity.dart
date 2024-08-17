@@ -18,6 +18,7 @@ part 'questions/matrix_question.dart';
 part 'questions/image_choice_question.dart';
 part 'questions/name_question.dart';
 part 'questions/email_address_question.dart';
+part 'questions/phone_question.dart';
 
 enum QuestionType {
   starRating,
@@ -139,8 +140,6 @@ sealed class QuestionEntity extends Equatable {
     String? title,
   });
 }
-
-class PhoneQuestion {}
 
 class AddressQuestion {}
 

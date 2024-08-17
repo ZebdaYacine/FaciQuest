@@ -3,31 +3,30 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class EmailAddressQuestionBuilder extends StatefulWidget {
-  final EmailAddressQuestion question;
+class PhoneQuestionBuilder extends StatefulWidget {
+  final PhoneQuestion question;
   final ValueChanged<QuestionEntity>? onChanged;
-  const EmailAddressQuestionBuilder({
+  const PhoneQuestionBuilder({
     required this.question,
     this.onChanged,
     super.key,
   });
 
   @override
-  State<EmailAddressQuestionBuilder> createState() =>
-      _EmailAddressQuestionBuilderState();
+  State<PhoneQuestionBuilder> createState() => _PhoneQuestionBuilderState();
 }
 
-class _EmailAddressQuestionBuilderState
-    extends State<EmailAddressQuestionBuilder> with BuildFormMixin {
+class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
+    with BuildFormMixin {
   onChange({
-    String? emailAddressLabel,
-    String? emailAddressHint,
-    bool? showEmailAddress,
+    String? phoneLabel,
+    String? phoneHint,
+    bool? showPhone,
   }) {
     widget.onChanged?.call(widget.question.copyWith(
-      emailAddressLabel: emailAddressLabel,
-      emailAddressHint: emailAddressHint,
-      showEmailAddress: showEmailAddress,
+      phoneLabel: phoneLabel,
+      phoneHint: phoneHint,
+      showPhone: showPhone,
     ));
     setState(() {});
   }
@@ -40,15 +39,15 @@ class _EmailAddressQuestionBuilderState
         Row(
           children: [
             Text(
-              'Email Address ',
+              'Phone',
               style: context.textTheme.bodyLarge,
             ),
             Spacer(),
             Text('Show'),
             Checkbox(
-              value: widget.question.showEmailAddress, onChanged: null,
+              value: widget.question.showPhone, onChanged: null,
               // (value) {
-              //   onChange(showEmailAddress: value);
+              //   onChange(showPhone: value);
               // },
             ),
           ],
@@ -56,17 +55,17 @@ class _EmailAddressQuestionBuilderState
         buildInputForm(
           'Label :',
           key: UniqueKey(),
-          initialValue: widget.question.emailAddressLabel,
+          initialValue: widget.question.phoneLabel,
           onChange: (value) {
-            onChange(emailAddressLabel: value);
+            onChange(phoneLabel: value);
           },
         ),
         buildInputForm(
           'Placeholder :',
           key: UniqueKey(),
-          initialValue: widget.question.emailAddressHint,
+          initialValue: widget.question.phoneHint,
           onChange: (value) {
-            onChange(emailAddressHint: value);
+            onChange(phoneHint: value);
           },
         ),
       ],

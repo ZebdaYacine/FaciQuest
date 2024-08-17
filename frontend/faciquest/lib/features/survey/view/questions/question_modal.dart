@@ -192,6 +192,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                       setState(() {});
                     },
                   ),
+                PhoneQuestion() => PhoneQuestionBuilder(
+                    question: question as PhoneQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
               }
             ],
           ),
