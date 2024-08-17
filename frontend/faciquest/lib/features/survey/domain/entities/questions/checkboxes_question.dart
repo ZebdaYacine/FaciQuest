@@ -38,4 +38,7 @@ class CheckboxesQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, choices];
+  static CheckboxesQuestion copyFrom(QuestionEntity question) {
+    return CheckboxesQuestion(title: question.title);
+  }
 }

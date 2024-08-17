@@ -50,6 +50,10 @@ class StarRatingQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, maxRating, shape, color];
+
+  static StarRatingQuestion copyFrom(QuestionEntity question) {
+    return StarRatingQuestion(title: question.title);
+  }
 }
 
 enum StarRatingShape {

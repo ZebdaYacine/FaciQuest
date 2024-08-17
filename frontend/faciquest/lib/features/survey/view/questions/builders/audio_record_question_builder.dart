@@ -2,12 +2,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class AudioRecordQuestionBuilder extends StatefulWidget {
-  final AudioRecordQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class AudioRecordQuestionBuilder extends QuestionBuilder {
   const AudioRecordQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 

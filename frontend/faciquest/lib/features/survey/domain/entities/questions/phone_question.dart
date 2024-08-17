@@ -46,4 +46,8 @@ class PhoneQuestion extends QuestionEntity {
       'showPhone': showPhone,
     };
   }
+
+  static PhoneQuestion copyFrom(QuestionEntity question) {
+    return PhoneQuestion(title: question.title);
+  }
 }

@@ -5,12 +5,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class MultipleChoiceQuestionBuilder extends StatefulWidget {
-  final MultipleChoiceQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class MultipleChoiceQuestionBuilder extends QuestionBuilder {
   const MultipleChoiceQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -26,7 +24,7 @@ class _MultipleChoiceQuestionBuilderState
     List<String>? choices,
   }) {
     widget.onChanged?.call(
-      widget.question.copyWith(
+      (widget.question as MultipleChoiceQuestion).copyWith(
         choices: [...choices ?? []],
       ),
     );
@@ -43,12 +41,19 @@ class _MultipleChoiceQuestionBuilderState
         Row(
           children: [
             if (optionSizes.isNotEmpty &&
-                optionSizes.contains(widget.question.choices.length)) ...[
+                optionSizes.contains((widget.question as MultipleChoiceQuestion)
+                    .choices
+                    .length)) ...[
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
-                  value: optionSizes.contains(widget.question.choices.length)
-                      ? widget.question.choices.length
+                  value: optionSizes.contains(
+                          (widget.question as MultipleChoiceQuestion)
+                              .choices
+                              .length)
+                      ? (widget.question as MultipleChoiceQuestion)
+                          .choices
+                          .length
                       : null,
                   items: [
                     DropdownMenuItem(
@@ -96,7 +101,9 @@ class _MultipleChoiceQuestionBuilderState
           ],
         ),
         AppSpacing.spacing_1.heightBox,
-        ...widget.question.choices.mapIndexed((index, item) {
+        ...(widget.question as MultipleChoiceQuestion)
+            .choices
+            .mapIndexed((index, item) {
           return Row(
             children: [
               Expanded(
@@ -114,7 +121,8 @@ class _MultipleChoiceQuestionBuilderState
                       initialValue: item,
                       onChange: (value) {
                         onChange(
-                          choices: widget.question.choices
+                          choices: (widget.question as MultipleChoiceQuestion)
+                              .choices
                             ..replaceRange(index, index + 1, [value]),
                         );
                       },
@@ -125,7 +133,9 @@ class _MultipleChoiceQuestionBuilderState
               AppSpacing.spacing_1.widthBox,
               IconButton.filled(
                 onPressed: () {
-                  final temp = [...widget.question.choices];
+                  final temp = [
+                    ...(widget.question as MultipleChoiceQuestion).choices
+                  ];
                   temp.insert(index + 1, '');
                   onChange(choices: temp);
                 },
@@ -133,7 +143,10 @@ class _MultipleChoiceQuestionBuilderState
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(choices: widget.question.choices..removeAt(index));
+                  onChange(
+                      choices:
+                          (widget.question as MultipleChoiceQuestion).choices
+                            ..removeAt(index));
                 },
                 icon: const Icon(
                   Icons.delete,

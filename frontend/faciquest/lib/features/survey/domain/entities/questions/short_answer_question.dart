@@ -34,4 +34,7 @@ class ShortAnswerQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, maxLength];
+  static ShortAnswerQuestion copyFrom(QuestionEntity question) {
+    return ShortAnswerQuestion(title: question.title);
+  }
 }

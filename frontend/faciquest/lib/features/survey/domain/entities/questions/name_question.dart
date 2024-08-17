@@ -80,4 +80,8 @@ class NameQuestion extends QuestionEntity {
       'showMiddleName': showMiddleName,
     };
   }
+
+  static NameQuestion copyFrom(QuestionEntity question) {
+    return NameQuestion(title: question.title);
+  }
 }

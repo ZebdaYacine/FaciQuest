@@ -42,6 +42,9 @@ class ImageChoiceQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, choices, useCheckbox];
+  static ImageChoiceQuestion copyFrom(QuestionEntity question) {
+    return ImageChoiceQuestion(title: question.title);
+  }
 }
 
 class ImageChoice with EquatableMixin {

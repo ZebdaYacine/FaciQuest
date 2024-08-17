@@ -3,7 +3,7 @@ part of '../question_entity.dart';
 class DropdownQuestion extends QuestionEntity {
   const DropdownQuestion({
     required super.title,
-    this.choices = const [],
+    this.choices = const [''],
   });
   final List<String> choices;
 
@@ -36,4 +36,8 @@ class DropdownQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, choices];
+
+  static DropdownQuestion copyFrom(QuestionEntity question) {
+    return DropdownQuestion(title: question.title);
+  }
 }

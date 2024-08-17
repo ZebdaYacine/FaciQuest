@@ -5,12 +5,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class CheckboxesQuestionBuilder extends StatefulWidget {
-  final CheckboxesQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class CheckboxesQuestionBuilder extends QuestionBuilder {
   const CheckboxesQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -26,7 +24,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
     List<String>? choices,
   }) {
     widget.onChanged?.call(
-      widget.question.copyWith(
+      (widget.question as CheckboxesQuestion).copyWith(
         choices: [...choices ?? []],
       ),
     );
@@ -43,12 +41,17 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
         Row(
           children: [
             if (optionSizes.isNotEmpty &&
-                optionSizes.contains(widget.question.choices.length)) ...[
+                optionSizes.contains((widget.question as CheckboxesQuestion)
+                    .choices
+                    .length)) ...[
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
-                  value: optionSizes.contains(widget.question.choices.length)
-                      ? widget.question.choices.length
+                  value: optionSizes.contains(
+                          (widget.question as CheckboxesQuestion)
+                              .choices
+                              .length)
+                      ? (widget.question as CheckboxesQuestion).choices.length
                       : null,
                   items: [
                     DropdownMenuItem(
@@ -96,7 +99,9 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
           ],
         ),
         AppSpacing.spacing_1.heightBox,
-        ...widget.question.choices.mapIndexed((index, item) {
+        ...(widget.question as CheckboxesQuestion)
+            .choices
+            .mapIndexed((index, item) {
           return Row(
             children: [
               Expanded(
@@ -113,8 +118,9 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
                       initialValue: item,
                       onChange: (value) {
                         onChange(
-                          choices: widget.question.choices
-                            ..replaceRange(index, index + 1, [value]),
+                          choices:
+                              (widget.question as CheckboxesQuestion).choices
+                                ..replaceRange(index, index + 1, [value]),
                         );
                       },
                     ),
@@ -124,7 +130,9 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
               AppSpacing.spacing_1.widthBox,
               IconButton.filled(
                 onPressed: () {
-                  final temp = [...widget.question.choices];
+                  final temp = [
+                    ...(widget.question as CheckboxesQuestion).choices
+                  ];
                   temp.insert(index + 1, '');
                   onChange(choices: temp);
                 },
@@ -132,7 +140,9 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(choices: widget.question.choices..removeAt(index));
+                  onChange(
+                      choices: (widget.question as CheckboxesQuestion).choices
+                        ..removeAt(index));
                 },
                 icon: const Icon(
                   Icons.delete,

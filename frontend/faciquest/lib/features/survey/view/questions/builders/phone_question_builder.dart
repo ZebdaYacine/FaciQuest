@@ -3,12 +3,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class PhoneQuestionBuilder extends StatefulWidget {
-  final PhoneQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class PhoneQuestionBuilder extends QuestionBuilder {
   const PhoneQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -23,7 +21,7 @@ class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
     String? phoneHint,
     bool? showPhone,
   }) {
-    widget.onChanged?.call(widget.question.copyWith(
+    widget.onChanged?.call((widget.question as PhoneQuestion).copyWith(
       phoneLabel: phoneLabel,
       phoneHint: phoneHint,
       showPhone: showPhone,
@@ -45,7 +43,8 @@ class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
             Spacer(),
             Text('Show'),
             Checkbox(
-              value: widget.question.showPhone, onChanged: null,
+              value: (widget.question as PhoneQuestion).showPhone,
+              onChanged: null,
               // (value) {
               //   onChange(showPhone: value);
               // },
@@ -55,7 +54,7 @@ class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
         buildInputForm(
           'Label :',
           key: UniqueKey(),
-          initialValue: widget.question.phoneLabel,
+          initialValue: (widget.question as PhoneQuestion).phoneLabel,
           onChange: (value) {
             onChange(phoneLabel: value);
           },
@@ -63,7 +62,7 @@ class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
         buildInputForm(
           'Placeholder :',
           key: UniqueKey(),
-          initialValue: widget.question.phoneHint,
+          initialValue: (widget.question as PhoneQuestion).phoneHint,
           onChange: (value) {
             onChange(phoneHint: value);
           },

@@ -2,12 +2,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class DateTimeQuestionBuilder extends StatefulWidget {
-  final DateTimeQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class DateTimeQuestionBuilder extends QuestionBuilder {
   const DateTimeQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -22,7 +20,10 @@ class _DateTimeQuestionBuilderState extends State<DateTimeQuestionBuilder>
     bool? collectDateInfo,
     bool? collectTimeInfo,
   }) {
-    widget.onChanged?.call(widget.question.copyWith());
+    widget.onChanged?.call((widget.question as DateTimeQuestion).copyWith(
+      collectDateInfo: collectDateInfo,
+      collectTimeInfo: collectTimeInfo,
+    ));
     setState(() {});
   }
 
@@ -31,9 +32,8 @@ class _DateTimeQuestionBuilderState extends State<DateTimeQuestionBuilder>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RadioListTile(
-          value: true,
-          groupValue: widget.question.collectDateInfo,
+        CheckboxListTile(
+          value: (widget.question as DateTimeQuestion).collectDateInfo,
           title: const Text('Collect Date Info'),
           onChanged: (value) {
             onChange(
@@ -41,9 +41,8 @@ class _DateTimeQuestionBuilderState extends State<DateTimeQuestionBuilder>
             );
           },
         ),
-        RadioListTile(
-          value: true,
-          groupValue: widget.question.collectTimeInfo,
+        CheckboxListTile(
+          value: (widget.question as DateTimeQuestion).collectTimeInfo,
           title: const Text('Collect Time Info'),
           onChanged: (value) {
             onChange(

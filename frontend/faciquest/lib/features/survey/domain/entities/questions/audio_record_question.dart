@@ -25,4 +25,8 @@ class AudioRecordQuestion extends QuestionEntity {
       'title': title,
     };
   }
+
+  static AudioRecordQuestion copyFrom(QuestionEntity question) {
+    return AudioRecordQuestion(title: question.title);
+  }
 }

@@ -5,12 +5,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class MatrixQuestionBuilder extends StatefulWidget {
-  final MatrixQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class MatrixQuestionBuilder extends QuestionBuilder {
   const MatrixQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -27,7 +25,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
     bool? useCheckbox,
   }) {
     widget.onChanged?.call(
-      widget.question.copyWith(
+      (widget.question as MatrixQuestion).copyWith(
         rows: rows,
         cols: cols,
         useCheckbox: useCheckbox,
@@ -44,7 +42,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
       children: [
         Text('Rows :', style: context.textTheme.headlineSmall),
         AppSpacing.spacing_1.heightBox,
-        ...widget.question.rows.mapIndexed((index, item) {
+        ...(widget.question as MatrixQuestion).rows.mapIndexed((index, item) {
           return Row(
             children: [
               Expanded(
@@ -54,7 +52,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
                   initialValue: item,
                   onChange: (value) {
                     onChange(
-                      rows: widget.question.rows
+                      rows: (widget.question as MatrixQuestion).rows
                         ..replaceRange(index, index + 1, [value]),
                     );
                   },
@@ -63,7 +61,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               AppSpacing.spacing_1.widthBox,
               IconButton.filled(
                 onPressed: () {
-                  final temp = [...widget.question.rows];
+                  final temp = [...(widget.question as MatrixQuestion).rows];
                   temp.insert(index + 1, '');
                   onChange(rows: temp);
                 },
@@ -71,7 +69,9 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(rows: widget.question.rows..removeAt(index));
+                  onChange(
+                      rows: (widget.question as MatrixQuestion).rows
+                        ..removeAt(index));
                 },
                 icon: const Icon(
                   Icons.delete,
@@ -82,7 +82,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
         }).toList(),
         AppSpacing.spacing_1.heightBox,
         CheckboxListTile(
-          value: widget.question.useCheckbox,
+          value: (widget.question as MatrixQuestion).useCheckbox,
           title:
               const Text('Allow multiple responses per row (use checkboxes)'),
           onChanged: (value) {
@@ -93,7 +93,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
         ),
         Text('Columns :', style: context.textTheme.headlineSmall),
         AppSpacing.spacing_1.heightBox,
-        ...widget.question.cols.mapIndexed((index, item) {
+        ...(widget.question as MatrixQuestion).cols.mapIndexed((index, item) {
           return Row(
             children: [
               Expanded(
@@ -103,7 +103,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
                   initialValue: item,
                   onChange: (value) {
                     onChange(
-                      cols: widget.question.cols
+                      cols: (widget.question as MatrixQuestion).cols
                         ..replaceRange(index, index + 1, [value]),
                     );
                   },
@@ -112,7 +112,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               AppSpacing.spacing_1.widthBox,
               IconButton.filled(
                 onPressed: () {
-                  final temp = [...widget.question.cols];
+                  final temp = [...(widget.question as MatrixQuestion).cols];
                   temp.insert(index + 1, '');
                   onChange(cols: temp);
                 },
@@ -120,7 +120,9 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(cols: widget.question.cols..removeAt(index));
+                  onChange(
+                      cols: (widget.question as MatrixQuestion).cols
+                        ..removeAt(index));
                 },
                 icon: const Icon(
                   Icons.delete,

@@ -6,12 +6,10 @@ import 'package:faciquest/core/widgets/widgets.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class ImageChoiceQuestionBuilder extends StatefulWidget {
-  final ImageChoiceQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class ImageChoiceQuestionBuilder extends QuestionBuilder {
   const ImageChoiceQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -28,7 +26,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
     bool? useCheckbox,
   }) {
     widget.onChanged?.call(
-      widget.question.copyWith(
+      (widget.question as ImageChoiceQuestion).copyWith(
         choices: choices,
         useCheckbox: useCheckbox,
       ),
@@ -43,20 +41,22 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
       mainAxisSize: MainAxisSize.min,
       children: [
         CheckboxListTile(
-          value: widget.question.useCheckbox,
+          value: (widget.question as ImageChoiceQuestion).useCheckbox,
           onChanged: (e) {
             onChange(useCheckbox: e);
           },
           title: const Text('Use Checkbox'),
         ),
-        ...widget.question.choices.mapIndexed((index, item) {
+        ...(widget.question as ImageChoiceQuestion)
+            .choices
+            .mapIndexed((index, item) {
           return Row(
             children: [
               Expanded(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    widget.question.useCheckbox
+                    (widget.question as ImageChoiceQuestion).useCheckbox
                         ? Checkbox(
                             value: false,
                             onChanged: (value) {},
@@ -74,7 +74,10 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                             key: UniqueKey(),
                             initialValue: item.caption,
                             onChange: (value) {
-                              var choices = [...widget.question.choices];
+                              var choices = [
+                                ...(widget.question as ImageChoiceQuestion)
+                                    .choices
+                              ];
                               choices
                                 ..replaceRange(
                                   index,
@@ -94,7 +97,10 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                               image: item.image,
                               imageUrl: item.url,
                               onImageSelected: (value) {
-                                var choices = [...widget.question.choices];
+                                var choices = [
+                                  ...(widget.question as ImageChoiceQuestion)
+                                      .choices
+                                ];
                                 choices
                                   ..replaceRange(
                                     index,
@@ -120,7 +126,9 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
               AppSpacing.spacing_1.widthBox,
               IconButton.filled(
                 onPressed: () {
-                  final temp = [...widget.question.choices];
+                  final temp = [
+                    ...(widget.question as ImageChoiceQuestion).choices
+                  ];
                   temp.insert(index + 1, ImageChoice());
                   onChange(choices: temp);
                 },
@@ -128,7 +136,9 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(choices: widget.question.choices..removeAt(index));
+                  onChange(
+                      choices: (widget.question as ImageChoiceQuestion).choices
+                        ..removeAt(index));
                 },
                 icon: const Icon(
                   Icons.delete,

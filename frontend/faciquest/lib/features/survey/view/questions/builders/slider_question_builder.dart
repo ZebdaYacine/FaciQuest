@@ -4,12 +4,10 @@ import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 
-class SliderQuestionBuilder extends StatefulWidget {
-  final SliderQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class SliderQuestionBuilder extends QuestionBuilder {
   const SliderQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -23,7 +21,7 @@ class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
     int? min,
     int? max,
   }) {
-    widget.onChanged?.call(widget.question.copyWith(
+    widget.onChanged?.call((widget.question as SliderQuestion).copyWith(
       min: min,
       max: max,
     ));
@@ -41,7 +39,7 @@ class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(
-                initVal: widget.question.min,
+                initVal: (widget.question as SliderQuestion).min,
                 onQtyChanged: (e) {
                   onChange(min: e);
                 },
@@ -49,13 +47,14 @@ class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
             )
           ],
         ),
+        AppSpacing.spacing_1.heightBox,
         Row(
           children: [
             Text('Max :'),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(
-                initVal: widget.question.max,
+                initVal: (widget.question as SliderQuestion).max,
                 onQtyChanged: (e) {
                   onChange(max: e);
                 },

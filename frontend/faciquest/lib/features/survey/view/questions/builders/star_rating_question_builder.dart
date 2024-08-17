@@ -3,12 +3,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class StarRatingQuestionBuilder extends StatefulWidget {
-  final StarRatingQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class StarRatingQuestionBuilder extends QuestionBuilder {
   const StarRatingQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -23,7 +21,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
     StarRatingColors? color,
     StarRatingShape? shape,
   }) {
-    widget.onChanged?.call(widget.question.copyWith(
+    widget.onChanged?.call((widget.question as StarRatingQuestion).copyWith(
       maxRating: maxRating,
       shape: shape,
       color: color?.color,
@@ -42,7 +40,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
             AppSpacing.spacing_0_5.widthBox,
             Expanded(
               child: DropdownButton<int>(
-                value: widget.question.maxRating,
+                value: (widget.question as StarRatingQuestion).maxRating,
                 items: List.generate(
                   9,
                   (e) => DropdownMenuItem(
@@ -76,9 +74,10 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
                       borderRadius: BorderRadius.circular(10),
                       color: e.color,
                     ),
-                    child: e.color == widget.question.color
-                        ? Icon(Icons.check, color: Colors.white)
-                        : null,
+                    child:
+                        e.color == (widget.question as StarRatingQuestion).color
+                            ? Icon(Icons.check, color: Colors.white)
+                            : null,
                   ),
                 );
               },
@@ -92,7 +91,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
             AppSpacing.spacing_0_5.widthBox,
             Flexible(
               child: DropdownButton<StarRatingShape>(
-                value: widget.question.shape,
+                value: (widget.question as StarRatingQuestion).shape,
                 items: StarRatingShape.values
                     .map((e) => DropdownMenuItem(
                           child: Text(e.name),
@@ -106,8 +105,8 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
             ),
             AppSpacing.spacing_1.widthBox,
             Icon(
-              widget.question.shape.icon,
-              color: widget.question.color,
+              (widget.question as StarRatingQuestion).shape.icon,
+              color: (widget.question as StarRatingQuestion).color,
               size: 40,
             ),
           ],

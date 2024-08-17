@@ -3,12 +3,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class EmailAddressQuestionBuilder extends StatefulWidget {
-  final EmailAddressQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class EmailAddressQuestionBuilder extends QuestionBuilder {
   const EmailAddressQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -24,7 +22,7 @@ class _EmailAddressQuestionBuilderState
     String? emailAddressHint,
     bool? showEmailAddress,
   }) {
-    widget.onChanged?.call(widget.question.copyWith(
+    widget.onChanged?.call((widget.question as EmailAddressQuestion).copyWith(
       emailAddressLabel: emailAddressLabel,
       emailAddressHint: emailAddressHint,
       showEmailAddress: showEmailAddress,
@@ -46,7 +44,8 @@ class _EmailAddressQuestionBuilderState
             Spacer(),
             Text('Show'),
             Checkbox(
-              value: widget.question.showEmailAddress, onChanged: null,
+              value: (widget.question as EmailAddressQuestion).showEmailAddress,
+              onChanged: null,
               // (value) {
               //   onChange(showEmailAddress: value);
               // },
@@ -56,7 +55,8 @@ class _EmailAddressQuestionBuilderState
         buildInputForm(
           'Label :',
           key: UniqueKey(),
-          initialValue: widget.question.emailAddressLabel,
+          initialValue:
+              (widget.question as EmailAddressQuestion).emailAddressLabel,
           onChange: (value) {
             onChange(emailAddressLabel: value);
           },
@@ -64,7 +64,8 @@ class _EmailAddressQuestionBuilderState
         buildInputForm(
           'Placeholder :',
           key: UniqueKey(),
-          initialValue: widget.question.emailAddressHint,
+          initialValue:
+              (widget.question as EmailAddressQuestion).emailAddressHint,
           onChange: (value) {
             onChange(emailAddressHint: value);
           },

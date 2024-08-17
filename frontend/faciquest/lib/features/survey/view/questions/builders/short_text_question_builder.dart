@@ -4,12 +4,10 @@ import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 
-class ShortAnswerQuestionBuilder extends StatefulWidget {
-  final ShortAnswerQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class ShortAnswerQuestionBuilder extends QuestionBuilder {
   const ShortAnswerQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -23,7 +21,7 @@ class _ShortAnswerQuestionBuilderState extends State<ShortAnswerQuestionBuilder>
   onChange({
     int? maxLength,
   }) {
-    widget.onChanged?.call(widget.question.copyWith(
+    widget.onChanged?.call((widget.question as ShortAnswerQuestion).copyWith(
       maxLength: maxLength,
     ));
     setState(() {});
@@ -40,7 +38,7 @@ class _ShortAnswerQuestionBuilderState extends State<ShortAnswerQuestionBuilder>
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(
-                initVal: widget.question.maxLength,
+                initVal: (widget.question as ShortAnswerQuestion).maxLength,
                 onQtyChanged: (e) {
                   onChange(maxLength: e);
                 },

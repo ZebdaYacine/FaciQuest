@@ -4,12 +4,10 @@ import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 
-class CommentBoxQuestionBuilder extends StatefulWidget {
-  final CommentBoxQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class CommentBoxQuestionBuilder extends QuestionBuilder {
   const CommentBoxQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -25,7 +23,7 @@ class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
     bool? isRequired,
     int? maxLines,
   }) {
-    widget.onChanged?.call(widget.question.copyWith(
+    widget.onChanged?.call((widget.question as CommentBoxQuestion).copyWith(
       maxLength: maxLength,
     ));
     setState(() {});
@@ -42,7 +40,7 @@ class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(
-                initVal: widget.question.maxLength,
+                initVal: (widget.question as CommentBoxQuestion).maxLength,
                 onQtyChanged: (e) {
                   onChange(maxLength: e);
                 },
@@ -56,7 +54,7 @@ class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(
-                initVal: widget.question.maxLength,
+                initVal: (widget.question as CommentBoxQuestion).maxLength,
                 onQtyChanged: (e) {
                   onChange(maxLines: e);
                 },

@@ -88,118 +88,19 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 style: context.textTheme.headlineSmall,
               ),
               AppSpacing.spacing_1.heightBox,
-              switch (question) {
-                null => Text(
-                    'Select a Type first',
-                    style: context.textTheme.bodyLarge
-                        ?.copyWith(color: Colors.red),
-                  ),
-                StarRatingQuestion() => StarRatingQuestionBuilder(
-                    question: question as StarRatingQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                MultipleChoiceQuestion() => MultipleChoiceQuestionBuilder(
-                    question: question as MultipleChoiceQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                CheckboxesQuestion() => CheckboxesQuestionBuilder(
-                    question: question as CheckboxesQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                DropdownQuestion() => DropdownQuestionBuilder(
-                    question: question as DropdownQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                FileUploadQuestion() => FileUploadQuestionBuilder(
-                    question: question as FileUploadQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                AudioRecordQuestion() => AudioRecordQuestionBuilder(
-                    question: question as AudioRecordQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                ShortAnswerQuestion() => ShortAnswerQuestionBuilder(
-                    question: question as ShortAnswerQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                CommentBoxQuestion() => CommentBoxQuestionBuilder(
-                    question: question as CommentBoxQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                SliderQuestion() => SliderQuestionBuilder(
-                    question: question as SliderQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                DateTimeQuestion() => DateTimeQuestionBuilder(
-                    question: question as DateTimeQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                MatrixQuestion() => MatrixQuestionBuilder(
-                    question: question as MatrixQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                ImageChoiceQuestion() => ImageChoiceQuestionBuilder(
-                    question: question as ImageChoiceQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                NameQuestion() => NameQuestionBuilder(
-                    question: question as NameQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                EmailAddressQuestion() => EmailAddressQuestionBuilder(
-                    question: question as EmailAddressQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-                PhoneQuestion() => PhoneQuestionBuilder(
-                    question: question as PhoneQuestion,
-                    onChanged: (value) {
-                      question = value;
-                      setState(() {});
-                    },
-                  ),
-              }
+              if (question == null)
+                Text(
+                  'Please select a question type',
+                  style: context.textTheme.bodySmall,
+                )
+              else
+                QuestionBuilder.create(
+                  question!,
+                  (value) {
+                    question = value;
+                    setState(() {});
+                  },
+                )
             ],
           ),
         ),
@@ -212,35 +113,35 @@ extension on QuestionType {
   QuestionEntity? newQuestion(QuestionEntity question) {
     switch (this) {
       case QuestionType.starRating:
-        return StarRatingQuestion(title: question.title);
+        return StarRatingQuestion.copyFrom(question);
       case QuestionType.multipleChoice:
-        return MultipleChoiceQuestion(title: question.title);
+        return MultipleChoiceQuestion.copyFrom(question);
       case QuestionType.checkboxes:
-        return CheckboxesQuestion(title: question.title);
+        return CheckboxesQuestion.copyFrom(question);
       case QuestionType.dropdown:
-        return DropdownQuestion(title: question.title);
+        return DropdownQuestion.copyFrom(question);
       case QuestionType.fileUpload:
-        return FileUploadQuestion(title: question.title);
+        return FileUploadQuestion.copyFrom(question);
       case QuestionType.audioRecord:
-        return AudioRecordQuestion(title: question.title);
+        return AudioRecordQuestion.copyFrom(question);
       case QuestionType.shortAnswer:
-        return ShortAnswerQuestion(title: question.title);
+        return ShortAnswerQuestion.copyFrom(question);
       case QuestionType.commentBox:
-        return CommentBoxQuestion(title: question.title);
+        return CommentBoxQuestion.copyFrom(question);
       case QuestionType.slider:
-        return SliderQuestion(title: question.title);
+        return SliderQuestion.copyFrom(question);
       case QuestionType.dateTime:
-        return DateTimeQuestion(title: question.title);
+        return DateTimeQuestion.copyFrom(question);
       case QuestionType.matrix:
-        return MatrixQuestion(title: question.title);
+        return MatrixQuestion.copyFrom(question);
       case QuestionType.imageChoice:
-        return ImageChoiceQuestion(title: question.title);
+        return ImageChoiceQuestion.copyFrom(question);
       case QuestionType.nameType:
-        return NameQuestion(title: question.title);
+        return NameQuestion.copyFrom(question);
       case QuestionType.emailAddress:
-        return EmailAddressQuestion(title: question.title);
+        return EmailAddressQuestion.copyFrom(question);
       case QuestionType.phoneNumber:
-      // TODO: Handle this case.
+        return PhoneQuestion.copyFrom(question);
       case QuestionType.address:
       // TODO: Handle this case.
       case QuestionType.text:

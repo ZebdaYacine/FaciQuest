@@ -50,4 +50,8 @@ class MatrixQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, rows, useCheckbox, cols];
+
+  static MatrixQuestion copyFrom(QuestionEntity question) {
+    return MatrixQuestion(title: question.title);
+  }
 }

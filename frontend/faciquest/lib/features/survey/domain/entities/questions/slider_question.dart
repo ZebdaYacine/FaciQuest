@@ -42,4 +42,8 @@ class SliderQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, min, max];
+
+  static SliderQuestion copyFrom(QuestionEntity question) {
+    return SliderQuestion(title: question.title);
+  }
 }

@@ -13,3 +13,4 @@ export 'image_choice_question_builder.dart';
 export 'name_question_builder.dart';
 export 'email_address_question_builder.dart';
 export 'phone_question_builder.dart';
+export 'question_builder.dart';

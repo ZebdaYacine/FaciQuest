@@ -3,12 +3,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class NameQuestionBuilder extends StatefulWidget {
-  final NameQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class NameQuestionBuilder extends QuestionBuilder {
   const NameQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -30,7 +28,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
     bool? showMiddleName,
     bool? showFullName,
   }) {
-    widget.onChanged?.call(widget.question.copyWith(
+    widget.onChanged?.call((widget.question as NameQuestion).copyWith(
       firstNameLabel: firstNameLabel,
       lastNameLabel: lastNameLabel,
       firstNameHint: firstNameHint,
@@ -58,7 +56,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
             Spacer(),
             Text('Show'),
             Checkbox(
-              value: widget.question.showFirstName,
+              value: (widget.question as NameQuestion).showFirstName,
               onChanged: (value) {
                 onChange(showFirstName: value);
               },
@@ -68,7 +66,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         buildInputForm(
           'Label :',
           key: UniqueKey(),
-          initialValue: widget.question.firstNameLabel,
+          initialValue: (widget.question as NameQuestion).firstNameLabel,
           onChange: (value) {
             onChange(firstNameLabel: value);
           },
@@ -76,7 +74,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         buildInputForm(
           'Placeholder :',
           key: UniqueKey(),
-          initialValue: widget.question.firstNameHint,
+          initialValue: (widget.question as NameQuestion).firstNameHint,
           onChange: (value) {
             onChange(firstNameHint: value);
           },
@@ -91,7 +89,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
             Spacer(),
             Text('Show'),
             Checkbox(
-              value: widget.question.showLastName,
+              value: (widget.question as NameQuestion).showLastName,
               onChanged: (value) {
                 onChange(showLastName: value);
               },
@@ -101,7 +99,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         buildInputForm(
           'Label :',
           key: UniqueKey(),
-          initialValue: widget.question.lastNameLabel,
+          initialValue: (widget.question as NameQuestion).lastNameLabel,
           onChange: (value) {
             onChange(lastNameLabel: value);
           },
@@ -109,7 +107,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         buildInputForm(
           'Placeholder :',
           key: UniqueKey(),
-          initialValue: widget.question.lastNameHint,
+          initialValue: (widget.question as NameQuestion).lastNameHint,
           onChange: (value) {
             onChange(lastNameHint: value);
           },
@@ -124,7 +122,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
             Spacer(),
             Text('Show'),
             Checkbox(
-              value: widget.question.showMiddleName,
+              value: (widget.question as NameQuestion).showMiddleName,
               onChanged: (value) {
                 onChange(showMiddleName: value);
               },
@@ -134,7 +132,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         buildInputForm(
           'Label :',
           key: UniqueKey(),
-          initialValue: widget.question.middleNameLabel,
+          initialValue: (widget.question as NameQuestion).middleNameLabel,
           onChange: (value) {
             onChange(middleNameLabel: value);
           },
@@ -142,7 +140,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         buildInputForm(
           'Placeholder :',
           key: UniqueKey(),
-          initialValue: widget.question.middleNameHint,
+          initialValue: (widget.question as NameQuestion).middleNameHint,
           onChange: (value) {
             onChange(middleNameHint: value);
           },

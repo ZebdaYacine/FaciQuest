@@ -46,4 +46,7 @@ class CommentBoxQuestion extends QuestionEntity {
       'maxLines': maxLines,
     };
   }
+   static CommentBoxQuestion copyFrom(QuestionEntity question) {
+    return CommentBoxQuestion(title: question.title);
+  }
 }

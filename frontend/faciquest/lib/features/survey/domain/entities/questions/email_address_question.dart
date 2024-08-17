@@ -46,4 +46,8 @@ class EmailAddressQuestion extends QuestionEntity {
       'showEmailAddress': showEmailAddress,
     };
   }
+
+  static EmailAddressQuestion copyFrom(QuestionEntity question) {
+    return EmailAddressQuestion(title: question.title);
+  }
 }

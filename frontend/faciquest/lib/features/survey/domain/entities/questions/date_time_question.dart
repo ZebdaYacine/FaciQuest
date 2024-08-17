@@ -38,4 +38,8 @@ class DateTimeQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, collectDateInfo, collectTimeInfo];
+
+  static DateTimeQuestion copyFrom(QuestionEntity question) {
+    return DateTimeQuestion(title: question.title);
+  }
 }

@@ -3,12 +3,10 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 
-class FileUploadQuestionBuilder extends StatefulWidget {
-  final FileUploadQuestion question;
-  final ValueChanged<QuestionEntity>? onChanged;
+class FileUploadQuestionBuilder extends QuestionBuilder {
   const FileUploadQuestionBuilder({
-    required this.question,
-    this.onChanged,
+    required super.question,
+    super.onChanged,
     super.key,
   });
 
@@ -23,7 +21,7 @@ class _FileUploadQuestionBuilderState extends State<FileUploadQuestionBuilder>
     String? instructions,
     List<FileUploadType>? allowedExtensions,
   }) {
-    widget.onChanged?.call(widget.question.copyWith(
+    widget.onChanged?.call((widget.question as FileUploadQuestion).copyWith(
       instructions: instructions,
       allowedExtensions: allowedExtensions,
     ));
@@ -51,12 +49,19 @@ class _FileUploadQuestionBuilderState extends State<FileUploadQuestionBuilder>
                 .map(
                   (e) => ChoiceChip(
                     label: Text(e.name),
-                    selected: widget.question.allowedExtensions.contains(e),
+                    selected: (widget.question as FileUploadQuestion)
+                        .allowedExtensions
+                        .contains(e),
                     onSelected: (value) {
                       onChange(
                         allowedExtensions: value
-                            ? [...widget.question.allowedExtensions, e]
-                            : widget.question.allowedExtensions
+                            ? [
+                                ...(widget.question as FileUploadQuestion)
+                                    .allowedExtensions,
+                                e
+                              ]
+                            : (widget.question as FileUploadQuestion)
+                                .allowedExtensions
                                 .where((element) => element != e)
                                 .toList(),
                       );

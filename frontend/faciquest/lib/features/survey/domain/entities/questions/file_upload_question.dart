@@ -99,4 +99,8 @@ class FileUploadQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, instructions, allowedExtensions];
+
+  static FileUploadQuestion copyFrom(QuestionEntity question) {
+    return FileUploadQuestion(title: question.title);
+  }
 }
