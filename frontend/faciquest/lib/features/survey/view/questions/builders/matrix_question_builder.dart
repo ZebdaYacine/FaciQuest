@@ -81,15 +81,13 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
           );
         }).toList(),
         AppSpacing.spacing_1.heightBox,
-        RadioListTile(
-          value: true,
-          groupValue: widget.question.useCheckbox,
-          toggleable: true,
+        CheckboxListTile(
+          value: widget.question.useCheckbox,
           title:
               const Text('Allow multiple responses per row (use checkboxes)'),
           onChanged: (value) {
             onChange(
-              useCheckbox: !widget.question.useCheckbox,
+              useCheckbox: value,
             );
           },
         ),
