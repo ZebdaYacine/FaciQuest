@@ -64,16 +64,6 @@ class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
             )
           ],
         ),
-        Row(
-          children: [
-            CheckboxListTile(
-              value: widget.question.isRequired,
-              onChanged: (e) {
-                onChange(isRequired: e);
-              },
-            )
-          ],
-        ),
       ],
     );
   }

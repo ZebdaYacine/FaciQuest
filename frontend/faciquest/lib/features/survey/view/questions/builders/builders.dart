@@ -9,3 +9,4 @@ export 'comment_box_question_builder.dart';
 export 'slider_question_builder.dart';
 export 'date_time_question_builder.dart';
 export 'matrix_question_builder.dart';
+export 'image_choice_question_builder.dart';

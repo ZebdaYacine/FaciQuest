@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +15,12 @@ part 'questions/comment_box_question.dart';
 part 'questions/slider_question.dart';
 part 'questions/date_time_question.dart';
 part 'questions/matrix_question.dart';
+part 'questions/image_choice_question.dart';
 
 enum QuestionType {
   starRating,
   multipleChoice,
+  imageChoice,
   checkboxes,
   dropdown,
   matrix,
@@ -52,6 +56,8 @@ enum QuestionType {
         return 'Short Answer';
       case QuestionType.matrix:
         return 'Matrix';
+      case QuestionType.imageChoice:
+        return 'Image Choice';
     }
   }
 
@@ -79,6 +85,8 @@ enum QuestionType {
         return Icons.short_text_outlined;
       case QuestionType.matrix:
         return Icons.table_rows_outlined;
+      case QuestionType.imageChoice:
+        return Icons.image_outlined;
     }
   }
 }
@@ -99,8 +107,6 @@ sealed class QuestionEntity extends Equatable {
     String? title,
   });
 }
-
-class ImageChoiceQuestion {}
 
 class NameQuestion {}
 

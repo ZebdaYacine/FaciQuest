@@ -105,7 +105,9 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                         title: question?.title ?? '',
                       );
                     case QuestionType.commentBox:
-                    // question = const CommentBoxQuestion();
+                      question = CommentBoxQuestion(
+                        title: question?.title ?? '',
+                      );
                     case QuestionType.shortAnswer:
                       question = ShortAnswerQuestion(
                         title: question?.title ?? '',
@@ -116,6 +118,10 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                     // question = const DateTimeQuestion();
                     case QuestionType.matrix:
                       question = MatrixQuestion(
+                        title: question?.title ?? '',
+                      );
+                    case QuestionType.imageChoice:
+                      question = ImageChoiceQuestion(
                         title: question?.title ?? '',
                       );
                   }
@@ -205,6 +211,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   ),
                 MatrixQuestion() => MatrixQuestionBuilder(
                     question: question as MatrixQuestion,
+                    onChanged: (value) {
+                      question = value;
+                      setState(() {});
+                    },
+                  ),
+                ImageChoiceQuestion() => ImageChoiceQuestionBuilder(
+                    question: question as ImageChoiceQuestion,
                     onChanged: (value) {
                       question = value;
                       setState(() {});
