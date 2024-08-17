@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class ImageChoiceQuestion extends QuestionEntity {
   ImageChoiceQuestion({
     required super.title,
+    super.type = QuestionType.imageChoice,
     this.choices = const [ImageChoice()],
     this.useCheckbox = false,
   });
@@ -12,6 +13,7 @@ class ImageChoiceQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     List<ImageChoice>? choices,
     bool? useCheckbox,
   }) {
@@ -22,8 +24,7 @@ class ImageChoiceQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+ static QuestionEntity fromMap(Map<String, dynamic> map) {
     return ImageChoiceQuestion(
       title: map['title'],
       choices: List<ImageChoice>.from(map['choices']),
@@ -36,7 +37,8 @@ class ImageChoiceQuestion extends QuestionEntity {
     return <String, dynamic>{
       'title': title,
       'choices': choices.map((e) => e.toMap()),
-      'useCheckbox': useCheckbox
+      'useCheckbox': useCheckbox,
+      'type': type.name,
     };
   }
 

@@ -5,6 +5,7 @@ part of '../question_entity.dart';
 class MatrixQuestion extends QuestionEntity {
   const MatrixQuestion({
     required super.title,
+    super.type = QuestionType.matrix,
     this.rows = const [''],
     this.cols = const [''],
     this.useCheckbox = false,
@@ -16,6 +17,7 @@ class MatrixQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     List<String>? rows,
     List<String>? cols,
     bool? useCheckbox,
@@ -28,8 +30,7 @@ class MatrixQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return MatrixQuestion(
       title: map['title'],
       rows: List<String>.from(map['rows']),
@@ -44,7 +45,8 @@ class MatrixQuestion extends QuestionEntity {
       'title': title,
       'rows': rows,
       'cols': cols,
-      'useCheckbox': useCheckbox
+      'useCheckbox': useCheckbox,
+      'type': type.name,
     };
   }
 

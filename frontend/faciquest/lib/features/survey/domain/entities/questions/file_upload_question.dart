@@ -52,6 +52,7 @@ final Map<FileUploadType, List<String>> extensions = {
 class FileUploadQuestion extends QuestionEntity {
   FileUploadQuestion({
     required super.title,
+    super.type = QuestionType.fileUpload,
     this.allowedExtensions = const {},
     this.instructions,
   });
@@ -62,6 +63,7 @@ class FileUploadQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     List<FileUploadType>? allowedExtensions,
     String? instructions,
   }) {
@@ -72,8 +74,7 @@ class FileUploadQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return FileUploadQuestion(
       title: map['title'],
       instructions: map['instructions'],
@@ -94,6 +95,7 @@ class FileUploadQuestion extends QuestionEntity {
       'title': title,
       'instructions': instructions,
       'allowedExtensions': allowedExtensions,
+      'type': type.name,
     };
   }
 

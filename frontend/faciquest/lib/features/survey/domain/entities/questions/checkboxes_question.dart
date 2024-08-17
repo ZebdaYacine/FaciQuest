@@ -5,6 +5,7 @@ part of '../question_entity.dart';
 class CheckboxesQuestion extends QuestionEntity {
   const CheckboxesQuestion({
     required super.title,
+    super.type = QuestionType.checkboxes,
     this.choices = const [''],
   });
   final List<String> choices;
@@ -12,6 +13,7 @@ class CheckboxesQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     List<String>? choices,
   }) {
     return CheckboxesQuestion(
@@ -20,8 +22,7 @@ class CheckboxesQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return CheckboxesQuestion(
       title: map['title'],
       choices: List<String>.from(map['choices']),
@@ -33,6 +34,7 @@ class CheckboxesQuestion extends QuestionEntity {
     return <String, dynamic>{
       'title': title,
       'choices': choices,
+      'type': type.name,
     };
   }
 

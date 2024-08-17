@@ -126,26 +126,65 @@ enum QuestionType {
 
 sealed class QuestionEntity extends Equatable {
   final String title;
+  final QuestionType type;
 
   @override
-  List<Object?> get props => [title];
+  List<Object?> get props => [title, type];
 
-  const QuestionEntity({required this.title});
+  const QuestionEntity({
+    required this.title,
+    required this.type,
+  });
 
   Map<String, dynamic> toMap();
 
-  QuestionEntity fromMap(Map<String, dynamic> map);
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
+    final type = QuestionType.values.firstWhere((e) => e.name == map['type']);
+    switch (type) {
+      case QuestionType.starRating:
+        return StarRatingQuestion.fromMap(map);
+      case QuestionType.multipleChoice:
+        return MultipleChoiceQuestion.fromMap(map);
+      case QuestionType.checkboxes:
+        return CheckboxesQuestion.fromMap(map);
+      case QuestionType.dropdown:
+        return DropdownQuestion.fromMap(map);
+      case QuestionType.fileUpload:
+        return FileUploadQuestion.fromMap(map);
+      case QuestionType.audioRecord:
+        return AudioRecordQuestion.fromMap(map);
+      case QuestionType.shortAnswer:
+        return ShortAnswerQuestion.fromMap(map);
+      case QuestionType.commentBox:
+        return CommentBoxQuestion.fromMap(map);
+      case QuestionType.slider:
+        return SliderQuestion.fromMap(map);
+      case QuestionType.dateTime:
+        return DateTimeQuestion.fromMap(map);
+      case QuestionType.imageChoice:
+        return ImageChoiceQuestion.fromMap(map);
+      case QuestionType.matrix:
+        return MatrixQuestion.fromMap(map);
+      case QuestionType.nameType:
+        return NameQuestion.fromMap(map);
+      case QuestionType.emailAddress:
+        return EmailAddressQuestion.fromMap(map);
+      case QuestionType.phoneNumber:
+        return PhoneQuestion.fromMap(map);
+      case QuestionType.address:
+        return AddressQuestion.fromMap(map);
+      case QuestionType.text:
+        return TextQuestion.fromMap(map);
+      case QuestionType.image:
+        return ImageQuestion.fromMap(map);
+    }
+  }
 
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
   });
 }
-
-class AddressQuestion {}
-
-class TextQuestion {}
-
-class ImageQuestion {}
 
 final Map<String, List<List<String>>> scaleOptions = {
   'Agree - Disagree': [

@@ -5,6 +5,7 @@ part of '../question_entity.dart';
 class MultipleChoiceQuestion extends QuestionEntity {
   const MultipleChoiceQuestion({
     required super.title,
+    super.type = QuestionType.multipleChoice,
     this.choices = const [''],
   });
   final List<String> choices;
@@ -12,6 +13,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     List<String>? choices,
   }) {
     return MultipleChoiceQuestion(
@@ -20,8 +22,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+ static QuestionEntity fromMap(Map<String, dynamic> map) {
     return MultipleChoiceQuestion(
       title: map['title'],
       choices: List<String>.from(map['choices']),
@@ -33,6 +34,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
     return <String, dynamic>{
       'title': title,
       'choices': choices,
+      'type': type.name,
     };
   }
 

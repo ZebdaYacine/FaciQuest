@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class EmailAddressQuestion extends QuestionEntity {
   EmailAddressQuestion({
     required super.title,
+    super.type = QuestionType.emailAddress,
     this.emailAddressLabel = 'Email Address',
     this.emailAddressHint,
     this.showEmailAddress = true,
@@ -15,6 +16,7 @@ class EmailAddressQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     String? emailAddressLabel,
     String? emailAddressHint,
     bool? showEmailAddress,
@@ -27,8 +29,7 @@ class EmailAddressQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return EmailAddressQuestion(
       title: map['title'],
       emailAddressLabel: map['emailAddressLabel'],
@@ -44,6 +45,7 @@ class EmailAddressQuestion extends QuestionEntity {
       'emailAddressHint': emailAddressHint,
       'emailAddressLabel': emailAddressLabel,
       'showEmailAddress': showEmailAddress,
+      'type': type.name,
     };
   }
 

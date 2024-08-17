@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class DropdownQuestion extends QuestionEntity {
   const DropdownQuestion({
     required super.title,
+    super.type = QuestionType.dropdown,
     this.choices = const [''],
   });
   final List<String> choices;
@@ -10,6 +11,7 @@ class DropdownQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     List<String>? choices,
   }) {
     return DropdownQuestion(
@@ -18,8 +20,7 @@ class DropdownQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return DropdownQuestion(
       title: map['title'],
       choices: List<String>.from(map['choices']),
@@ -31,6 +32,7 @@ class DropdownQuestion extends QuestionEntity {
     return <String, dynamic>{
       'title': title,
       'choices': choices,
+      'type': type.name,
     };
   }
 

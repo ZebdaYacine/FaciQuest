@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class CommentBoxQuestion extends QuestionEntity {
   CommentBoxQuestion({
     required super.title,
+    super.type = QuestionType.commentBox,
     this.maxLength = 500,
     this.isRequired = false,
     this.maxLines = 5,
@@ -15,6 +16,7 @@ class CommentBoxQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     int? maxLength,
     bool? isRequired,
     int? maxLines,
@@ -27,8 +29,7 @@ class CommentBoxQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return CommentBoxQuestion(
       title: map['title'],
       maxLength: map['maxLength'],
@@ -44,9 +45,11 @@ class CommentBoxQuestion extends QuestionEntity {
       'maxLength': maxLength,
       'isRequired': isRequired,
       'maxLines': maxLines,
+      'type': type.name,
     };
   }
-   static CommentBoxQuestion copyFrom(QuestionEntity question) {
+
+  static CommentBoxQuestion copyFrom(QuestionEntity question) {
     return CommentBoxQuestion(title: question.title);
   }
 }

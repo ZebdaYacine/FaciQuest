@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class SliderQuestion extends QuestionEntity {
   SliderQuestion({
     required super.title,
+    super.type = QuestionType.slider,
     this.min = 0,
     this.max = 100,
   });
@@ -12,6 +13,7 @@ class SliderQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     int? min,
     int? max,
   }) {
@@ -22,8 +24,7 @@ class SliderQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return SliderQuestion(
       title: map['title'],
       min: map['min'],
@@ -37,6 +38,7 @@ class SliderQuestion extends QuestionEntity {
       'title': title,
       'min': min,
       'max': max,
+      'type': type.name,
     };
   }
 

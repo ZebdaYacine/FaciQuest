@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class PhoneQuestion extends QuestionEntity {
   PhoneQuestion({
     required super.title,
+    super.type = QuestionType.phoneNumber,
     this.phoneLabel = 'Phone Number',
     this.phoneHint,
     this.showPhone = true,
@@ -15,6 +16,7 @@ class PhoneQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     String? phoneLabel,
     String? phoneHint,
     bool? showPhone,
@@ -27,8 +29,7 @@ class PhoneQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+ static QuestionEntity fromMap(Map<String, dynamic> map) {
     return PhoneQuestion(
       title: map['title'],
       phoneLabel: map['phoneLabel'],
@@ -44,6 +45,7 @@ class PhoneQuestion extends QuestionEntity {
       'phoneHint': phoneHint,
       'phoneLabel': phoneLabel,
       'showPhone': showPhone,
+      'type': type.name,
     };
   }
 

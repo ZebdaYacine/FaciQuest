@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class NameQuestion extends QuestionEntity {
   NameQuestion({
     required super.title,
+    super.type = QuestionType.nameType,
     this.firstNameLabel = 'First Name',
     this.lastNameLabel = 'Last Name',
     this.firstNameHint,
@@ -25,6 +26,7 @@ class NameQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    QuestionType? type,
     String? firstNameLabel,
     String? lastNameLabel,
     String? firstNameHint,
@@ -49,8 +51,7 @@ class NameQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  QuestionEntity fromMap(Map<String, dynamic> map) {
+ static QuestionEntity fromMap(Map<String, dynamic> map) {
     return NameQuestion(
       title: map['title'],
       firstNameLabel: map['firstNameLabel'],
@@ -78,6 +79,7 @@ class NameQuestion extends QuestionEntity {
       'showFirstName': showFirstName,
       'showLastName': showLastName,
       'showMiddleName': showMiddleName,
+      'type': type.name,
     };
   }
 
