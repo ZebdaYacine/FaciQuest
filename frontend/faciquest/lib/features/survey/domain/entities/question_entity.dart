@@ -19,6 +19,9 @@ part 'questions/image_choice_question.dart';
 part 'questions/name_question.dart';
 part 'questions/email_address_question.dart';
 part 'questions/phone_question.dart';
+part 'questions/address_question.dart';
+part 'questions/text_question.dart';
+part 'questions/image_question.dart';
 
 enum QuestionType {
   starRating,

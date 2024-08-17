@@ -110,7 +110,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
 }
 
 extension on QuestionType {
-  QuestionEntity? newQuestion(QuestionEntity question) {
+  QuestionEntity newQuestion(QuestionEntity question) {
     switch (this) {
       case QuestionType.starRating:
         return StarRatingQuestion.copyFrom(question);
@@ -143,12 +143,11 @@ extension on QuestionType {
       case QuestionType.phoneNumber:
         return PhoneQuestion.copyFrom(question);
       case QuestionType.address:
-      // TODO: Handle this case.
+        return AddressQuestion.copyFrom(question);
       case QuestionType.text:
-      // TODO: Handle this case.
+        return TextQuestion.copyFrom(question);
       case QuestionType.image:
-      // TODO: Handle this case.
+        return ImageQuestion.copyFrom(question);
     }
-    return null;
   }
 }

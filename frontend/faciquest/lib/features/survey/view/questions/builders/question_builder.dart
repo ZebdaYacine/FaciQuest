@@ -74,6 +74,18 @@ abstract class QuestionBuilder extends StatefulWidget {
           question: question as PhoneQuestion,
           onChanged: onChanged,
         ),
+    AddressQuestion: (question, onChanged) => AddressQuestionBuilder(
+          question: question as AddressQuestion,
+          onChanged: onChanged,
+        ),
+    TextQuestion: (question, onChanged) => TextQuestionBuilder(
+          question: question as TextQuestion,
+          onChanged: onChanged,
+        ),
+    ImageQuestion: (question, onChanged) => ImageQuestionBuilder(
+          question: question as ImageQuestion,
+          onChanged: onChanged,
+        ),
   };
 
   factory QuestionBuilder.create(
