@@ -88,21 +88,20 @@ func (wc *WalletController) CashOutWalletRequest(c *gin.Context) {
 		return
 	}
 	userId := core.GetIdUser(c)
-	// cash_out.Wallet.UserID = userId
-	// cashOutMyWalletParams := &usecase.CashOutMyWalletParams{}
-	// cashOutMyWalletParams.Data = &cash_out
-	// resulat := wc.WalletUseCase.CashOutMyWallet(c, cashOutMyWalletParams)
-	// if resulat.Err != nil {
-	// 	c.JSON(http.StatusBadRequest, model.ErrorResponse{
-	// 		Message: resulat.Err.Error(),
-	// 	})
-	// 	return
-	// }
-	// c.JSON(http.StatusOK, model.SuccessResponse{
-	// 	Message: "WALLET CASH OUT REQUEST DONE SUCCESSFULY",
-	// 	Data:    resulat.Data,
-	// })
-	println(userId)
+	cash_out.Wallet.UserID = userId
+	cashOutMyWalletParams := &usecase.CashOutMyWalletParams{}
+	cashOutMyWalletParams.Data = &cash_out
+	resulat := wc.WalletUseCase.CashOutMyWallet(c, cashOutMyWalletParams)
+	if resulat.Err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: resulat.Err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "WALLET CASH OUT REQUEST DONE SUCCESSFULY",
+		Data:    resulat.Data,
+	})
 	user, err := wc.UserUsecase.GetUserById(c, userId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{

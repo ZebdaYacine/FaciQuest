@@ -95,6 +95,7 @@ func (wu *walletUsecase) CashOutMyWallet(c context.Context, query *CashOutMyWall
 	cashout_request := query.Data
 	wallet := cashout_request.Wallet
 	wallet_db, err := wu.repo.GetWallet(c, wallet.UserID)
+
 	cashout_request.Wallet.ID = *&wallet_db.ID
 	if err != nil {
 		return &CashOutMyWalletResulat{
@@ -102,7 +103,20 @@ func (wu *walletUsecase) CashOutMyWallet(c context.Context, query *CashOutMyWall
 			Err:  fmt.Errorf("this user has not wallet ==> %v", err),
 		}
 	}
-
+	if wallet.Amount != wallet_db.Amount ||
+		wallet.PaymentMethod != wallet_db.PaymentMethod ||
+		wallet.CCP != wallet_db.CCP || wallet.RIP != wallet_db.RIP {
+		return &CashOutMyWalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("wallet information is not correct"),
+		}
+	}
+	if !wallet_db.IsCashable {
+		return &CashOutMyWalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("this wallet is not cashable"),
+		}
+	}
 	if cashout_request.Amount < 0 || cashout_request.Amount > wallet.Amount {
 		return &CashOutMyWalletResulat{
 			Data: nil,
