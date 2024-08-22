@@ -69,7 +69,7 @@ func (pu *paymentUsecase) PaymentRequest(c context.Context, query *PaymentParams
 		}
 	}
 	wallet_db.TempAmount -= payment_request.Amount
-	_, err = pu.repoW.UpdateMyWallet(c, wallet_db)
+	_, err = pu.repoW.UpdateTempAmount(c, wallet_db)
 	if err != nil {
 		return &PaymentResulat{
 			Data: nil,

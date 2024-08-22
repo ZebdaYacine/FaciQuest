@@ -33,9 +33,12 @@ func NewCashOutWalletRouter(db database.Database, group *gin.RouterGroup) {
 	wu := usecase.NewWalletUsecase(wr, core.WALLET)
 	ur := repository.NewUserRepository(db)
 	uu := usecase.NewUserUsecase(ur, core.USER)
+	pr := repository.NewPaymentRepository(db)
+	pu := usecase.NewPaymentUseCase(wr, pr, core.PAYMENT, core.WALLET)
 	wc := &controller.PaymentController{
-		WalletUseCase: wu, // usecase for insured operations
-		UserUsecase:   uu,
+		WalletUseCase:  wu, // usecase for insured operations
+		UserUsecase:    uu,
+		PaymentUseCase: pu,
 	}
-	group.POST("cash-out-wallet", wc.CashOutWalletRequest)
+	group.POST("cash-out-request", wc.CashOutWalletRequest)
 }

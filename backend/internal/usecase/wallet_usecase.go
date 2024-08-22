@@ -28,7 +28,6 @@ var (
 )
 
 type WalletUseCase interface {
-
 	//WALLET FUNCTIONS
 	InitMyWallet(c context.Context, wallet *WalletParams) *WalletResulat
 	UpdateMyWallet(c context.Context, wallet *WalletParams) *WalletResulat

@@ -16,6 +16,7 @@ import (
 type WalletRepository interface {
 	InitMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error)
 	UpdateMyWallet(c context.Context, wallet *domain.Wallet) (*domain.Wallet, error)
+	UpdateTempAmount(c context.Context, wallet *domain.Wallet) (*domain.Wallet, error)
 	GetWallet(c context.Context, collection string, userId string) (*domain.Wallet, error)
 }
 
@@ -87,6 +88,18 @@ func (wr *walletRepository) UpdateMyWallet(c context.Context, data *domain.Walle
 			"userid":        data.UserID,
 			"paymentmethod": data.PaymentMethod,
 			"iscashable":    data.Amount >= 1000,
+		},
+	}
+	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)
+}
+
+// UpdateTempAmount implements WalletRepository.
+func (wr *walletRepository) UpdateTempAmount(c context.Context, wallet *domain.Wallet) (*domain.Wallet, error) {
+	collection := wr.database.Collection("wallet")
+	filterUpdate := bson.D{{Key: "userid", Value: wallet.UserID}}
+	update := bson.M{
+		"$set": bson.M{
+			"tempamount": wallet.TempAmount,
 		},
 	}
 	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)

@@ -48,4 +48,10 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewUpdateWalletRouter(db, protectedRouter)
 	private.NewCashOutWalletRouter(db, protectedRouter)
 
+	//Middleware to verify AccessToken
+	protectedRouter.Use(middleware.JwtAuthMiddleware(
+		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
+		"Admin"))
+	private.NewUpdatePaymentStatusRouter(db, protectedRouter)
+
 }

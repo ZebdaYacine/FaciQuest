@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewPaymentRouter(db database.Database, group *gin.RouterGroup) {
+func NewUpdatePaymentStatusRouter(db database.Database, group *gin.RouterGroup) {
 	wr := repository.NewWalletRepository(db)
 	pr := repository.NewPaymentRepository(db)
 	pu := usecase.NewPaymentUseCase(wr, pr, core.PAYMENT, core.WALLET)

@@ -19,8 +19,6 @@ type WalletController struct {
 	UserUsecase    usecase.UserUsecase
 }
 
-
-
 func (wc *PaymentController) UpdateWalletRequest(c *gin.Context) {
 	log.Println("__***__***___________ UPDATE WALLET  REQUEST ___________***__***__")
 	var WalletUpdated domain.Wallet
@@ -64,15 +62,15 @@ func (pc *PaymentController) GetWalletRequest(c *gin.Context) {
 
 func (wc *PaymentController) CashOutWalletRequest(c *gin.Context) {
 	log.Println("__***__***___________ CASH OUT WALLET  REQUEST ___________***__***__")
-	var cash_out domain.Payment
-	if !core.IsDataRequestSupported(&cash_out, c) {
+	var payment_request domain.Payment
+	if !core.IsDataRequestSupported(&payment_request, c) {
 		return
 	}
 	userId := core.GetIdUser(c)
-	cash_out.Wallet.UserID = userId
-	cashOutMyWalletParams := &usecase.PaymentParams{}
-	cashOutMyWalletParams.Data = &cash_out
-	resulat := wc.PaymentUseCase.PaymentRequest(c, cashOutMyWalletParams)
+	payment_request.Wallet.UserID = userId
+	paymentRequestParams := &usecase.PaymentParams{}
+	paymentRequestParams.Data = &payment_request
+	resulat := wc.PaymentUseCase.PaymentRequest(c, paymentRequestParams)
 	if resulat.Err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: resulat.Err.Error(),
@@ -91,7 +89,7 @@ func (wc *PaymentController) CashOutWalletRequest(c *gin.Context) {
 		return
 	}
 	subject := "Cash out request recived"
-	body := fmt.Sprintf(" Your request to cash out  %.2f DZD is being processed.\n request id:%s", cash_out.Amount, cash_out.ID)
+	body := fmt.Sprintf(" Your request to cash out  %.2f DZD is being processed.\n request id:%s", payment_request.Amount, payment_request.ID)
 	email.SendEmail(user.Email, subject, body)
 
 }
