@@ -29,6 +29,7 @@ type UserUsecase interface {
 	IsAlreadyExist(c context.Context, data *domain.SignupModel) (bool, error)
 	//SETTING PROFILE FUNCTIONS
 	GetUserByEmail(c context.Context, email string) (*domain.User, error)
+	GetUserById(c context.Context, id string) (*domain.User, error)
 	SetNewPassword(c context.Context, data *domain.User) (*domain.User, error)
 	UpdateProfile(c context.Context, data *UserParams) *UserResulat
 	//SETTING WALLET
@@ -109,4 +110,9 @@ func (au *userUsecase) Login(c context.Context, query *UserParams) *UserResulat 
 // GetUserByEmail implements domain.UserUsecase.
 func (au *userUsecase) GetUserByEmail(c context.Context, data string) (*domain.User, error) {
 	return au.repo.GetUserByEmail(c, data)
+}
+
+// GetUserById implements UserUsecase.
+func (au *userUsecase) GetUserById(c context.Context, id string) (*domain.User, error) {
+	return au.repo.GetUserById(c, id)
 }

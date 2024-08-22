@@ -5,10 +5,12 @@ import (
 	"back-end/internal/domain"
 	"back-end/pkg"
 	"back-end/pkg/database"
+	util "back-end/util/token"
 	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -26,6 +28,13 @@ func IsDataRequestSupported[T domain.Account](data *T, c *gin.Context) bool {
 		return false
 	}
 	return true
+}
+
+func GetIdUser(c *gin.Context) string {
+	authHeader := c.Request.Header.Get("Authorization")
+	token := strings.Split(authHeader, " ")
+	id, _ := util.ExtractFieldFromToken(token[1], RootServer.SECRET_KEY, "id")
+	return id.(string)
 }
 
 func ConvertBsonToStruct[T domain.Account](bsonData primitive.M) (*T, error) {

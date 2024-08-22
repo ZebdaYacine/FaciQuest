@@ -16,8 +16,18 @@ type WalletResulat struct {
 	Err  error
 }
 
+type CashOutMyWalletParams struct {
+	Data *domain.CashOut
+}
+
+type CashOutMyWalletResulat struct {
+	Data *domain.CashOut
+	Err  error
+}
+
 var (
-	walletResulat = &WalletResulat{}
+	walletResulat          = &WalletResulat{}
+	cashOutMyWalletResulat = &CashOutMyWalletParams{}
 )
 
 type WalletUseCase interface {
@@ -26,8 +36,8 @@ type WalletUseCase interface {
 	InitMyWallet(c context.Context, wallet *WalletParams) *WalletResulat
 	UpdateMyWallet(c context.Context, wallet *WalletParams) *WalletResulat
 	GetWallet(c context.Context, query *WalletParams) *WalletResulat
-	CashOutMyWallet(c context.Context, query *WalletParams) *WalletResulat
-	// CheckMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error)
+	CashOutMyWallet(c context.Context, query *CashOutMyWalletParams) *CashOutMyWalletResulat
+	UpdateCashOutStatus(c context.Context, query *CashOutMyWalletParams) *CashOutMyWalletResulat
 }
 
 type walletUsecase struct {
@@ -42,23 +52,71 @@ func NewWalletUsecase(repo repository.WalletRepository, collection string) Walle
 	}
 }
 
-// CashOutMyWallet implements WalletUseCase.
-func (wu *walletUsecase) CashOutMyWallet(c context.Context, query *WalletParams) *WalletResulat {
+// UpdateCashOutMyWallet implements WalletUseCase.
+func (wu *walletUsecase) UpdateCashOutStatus(c context.Context, query *CashOutMyWalletParams) *CashOutMyWalletResulat {
 	if query.Data == nil {
-		return &WalletResulat{
+		return &CashOutMyWalletResulat{
 			Data: nil,
 			Err:  fmt.Errorf("data requeried"),
 		}
 	}
-	wallet := query.Data.(*domain.Wallet)
-	record, err := wu.repo.CashOutMyWallet(c, wallet)
+	cashout_request := query.Data
+	wallet := cashout_request.Wallet
+	_, err := wu.repo.GetWallet(c, wallet.UserID)
 	if err != nil {
-		return &WalletResulat{
+		return &CashOutMyWalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("this user has not wallet ==> %v", err),
+		}
+	}
+	record, err := wu.repo.UpdateCashOutStatus(c, cashout_request)
+	if err != nil {
+		return &CashOutMyWalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("this user has not wallet ==> %v", err),
+		}
+	}
+
+	return &CashOutMyWalletResulat{
+		Data: record,
+		Err:  fmt.Errorf("this user has not wallet ==> %v", err),
+	}
+
+}
+
+// CashOutMyWallet implements WalletUseCase.
+func (wu *walletUsecase) CashOutMyWallet(c context.Context, query *CashOutMyWalletParams) *CashOutMyWalletResulat {
+	if query.Data == nil {
+		return &CashOutMyWalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("data requeried"),
+		}
+	}
+	cashout_request := query.Data
+	wallet := cashout_request.Wallet
+	wallet_db, err := wu.repo.GetWallet(c, wallet.UserID)
+	cashout_request.Wallet.ID = *&wallet_db.ID
+	if err != nil {
+		return &CashOutMyWalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("this user has not wallet ==> %v", err),
+		}
+	}
+
+	if cashout_request.Amount < 0 || cashout_request.Amount > wallet.Amount {
+		return &CashOutMyWalletResulat{
+			Data: nil,
+			Err:  fmt.Errorf("you cannot cash out this amount"),
+		}
+	}
+	record, err := wu.repo.CashOutMyWallet(c, cashout_request)
+	if err != nil {
+		return &CashOutMyWalletResulat{
 			Data: nil,
 			Err:  fmt.Errorf("internal error: %v", err),
 		}
 	}
-	return &WalletResulat{
+	return &CashOutMyWalletResulat{
 		Data: record,
 		Err:  nil,
 	}

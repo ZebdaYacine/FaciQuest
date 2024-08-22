@@ -17,7 +17,8 @@ type WalletRepository interface {
 	InitMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error)
 	UpdateMyWallet(c context.Context, wallet *domain.Wallet) (*domain.Wallet, error)
 	GetWallet(c context.Context, userId string) (*domain.Wallet, error)
-	CashOutMyWallet(c context.Context, wallet *domain.Wallet) (*domain.CashoutRequest, error)
+	CashOutMyWallet(c context.Context, wallet *domain.CashOut) (*domain.CashOut, error)
+	UpdateCashOutStatus(c context.Context, wallet *domain.CashOut) (*domain.CashOut, error)
 }
 
 type walletRepository struct {
@@ -30,21 +31,42 @@ func NewWalletRepository(db database.Database) WalletRepository {
 	}
 }
 
-// CashOutMyWallet implements WalletRepository.
-func (wr *walletRepository) CashOutMyWallet(c context.Context, wallet *domain.Wallet) (*domain.CashoutRequest, error) {
-	collection := wr.database.Collection("cashout_request")
-	record := &domain.CashoutRequest{
-		Wallet:             *wallet,
-		CashoutRequestDate: "",
-		Status:             "pending",
-		PaymentDate:        "",
+// UpdateCashOutStatus implements WalletRepository.
+func (wr *walletRepository) UpdateCashOutStatus(c context.Context, cashout *domain.CashOut) (*domain.CashOut, error) {
+	wallet, err := wr.GetWallet(c, cashout.Wallet.UserID)
+	if err != nil {
+		return nil, err
 	}
+	if wallet.Amount < cashout.Amount {
+		return nil, fmt.Errorf("wallet amount is out of range: %v", cashout.Amount)
+	}
+	wallet.Amount -= cashout.Amount
+	record, err := wr.UpdateMyWallet(c, wallet)
+	if err != nil {
+		return nil, err
+	}
+	cashout.Status = "success"
+	cashout.Wallet = *record
+	collection := wr.database.Collection("cashout_request")
+	filterUpdate := bson.D{{Key: "_id", Value: cashout.ID}}
+	update := bson.M{
+		"$set": cashout,
+	}
+	return core.UpdateDoc[domain.CashOut](c, collection, update, filterUpdate)
+
+}
+
+// CashOutMyWallet implements WalletRepository.
+func (wr *walletRepository) CashOutMyWallet(c context.Context, data *domain.CashOut) (*domain.CashOut, error) {
+	collection := wr.database.Collection("cashout_request")
+	record := data
 	requestId, err := collection.InsertOne(c, record)
 	if err != nil {
 		log.Printf("Failed to record cash out request: %v", err)
 		return nil, err
 	}
 	log.Printf("record cash out request ID %v :", requestId)
+	record.ID = requestId.(string)
 	return record, nil
 }
 
@@ -54,18 +76,18 @@ func (wr *walletRepository) GetWallet(c context.Context, userId string) (*domain
 	var resulat bson.M
 	filter := bson.D{{Key: "userid", Value: userId}}
 	err := collection.FindOne(c, filter).Decode(&resulat)
-	if err != mongo.ErrNoDocuments {
-		return nil, fmt.Errorf("user has not wallet")
+	if err == mongo.ErrNoDocuments {
+		return nil, fmt.Errorf("user has not wallet %s", err.Error())
 	}
 	return &domain.Wallet{
 		ID:            resulat["_id"].(primitive.ObjectID).Hex(),
 		UserID:        userId,
-		Amount:        resulat["amount"].(float32),
+		Amount:        resulat["amount"].(float64),
 		NbrSurveys:    resulat["nbrsurveys"].(int64),
 		CCP:           resulat["ccp"].(string),
 		RIP:           resulat["rip"].(string),
-		PaymentMethod: resulat["PaiementMethode"].(string),
-		IsCashable:    resulat["amount"].(float32) >= 1000,
+		PaymentMethod: resulat["paymentmethod"].(string),
+		IsCashable:    resulat["amount"].(float64) >= 1000,
 	}, nil
 }
 
@@ -102,6 +124,7 @@ func (wr *walletRepository) UpdateMyWallet(c context.Context, data *domain.Walle
 			"rip":             data.RIP,
 			"userid":          data.UserID,
 			"PaiementMethode": data.PaymentMethod,
+			"iscashable":      data.Amount >= 1000,
 		},
 	}
 	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)

@@ -25,6 +25,7 @@ type UserRepository interface {
 	IsAlreadyExist(c context.Context, data *domain.SignupModel) (bool, error)
 	//SETTING PROFILE FUNCTIONS
 	GetUserByEmail(c context.Context, email string) (*domain.User, error)
+	GetUserById(c context.Context, id string) (*domain.User, error)
 	SetNewPassword(c context.Context, data *domain.User) (*domain.User, error)
 	UpdateProfile(c context.Context, data *domain.User) (*domain.User, error)
 }
@@ -39,23 +40,37 @@ func NewUserRepository(db database.Database) UserRepository {
 	}
 }
 
-func getUser(data any, collection database.Collection, c context.Context) (*domain.User, error) {
-	var resulat bson.M
-	log.Print(data)
-	err := collection.FindOne(c, data).Decode(&resulat)
+// GetUserById implements UserRepository.
+func (ar *userRepository) GetUserById(c context.Context, id string) (*domain.User, error) {
+	collection := ar.database.Collection("users")
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+	// Define the filter
+	filter := bson.M{"_id": objectID}
+	user, err := getUser(filter, collection, c)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func getUser(filter any, collection database.Collection, c context.Context) (*domain.User, error) {
+	var result bson.M
+	err := collection.FindOne(c, filter).Decode(&result)
 	if err != nil {
 		log.Print(err)
 		return nil, err
 	}
-	id := resulat["_id"].(primitive.ObjectID).Hex()
-	Role := resulat["role"].(string)
-	User.ID = id
-	User.Username = resulat["username"].(string)
-	User.FirstName = resulat["firstname"].(string)
-	User.LastName = resulat["lastname"].(string)
-	User.Phone = resulat["phone"].(string)
-	User.Role = Role
-	return User, nil
+	user := &domain.User{
+		ID:       result["_id"].(primitive.ObjectID).Hex(),
+		Username: result["username"].(string),
+		Email:    result["email"].(string),
+		Phone:    result["phone"].(string),
+		Role:     result["role"].(string),
+	}
+	return user, nil
 }
 
 // UpdateProfile implements domain.UserRepository.

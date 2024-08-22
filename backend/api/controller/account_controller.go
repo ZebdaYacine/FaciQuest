@@ -4,7 +4,6 @@ import (
 	"back-end/api/controller/model"
 	"back-end/cache"
 	"back-end/core"
-	common "back-end/core"
 	"back-end/internal/domain"
 	"back-end/internal/usecase"
 	"back-end/util/email"
@@ -133,7 +132,7 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 		user.ID = cnfrMdlStored.SgnModel.Id
 		Message = "RESET PASSWORD TOKEN PREPARED SUCCESSFULY"
 	}
-	token, _ = util.CreateAccessToken(user.ID, common.RootServer.SECRET_KEY, 2, "User")
+	token, _ = util.CreateAccessToken(user.ID, core.RootServer.SECRET_KEY, 2, "User")
 	user.ID = ""
 	user.PassWord = ""
 	log.Printf("TOKEN %s", token)
@@ -174,7 +173,7 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 		})
 		return
 	}
-	secret := common.RootServer.SECRET_KEY
+	secret := core.RootServer.SECRET_KEY
 	token, err := util.CreateAccessToken(resulat.Data.ID, secret, 2, resulat.Data.Role)
 	if err != nil {
 		c.JSON(500, model.ErrorResponse{Message: err.Error()})
@@ -205,7 +204,7 @@ func (ic *AccountController) LogoutRequest(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header is missing"})
 		return
 	}
-	expiration, _ := util.ExtractFieldFromToken(token, common.RootServer.SECRET_KEY, "exp")
+	expiration, _ := util.ExtractFieldFromToken(token, core.RootServer.SECRET_KEY, "exp")
 	timestamp := int64(expiration.(float64))
 	f := time.Unix(timestamp, 0)
 	now := time.Now()
@@ -235,7 +234,7 @@ func (ic *AccountController) SetNewPwdRequest(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header is missing"})
 		return
 	}
-	id, _ := util.ExtractFieldFromToken(token[1], common.RootServer.SECRET_KEY, "id")
+	id, _ := util.ExtractFieldFromToken(token[1], core.RootServer.SECRET_KEY, "id")
 	log.Print(id)
 	clientIP := c.ClientIP()
 	mu.Lock()

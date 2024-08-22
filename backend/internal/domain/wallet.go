@@ -2,7 +2,7 @@ package domain
 
 type Wallet struct {
 	ID            string  `json:"_id"`
-	Amount        float32 `json:"amount"`
+	Amount        float64 `json:"amount"`
 	NbrSurveys    int64   `json:"nbrsurveys"`
 	CCP           string  `json:"ccp"`
 	RIP           string  `json:"rip"`
