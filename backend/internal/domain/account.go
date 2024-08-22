@@ -42,5 +42,5 @@ type ForgetPasswordModel struct {
 type Account interface {
 	SignupModel | LoginModel | ConfirmationModel |
 		Wallet | SetNewPasswordModel | User |
-		ForgetPasswordModel | CashOut
+		ForgetPasswordModel | Payment
 }

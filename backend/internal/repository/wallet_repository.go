@@ -16,9 +16,7 @@ import (
 type WalletRepository interface {
 	InitMyWallet(c context.Context, user *domain.User) (*domain.Wallet, error)
 	UpdateMyWallet(c context.Context, wallet *domain.Wallet) (*domain.Wallet, error)
-	GetWallet(c context.Context, userId string) (*domain.Wallet, error)
-	CashOutMyWallet(c context.Context, wallet *domain.CashOut) (*domain.CashOut, error)
-	UpdateCashOutStatus(c context.Context, wallet *domain.CashOut) (*domain.CashOut, error)
+	GetWallet(c context.Context, collection string, userId string) (*domain.Wallet, error)
 }
 
 type walletRepository struct {
@@ -31,48 +29,9 @@ func NewWalletRepository(db database.Database) WalletRepository {
 	}
 }
 
-// UpdateCashOutStatus implements WalletRepository.
-func (wr *walletRepository) UpdateCashOutStatus(c context.Context, cashout *domain.CashOut) (*domain.CashOut, error) {
-	wallet, err := wr.GetWallet(c, cashout.Wallet.UserID)
-	if err != nil {
-		return nil, err
-	}
-	if wallet.Amount < cashout.Amount {
-		return nil, fmt.Errorf("wallet amount is out of range: %v", cashout.Amount)
-	}
-	wallet.Amount -= cashout.Amount
-	record, err := wr.UpdateMyWallet(c, wallet)
-	if err != nil {
-		return nil, err
-	}
-	cashout.Status = "success"
-	cashout.Wallet = *record
-	collection := wr.database.Collection("cashout_request")
-	filterUpdate := bson.D{{Key: "_id", Value: cashout.ID}}
-	update := bson.M{
-		"$set": cashout,
-	}
-	return core.UpdateDoc[domain.CashOut](c, collection, update, filterUpdate)
-
-}
-
-// CashOutMyWallet implements WalletRepository.
-func (wr *walletRepository) CashOutMyWallet(c context.Context, data *domain.CashOut) (*domain.CashOut, error) {
-	collection := wr.database.Collection("cashout_request")
-	record := data
-	requestId, err := collection.InsertOne(c, record)
-	if err != nil {
-		log.Printf("Failed to record cash out request: %v", err)
-		return nil, err
-	}
-	log.Printf("record cash out request ID %v :", requestId)
-	record.ID = requestId.(string)
-	return record, nil
-}
-
 // GetWalletCashable implements WalletRepository.
-func (wr *walletRepository) GetWallet(c context.Context, userId string) (*domain.Wallet, error) {
-	collection := wr.database.Collection("wallet")
+func (wr *walletRepository) GetWallet(c context.Context, col string, userId string) (*domain.Wallet, error) {
+	collection := wr.database.Collection(col)
 	var resulat bson.M
 	filter := bson.D{{Key: "userid", Value: userId}}
 	err := collection.FindOne(c, filter).Decode(&resulat)
@@ -83,6 +42,7 @@ func (wr *walletRepository) GetWallet(c context.Context, userId string) (*domain
 		ID:            resulat["_id"].(primitive.ObjectID).Hex(),
 		UserID:        userId,
 		Amount:        resulat["amount"].(float64),
+		TempAmount:    resulat["tempamount"].(float64),
 		NbrSurveys:    resulat["nbrsurveys"].(int64),
 		CCP:           resulat["ccp"].(string),
 		RIP:           resulat["rip"].(string),
@@ -96,6 +56,7 @@ func (wr *walletRepository) InitMyWallet(c context.Context, data *domain.User) (
 	collection := wr.database.Collection("wallet")
 	wallet := &domain.Wallet{
 		Amount:        0,
+		TempAmount:    0,
 		NbrSurveys:    0,
 		CCP:           "",
 		RIP:           "",
@@ -118,13 +79,14 @@ func (wr *walletRepository) UpdateMyWallet(c context.Context, data *domain.Walle
 	filterUpdate := bson.D{{Key: "userid", Value: data.UserID}}
 	update := bson.M{
 		"$set": bson.M{
-			"amount":          data.Amount,
-			"nbrsurveys":      data.NbrSurveys,
-			"ccp":             data.CCP,
-			"rip":             data.RIP,
-			"userid":          data.UserID,
-			"PaiementMethode": data.PaymentMethod,
-			"iscashable":      data.Amount >= 1000,
+			"amount":        data.Amount,
+			"tempamount":    data.TempAmount,
+			"nbrsurveys":    data.NbrSurveys,
+			"ccp":           data.CCP,
+			"rip":           data.RIP,
+			"userid":        data.UserID,
+			"paymentmethod": data.PaymentMethod,
+			"iscashable":    data.Amount >= 1000,
 		},
 	}
 	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)

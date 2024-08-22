@@ -1,9 +1,6 @@
 package domain
 
-import (
-	"back-end/core/entities"
-)
-
+import "back-end/core/entities"
 
 type Survey struct {
 	ID                  string                 `json:"_id"`
