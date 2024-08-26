@@ -43,11 +43,11 @@ func (wr *walletRepository) GetWallet(c context.Context, col string, userId stri
 		ID:            resulat["_id"].(primitive.ObjectID).Hex(),
 		UserID:        userId,
 		Amount:        resulat["amount"].(float64),
-		TempAmount:    resulat["tempamount"].(float64),
-		NbrSurveys:    resulat["nbrsurveys"].(int64),
+		TempAmount:    resulat["temp_amount"].(float64),
+		NbrSurveys:    resulat["nbr_surveys"].(int64),
 		CCP:           resulat["ccp"].(string),
 		RIP:           resulat["rip"].(string),
-		PaymentMethod: resulat["paymentmethod"].(string),
+		PaymentMethod: resulat["payment_method"].(string),
 		IsCashable:    resulat["amount"].(float64) >= 1000,
 	}, nil
 }
@@ -79,16 +79,7 @@ func (wr *walletRepository) UpdateMyWallet(c context.Context, data *domain.Walle
 	collection := wr.database.Collection("wallet")
 	filterUpdate := bson.D{{Key: "userid", Value: data.UserID}}
 	update := bson.M{
-		"$set": bson.M{
-			"amount":        data.Amount,
-			"tempamount":    data.TempAmount,
-			"nbrsurveys":    data.NbrSurveys,
-			"ccp":           data.CCP,
-			"rip":           data.RIP,
-			"userid":        data.UserID,
-			"paymentmethod": data.PaymentMethod,
-			"iscashable":    data.Amount >= 1000,
-		},
+		"$set": data,
 	}
 	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)
 }
@@ -99,7 +90,7 @@ func (wr *walletRepository) UpdateTempAmount(c context.Context, wallet *domain.W
 	filterUpdate := bson.D{{Key: "userid", Value: wallet.UserID}}
 	update := bson.M{
 		"$set": bson.M{
-			"tempamount": wallet.TempAmount,
+			"temp_amount": wallet.TempAmount,
 		},
 	}
 	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)

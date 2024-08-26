@@ -57,13 +57,13 @@ func UpdateDoc[T domain.Account](c context.Context, collection database.Collecti
 	_, err := collection.UpdateOne(c, filterUpdate, update)
 	if err != nil {
 		log.Panic(err)
-		return nil, fmt.Errorf("error was happend")
+		return nil, err
 	}
 	var updatedDocument bson.M
 	err = collection.FindOne(c, filterUpdate).Decode(&updatedDocument)
 	if err != nil {
 		log.Panic("Error finding updated document:", err)
-		return nil, fmt.Errorf("error was happend")
+		return nil, err
 	}
 	fmt.Print("Document is updated successfuly")
 	updatedUser, err := ConvertBsonToStruct[T](updatedDocument)

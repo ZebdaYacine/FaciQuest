@@ -5,6 +5,7 @@ import (
 	"back-end/internal/domain"
 	"back-end/pkg/database"
 	"context"
+	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -45,7 +46,7 @@ func (pr *paymentRepository) UpdatePaymentStatus(c context.Context, record domai
 	collection := pr.database.Collection("payment")
 	objectID, err := primitive.ObjectIDFromHex(record.ID)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error creating payment object")
 	}
 	filterUpdate := bson.D{{Key: "_id", Value: objectID}}
 	update := bson.M{

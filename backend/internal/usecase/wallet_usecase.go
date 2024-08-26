@@ -89,6 +89,8 @@ func (wu *walletUsecase) UpdateMyWallet(c context.Context, query *WalletParams) 
 		walletResulat.Err = fmt.Errorf("data requeried")
 	}
 	wallet := query.Data.(domain.Wallet)
+	wallet.IsCashable = wallet.Amount >= 1000
+	wallet.TempAmount = wallet.Amount
 	result, err := wu.repo.UpdateMyWallet(c, &wallet)
 	if err == nil {
 		walletResulat.Err = err

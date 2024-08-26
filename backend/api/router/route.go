@@ -29,29 +29,30 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	public.NewConfirmaAccountRouter(db, publicRouter)
 	public.NewForgetPwdRouter(db, publicRouter)
 
-	protectedRouter := gin.Group("/profile")
+	userRouter := gin.Group("/profile")
 
 	//Middleware to verify AccessToken
-	protectedRouter.Use(middleware.JwtAuthMiddleware(
+	userRouter.Use(middleware.JwtAuthMiddleware(
 		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
 		"User"))
 
 	//Middleware to verify is token in black list
-	protectedRouter.Use(middleware.JwtBlackListMiddleware(redis))
+	userRouter.Use(middleware.JwtBlackListMiddleware(redis))
 
 	// All Private APIs
-	private.NewSetNewPwdRouter(db, protectedRouter)
-	private.NewUpdateProfileRouter(db, protectedRouter)
-	private.NewLogoutRouterRouter(db, protectedRouter, redis)
+	private.NewSetNewPwdRouter(db, userRouter)
+	private.NewUpdateProfileRouter(db, userRouter)
+	private.NewLogoutRouterRouter(db, userRouter, redis)
 
-	private.NewGeteWalletRouter(db, protectedRouter)
-	private.NewUpdateWalletRouter(db, protectedRouter)
-	private.NewCashOutWalletRouter(db, protectedRouter)
+	private.NewGeteWalletRouter(db, userRouter)
+	private.NewUpdateWalletRouter(db, userRouter)
+	private.NewCashOutWalletRouter(db, userRouter)
 
+	adminRouter := gin.Group("/admin")
 	//Middleware to verify AccessToken
-	protectedRouter.Use(middleware.JwtAuthMiddleware(
+	adminRouter.Use(middleware.JwtAuthMiddleware(
 		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
 		"Admin"))
-	private.NewUpdatePaymentStatusRouter(db, protectedRouter)
+	private.NewUpdatePaymentStatusRouter(db, adminRouter)
 
 }

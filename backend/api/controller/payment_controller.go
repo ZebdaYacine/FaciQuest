@@ -5,6 +5,7 @@ import (
 	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/internal/usecase"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -18,16 +19,16 @@ type PaymentController struct {
 }
 
 func (pc *PaymentController) UpdatePaymentStatusRequest(c *gin.Context) {
-	log.Println("__***__***___________ UPDATE CASH OUT WALLET STATUS  REQUEST ___________***__***__")
-	var paymentUpdated *domain.Payment
-	if !core.IsDataRequestSupported(paymentUpdated, c) {
+	log.Println("__***__***___________UPDATE PAYMENT STATUS REQUEST___________***__***__")
+	var paymentUpdated domain.Payment
+	if !core.IsDataRequestSupported(&paymentUpdated, c) {
 		return
 	}
-	log.Println(paymentUpdated)
 	paymentParms := &usecase.PaymentParams{}
-	paymentParms.Data = paymentUpdated
+	paymentParms.Data = &paymentUpdated
 	resulat := pc.PaymentUseCase.UpdatePaymentStatus(c, paymentParms)
 	if resulat.Err != nil {
+		fmt.Println(resulat.Err)
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: "Failed to Update payment status ",
 		})
