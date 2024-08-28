@@ -55,7 +55,6 @@ func (au *userUsecase) UpdateProfile(c context.Context, query *UserParams) *User
 		return userResulat
 	}
 	data := query.Data.(domain.User)
-	log.Print(data)
 	user, err := au.repo.UpdateProfile(c, &data)
 	if err != nil {
 		userResulat.Err = err

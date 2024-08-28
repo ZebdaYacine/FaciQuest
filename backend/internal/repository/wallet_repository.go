@@ -95,3 +95,6 @@ func (wr *walletRepository) UpdateTempAmount(c context.Context, wallet *domain.W
 	}
 	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)
 }
+
+
+

@@ -113,6 +113,7 @@ func (ac *AccountController) ConfirmeAccountRequest(c *gin.Context) {
 		userParams := &usecase.UserParams{}
 		userParams.Data = cnfrMdlStored.SgnModel
 		resulatU := ac.UserUsecase.SignUp(c, userParams)
+		println(resulatU)
 		if resulatU.Err != nil {
 			c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: resulatU.Err.Error()})
 			return

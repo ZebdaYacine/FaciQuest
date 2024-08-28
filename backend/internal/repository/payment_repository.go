@@ -10,9 +10,11 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type PaymentRepository interface {
+	GetPayment(c context.Context, paymentID string) (*domain.Payment, error)
 	PaymentRequest(c context.Context, wallet *domain.Payment) (*domain.Payment, error)
 	UpdatePaymentStatus(c context.Context, record domain.Payment) (*domain.Payment, error)
 }
@@ -25,6 +27,23 @@ func NewPaymentRepository(db database.Database) PaymentRepository {
 	return &paymentRepository{
 		database: db,
 	}
+}
+
+// GetPayment implements PaymentRepository.
+func (pr *paymentRepository) GetPayment(c context.Context, paymentID string) (*domain.Payment, error) {
+	collection := pr.database.Collection("payment")
+	id, err := primitive.ObjectIDFromHex(paymentID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var payment domain.Payment
+	filter := bson.D{{Key: "_id", Value: id}}
+	err = collection.FindOne(c, filter).Decode(&payment)
+	if err == mongo.ErrNoDocuments {
+		return nil, fmt.Errorf("user has not wallet %s", err.Error())
+	}
+	payment.ID = paymentID
+	return &payment, nil
 }
 
 // PaymentRequest implements WalletRepository.

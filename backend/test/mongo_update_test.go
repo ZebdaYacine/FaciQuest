@@ -8,7 +8,6 @@ import (
 	"context"
 	"fmt"
 	"testing"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -17,12 +16,12 @@ func TestMongoUpdate(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		db := database.ConnectionDb()
 		collection := db.Collection("cashout_request")
-		filterUpdate := bson.M{"_id": "66c082ece10917c71ca7f98c"}
+		filterUpdate := bson.M{"_id": "66cef6205d7b9a7bba565058"}
 		update := bson.M{"$set": domain.Payment{
-			PaymentRequestDate: time.Now().Format("2006-01-02T15:04:05Z07:00"),
-			Amount:             150.75,
+			PaymentRequestDate: 1727481600000,
+			Amount:             10000,
 			Status:             "Pending",
-			PaymentDate:        "", // Empty for pending
+			PaymentDate:        1727481600000, // Empty for pending
 		}}
 		updateResult, err := collection.UpdateOne(context.TODO(), filterUpdate, update)
 		if err != nil {

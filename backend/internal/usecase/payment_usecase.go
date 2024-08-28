@@ -66,6 +66,7 @@ func (pu *paymentUsecase) PaymentRequest(c context.Context, query *PaymentParams
 			Err:  fmt.Errorf("you cannot cash out this amount there are some pending requests"),
 		}
 	}
+	payment_request.Wallet = *wallet_db
 	wallet_db.TempAmount -= payment_request.Amount
 	_, err := pu.repoW.UpdateTempAmount(c, wallet_db)
 	if err != nil {
@@ -98,18 +99,28 @@ func (cu *paymentUsecase) UpdatePaymentStatus(c context.Context, query *PaymentP
 		}
 	}
 	payment_request := query.Data
-	wallet := payment_request.Wallet
-	wallet_db, err1 := cu.walletVerify(c, &wallet)
-	if err1 != nil {
+	wallet := query.Data.Wallet
+	payment_db, err := cu.repoP.GetPayment(c, payment_request.ID)
+	wallet.UserID = payment_db.Wallet.UserID
+	if err != nil {
 		return &PaymentResulat{
 			Data: nil,
-			Err:  err1,
+			Err:  fmt.Errorf("payment not found"),
 		}
 	}
-
-	fmt.Println(wallet)
-	fmt.Println(payment_request)
-
+	if payment_db.Amount < payment_request.Amount {
+		return &PaymentResulat{
+			Data: nil,
+			Err:  fmt.Errorf("amount is out of range"),
+		}
+	}
+	wallet_db, err := cu.walletVerify(c, &wallet)
+	if err != nil {
+		return &PaymentResulat{
+			Data: nil,
+			Err:  err,
+		}
+	}
 	record, err := cu.repoP.UpdatePaymentStatus(c, *payment_request)
 	if err != nil {
 		return &PaymentResulat{
@@ -117,8 +128,8 @@ func (cu *paymentUsecase) UpdatePaymentStatus(c context.Context, query *PaymentP
 			Err:  fmt.Errorf("failed to update payment status ==> %v", err),
 		}
 	}
-	fmt.Println(wallet_db)
 	wallet_db.Amount -= record.Amount
+	fmt.Println(wallet_db)
 	_, err = cu.repoW.UpdateMyWallet(c, wallet_db)
 	if err != nil {
 		return &PaymentResulat{

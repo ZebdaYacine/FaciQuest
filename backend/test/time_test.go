@@ -10,7 +10,7 @@ import (
 
 func TestTime(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
-		timestemp := util.DateToTimeStemps("1900-01-01")
+		timestemp := util.DateToTimeStemps("2024-09-28")
 		fmt.Println(timestemp)
 		fmt.Println(util.TimeStempsToDate(timestemp))
 	})
