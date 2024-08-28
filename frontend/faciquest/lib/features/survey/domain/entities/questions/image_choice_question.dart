@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class ImageChoiceQuestion extends QuestionEntity {
-  ImageChoiceQuestion({
+  const ImageChoiceQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.imageChoice,
@@ -43,7 +43,6 @@ class ImageChoiceQuestion extends QuestionEntity {
       ...super.toMap(),
       'choices': choices.map((e) => e.toMap()),
       'useCheckbox': useCheckbox,
-      'type': type.name,
     };
   }
 

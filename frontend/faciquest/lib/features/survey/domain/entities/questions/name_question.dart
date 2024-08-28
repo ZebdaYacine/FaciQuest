@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class NameQuestion extends QuestionEntity {
-  NameQuestion({
+  const NameQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.nameType,
@@ -83,7 +83,6 @@ class NameQuestion extends QuestionEntity {
       'showFirstName': showFirstName,
       'showLastName': showLastName,
       'showMiddleName': showMiddleName,
-      'type': type.name,
     };
   }
 

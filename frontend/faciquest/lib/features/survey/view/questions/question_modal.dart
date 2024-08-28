@@ -21,7 +21,7 @@ Future<void> showQuestionModal(
       ),
       actions: FilledButton(
         onPressed: () {},
-        child: Center(child: Text('Submit')),
+        child: const Center(child: Text('Submit')),
       ),
     ),
   );
@@ -80,8 +80,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 onChanged: (questionType) {
                   this.questionType = questionType;
                   if (questionType == null) return;
-                  question = questionType
-                      .newQuestion(question ?? StarRatingQuestion(title: ''));
+                  question = questionType.newQuestion(
+                    question ??
+                        const StarRatingQuestion(
+                          title: '',
+                          order: 0,
+                        ),
+                  );
                   setState(() {});
                 },
               ),

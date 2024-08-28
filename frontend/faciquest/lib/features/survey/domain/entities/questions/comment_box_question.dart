@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class CommentBoxQuestion extends QuestionEntity {
-  CommentBoxQuestion({
+  const CommentBoxQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.commentBox,
@@ -49,7 +49,6 @@ class CommentBoxQuestion extends QuestionEntity {
       'maxLength': maxLength,
       'isRequired': isRequired,
       'maxLines': maxLines,
-      'type': type.name,
     };
   }
 

@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class SliderQuestion extends QuestionEntity {
-  SliderQuestion({
+  const SliderQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.slider,
@@ -42,7 +42,6 @@ class SliderQuestion extends QuestionEntity {
       ...super.toMap(),
       'min': min,
       'max': max,
-      'type': type.name,
     };
   }
 

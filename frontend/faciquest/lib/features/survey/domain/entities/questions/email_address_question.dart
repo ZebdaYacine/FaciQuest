@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class EmailAddressQuestion extends QuestionEntity {
-  EmailAddressQuestion({
+  const EmailAddressQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.emailAddress,
@@ -49,7 +49,6 @@ class EmailAddressQuestion extends QuestionEntity {
       'emailAddressHint': emailAddressHint,
       'emailAddressLabel': emailAddressLabel,
       'showEmailAddress': showEmailAddress,
-      'type': type.name,
     };
   }
 

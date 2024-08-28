@@ -50,7 +50,6 @@ class MatrixQuestion extends QuestionEntity {
       'rows': rows,
       'cols': cols,
       'useCheckbox': useCheckbox,
-      'type': type.name,
     };
   }
 

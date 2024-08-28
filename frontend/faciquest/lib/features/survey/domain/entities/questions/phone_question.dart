@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class PhoneQuestion extends QuestionEntity {
-  PhoneQuestion({
+  const PhoneQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.phoneNumber,
@@ -49,7 +49,6 @@ class PhoneQuestion extends QuestionEntity {
       'phoneHint': phoneHint,
       'phoneLabel': phoneLabel,
       'showPhone': showPhone,
-      'type': type.name,
     };
   }
 

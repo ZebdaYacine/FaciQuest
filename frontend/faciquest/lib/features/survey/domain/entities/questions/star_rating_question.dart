@@ -32,7 +32,6 @@ class StarRatingQuestion extends QuestionEntity {
       'maxRating': maxRating,
       'shape': shape.name,
       'color': color.value.toString(),
-      'type': type.name,
     };
   }
 

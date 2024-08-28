@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class AudioRecordQuestion extends QuestionEntity {
-  AudioRecordQuestion({
+  const AudioRecordQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.audioRecord,
@@ -30,7 +30,6 @@ class AudioRecordQuestion extends QuestionEntity {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       ...super.toMap(),
-      'type': type.name,
     };
   }
 

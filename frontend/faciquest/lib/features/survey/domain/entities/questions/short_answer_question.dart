@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class ShortAnswerQuestion extends QuestionEntity {
-  ShortAnswerQuestion({
+  const ShortAnswerQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.shortAnswer,
@@ -12,6 +12,7 @@ class ShortAnswerQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    int? order,
     String? titleLarge,
     QuestionType? type,
     String? headline6,
@@ -38,7 +39,6 @@ class ShortAnswerQuestion extends QuestionEntity {
     return <String, dynamic>{
       ...super.toMap(),
       'maxLength': maxLength,
-      'type': type.name,
     };
   }
 

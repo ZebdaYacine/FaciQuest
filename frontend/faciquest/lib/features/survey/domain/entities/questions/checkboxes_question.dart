@@ -38,7 +38,6 @@ class CheckboxesQuestion extends QuestionEntity {
     return <String, dynamic>{
       ...super.toMap(),
       'choices': choices,
-      'type': type.name,
     };
   }
 

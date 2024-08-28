@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class ImageQuestion extends QuestionEntity {
-  ImageQuestion({
+  const ImageQuestion({
     required super.title,
     required super.order,
     this.image = const ImageChoice(),
@@ -36,7 +36,6 @@ class ImageQuestion extends QuestionEntity {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       ...super.toMap(),
-      'type': type.name,
       'image': image.toMap(),
     };
   }

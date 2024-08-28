@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class TextQuestion extends QuestionEntity {
-  TextQuestion({
+  const TextQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.text,
@@ -30,7 +30,6 @@ class TextQuestion extends QuestionEntity {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       ...super.toMap(),
-      'type': type.name,
     };
   }
 

@@ -50,7 +50,7 @@ final Map<FileUploadType, List<String>> extensions = {
 };
 
 class FileUploadQuestion extends QuestionEntity {
-  FileUploadQuestion({
+  const FileUploadQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.fileUpload,
@@ -99,7 +99,6 @@ class FileUploadQuestion extends QuestionEntity {
       ...super.toMap(),
       'instructions': instructions,
       'allowedExtensions': allowedExtensions,
-      'type': type.name,
     };
   }
 

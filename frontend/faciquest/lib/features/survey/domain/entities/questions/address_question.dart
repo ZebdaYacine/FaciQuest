@@ -139,7 +139,6 @@ class AddressQuestion extends QuestionEntity {
       'countryLabel': countryLabel,
       if (countryHint != null) 'countryHint': countryHint,
       'showCountry': showCountry,
-      'type': type.name,
     };
   }
 

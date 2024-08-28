@@ -1,7 +1,7 @@
 part of '../question_entity.dart';
 
 class DateTimeQuestion extends QuestionEntity {
-  DateTimeQuestion({
+  const DateTimeQuestion({
     required super.title,
     required super.order,
     super.type = QuestionType.dateTime,
@@ -41,7 +41,6 @@ class DateTimeQuestion extends QuestionEntity {
       ...super.toMap(),
       'collectDateInfo': collectDateInfo,
       'collectTimeInfo': collectTimeInfo,
-      'type': type.name,
     };
   }
 
