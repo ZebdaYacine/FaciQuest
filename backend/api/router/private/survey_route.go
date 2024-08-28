@@ -1,0 +1,20 @@
+package private
+
+import (
+	"back-end/api/controller"
+	"back-end/core"
+	"back-end/internal/repository"
+	"back-end/internal/usecase"
+	"back-end/pkg/database"
+
+	"github.com/gin-gonic/gin"
+)
+
+func NewCreateSurveyRouter(db database.Database, group *gin.RouterGroup) {
+	sr := repository.NewSurveyRepository(db)
+	su := usecase.NewSurveyUseCase(sr, core.SURVEY)
+	sc := &controller.SurveyController{
+		SurveyUseCase: su, // usecase for insured operations
+	}
+	group.POST("create-survey", sc.CreateSurveyRequest)
+}

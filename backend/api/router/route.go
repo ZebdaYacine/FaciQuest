@@ -40,13 +40,15 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	userRouter.Use(middleware.JwtBlackListMiddleware(redis))
 
 	// All Private APIs
+
 	private.NewSetNewPwdRouter(db, userRouter)
 	private.NewUpdateProfileRouter(db, userRouter)
 	private.NewLogoutRouterRouter(db, userRouter, redis)
 
-	private.NewGeteWalletRouter(db, userRouter)
 	private.NewUpdateWalletRouter(db, userRouter)
 	private.NewCashOutWalletRouter(db, userRouter)
+
+	private.NewCreateSurveyRouter(db, userRouter)
 
 	adminRouter := gin.Group("/admin")
 	//Middleware to verify AccessToken
