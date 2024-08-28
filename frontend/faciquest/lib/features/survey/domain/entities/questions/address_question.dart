@@ -1,8 +1,9 @@
 part of '../question_entity.dart';
 
 class AddressQuestion extends QuestionEntity {
-  AddressQuestion({
+  const AddressQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.address,
     this.streetAddress1Label = 'Address',
     this.streetAddress1Hint,
@@ -57,6 +58,7 @@ class AddressQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     String? streetAddress1Label,
     String? streetAddress1Hint,
@@ -80,6 +82,7 @@ class AddressQuestion extends QuestionEntity {
   }) {
     return AddressQuestion(
       title: title ?? this.title,
+      order: order ?? this.order,
       streetAddress1Label: streetAddress1Label ?? this.streetAddress1Label,
       streetAddress1Hint: streetAddress1Hint ?? this.streetAddress1Hint,
       showStreetAddress1: showStreetAddress1 ?? this.showStreetAddress1,
@@ -106,6 +109,7 @@ class AddressQuestion extends QuestionEntity {
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return AddressQuestion(
       title: map['title'],
+      order: map['order'],
       streetAddress1Label: map['streetAddress1Label'],
       streetAddress1Hint: map['streetAddress1Hint'],
       showStreetAddress1: map['showStreetAddress1'] ?? true,
@@ -115,7 +119,7 @@ class AddressQuestion extends QuestionEntity {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'streetAddress1Label': streetAddress1Label,
       if (streetAddress1Hint != null) 'streetAddress1Hint': streetAddress1Hint,
       'showStreetAddress1': showStreetAddress1,
@@ -140,7 +144,10 @@ class AddressQuestion extends QuestionEntity {
   }
 
   static AddressQuestion copyFrom(QuestionEntity question) {
-    return AddressQuestion(title: question.title);
+    return AddressQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }
 

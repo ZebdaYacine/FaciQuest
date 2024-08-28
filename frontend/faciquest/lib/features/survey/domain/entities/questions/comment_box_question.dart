@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class CommentBoxQuestion extends QuestionEntity {
   CommentBoxQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.commentBox,
     this.maxLength = 500,
     this.isRequired = false,
@@ -16,6 +17,7 @@ class CommentBoxQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     int? maxLength,
     bool? isRequired,
@@ -23,6 +25,7 @@ class CommentBoxQuestion extends QuestionEntity {
   }) {
     return CommentBoxQuestion(
       title: title ?? this.title,
+      order: order ?? this.order,
       maxLength: maxLength ?? this.maxLength,
       isRequired: isRequired ?? this.isRequired,
       maxLines: maxLines ?? this.maxLines,
@@ -32,6 +35,7 @@ class CommentBoxQuestion extends QuestionEntity {
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return CommentBoxQuestion(
       title: map['title'],
+      order: map['order'],
       maxLength: map['maxLength'],
       isRequired: map['isRequired'],
       maxLines: map['maxLines'],
@@ -41,7 +45,7 @@ class CommentBoxQuestion extends QuestionEntity {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'maxLength': maxLength,
       'isRequired': isRequired,
       'maxLines': maxLines,
@@ -50,6 +54,9 @@ class CommentBoxQuestion extends QuestionEntity {
   }
 
   static CommentBoxQuestion copyFrom(QuestionEntity question) {
-    return CommentBoxQuestion(title: question.title);
+    return CommentBoxQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }

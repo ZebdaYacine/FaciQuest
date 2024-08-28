@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class DateTimeQuestion extends QuestionEntity {
   DateTimeQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.dateTime,
     this.collectDateInfo = true,
     this.collectTimeInfo = false,
@@ -13,12 +14,14 @@ class DateTimeQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     bool? collectDateInfo,
     bool? collectTimeInfo,
   }) {
     return DateTimeQuestion(
         title: title ?? this.title,
+        order: order ?? this.order,
         collectDateInfo: collectDateInfo ?? this.collectDateInfo,
         collectTimeInfo: collectTimeInfo ?? this.collectTimeInfo);
   }
@@ -26,6 +29,7 @@ class DateTimeQuestion extends QuestionEntity {
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return DateTimeQuestion(
       title: map['title'],
+      order: map['order'],
       collectDateInfo: map['collectDateInfo'],
       collectTimeInfo: map['collectTimeInfo'],
     );
@@ -34,7 +38,7 @@ class DateTimeQuestion extends QuestionEntity {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'collectDateInfo': collectDateInfo,
       'collectTimeInfo': collectTimeInfo,
       'type': type.name,
@@ -45,6 +49,9 @@ class DateTimeQuestion extends QuestionEntity {
   List<Object?> get props => [title, collectDateInfo, collectTimeInfo];
 
   static DateTimeQuestion copyFrom(QuestionEntity question) {
-    return DateTimeQuestion(title: question.title);
+    return DateTimeQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }

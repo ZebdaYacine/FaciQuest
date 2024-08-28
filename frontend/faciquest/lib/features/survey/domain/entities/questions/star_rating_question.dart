@@ -7,6 +7,7 @@ class StarRatingQuestion extends QuestionEntity {
 
   const StarRatingQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.starRating,
     this.maxRating = 5,
     this.shape = StarRatingShape.star,
@@ -16,6 +17,7 @@ class StarRatingQuestion extends QuestionEntity {
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return StarRatingQuestion(
       title: map['title'],
+      order: map['order'],
       maxRating: map['maxRating'],
       shape: StarRatingShape.values
           .firstWhere((element) => element.name == map['shape']),
@@ -26,7 +28,7 @@ class StarRatingQuestion extends QuestionEntity {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'maxRating': maxRating,
       'shape': shape.name,
       'color': color.value.toString(),
@@ -37,6 +39,7 @@ class StarRatingQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     int? maxRating,
     StarRatingShape? shape,
@@ -44,6 +47,7 @@ class StarRatingQuestion extends QuestionEntity {
   }) {
     return StarRatingQuestion(
       title: title ?? this.title,
+      order: order ?? this.order,
       type: type ?? this.type,
       maxRating: maxRating ?? this.maxRating,
       shape: shape ?? this.shape,
@@ -55,7 +59,10 @@ class StarRatingQuestion extends QuestionEntity {
   List<Object?> get props => [title, maxRating, shape, color];
 
   static StarRatingQuestion copyFrom(QuestionEntity question) {
-    return StarRatingQuestion(title: question.title);
+    return StarRatingQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }
 

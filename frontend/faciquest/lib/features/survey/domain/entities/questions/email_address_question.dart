@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class EmailAddressQuestion extends QuestionEntity {
   EmailAddressQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.emailAddress,
     this.emailAddressLabel = 'Email Address',
     this.emailAddressHint,
@@ -16,6 +17,7 @@ class EmailAddressQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     String? emailAddressLabel,
     String? emailAddressHint,
@@ -23,6 +25,7 @@ class EmailAddressQuestion extends QuestionEntity {
   }) {
     return EmailAddressQuestion(
       title: title ?? this.title,
+      order: order ?? this.order,
       emailAddressLabel: emailAddressLabel ?? this.emailAddressLabel,
       emailAddressHint: emailAddressHint ?? this.emailAddressHint,
       showEmailAddress: showEmailAddress ?? this.showEmailAddress,
@@ -32,6 +35,7 @@ class EmailAddressQuestion extends QuestionEntity {
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return EmailAddressQuestion(
       title: map['title'],
+      order: map['order'],
       emailAddressLabel: map['emailAddressLabel'],
       emailAddressHint: map['emailAddressHint'],
       showEmailAddress: map['showEmailAddress'],
@@ -41,7 +45,7 @@ class EmailAddressQuestion extends QuestionEntity {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'emailAddressHint': emailAddressHint,
       'emailAddressLabel': emailAddressLabel,
       'showEmailAddress': showEmailAddress,
@@ -50,6 +54,9 @@ class EmailAddressQuestion extends QuestionEntity {
   }
 
   static EmailAddressQuestion copyFrom(QuestionEntity question) {
-    return EmailAddressQuestion(title: question.title);
+    return EmailAddressQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }

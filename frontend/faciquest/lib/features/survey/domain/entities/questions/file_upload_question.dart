@@ -52,6 +52,7 @@ final Map<FileUploadType, List<String>> extensions = {
 class FileUploadQuestion extends QuestionEntity {
   FileUploadQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.fileUpload,
     this.allowedExtensions = const {},
     this.instructions,
@@ -63,12 +64,14 @@ class FileUploadQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     List<FileUploadType>? allowedExtensions,
     String? instructions,
   }) {
     return FileUploadQuestion(
       title: title ?? this.title,
+      order: order ?? this.order,
       allowedExtensions: allowedExtensions?.toSet() ?? this.allowedExtensions,
       instructions: instructions ?? this.instructions,
     );
@@ -77,6 +80,7 @@ class FileUploadQuestion extends QuestionEntity {
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return FileUploadQuestion(
       title: map['title'],
+      order: map['order'],
       instructions: map['instructions'],
       allowedExtensions: FileUploadType.fromMap(map['allowedExtensions']),
     );
@@ -92,7 +96,7 @@ class FileUploadQuestion extends QuestionEntity {
         )
         .toList();
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'instructions': instructions,
       'allowedExtensions': allowedExtensions,
       'type': type.name,
@@ -103,6 +107,9 @@ class FileUploadQuestion extends QuestionEntity {
   List<Object?> get props => [title, instructions, allowedExtensions];
 
   static FileUploadQuestion copyFrom(QuestionEntity question) {
-    return FileUploadQuestion(title: question.title);
+    return FileUploadQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }

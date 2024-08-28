@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class NameQuestion extends QuestionEntity {
   NameQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.nameType,
     this.firstNameLabel = 'First Name',
     this.lastNameLabel = 'Last Name',
@@ -26,6 +27,7 @@ class NameQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     String? firstNameLabel,
     String? lastNameLabel,
@@ -39,6 +41,7 @@ class NameQuestion extends QuestionEntity {
   }) {
     return NameQuestion(
       title: title ?? this.title,
+      order: order ?? this.order,
       firstNameLabel: firstNameLabel ?? this.firstNameLabel,
       lastNameLabel: lastNameLabel ?? this.lastNameLabel,
       firstNameHint: firstNameHint ?? this.firstNameHint,
@@ -51,9 +54,10 @@ class NameQuestion extends QuestionEntity {
     );
   }
 
- static QuestionEntity fromMap(Map<String, dynamic> map) {
+  static QuestionEntity fromMap(Map<String, dynamic> map) {
     return NameQuestion(
       title: map['title'],
+      order: map['order'],
       firstNameLabel: map['firstNameLabel'],
       lastNameLabel: map['lastNameLabel'],
       firstNameHint: map['firstNameHint'],
@@ -69,7 +73,7 @@ class NameQuestion extends QuestionEntity {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'firstNameLabel': firstNameLabel,
       'lastNameLabel': lastNameLabel,
       'firstNameHint': firstNameHint,
@@ -84,6 +88,9 @@ class NameQuestion extends QuestionEntity {
   }
 
   static NameQuestion copyFrom(QuestionEntity question) {
-    return NameQuestion(title: question.title);
+    return NameQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }

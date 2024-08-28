@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class ImageChoiceQuestion extends QuestionEntity {
   ImageChoiceQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.imageChoice,
     this.choices = const [ImageChoice()],
     this.useCheckbox = false,
@@ -13,12 +14,14 @@ class ImageChoiceQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     List<ImageChoice>? choices,
     bool? useCheckbox,
   }) {
     return ImageChoiceQuestion(
       title: title ?? this.title,
+      order: order ?? this.order,
       choices: choices ?? this.choices,
       useCheckbox: useCheckbox ?? this.useCheckbox,
     );
@@ -27,6 +30,7 @@ class ImageChoiceQuestion extends QuestionEntity {
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return ImageChoiceQuestion(
       title: map['title'],
+      order: map['order'],
       choices: List<ImageChoice>.from(
           map['choices'].map((e) => ImageChoice.fromMap(e))),
       useCheckbox: map['useCheckbox'],
@@ -36,7 +40,7 @@ class ImageChoiceQuestion extends QuestionEntity {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'choices': choices.map((e) => e.toMap()),
       'useCheckbox': useCheckbox,
       'type': type.name,
@@ -46,7 +50,10 @@ class ImageChoiceQuestion extends QuestionEntity {
   @override
   List<Object?> get props => [title, choices, useCheckbox];
   static ImageChoiceQuestion copyFrom(QuestionEntity question) {
-    return ImageChoiceQuestion(title: question.title);
+    return ImageChoiceQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }
 

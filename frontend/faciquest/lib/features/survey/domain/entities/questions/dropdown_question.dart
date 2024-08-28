@@ -3,6 +3,7 @@ part of '../question_entity.dart';
 class DropdownQuestion extends QuestionEntity {
   const DropdownQuestion({
     required super.title,
+    required super.order,
     super.type = QuestionType.dropdown,
     this.choices = const [''],
   });
@@ -11,11 +12,13 @@ class DropdownQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
     List<String>? choices,
   }) {
     return DropdownQuestion(
       title: title ?? this.title,
+      order: order ?? this.order,
       choices: choices ?? this.choices,
     );
   }
@@ -23,6 +26,7 @@ class DropdownQuestion extends QuestionEntity {
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return DropdownQuestion(
       title: map['title'],
+      order: map['order'],
       choices: List<String>.from(map['choices']),
     );
   }
@@ -30,7 +34,7 @@ class DropdownQuestion extends QuestionEntity {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'title': title,
+      ...super.toMap(),
       'choices': choices,
       'type': type.name,
     };
@@ -40,6 +44,9 @@ class DropdownQuestion extends QuestionEntity {
   List<Object?> get props => [title, choices];
 
   static DropdownQuestion copyFrom(QuestionEntity question) {
-    return DropdownQuestion(title: question.title);
+    return DropdownQuestion(
+      title: question.title,
+      order: question.order,
+    );
   }
 }

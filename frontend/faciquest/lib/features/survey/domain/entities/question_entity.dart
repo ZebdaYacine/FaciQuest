@@ -129,20 +129,34 @@ enum QuestionType {
 
 sealed class QuestionEntity extends Equatable {
   final String title;
+  final int order;
   final QuestionType type;
 
   @override
-  List<Object?> get props => [title, type];
+  List<Object?> get props => [
+        title,
+        type,
+        order,
+      ];
 
   const QuestionEntity({
     required this.title,
+    required this.order,
     required this.type,
   });
 
-  Map<String, dynamic> toMap();
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'title': title,
+      'order': order,
+      'type': type.name,
+    };
+  }
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
-    final type = QuestionType.values.firstWhere((e) => e.name == map['type']);
+    final type = QuestionType.values.firstWhere(
+      (e) => e.name == map['type'],
+    );
     switch (type) {
       case QuestionType.starRating:
         return StarRatingQuestion.fromMap(map);
@@ -185,6 +199,7 @@ sealed class QuestionEntity extends Equatable {
 
   QuestionEntity copyWith({
     String? title,
+    int? order,
     QuestionType? type,
   });
 }
