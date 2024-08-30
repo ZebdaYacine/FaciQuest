@@ -1,29 +1,39 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
-import 'package:faciquest/core/widgets/widgets.dart';
-import 'package:faciquest/features/survey/survey.dart';
-
+import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showQuestionModal(
   BuildContext context, {
   QuestionEntity? question,
+  ValueChanged<QuestionEntity>? onSubmit,
 }) async {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    builder: (context) => AppBackDrop(
-      titleText: 'Question',
-      headerActions: BackdropHeaderActions.none,
-      paddingBody: 0.padding,
-      body: EditView(
-        question: question,
-      ),
-      actions: FilledButton(
-        onPressed: () {},
-        child: const Center(child: Text('Submit')),
-      ),
-    ),
+    builder: (context) => StatefulBuilder(builder: (context, setState) {
+      return AppBackDrop(
+        titleText: 'Question',
+        headerActions: BackdropHeaderActions.none,
+        paddingBody: 0.padding,
+        body: EditView(
+          question: question,
+          onChang: (value) {
+            question = value;
+            setState(() {});
+          },
+        ),
+        actions: FilledButton(
+          onPressed: (question?.isValid ?? false)
+              ? () {
+                  onSubmit?.call(question!);
+                  context.pop();
+                }
+              : null,
+          child: const Center(child: Text('Submit')),
+        ),
+      );
+    }),
   );
 }
 
@@ -31,17 +41,19 @@ class EditView extends StatefulWidget {
   const EditView({
     super.key,
     this.question,
+    this.onChang,
   });
 
   final QuestionEntity? question;
+  final ValueChanged<QuestionEntity>? onChang;
 
   @override
   State<EditView> createState() => _EditViewState();
 }
 
 class _EditViewState extends State<EditView> with BuildFormMixin {
-  QuestionEntity? question;
   QuestionType? questionType;
+  String title = '';
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -54,10 +66,13 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if ((question.runtimeType != TextQuestion &&
-                  question.runtimeType != ImageQuestion))
+              if ((widget.question.runtimeType != TextQuestion &&
+                  widget.question.runtimeType != ImageQuestion))
                 buildInputForm(
                   'Q*:',
+                  onChange: (value) {
+                    title = value;
+                  },
                 ),
               AppSpacing.spacing_1.heightBox,
               DropdownButton(
@@ -80,13 +95,15 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 onChanged: (questionType) {
                   this.questionType = questionType;
                   if (questionType == null) return;
-                  question = questionType.newQuestion(
-                    question ??
-                        const StarRatingQuestion(
-                          title: '',
+                  widget.onChang?.call(questionType.newQuestion(
+                    widget.question?.copyWith(
+                          title: title,
+                        ) ??
+                        StarRatingQuestion(
+                          title: title,
                           order: 0,
                         ),
-                  );
+                  ));
                   setState(() {});
                 },
               ),
@@ -95,16 +112,18 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 style: context.textTheme.headlineSmall,
               ),
               AppSpacing.spacing_1.heightBox,
-              if (question == null)
+              if (widget.question == null)
                 Text(
-                  'Please select a question type',
+                  'Please select a widget.question type',
                   style: context.textTheme.bodySmall,
                 )
               else
                 QuestionBuilder.create(
-                  question!,
+                  widget.question!,
                   (value) {
-                    question = value;
+                    widget.onChang?.call(value.copyWith(
+                      title: title,
+                    ));
                     setState(() {});
                   },
                 )

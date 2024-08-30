@@ -32,7 +32,12 @@ class DropdownQuestion extends QuestionEntity {
   }
 
   @override
-  bool get isValid => super.isValid && choices.isNotEmpty;
+  bool get isValid =>
+      super.isValid &&
+      choices.isNotEmpty &&
+      choices.every(
+        (element) => element.isNotEmpty,
+      );
 
   @override
   Map<String, dynamic> toMap() {

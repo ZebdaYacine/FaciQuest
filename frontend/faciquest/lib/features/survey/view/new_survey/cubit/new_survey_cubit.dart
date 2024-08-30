@@ -43,4 +43,12 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
       page: NewSurveyPages.values[(state.page.index + 1) % 2],
     ));
   }
+
+  back() {
+    emit(
+      state.copyWith(
+        page: NewSurveyPages.values[(state.page.index - 1) % 2],
+      ),
+    );
+  }
 }

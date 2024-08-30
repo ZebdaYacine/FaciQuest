@@ -1,7 +1,7 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
-import 'package:faciquest/features/survey/view/new_survey/questions.dart';
+import 'package:faciquest/features/survey/view/new_survey/questions_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,40 +14,25 @@ class NewSurveyView extends StatelessWidget {
       create: (context) => NewSurveyCubit(),
       child: Scaffold(
         appBar: AppBar(
+          leading: const SizedBox(),
           title: const Text('New Survey'),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BlocSelector<NewSurveyCubit, NewSurveyState, NewSurveyPages>(
-              selector: (state) => state.page,
-              builder: (context, value) {
-                switch (value) {
-                  case NewSurveyPages.surveyDetails:
-                    return _SurveyDetails();
+        body: BlocSelector<NewSurveyCubit, NewSurveyState, NewSurveyPages>(
+          selector: (state) => state.page,
+          builder: (context, value) {
+            switch (value) {
+              case NewSurveyPages.surveyDetails:
+                return const _SurveyDetails();
 
-                  case NewSurveyPages.questions:
-                    return QuestionsPage();
-                }
-              },
-            ),
-            // Builder(builder: (context) {
-            //   return Padding(
-            //     padding: AppSpacing.spacing_2.padding,
-            //     child: ElevatedButton(
-            //       onPressed: () => context.read<NewSurveyCubit>().next(),
-            //       child: const Center(child: Text('next')),
-            //     ),
-            //   );
-            // }),
-          ],
+              case NewSurveyPages.questions:
+                return const QuestionsPage();
+            }
+          },
         ),
-        floatingActionButton: Builder(builder: (context) {
-          return FloatingActionButton(
-            onPressed: () => showQuestionModal(context),
-            child: Icon(Icons.add),
-          );
-        }),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () => showQuestionModal(context),
+        //   child: const Text('new Question'),
+        // ),
       ),
     );
   }
@@ -58,24 +43,54 @@ class _SurveyDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: SingleChildScrollView(
-      child: Padding(
-        padding: AppSpacing.spacing_2.padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Create New Survey',
-              style: context.textTheme.headlineLarge,
+    return Column(
+      children: [
+        Padding(
+          padding: AppSpacing.spacing_2.padding,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Create New Survey',
+                  style: context.textTheme.headlineLarge,
+                ),
+                const Text('Please enter details below'),
+                AppSpacing.spacing_2.heightBox,
+                const _NewSurveyForm(),
+              ],
             ),
-            const Text('Please enter details below'),
-            AppSpacing.spacing_2.heightBox,
-            const _NewSurveyForm(),
-          ],
+          ),
         ),
-      ),
-    ));
+        const Spacer(),
+        Padding(
+          padding: AppSpacing.spacing_2.padding,
+          child: Column(
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: context.colorScheme.onPrimary,
+                  backgroundColor: context.colorScheme.primary,
+                ),
+                onPressed: () => context.read<NewSurveyCubit>().next(),
+                child: const Center(child: Text('Next')),
+              ),
+              AppSpacing.spacing_0_5.heightBox,
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: context.colorScheme.error,
+                  ),
+                  foregroundColor: context.colorScheme.error,
+                ),
+                onPressed: () => context.pop(),
+                child: const Center(child: Text('Cancel')),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 }
 

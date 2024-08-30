@@ -54,7 +54,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
                       ? (widget.question as CheckboxesQuestion).choices.length
                       : null,
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                       value: null,
                       child: Text('select a scale'),
                     ),
@@ -77,7 +77,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
                 isExpanded: true,
                 value: selectedType,
                 items: [
-                  DropdownMenuItem(
+                  const DropdownMenuItem(
                     value: null,
                     child: Text('select a type'),
                   ),
@@ -88,7 +88,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
                         child: Text(e),
                       );
                     },
-                  ).toList(),
+                  ),
                 ],
                 onChanged: (e) {
                   selectedType = e ?? '';
@@ -107,7 +107,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
               Expanded(
                   child: Row(
                 children: [
-                  Checkbox(
+                  const Checkbox(
                     value: false,
                     onChanged: null,
                   ),
@@ -117,6 +117,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
                       key: UniqueKey(),
                       initialValue: item,
                       onChange: (value) {
+                        
                         onChange(
                           choices:
                               (widget.question as CheckboxesQuestion).choices
@@ -150,7 +151,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
               )
             ],
           );
-        }).toList(),
+        }),
       ],
     );
   }

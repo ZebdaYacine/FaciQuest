@@ -11,7 +11,12 @@ class ImageChoiceQuestion extends QuestionEntity {
   final List<ImageChoice> choices;
   final bool useCheckbox;
   @override
-  bool get isValid => super.isValid && choices.isNotEmpty;
+  bool get isValid =>
+      super.isValid &&
+      choices.isNotEmpty &&
+      choices.every(
+        (element) => element.isNotEmpty,
+      );
 
   @override
   QuestionEntity copyWith({
