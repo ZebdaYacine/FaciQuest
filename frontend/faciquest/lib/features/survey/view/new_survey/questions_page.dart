@@ -11,6 +11,7 @@ class QuestionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<NewSurveyCubit>();
     return Column(
       children: [
         Expanded(
@@ -34,7 +35,12 @@ class QuestionsPage extends StatelessWidget {
                           itemBuilder: (context, index) {
                             if (index >= questions.length) {
                               return ElevatedButton.icon(
-                                onPressed: () => showQuestionModal(context),
+                                onPressed: () => showQuestionModal(
+                                  context,
+                                  onSubmit: (value) {
+                                    cubit.newQuestion(value);
+                                  },
+                                ),
                                 icon: const Icon(Icons.add),
                                 label: const Center(
                                   child: Text('New Question'),

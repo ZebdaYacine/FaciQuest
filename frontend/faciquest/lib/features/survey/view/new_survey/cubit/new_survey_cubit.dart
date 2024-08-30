@@ -51,4 +51,14 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
       ),
     );
   }
+
+  void newQuestion(QuestionEntity value) {
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(
+          questions: [...state.survey.questions, value],
+        ),
+      ),
+    );
+  }
 }
