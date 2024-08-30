@@ -133,6 +133,8 @@ sealed class QuestionEntity extends Equatable {
   final QuestionType type;
   final bool isRequired;
 
+  bool get isValid => title.isNotEmpty;
+
   @override
   List<Object?> get props => [
         title,

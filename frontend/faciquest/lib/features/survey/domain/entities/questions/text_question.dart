@@ -26,13 +26,6 @@ class TextQuestion extends QuestionEntity {
     );
   }
 
-  @override
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      ...super.toMap(),
-    };
-  }
-
   static TextQuestion copyFrom(QuestionEntity question) {
     return TextQuestion(
       title: question.title,

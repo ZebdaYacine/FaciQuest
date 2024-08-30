@@ -16,6 +16,14 @@ class MatrixQuestion extends QuestionEntity {
   final bool useCheckbox;
 
   @override
+  bool get isValid =>
+      super.isValid &&
+      rows.isNotEmpty &&
+      cols.isNotEmpty &&
+      rows.every((e) => e.isNotEmpty) &&
+      cols.every((e) => e.isNotEmpty);
+
+  @override
   QuestionEntity copyWith({
     String? title,
     int? order,

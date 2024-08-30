@@ -60,7 +60,8 @@ class FileUploadQuestion extends QuestionEntity {
 
   final String? instructions;
   final Set<FileUploadType> allowedExtensions;
-
+  @override
+  bool get isValid => super.isValid && allowedExtensions.isNotEmpty;
   @override
   QuestionEntity copyWith({
     String? title,

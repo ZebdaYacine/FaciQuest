@@ -10,6 +10,8 @@ class ImageChoiceQuestion extends QuestionEntity {
   });
   final List<ImageChoice> choices;
   final bool useCheckbox;
+  @override
+  bool get isValid => super.isValid && choices.isNotEmpty;
 
   @override
   QuestionEntity copyWith({
@@ -102,4 +104,9 @@ class ImageChoice with EquatableMixin {
       // 'image': await image?.readAsBytes()
     };
   }
+
+  static const empty = ImageChoice();
+  bool get isEmpty => this == ImageChoice.empty;
+
+  bool get isNotEmpty => this != ImageChoice.empty;
 }

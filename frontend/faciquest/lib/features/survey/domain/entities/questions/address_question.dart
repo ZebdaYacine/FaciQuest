@@ -30,6 +30,17 @@ class AddressQuestion extends QuestionEntity {
   final String? streetAddress1Hint;
   final bool showStreetAddress1;
 
+  @override
+  bool get isValid {
+    return super.isValid &&
+        (showStreetAddress1 && streetAddress1Label.isNotEmpty) &&
+        (showStreetAddress2 && streetAddress2Label.isNotEmpty) &&
+        (showCity && cityLabel.isNotEmpty) &&
+        (showState && stateLabel.isNotEmpty) &&
+        (showPostalCode && postalCodeLabel.isNotEmpty) &&
+        (showCountry && countryLabel.isNotEmpty);
+  }
+
   //
   final String streetAddress2Label;
   final String? streetAddress2Hint;

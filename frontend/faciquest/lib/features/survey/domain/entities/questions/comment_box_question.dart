@@ -6,12 +6,10 @@ class CommentBoxQuestion extends QuestionEntity {
     required super.order,
     super.type = QuestionType.commentBox,
     this.maxLength = 500,
-    this.isRequired = false,
     this.maxLines = 5,
   });
 
   final int maxLength;
-  final bool isRequired;
   final int maxLines;
 
   @override
@@ -20,14 +18,12 @@ class CommentBoxQuestion extends QuestionEntity {
     int? order,
     QuestionType? type,
     int? maxLength,
-    bool? isRequired,
     int? maxLines,
   }) {
     return CommentBoxQuestion(
       title: title ?? this.title,
       order: order ?? this.order,
       maxLength: maxLength ?? this.maxLength,
-      isRequired: isRequired ?? this.isRequired,
       maxLines: maxLines ?? this.maxLines,
     );
   }
@@ -37,7 +33,6 @@ class CommentBoxQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       maxLength: map['maxLength'],
-      isRequired: map['isRequired'],
       maxLines: map['maxLines'],
     );
   }
@@ -47,7 +42,6 @@ class CommentBoxQuestion extends QuestionEntity {
     return <String, dynamic>{
       ...super.toMap(),
       'maxLength': maxLength,
-      'isRequired': isRequired,
       'maxLines': maxLines,
     };
   }

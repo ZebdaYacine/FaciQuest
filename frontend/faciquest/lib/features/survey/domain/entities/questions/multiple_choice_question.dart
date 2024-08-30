@@ -12,6 +12,9 @@ class MultipleChoiceQuestion extends QuestionEntity {
   final List<String> choices;
 
   @override
+  bool get isValid => super.isValid && choices.isNotEmpty;
+
+  @override
   QuestionEntity copyWith({
     String? title,
     int? order,
