@@ -131,18 +131,21 @@ sealed class QuestionEntity extends Equatable {
   final String title;
   final int order;
   final QuestionType type;
+  final bool isRequired;
 
   @override
   List<Object?> get props => [
         title,
         type,
         order,
+        isRequired,
       ];
 
   const QuestionEntity({
     required this.title,
     required this.order,
     required this.type,
+    this.isRequired = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -150,6 +153,7 @@ sealed class QuestionEntity extends Equatable {
       'title': title,
       'order': order,
       'type': type.name,
+      'isRequired': isRequired,
     };
   }
 
