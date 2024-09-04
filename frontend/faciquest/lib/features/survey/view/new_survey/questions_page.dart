@@ -38,7 +38,11 @@ class QuestionsPage extends StatelessWidget {
                                 onPressed: () => showQuestionModal(
                                   context,
                                   onSubmit: (value) {
-                                    cubit.newQuestion(value);
+                                    cubit.newQuestion(
+                                      value.copyWith(
+                                        order: index,
+                                      ),
+                                    );
                                   },
                                 ),
                                 icon: const Icon(Icons.add),

@@ -1,3 +1,5 @@
+import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,20 @@ class StarRatingQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('${question.order}. ${question.title}'),
+        AppSpacing.spacing_1.heightBox,
+        RatingWidget(
+          length: question.maxRating,
+          size: RatingSize.large,
+          shape: question.shape,
+          color: question.color,
+          value: 3,
+          onChanged: (value) {},
+        )
+      ],
+    );
   }
 }

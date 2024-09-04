@@ -36,7 +36,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
       children: [
         Row(
           children: [
-            Text('Max Rating :'),
+            const Text('Max Rating :'),
             AppSpacing.spacing_0_5.widthBox,
             Expanded(
               child: DropdownButton<int>(
@@ -44,8 +44,8 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
                 items: List.generate(
                   9,
                   (e) => DropdownMenuItem(
-                    child: Text('${e + 2}'),
                     value: e + 2,
+                    child: Text('${e + 2}'),
                   ),
                 ),
                 onChanged: (e) {
@@ -58,7 +58,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
         AppSpacing.spacing_1.heightBox,
         Row(
           children: [
-            Text('Color :'),
+            const Text('Color :'),
             AppSpacing.spacing_0_5.widthBox,
             ...StarRatingColors.values.map(
               (e) {
@@ -76,7 +76,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
                     ),
                     child:
                         e.color == (widget.question as StarRatingQuestion).color
-                            ? Icon(Icons.check, color: Colors.white)
+                            ? const Icon(Icons.check, color: Colors.white)
                             : null,
                   ),
                 );
@@ -87,15 +87,15 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
         AppSpacing.spacing_1.heightBox,
         Row(
           children: [
-            Text('Shape :'),
+            const Text('Shape :'),
             AppSpacing.spacing_0_5.widthBox,
             Flexible(
               child: DropdownButton<StarRatingShape>(
                 value: (widget.question as StarRatingQuestion).shape,
                 items: StarRatingShape.values
                     .map((e) => DropdownMenuItem(
-                          child: Text(e.name),
                           value: e,
+                          child: Text(e.name),
                         ))
                     .toList(),
                 onChanged: (e) {
@@ -105,7 +105,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
             ),
             AppSpacing.spacing_1.widthBox,
             Icon(
-              (widget.question as StarRatingQuestion).shape.icon,
+              (widget.question as StarRatingQuestion).shape.fullIcon,
               color: (widget.question as StarRatingQuestion).color,
               size: 40,
             ),

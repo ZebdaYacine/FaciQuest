@@ -72,19 +72,48 @@ enum StarRatingShape {
   square,
   hexagon;
 
-  IconData get icon {
+  IconData get fullIcon {
     switch (this) {
       case StarRatingShape.star:
-        return Icons.star;
+        return Icons.star_rounded;
       case StarRatingShape.circle:
         return Icons.circle;
       case StarRatingShape.diamond:
-        return Icons.diamond;
+        return Icons.diamond_rounded;
       case StarRatingShape.square:
         return Icons.square;
-
       case StarRatingShape.hexagon:
         return Icons.hexagon;
+    }
+  }
+
+  IconData get outlinedIcon {
+    switch (this) {
+      case StarRatingShape.star:
+        return Icons.star_outline_rounded;
+      case StarRatingShape.circle:
+        return Icons.circle_outlined;
+      case StarRatingShape.diamond:
+        return Icons.diamond_rounded;
+      case StarRatingShape.square:
+        return Icons.square_outlined;
+      case StarRatingShape.hexagon:
+        return Icons.hexagon_outlined;
+    }
+  }
+
+  IconData get halfIcon {
+    switch (this) {
+      case StarRatingShape.star:
+        return Icons.star_half_rounded;
+      case StarRatingShape.circle:
+        return Icons.circle_outlined;
+      case StarRatingShape.diamond:
+        return Icons.diamond_rounded;
+      case StarRatingShape.square:
+        return Icons.square_outlined;
+      case StarRatingShape.hexagon:
+        return Icons.hexagon_outlined;
     }
   }
 }
