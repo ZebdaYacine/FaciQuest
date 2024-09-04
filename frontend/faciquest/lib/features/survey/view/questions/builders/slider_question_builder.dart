@@ -18,8 +18,8 @@ class SliderQuestionBuilder extends QuestionBuilder {
 class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
     with BuildFormMixin {
   onChange({
-    int? min,
-    int? max,
+    double? min,
+    double? max,
   }) {
     widget.onChanged?.call((widget.question as SliderQuestion).copyWith(
       min: min,
@@ -35,10 +35,10 @@ class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
       children: [
         Row(
           children: [
-            Text('Min :'),
+            const Text('Min :'),
             AppSpacing.spacing_1.widthBox,
             Flexible(
-              child: InputQty.int(
+              child: InputQty.double(
                 initVal: (widget.question as SliderQuestion).min,
                 onQtyChanged: (e) {
                   onChange(min: e);
@@ -50,10 +50,10 @@ class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
         AppSpacing.spacing_1.heightBox,
         Row(
           children: [
-            Text('Max :'),
+            const Text('Max :'),
             AppSpacing.spacing_1.widthBox,
             Flexible(
-              child: InputQty.int(
+              child: InputQty.double(
                 initVal: (widget.question as SliderQuestion).max,
                 onQtyChanged: (e) {
                   onChange(max: e);

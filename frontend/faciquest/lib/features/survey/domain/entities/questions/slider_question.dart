@@ -8,16 +8,16 @@ class SliderQuestion extends QuestionEntity {
     this.min = 0,
     this.max = 100,
   });
-  final int min;
-  final int max;
+  final double min;
+  final double max;
 
   @override
   QuestionEntity copyWith({
     String? title,
     int? order,
     QuestionType? type,
-    int? min,
-    int? max,
+    double? min,
+    double? max,
   }) {
     return SliderQuestion(
       title: title ?? this.title,
@@ -54,4 +54,7 @@ class SliderQuestion extends QuestionEntity {
       order: question.order,
     );
   }
+
+  @override
+  bool get isValid => super.isValid && min < max;
 }

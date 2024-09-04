@@ -10,6 +10,11 @@ class SliderQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Slider(
+      min: question.min,
+      max: question.max,
+      value: 5,
+      onChanged: (newValue) {},
+    );
   }
 }
