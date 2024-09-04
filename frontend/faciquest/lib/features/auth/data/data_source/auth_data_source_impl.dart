@@ -11,6 +11,7 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   AuthDataSourceImpl({required this.dioService})
       : _controller = StreamController<UserEntity?>.broadcast() {
+    logInfo('AuthDataSourceImpl:init');
     getUserFromLocal().then(
       (value) {
         _controller.sink.add(value);
@@ -19,6 +20,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
   @override
   Future<void> forgotPassword(String email) {
+    logInfo('AuthDataSourceImpl:forgotPassword');
+
     return dioService.handleRequest(
       () async {
         final response = await dioClient.post(
@@ -37,6 +40,8 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<UserEntity> signIn(String email, String password) {
+    logInfo('AuthDataSourceImpl:signIn');
+
     return dioService.handleRequest(
       () async {
         final response = await dioClient.post(
@@ -58,6 +63,8 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> signOut() {
+    logInfo('AuthDataSourceImpl:signOut');
+
     return dioService.handleRequest(
       () async {
         final response = await dioClient.post(
@@ -76,6 +83,8 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> signUp(UserEntity user) {
+    logInfo('AuthDataSourceImpl:signUp');
+
     return dioService.handleRequest(
       () async {
         final response = await dioClient.post(
@@ -96,6 +105,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   Stream<UserEntity?> get user => _controller.stream;
 
   Future<UserEntity?> getUserFromLocal() async {
+    logInfo('AuthDataSourceImpl:getUserFromLocal');
+
     try {
       final result =
           (await SecuredStorageKeys.user.getStoredValue()) as String?;
@@ -109,6 +120,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   Future<void> saveUserToLocal(UserEntity? user, String? token) async {
+    logInfo('AuthDataSourceImpl:saveUserToLocal');
+
     if (user == null) {
       await SecuredStorageKeys.user.delete();
       _controller.sink.add(null);
@@ -125,6 +138,8 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<void> setNewPassword(String password) {
+    logInfo('AuthDataSourceImpl:setNewPassword');
+
     return dioService.handleRequest(
       () async {
         final response = await dioClient.post(
@@ -144,6 +159,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> verifyOtp(String otp,
       {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp}) {
+    logInfo('AuthDataSourceImpl:verifyOtp');
+
     return dioService.handleRequest(
       () async {
         final response = await dioClient.post(
