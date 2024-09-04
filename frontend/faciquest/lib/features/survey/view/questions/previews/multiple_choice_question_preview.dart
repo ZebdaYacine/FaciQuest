@@ -15,8 +15,7 @@ class MultipleChoiceQuestionPreview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('${question.order}. ${question.title}'),
-        AppSpacing.spacing_1.heightBox,
+        
         ...question.choices.map(
           (choice) {
             return RadioListTile(

@@ -1,3 +1,6 @@
+import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:faciquest/core/core.dart';
+
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 
@@ -11,69 +14,68 @@ class QuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (question) {
-      case StarRatingQuestion():
-        return StarRatingQuestionPreview(
-            question: question as StarRatingQuestion);
-
-      case MultipleChoiceQuestion():
-        return MultipleChoiceQuestionPreview(
-            question: question as MultipleChoiceQuestion);
-
-      case CheckboxesQuestion():
-        return CheckboxesQuestionPreview(
-            question: question as CheckboxesQuestion);
-
-      case DropdownQuestion():
-        return DropdownQuestionPreview(question: question as DropdownQuestion);
-
-      case FileUploadQuestion():
-        return FileUploadQuestionPreview(
-            question: question as FileUploadQuestion);
-
-      case AudioRecordQuestion():
-        return AudioRecordQuestionPreview(
-            question: question as AudioRecordQuestion);
-
-      case ShortAnswerQuestion():
-        return ShortTextQuestionPreview(
-            question: question as ShortAnswerQuestion);
-
-      case CommentBoxQuestion():
-        return CommentBoxQuestionPreview(
-            question: question as CommentBoxQuestion);
-
-      case SliderQuestion():
-        return SliderQuestionPreview(question: question as SliderQuestion);
-
-      case DateTimeQuestion():
-        return DateTimeQuestionPreview(question: question as DateTimeQuestion);
-
-      case MatrixQuestion():
-        return MatrixQuestionPreview(question: question as MatrixQuestion);
-
-      case ImageChoiceQuestion():
-        return ImageChoiceQuestionPreview(
-            question: question as ImageChoiceQuestion);
-
-      case NameQuestion():
-        return NameQuestionPreview(question: question as NameQuestion);
-
-      case EmailAddressQuestion():
-        return EmailAddressQuestionPreview(
-            question: question as EmailAddressQuestion);
-
-      case PhoneQuestion():
-        return PhoneQuestionPreview(question: question as PhoneQuestion);
-
-      case AddressQuestion():
-        return AddressQuestionPreview(question: question as AddressQuestion);
-
-      case TextQuestion():
-        return TextQuestionPreview(question: question as TextQuestion);
-
-      case ImageQuestion():
-        return ImageQuestionPreview(question: question as ImageQuestion);
-    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('${question.order}. ${question.title}'),
+        AppSpacing.spacing_1.heightBox,
+        switch (question) {
+          StarRatingQuestion() => StarRatingQuestionPreview(
+              question: question as StarRatingQuestion,
+            ),
+          MultipleChoiceQuestion() => MultipleChoiceQuestionPreview(
+              question: question as MultipleChoiceQuestion,
+            ),
+          CheckboxesQuestion() => CheckboxesQuestionPreview(
+              question: question as CheckboxesQuestion,
+            ),
+          DropdownQuestion() => DropdownQuestionPreview(
+              question: question as DropdownQuestion,
+            ),
+          FileUploadQuestion() => FileUploadQuestionPreview(
+              question: question as FileUploadQuestion,
+            ),
+          AudioRecordQuestion() => AudioRecordQuestionPreview(
+              question: question as AudioRecordQuestion,
+            ),
+          ShortAnswerQuestion() => ShortTextQuestionPreview(
+              question: question as ShortAnswerQuestion,
+            ),
+          CommentBoxQuestion() => CommentBoxQuestionPreview(
+              question: question as CommentBoxQuestion,
+            ),
+          SliderQuestion() => SliderQuestionPreview(
+              question: question as SliderQuestion,
+            ),
+          DateTimeQuestion() => DateTimeQuestionPreview(
+              question: question as DateTimeQuestion,
+            ),
+          MatrixQuestion() => MatrixQuestionPreview(
+              question: question as MatrixQuestion,
+            ),
+          ImageChoiceQuestion() => ImageChoiceQuestionPreview(
+              question: question as ImageChoiceQuestion,
+            ),
+          NameQuestion() => NameQuestionPreview(
+              question: question as NameQuestion,
+            ),
+          EmailAddressQuestion() => EmailAddressQuestionPreview(
+              question: question as EmailAddressQuestion,
+            ),
+          PhoneQuestion() => PhoneQuestionPreview(
+              question: question as PhoneQuestion,
+            ),
+          AddressQuestion() => AddressQuestionPreview(
+              question: question as AddressQuestion,
+            ),
+          TextQuestion() => TextQuestionPreview(
+              question: question as TextQuestion,
+            ),
+          ImageQuestion() => ImageQuestionPreview(
+              question: question as ImageQuestion,
+            ),
+        }
+      ],
+    );
   }
 }
