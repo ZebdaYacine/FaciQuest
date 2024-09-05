@@ -71,23 +71,13 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                         children: [
                           buildInputForm(
                             'Image Caption',
-                            key: UniqueKey(),
                             initialValue: item.caption,
                             onChange: (value) {
                               var choices = [
                                 ...(widget.question as ImageChoiceQuestion)
                                     .choices
                               ];
-                              choices
-                                ..replaceRange(
-                                  index,
-                                  index + 1,
-                                  [
-                                    item.copyWith(
-                                      caption: value,
-                                    ),
-                                  ],
-                                );
+                              choices[index] = item.copyWith(caption: value);
                               onChange(choices: choices);
                             },
                           ),
@@ -101,16 +91,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                                   ...(widget.question as ImageChoiceQuestion)
                                       .choices
                                 ];
-                                choices
-                                  ..replaceRange(
-                                    index,
-                                    index + 1,
-                                    [
-                                      item.copyWith(
-                                        image: value,
-                                      ),
-                                    ],
-                                  );
+                                choices[index] = item.copyWith(image: value);
                                 onChange(
                                   choices: choices,
                                 );
@@ -129,16 +110,19 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                   final temp = [
                     ...(widget.question as ImageChoiceQuestion).choices
                   ];
-                  temp.insert(index + 1, ImageChoice());
+                  temp.insert(index + 1, const ImageChoice());
                   onChange(choices: temp);
                 },
                 icon: const Icon(Icons.add),
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(
-                      choices: (widget.question as ImageChoiceQuestion).choices
-                        ..removeAt(index));
+                  var choices = [
+                    ...(widget.question as ImageChoiceQuestion).choices
+                  ];
+                  choices.removeAt(index);
+                  if (choices.isEmpty) choices = [const ImageChoice()];
+                  onChange(choices: choices);
                 },
                 icon: const Icon(
                   Icons.delete,
@@ -146,7 +130,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
               )
             ],
           );
-        }).toList(),
+        }),
       ],
     );
   }

@@ -114,15 +114,13 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
                   Expanded(
                     child: buildInputForm(
                       '',
-                      key: UniqueKey(),
                       initialValue: item,
                       onChange: (value) {
-                        
-                        onChange(
-                          choices:
-                              (widget.question as CheckboxesQuestion).choices
-                                ..replaceRange(index, index + 1, [value]),
-                        );
+                        var temp = [
+                          ...(widget.question as CheckboxesQuestion).choices
+                        ];
+                        temp[index] = value;
+                        onChange(choices: temp);
                       },
                     ),
                   ),
@@ -141,9 +139,12 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(
-                      choices: (widget.question as CheckboxesQuestion).choices
-                        ..removeAt(index));
+                  final temp = [
+                    ...(widget.question as CheckboxesQuestion).choices
+                  ];
+                  temp.removeAt(index);
+                  if (temp.isEmpty) temp.add('');
+                  onChange(choices: temp);
                 },
                 icon: const Icon(
                   Icons.delete,

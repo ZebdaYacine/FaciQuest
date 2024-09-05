@@ -51,7 +51,7 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
                       ? (widget.question as DropdownQuestion).choices.length
                       : null,
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                       value: null,
                       child: Text('select a scale'),
                     ),
@@ -74,7 +74,7 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
                 isExpanded: true,
                 value: selectedType,
                 items: [
-                  DropdownMenuItem(
+                  const DropdownMenuItem(
                     value: null,
                     child: Text('select a type'),
                   ),
@@ -85,7 +85,7 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
                         child: Text(e),
                       );
                     },
-                  ).toList(),
+                  ),
                 ],
                 onChanged: (e) {
                   selectedType = e ?? '';
@@ -104,13 +104,13 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
               Expanded(
                 child: buildInputForm(
                   '',
-                  key: UniqueKey(),
                   initialValue: item,
                   onChange: (value) {
-                    onChange(
-                      choices: (widget.question as DropdownQuestion).choices
-                        ..replaceRange(index, index + 1, [value]),
-                    );
+                    var temp = [
+                      ...(widget.question as DropdownQuestion).choices
+                    ];
+                    temp[index] = value;
+                    onChange(choices: temp);
                   },
                 ),
               ),
@@ -127,9 +127,10 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(
-                      choices: (widget.question as DropdownQuestion).choices
-                        ..removeAt(index));
+                  var temp = [...(widget.question as DropdownQuestion).choices];
+                  temp.removeAt(index);
+                  if (temp.isEmpty) temp.add('');
+                  onChange(choices: temp);
                 },
                 icon: const Icon(
                   Icons.delete,
@@ -137,7 +138,7 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
               )
             ],
           );
-        }).toList(),
+        }),
       ],
     );
   }

@@ -36,7 +36,7 @@ class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
       children: [
         Row(
           children: [
-            Text('Max length :'),
+            const Text('Max length :'),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(
@@ -48,9 +48,10 @@ class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
             )
           ],
         ),
+        AppSpacing.spacing_1.heightBox,
         Row(
           children: [
-            Text('Max lines :'),
+            const Text('Max lines :'),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(

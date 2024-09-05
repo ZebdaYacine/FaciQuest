@@ -28,7 +28,7 @@ class _MultipleChoiceQuestionBuilderState
         choices: [...choices ?? []],
       ),
     );
-    setState(() {});
+    // setState(() {});
   }
 
   @override
@@ -56,7 +56,7 @@ class _MultipleChoiceQuestionBuilderState
                           .length
                       : null,
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                       value: null,
                       child: Text('select a scale'),
                     ),
@@ -79,7 +79,7 @@ class _MultipleChoiceQuestionBuilderState
                 isExpanded: true,
                 value: selectedType,
                 items: [
-                  DropdownMenuItem(
+                  const DropdownMenuItem(
                     value: null,
                     child: Text('select a type'),
                   ),
@@ -90,7 +90,7 @@ class _MultipleChoiceQuestionBuilderState
                         child: Text(e),
                       );
                     },
-                  ).toList(),
+                  ),
                 ],
                 onChanged: (e) {
                   selectedType = e ?? '';
@@ -117,14 +117,13 @@ class _MultipleChoiceQuestionBuilderState
                   Expanded(
                     child: buildInputForm(
                       '',
-                      key: UniqueKey(),
                       initialValue: item,
                       onChange: (value) {
-                        onChange(
-                          choices: (widget.question as MultipleChoiceQuestion)
-                              .choices
-                            ..replaceRange(index, index + 1, [value]),
-                        );
+                        var temp = [
+                          ...(widget.question as MultipleChoiceQuestion).choices
+                        ];
+                        temp[index] = value;
+                        onChange(choices: temp);
                       },
                     ),
                   ),
@@ -154,7 +153,7 @@ class _MultipleChoiceQuestionBuilderState
               )
             ],
           );
-        }).toList(),
+        }),
       ],
     );
   }

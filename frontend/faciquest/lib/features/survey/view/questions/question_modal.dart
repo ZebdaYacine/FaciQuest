@@ -72,6 +72,11 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   'Q*:',
                   onChange: (value) {
                     title = value;
+                    if (widget.question != null) {
+                      widget.onChang?.call(widget.question!.copyWith(
+                        title: title,
+                      ));
+                    }
                   },
                 ),
               AppSpacing.spacing_1.heightBox,

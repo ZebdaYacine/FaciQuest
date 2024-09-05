@@ -48,13 +48,11 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               Expanded(
                 child: buildInputForm(
                   '',
-                  key: UniqueKey(),
                   initialValue: item,
                   onChange: (value) {
-                    onChange(
-                      rows: (widget.question as MatrixQuestion).rows
-                        ..replaceRange(index, index + 1, [value]),
-                    );
+                    var temp = [...(widget.question as MatrixQuestion).rows];
+                    temp[index] = value;
+                    onChange(rows: temp);
                   },
                 ),
               ),
@@ -69,9 +67,10 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(
-                      rows: (widget.question as MatrixQuestion).rows
-                        ..removeAt(index));
+                  var temp = [...(widget.question as MatrixQuestion).rows];
+                  temp.removeAt(index);
+                  if (temp.isEmpty) temp.add('');
+                  onChange(rows: temp);
                 },
                 icon: const Icon(
                   Icons.delete,
@@ -79,10 +78,11 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               )
             ],
           );
-        }).toList(),
+        }),
         AppSpacing.spacing_1.heightBox,
         CheckboxListTile(
           value: (widget.question as MatrixQuestion).useCheckbox,
+          controlAffinity: ListTileControlAffinity.leading,
           title:
               const Text('Allow multiple responses per row (use checkboxes)'),
           onChanged: (value) {
@@ -99,13 +99,11 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               Expanded(
                 child: buildInputForm(
                   '',
-                  key: UniqueKey(),
                   initialValue: item,
                   onChange: (value) {
-                    onChange(
-                      cols: (widget.question as MatrixQuestion).cols
-                        ..replaceRange(index, index + 1, [value]),
-                    );
+                    var temp = [...(widget.question as MatrixQuestion).cols];
+                    temp[index] = value;
+                    onChange(cols: temp);
                   },
                 ),
               ),
@@ -120,9 +118,10 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               ),
               IconButton.outlined(
                 onPressed: () {
-                  onChange(
-                      cols: (widget.question as MatrixQuestion).cols
-                        ..removeAt(index));
+                  var temp = [...(widget.question as MatrixQuestion).cols];
+                  temp.removeAt(index);
+                  if (temp.isEmpty) temp.add('');
+                  onChange(cols: temp);
                 },
                 icon: const Icon(
                   Icons.delete,
@@ -130,7 +129,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder>
               )
             ],
           );
-        }).toList(),
+        }),
       ],
     );
   }

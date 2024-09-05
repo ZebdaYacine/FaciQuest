@@ -33,7 +33,7 @@ class _FileUploadQuestionBuilderState extends State<FileUploadQuestionBuilder>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Instractions for respondents :'),
+        const Text('Instractions for respondents :'),
         buildInputForm(
           'Enter Instractions for the respondents (optional)',
           onChange: (value) {
@@ -41,34 +41,32 @@ class _FileUploadQuestionBuilderState extends State<FileUploadQuestionBuilder>
           },
         ),
         AppSpacing.spacing_1.heightBox,
-        Text('Allowable file types :'),
+        const Text('Allowable file types :'),
         Wrap(
           spacing: 8,
           children: [
-            ...FileUploadType.values
-                .map(
-                  (e) => ChoiceChip(
-                    label: Text(e.name),
-                    selected: (widget.question as FileUploadQuestion)
-                        .allowedExtensions
-                        .contains(e),
-                    onSelected: (value) {
-                      onChange(
-                        allowedExtensions: value
-                            ? [
-                                ...(widget.question as FileUploadQuestion)
-                                    .allowedExtensions,
-                                e
-                              ]
-                            : (widget.question as FileUploadQuestion)
-                                .allowedExtensions
-                                .where((element) => element != e)
-                                .toList(),
-                      );
-                    },
-                  ),
-                )
-                .toList()
+            ...FileUploadType.values.map(
+              (e) => ChoiceChip(
+                label: Text(e.name),
+                selected: (widget.question as FileUploadQuestion)
+                    .allowedExtensions
+                    .contains(e),
+                onSelected: (value) {
+                  onChange(
+                    allowedExtensions: value
+                        ? [
+                            ...(widget.question as FileUploadQuestion)
+                                .allowedExtensions,
+                            e
+                          ]
+                        : (widget.question as FileUploadQuestion)
+                            .allowedExtensions
+                            .where((element) => element != e)
+                            .toList(),
+                  );
+                },
+              ),
+            )
           ],
         )
       ],
