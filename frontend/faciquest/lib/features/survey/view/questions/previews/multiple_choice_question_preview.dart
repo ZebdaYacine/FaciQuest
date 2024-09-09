@@ -1,5 +1,3 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +13,6 @@ class MultipleChoiceQuestionPreview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        
         ...question.choices.map(
           (choice) {
             return RadioListTile(

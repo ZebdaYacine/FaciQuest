@@ -17,8 +17,10 @@ class QuestionPreview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('${question.order}. ${question.title}'),
-        AppSpacing.spacing_1.heightBox,
+        if (!(question is TextQuestion || question is ImageQuestion)) ...[
+          Text('${question.order}. ${question.title}'),
+          AppSpacing.spacing_1.heightBox,
+        ],
         switch (question) {
           StarRatingQuestion() => StarRatingQuestionPreview(
               question: question as StarRatingQuestion,
