@@ -75,6 +75,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
       children: [
         TextFieldBuilder(
           label: 'Street Address 1',
+          show: (widget.question as AddressQuestion).showStreetAddress1,
           labelInitialValue:
               (widget.question as AddressQuestion).streetAddress1Label,
           placeholderInitialValue:
@@ -92,6 +93,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         AppSpacing.spacing_1.heightBox,
         TextFieldBuilder(
           label: 'Street Address 2',
+          show: (widget.question as AddressQuestion).showStreetAddress2,
           labelInitialValue:
               (widget.question as AddressQuestion).streetAddress2Label,
           placeholderInitialValue:
@@ -109,6 +111,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         AppSpacing.spacing_1.heightBox,
         TextFieldBuilder(
           label: 'City/Town',
+          show: (widget.question as AddressQuestion).showCity,
           labelInitialValue: (widget.question as AddressQuestion).cityLabel,
           placeholderInitialValue:
               (widget.question as AddressQuestion).cityHint,
@@ -125,6 +128,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         AppSpacing.spacing_1.heightBox,
         TextFieldBuilder(
           label: 'State/Province',
+          show: (widget.question as AddressQuestion).showState,
           labelInitialValue: (widget.question as AddressQuestion).stateLabel,
           placeholderInitialValue:
               (widget.question as AddressQuestion).stateHint,
@@ -141,6 +145,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         AppSpacing.spacing_1.heightBox,
         TextFieldBuilder(
           label: 'ZIP/Postal code',
+          show: (widget.question as AddressQuestion).showPostalCode,
           labelInitialValue:
               (widget.question as AddressQuestion).postalCodeLabel,
           placeholderInitialValue:
@@ -162,8 +167,8 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
               'Country :',
               style: context.textTheme.bodyLarge,
             ),
-            Spacer(),
-            Text('Show'),
+            const Spacer(),
+            const Text('Show'),
             Checkbox(
               value: (widget.question as AddressQuestion).showCountry,
               onChanged: (value) => onChange(showCountry: value),
@@ -172,7 +177,6 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         ),
         buildInputForm(
           'Label :',
-          key: UniqueKey(),
           initialValue: (widget.question as AddressQuestion).countryLabel,
           onChange: (value) => onChange(countryLabel: value),
         ),

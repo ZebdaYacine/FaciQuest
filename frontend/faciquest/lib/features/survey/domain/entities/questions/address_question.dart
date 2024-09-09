@@ -54,7 +54,29 @@ class AddressQuestion extends QuestionEntity {
   final String countryLabel;
   final String? countryHint;
   final bool showCountry;
-
+  @override
+  List<Object?> get props => [
+        ...super.props,
+        streetAddress1Label,
+        streetAddress1Hint,
+        showStreetAddress1,
+        streetAddress2Label,
+        streetAddress2Hint,
+        showStreetAddress2,
+        cityLabel,
+        cityHint,
+        showCity,
+        stateLabel,
+        stateHint,
+        showState,
+        showStatesAsDropdown,
+        postalCodeLabel,
+        postalCodeHint,
+        showPostalCode,
+        countryLabel,
+        countryHint,
+        showCountry,
+      ];
   @override
   QuestionEntity copyWith({
     String? title,

@@ -9,7 +9,7 @@ class TextFieldBuilder extends StatefulWidget {
     required this.label,
     this.labelInitialValue,
     this.placeholderInitialValue,
-    this.show,
+    this.show = false,
     this.onShowChanged,
     this.onLabelChanged,
     this.onPlaceholderChanged,
@@ -18,7 +18,7 @@ class TextFieldBuilder extends StatefulWidget {
   final String? labelInitialValue;
 
   final String? placeholderInitialValue;
-  final bool? show;
+  final bool show;
   final ValueChanged<bool?>? onShowChanged;
   final ValueChanged<String?>? onLabelChanged;
   final ValueChanged<String?>? onPlaceholderChanged;
@@ -44,19 +44,16 @@ class _TextFieldBuilderState extends State<TextFieldBuilder>
             Checkbox(
               value: widget.show,
               onChanged: widget.onShowChanged,
-              tristate: true,
             ),
           ],
         ),
         buildInputForm(
           'Label :',
-          key: UniqueKey(),
           initialValue: widget.labelInitialValue,
           onChange: widget.onLabelChanged,
         ),
         buildInputForm(
           'Placeholder :',
-          key: UniqueKey(),
           initialValue: widget.placeholderInitialValue,
           onChange: widget.onPlaceholderChanged,
         ),
