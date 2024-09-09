@@ -10,7 +10,7 @@ class ImageQuestion extends QuestionEntity {
 
   final ImageChoice image;
   @override
-  bool get isValid => super.isValid && image.isNotEmpty;
+  bool get isValid => image.isNotEmpty;
 
   @override
   QuestionEntity copyWith({

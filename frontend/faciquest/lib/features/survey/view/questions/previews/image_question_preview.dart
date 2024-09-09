@@ -10,6 +10,12 @@ class ImageQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    if (question.image.url != null) {
+      return Image.network(question.image.url!);
+    } else if (question.image.image != null) {
+      return Image.file(question.image.image!);
+    } else {
+      return Text(question.image.altText ?? '');
+    }
   }
 }
