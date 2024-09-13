@@ -48,7 +48,7 @@ class ImageChoiceQuestion extends QuestionEntity {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       ...super.toMap(),
-      'choices': choices.map((e) => e.toMap()),
+      'choices': choices.map((e) => e.toMap()).toList(),
       'useCheckbox': useCheckbox,
     };
   }

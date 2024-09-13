@@ -45,17 +45,5 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>Used to pick an image from camera</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to capture audio for audio recording </string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to pick an image from gallery</string>
-	<key>UIBackgroundModes</key>
-	<array>
-	<string>fetch</string>
-	<string>remote-notification</string>
-	</array>
-
 </dict>
 </plist>

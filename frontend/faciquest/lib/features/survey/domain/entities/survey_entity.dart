@@ -51,7 +51,7 @@ class SurveyEntity extends Equatable {
       'languages': languages,
       'topics': topics,
       'likertScale': likertScale?.name,
-      'questions': questions.map((e) => e.toMap()),
+      'questions': questions.map((e) => e.toMap()).toList(),
     };
   }
 
