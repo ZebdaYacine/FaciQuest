@@ -1,4 +1,3 @@
-import 'package:faciquest/bootstrap.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +42,13 @@ class ImageChoiceQuestionPreview extends StatelessWidget {
               ),
               Positioned(
                 right: 0,
-                child: Checkbox(value: true, onChanged: (value) {}),
+                child: question.useCheckbox
+                    ? Checkbox(value: true, onChanged: (value) {})
+                    : Radio(
+                        value: true,
+                        groupValue: true,
+                        onChanged: (value) {},
+                      ),
               ),
             ],
           )

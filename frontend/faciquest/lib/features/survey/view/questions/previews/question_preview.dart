@@ -18,7 +18,10 @@ class QuestionPreview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (!(question is TextQuestion || question is ImageQuestion)) ...[
-          Text('${question.order}. ${question.title}'),
+          Text(
+            '${question.order}. ${question.title}',
+            style: context.headlineSmall,
+          ),
           AppSpacing.spacing_1.heightBox,
         ],
         switch (question) {
