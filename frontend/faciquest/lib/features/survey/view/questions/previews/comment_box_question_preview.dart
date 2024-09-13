@@ -10,6 +10,9 @@ class CommentBoxQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return TextField(
+      maxLength: question.maxLength,
+      maxLines: question.maxLines,
+    );
   }
 }

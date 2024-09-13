@@ -10,6 +10,11 @@ class ShortTextQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return TextField(
+      decoration: const InputDecoration(
+          // hintText: question.hint,
+          ),
+      maxLength: question.maxLength,
+    );
   }
 }
