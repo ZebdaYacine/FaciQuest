@@ -69,4 +69,26 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     final item = state.survey.questions.removeAt(oldIndex);
     state.survey.questions.insert(newIndex, item);
   }
+
+  void removeQuestion(int index) {
+    var temp = List<QuestionEntity>.from(state.survey.questions);
+    temp.removeAt(index);
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(
+          questions: temp,
+        ),
+      ),
+    );
+  }
+
+  void newQuestionsList(List<QuestionEntity> newQuestions) {
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(
+          questions: newQuestions,
+        ),
+      ),
+    );
+  }
 }
