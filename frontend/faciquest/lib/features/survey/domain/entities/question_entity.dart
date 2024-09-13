@@ -153,7 +153,8 @@ sealed class QuestionEntity extends Equatable {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'title': title,
-      'order': order,
+      // TODO: order is not used the index is enough
+      // 'order': order,
       'type': type.name,
       'isRequired': isRequired,
     };

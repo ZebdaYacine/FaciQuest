@@ -61,4 +61,12 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
       ),
     );
   }
+
+  void reorder(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    final item = state.survey.questions.removeAt(oldIndex);
+    state.survey.questions.insert(newIndex, item);
+  }
 }

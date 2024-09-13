@@ -72,9 +72,12 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
             children: [
               if ((widget.question.runtimeType != TextQuestion &&
                   widget.question.runtimeType != ImageQuestion))
-                buildInputForm(
-                  'Q*:',
-                  onChange: (value) {
+                TextFormField(
+                  initialValue: widget.question?.title,
+                  decoration: const InputDecoration(
+                    hintText: 'Put Question here',
+                  ),
+                  onChanged: (value) {
                     title = value;
                     if (widget.question != null) {
                       widget.onChang?.call(widget.question!.copyWith(

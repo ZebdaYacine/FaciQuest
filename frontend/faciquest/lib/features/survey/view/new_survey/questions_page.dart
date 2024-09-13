@@ -29,33 +29,56 @@ class QuestionsPage extends StatelessWidget {
                 BlocBuilder<NewSurveyCubit, NewSurveyState>(
                     builder: (context, state) {
                   return Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        if (index >= state.survey.questions.length) {
-                          return ElevatedButton.icon(
-                            onPressed: () => showQuestionModal(
-                              context,
-                              likertScale: state.survey.likertScale,
-                              onSubmit: (value) {
-                                cubit.newQuestion(
-                                  value.copyWith(
-                                    order: index,
-                                  ),
-                                );
-                              },
-                            ),
-                            icon: const Icon(Icons.add),
-                            label: const Center(
-                              child: Text('New Question'),
-                            ),
-                          );
-                        }
-                        return QuestionPreview(
-                            question: state.survey.questions[index]);
+                    child: ReorderableListView.builder(
+                      footer: ElevatedButton.icon(
+                        onPressed: () => showQuestionModal(
+                          context,
+                          likertScale: state.survey.likertScale,
+                          onSubmit: (value) {
+                            cubit.newQuestion(
+                              value.copyWith(),
+                            );
+                          },
+                        ),
+                        icon: const Icon(Icons.add),
+                        label: const Center(
+                          child: Text('New Question'),
+                        ),
+                      ),
+                      buildDefaultDragHandles: true,
+                      onReorder: (oldIndex, newIndex) {
+                        cubit.reorder(oldIndex, newIndex);
                       },
-                      separatorBuilder: (context, index) =>
-                          AppSpacing.spacing_1.heightBox,
-                      itemCount: state.survey.questions.length + 1,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          key: Key('$index'),
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            showQuestionModal(
+                              context,
+                              question: state.survey.questions[index],
+                              likertScale: state.survey.likertScale,
+                            );
+                          },
+                          child: IgnorePointer(
+                            child: Card(
+                              child: ListTile(
+                                contentPadding: 0.padding,
+                                minLeadingWidth: 8,
+                                leading: const SizedBox(
+                                  width: 8,
+                                  child: Icon(Icons.drag_indicator),
+                                ),
+                                title: QuestionPreview(
+                                  question: state.survey.questions[index],
+                                  index: index + 1,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      itemCount: state.survey.questions.length,
                     ),
                   );
                 }),
@@ -95,5 +118,14 @@ class QuestionsPage extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class ReOrderableHandle extends StatelessWidget {
+  const ReOrderableHandle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Icon(Icons.reorder);
   }
 }

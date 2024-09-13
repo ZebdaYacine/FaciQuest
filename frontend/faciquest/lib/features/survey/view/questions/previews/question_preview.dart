@@ -8,9 +8,12 @@ class QuestionPreview extends StatelessWidget {
   const QuestionPreview({
     super.key,
     required this.question,
+    this.index,
+    this.isPreview =true,
   });
-
+  final int? index;
   final QuestionEntity question;
+  final bool isPreview ;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class QuestionPreview extends StatelessWidget {
       children: [
         if (!(question is TextQuestion || question is ImageQuestion)) ...[
           Text(
-            '${question.order}. ${question.title}',
+            '$index. ${question.title}',
             style: context.headlineSmall,
           ),
           AppSpacing.spacing_1.heightBox,
