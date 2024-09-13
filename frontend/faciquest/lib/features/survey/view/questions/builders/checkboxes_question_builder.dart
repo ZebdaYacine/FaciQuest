@@ -9,8 +9,10 @@ class CheckboxesQuestionBuilder extends QuestionBuilder {
   const CheckboxesQuestionBuilder({
     required super.question,
     super.onChanged,
+    this.likertScale,
     super.key,
   });
+  final LikertScale? likertScale;
 
   @override
   State<CheckboxesQuestionBuilder> createState() =>
@@ -92,7 +94,11 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder>
                 ],
                 onChanged: (e) {
                   selectedType = e ?? '';
-                  onChange(choices: getScaleOptions(selectedType, null));
+                  onChange(
+                      choices: getScaleOptions(
+                    selectedType,
+                    widget.likertScale?.getScale(),
+                  ));
                 },
               ),
             )

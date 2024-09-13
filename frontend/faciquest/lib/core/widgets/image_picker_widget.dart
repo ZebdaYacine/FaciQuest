@@ -32,7 +32,7 @@ class ImagePickerWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
-                    leading: Icon(Icons.camera_alt_outlined),
+                    leading: const Icon(Icons.camera_alt_outlined),
                     title: const Text('Camera'),
                     onTap: () async {
                       final image = await ImagePicker().pickImage(
@@ -42,12 +42,12 @@ class ImagePickerWidget extends StatelessWidget {
                       if (image != null) {
                         onImageSelected?.call(File(image.path));
                       }
-                      Navigator.pop(context);
+                      if (context.mounted) Navigator.pop(context);
                     },
                   ),
                   ListTile(
                     title: const Text('Gallery'),
-                    leading: Icon(Icons.image_outlined),
+                    leading: const Icon(Icons.image_outlined),
                     onTap: () async {
                       final image = await ImagePicker().pickImage(
                         source: ImageSource.gallery,
@@ -56,7 +56,7 @@ class ImagePickerWidget extends StatelessWidget {
                       if (image != null) {
                         onImageSelected?.call(File(image.path));
                       }
-                      Navigator.pop(context);
+                      if (context.mounted) Navigator.pop(context);
                     },
                   ),
                 ],

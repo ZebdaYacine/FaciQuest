@@ -6,7 +6,7 @@ class NewSurveyState extends Equatable {
   final Status status;
   final String? msg;
 
-  NewSurveyState({
+  const NewSurveyState({
     this.survey = const SurveyEntity(),
     this.page = NewSurveyPages.surveyDetails,
     this.status = Status.initial,

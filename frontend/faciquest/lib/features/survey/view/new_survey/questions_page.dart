@@ -26,39 +26,39 @@ class QuestionsPage extends StatelessWidget {
                 ),
                 const Text('Please enter details below'),
                 AppSpacing.spacing_2.heightBox,
-                BlocSelector<NewSurveyCubit, NewSurveyState,
-                        List<QuestionEntity>>(
-                    selector: (state) => state.survey.questions,
-                    builder: (context, questions) {
-                      return Expanded(
-                        child: ListView.separated(
-                          itemBuilder: (context, index) {
-                            if (index >= questions.length) {
-                              return ElevatedButton.icon(
-                                onPressed: () => showQuestionModal(
-                                  context,
-                                  onSubmit: (value) {
-                                    cubit.newQuestion(
-                                      value.copyWith(
-                                        order: index,
-                                      ),
-                                    );
-                                  },
-                                ),
-                                icon: const Icon(Icons.add),
-                                label: const Center(
-                                  child: Text('New Question'),
-                                ),
-                              );
-                            }
-                            return QuestionPreview(question: questions[index]);
-                          },
-                          separatorBuilder: (context, index) =>
-                              AppSpacing.spacing_1.heightBox,
-                          itemCount: questions.length + 1,
-                        ),
-                      );
-                    }),
+                BlocBuilder<NewSurveyCubit, NewSurveyState>(
+                    builder: (context, state) {
+                  return Expanded(
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        if (index >= state.survey.questions.length) {
+                          return ElevatedButton.icon(
+                            onPressed: () => showQuestionModal(
+                              context,
+                              likertScale: state.survey.likertScale,
+                              onSubmit: (value) {
+                                cubit.newQuestion(
+                                  value.copyWith(
+                                    order: index,
+                                  ),
+                                );
+                              },
+                            ),
+                            icon: const Icon(Icons.add),
+                            label: const Center(
+                              child: Text('New Question'),
+                            ),
+                          );
+                        }
+                        return QuestionPreview(
+                            question: state.survey.questions[index]);
+                      },
+                      separatorBuilder: (context, index) =>
+                          AppSpacing.spacing_1.heightBox,
+                      itemCount: state.survey.questions.length + 1,
+                    ),
+                  );
+                }),
               ],
             ),
           ),

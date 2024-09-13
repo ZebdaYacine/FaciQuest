@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 Future<void> showQuestionModal(
   BuildContext context, {
   QuestionEntity? question,
+  LikertScale? likertScale,
   ValueChanged<QuestionEntity>? onSubmit,
 }) async {
   showModalBottomSheet(
@@ -18,6 +19,7 @@ Future<void> showQuestionModal(
         paddingBody: 0.padding,
         body: EditView(
           question: question,
+          likertScale: likertScale,
           onChang: (value) {
             question = value;
             setState(() {});
@@ -41,10 +43,12 @@ class EditView extends StatefulWidget {
   const EditView({
     super.key,
     this.question,
+    this.likertScale,
     this.onChang,
   });
 
   final QuestionEntity? question;
+  final LikertScale? likertScale;
   final ValueChanged<QuestionEntity>? onChang;
 
   @override
@@ -131,6 +135,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                     ));
                     setState(() {});
                   },
+                  widget.likertScale,
                 )
             ],
           ),

@@ -34,7 +34,7 @@ class _ShortAnswerQuestionBuilderState extends State<ShortAnswerQuestionBuilder>
       children: [
         Row(
           children: [
-            Text('Max length :'),
+            const Text('Max length :'),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(

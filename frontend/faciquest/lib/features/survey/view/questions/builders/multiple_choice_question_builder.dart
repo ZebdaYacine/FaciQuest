@@ -9,8 +9,10 @@ class MultipleChoiceQuestionBuilder extends QuestionBuilder {
   const MultipleChoiceQuestionBuilder({
     required super.question,
     super.onChanged,
+    this.likertScale,
     super.key,
   });
+  final LikertScale? likertScale;
 
   @override
   State<MultipleChoiceQuestionBuilder> createState() =>
@@ -18,8 +20,9 @@ class MultipleChoiceQuestionBuilder extends QuestionBuilder {
 }
 
 class _MultipleChoiceQuestionBuilderState
-    extends State<MultipleChoiceQuestionBuilder> with BuildFormMixin {
+    extends State<MultipleChoiceQuestionBuilder>  {
   String? selectedType;
+
   onChange({
     List<String>? choices,
   }) {
@@ -28,7 +31,7 @@ class _MultipleChoiceQuestionBuilderState
         choices: [...choices ?? []],
       ),
     );
-    // setState(() {});
+    setState(() {});
   }
 
   @override
@@ -57,7 +60,7 @@ class _MultipleChoiceQuestionBuilderState
                       : null,
                   items: [
                     const DropdownMenuItem(
-                      value: null,
+                      // value:  ,
                       child: Text('select a scale'),
                     ),
                     ...getScaleOptionsSize(selectedType)
@@ -67,6 +70,14 @@ class _MultipleChoiceQuestionBuilderState
                             ))
                   ],
                   onChanged: (e) {
+                    if (e == null) {
+                      onChange(
+                        choices: getScaleOptions(
+                          selectedType,
+                          widget.likertScale?.getScale(),
+                        ),
+                      );
+                    }
                     onChange(choices: getScaleOptions(selectedType, e));
                   },
                 ),
@@ -94,7 +105,12 @@ class _MultipleChoiceQuestionBuilderState
                 ],
                 onChanged: (e) {
                   selectedType = e ?? '';
-                  onChange(choices: getScaleOptions(selectedType, null));
+                  onChange(
+                    choices: getScaleOptions(
+                      selectedType,
+                      widget.likertScale?.getScale(),
+                    ),
+                  );
                 },
               ),
             )
@@ -115,18 +131,16 @@ class _MultipleChoiceQuestionBuilderState
                     onChanged: null,
                   ),
                   Expanded(
-                    child: buildInputForm(
-                      '',
-                      initialValue: item,
-                      onChange: (value) {
-                        var temp = [
-                          ...(widget.question as MultipleChoiceQuestion).choices
-                        ];
-                        temp[index] = value;
-                        onChange(choices: temp);
-                      },
-                    ),
-                  ),
+                      child: TextFormField(
+                    initialValue: item,
+                    onChanged: (value) {
+                      var temp = [
+                        ...(widget.question as MultipleChoiceQuestion).choices
+                      ];
+                      temp[index] = value;
+                      onChange(choices: temp);
+                    },
+                  )),
                 ],
               )),
               AppSpacing.spacing_1.widthBox,

@@ -41,8 +41,8 @@ class _EmailAddressQuestionBuilderState
               'Email Address ',
               style: context.textTheme.bodyLarge,
             ),
-            Spacer(),
-            Text('Show'),
+            const Spacer(),
+            const Text('Show'),
             Checkbox(
               value: (widget.question as EmailAddressQuestion).showEmailAddress,
               onChanged: null,

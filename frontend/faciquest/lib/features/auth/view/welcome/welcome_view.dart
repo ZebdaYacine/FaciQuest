@@ -5,7 +5,7 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [],

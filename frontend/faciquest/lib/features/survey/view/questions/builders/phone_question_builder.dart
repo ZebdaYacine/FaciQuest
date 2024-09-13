@@ -40,8 +40,8 @@ class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
               'Phone',
               style: context.textTheme.bodyLarge,
             ),
-            Spacer(),
-            Text('Show'),
+            const Spacer(),
+            const Text('Show'),
             Checkbox(
               value: (widget.question as PhoneQuestion).showPhone,
               onChanged: null,

@@ -53,8 +53,8 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
               'First Name ',
               style: context.textTheme.bodyLarge,
             ),
-            Spacer(),
-            Text('Show'),
+            const Spacer(),
+            const Text('Show'),
             Checkbox(
               value: (widget.question as NameQuestion).showFirstName,
               onChanged: (value) {
@@ -86,8 +86,8 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
               'Last Name ',
               style: context.textTheme.bodyLarge,
             ),
-            Spacer(),
-            Text('Show'),
+            const Spacer(),
+            const Text('Show'),
             Checkbox(
               value: (widget.question as NameQuestion).showLastName,
               onChanged: (value) {
@@ -119,8 +119,8 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
               'Middle Name ',
               style: context.textTheme.bodyLarge,
             ),
-            Spacer(),
-            Text('Show'),
+            const Spacer(),
+            const Text('Show'),
             Checkbox(
               value: (widget.question as NameQuestion).showMiddleName,
               onChanged: (value) {

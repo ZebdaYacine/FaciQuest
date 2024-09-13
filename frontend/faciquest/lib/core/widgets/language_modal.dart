@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
-import 'package:faciquest/core/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showLanguageModal(BuildContext context) async {

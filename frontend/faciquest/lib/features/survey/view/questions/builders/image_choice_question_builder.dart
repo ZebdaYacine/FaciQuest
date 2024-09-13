@@ -1,7 +1,6 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:faciquest/core/core.dart';
-import 'package:faciquest/core/widgets/widgets.dart';
 
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';

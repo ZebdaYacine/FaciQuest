@@ -4,12 +4,12 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/features/survey/survey.dart';
 
-enum surveyStatus { draft, published, deleted }
+enum SurveyStatus { draft, published, deleted }
 
 class SurveyEntity extends Equatable {
   final String name;
   final String? description;
-  final surveyStatus status;
+  final SurveyStatus status;
   final List<String> languages;
   final List<String> topics;
   final LikertScale? likertScale;
@@ -17,7 +17,7 @@ class SurveyEntity extends Equatable {
   const SurveyEntity({
     this.name = '',
     this.description,
-    this.status = surveyStatus.draft,
+    this.status = SurveyStatus.draft,
     this.languages = const [],
     this.topics = const [],
     this.questions = const [],
@@ -27,7 +27,7 @@ class SurveyEntity extends Equatable {
   SurveyEntity copyWith(
       {String? name,
       String? description,
-      surveyStatus? status,
+      SurveyStatus? status,
       List<String>? languages,
       List<String>? topics,
       LikertScale? likertScale,
@@ -60,9 +60,9 @@ class SurveyEntity extends Equatable {
       name: map['name'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,
-      status: surveyStatus.values.firstWhere(
+      status: SurveyStatus.values.firstWhere(
         (element) => element.name == map['status'] as String?,
-        orElse: () => surveyStatus.draft,
+        orElse: () => SurveyStatus.draft,
       ),
       languages: List<String>.from((map['languages'] as List<String>)),
       topics: List<String>.from((map['topics'] as List<String>)),
@@ -116,6 +116,19 @@ enum LikertScale {
         return '5-point Likert scale';
       case LikertScale.sevenPoints:
         return '7-point Likert scale';
+    }
+  }
+
+  int getScale() {
+    switch (this) {
+      case LikertScale.twoPoints:
+        return 2;
+      case LikertScale.threePoints:
+        return 3;
+      case LikertScale.fivePoints:
+        return 5;
+      case LikertScale.sevenPoints:
+        return 7;
     }
   }
 

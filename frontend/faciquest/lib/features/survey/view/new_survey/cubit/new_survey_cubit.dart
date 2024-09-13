@@ -1,12 +1,12 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'new_survey_state.dart';
 
 class NewSurveyCubit extends Cubit<NewSurveyState> {
-  NewSurveyCubit() : super(NewSurveyState());
+  NewSurveyCubit() : super(const NewSurveyState());
 
   void onSurveyNameChanged(String value) {
     emit(

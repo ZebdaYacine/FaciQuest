@@ -9,8 +9,11 @@ class DropdownQuestionBuilder extends QuestionBuilder {
   const DropdownQuestionBuilder({
     required super.question,
     super.onChanged,
+    this.likertScale,
     super.key,
   });
+  final LikertScale? likertScale;
+
 
   @override
   State<DropdownQuestionBuilder> createState() =>
@@ -89,7 +92,11 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
                 ],
                 onChanged: (e) {
                   selectedType = e ?? '';
-                  onChange(choices: getScaleOptions(selectedType, null));
+                  onChange(
+                      choices: getScaleOptions(
+                    selectedType,
+                    widget.likertScale?.getScale(),
+                  ));
                 },
               ),
             )
