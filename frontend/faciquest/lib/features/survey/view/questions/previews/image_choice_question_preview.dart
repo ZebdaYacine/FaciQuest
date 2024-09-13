@@ -1,3 +1,5 @@
+import 'package:faciquest/bootstrap.dart';
+import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,43 @@ class ImageChoiceQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Wrap(
+      children: [
+        for (var image in question.choices) ...[
+          Stack(
+            children: [
+              Container(
+                padding: 2.padding,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: context.colorScheme.primary,
+                    width: 4,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: AspectRatio(
+                  aspectRatio: 4 / 3,
+                  child: (image.url != null)
+                      ? Image.network(
+                          image.url!,
+                          fit: BoxFit.cover,
+                        )
+                      : (image.image != null)
+                          ? Image.file(
+                              image.image!,
+                              fit: BoxFit.cover,
+                            )
+                          : Text(image.altText ?? ''),
+                ),
+              ),
+              Positioned(
+                right: 0,
+                child: Checkbox(value: true, onChanged: (value) {}),
+              ),
+            ],
+          )
+        ]
+      ],
+    );
   }
 }
