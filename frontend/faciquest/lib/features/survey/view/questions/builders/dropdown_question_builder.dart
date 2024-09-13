@@ -14,7 +14,6 @@ class DropdownQuestionBuilder extends QuestionBuilder {
   });
   final LikertScale? likertScale;
 
-
   @override
   State<DropdownQuestionBuilder> createState() =>
       _DropdownQuestionBuilderState();
@@ -23,6 +22,37 @@ class DropdownQuestionBuilder extends QuestionBuilder {
 class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
     with BuildFormMixin {
   String? selectedType;
+
+  List<TextEditingController> controllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    controllers = (widget.question as DropdownQuestion)
+        .choices
+        .mapIndexed((index, choice) => TextEditingController(text: choice))
+        .toList();
+  }
+
+  @override
+  void didUpdateWidget(covariant DropdownQuestionBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    controllers = (widget.question as DropdownQuestion)
+        .choices
+        .mapIndexed((index, choice) => TextEditingController(text: choice))
+        .toList();
+  }
+
+  @override
+  void dispose() {
+    // Dispose all controllers to prevent memory leaks
+    for (var controller in controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  // Synchronize choices with TextEditingControllers
   onChange({
     List<String>? choices,
   }) {
@@ -103,49 +133,58 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
           ],
         ),
         AppSpacing.spacing_1.heightBox,
-        ...(widget.question as DropdownQuestion)
-            .choices
-            .mapIndexed((index, item) {
-          return Row(
-            children: [
-              Expanded(
-                child: buildInputForm(
-                  '',
-                  initialValue: item,
-                  onChange: (value) {
-                    var temp = [
-                      ...(widget.question as DropdownQuestion).choices
-                    ];
-                    temp[index] = value;
-                    onChange(choices: temp);
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: controllers.length,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Radio(
+                  value: controllers[index].text,
+                  groupValue: null,
+                  onChanged: null,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    controller: controllers[index],
+                    onChanged: (value) {
+                      var temp = List<String>.from(
+                          (widget.question as DropdownQuestion).choices);
+                      temp[index] = value;
+                      onChange(choices: temp);
+                    },
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      controllers.insert(
+                          index + 1, TextEditingController(text: ''));
+                      var temp = List<String>.from(
+                          (widget.question as DropdownQuestion).choices);
+                      temp.insert(index + 1, '');
+                      onChange(choices: temp);
+                    });
                   },
+                  icon: const Icon(Icons.add),
                 ),
-              ),
-              AppSpacing.spacing_1.widthBox,
-              IconButton.filled(
-                onPressed: () {
-                  final temp = [
-                    ...(widget.question as DropdownQuestion).choices
-                  ];
-                  temp.insert(index + 1, '');
-                  onChange(choices: temp);
-                },
-                icon: const Icon(Icons.add),
-              ),
-              IconButton.outlined(
-                onPressed: () {
-                  var temp = [...(widget.question as DropdownQuestion).choices];
-                  temp.removeAt(index);
-                  if (temp.isEmpty) temp.add('');
-                  onChange(choices: temp);
-                },
-                icon: const Icon(
-                  Icons.delete,
-                ),
-              )
-            ],
-          );
-        }),
+                if (controllers.length > 1)
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        controllers.removeAt(index);
+                        var temp = List<String>.from(
+                            (widget.question as DropdownQuestion).choices);
+                        temp.removeAt(index);
+                        onChange(choices: temp);
+                      });
+                    },
+                    icon: const Icon(Icons.delete),
+                  ),
+              ],
+            );
+          },
+        )
       ],
     );
   }

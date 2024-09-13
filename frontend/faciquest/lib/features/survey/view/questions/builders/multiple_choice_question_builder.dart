@@ -20,9 +20,38 @@ class MultipleChoiceQuestionBuilder extends QuestionBuilder {
 }
 
 class _MultipleChoiceQuestionBuilderState
-    extends State<MultipleChoiceQuestionBuilder>  {
+    extends State<MultipleChoiceQuestionBuilder> {
   String? selectedType;
+  List<TextEditingController> controllers = [];
 
+  @override
+  void initState() {
+    super.initState();
+    controllers = (widget.question as MultipleChoiceQuestion)
+        .choices
+        .mapIndexed((index, choice) => TextEditingController(text: choice))
+        .toList();
+  }
+
+  @override
+  void didUpdateWidget(covariant MultipleChoiceQuestionBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    controllers = (widget.question as MultipleChoiceQuestion)
+        .choices
+        .mapIndexed((index, choice) => TextEditingController(text: choice))
+        .toList();
+  }
+
+  @override
+  void dispose() {
+    // Dispose all controllers to prevent memory leaks
+    for (var controller in controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  // Synchronize choices with TextEditingControllers
   onChange({
     List<String>? choices,
   }) {
@@ -43,10 +72,7 @@ class _MultipleChoiceQuestionBuilderState
       children: [
         Row(
           children: [
-            if (optionSizes.isNotEmpty &&
-                optionSizes.contains((widget.question as MultipleChoiceQuestion)
-                    .choices
-                    .length)) ...[
+            if (optionSizes.isNotEmpty) ...[
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
@@ -117,57 +143,59 @@ class _MultipleChoiceQuestionBuilderState
           ],
         ),
         AppSpacing.spacing_1.heightBox,
-        ...(widget.question as MultipleChoiceQuestion)
-            .choices
-            .mapIndexed((index, item) {
-          return Row(
-            children: [
-              Expanded(
-                  child: Row(
-                children: [
-                  Radio(
-                    value: item,
-                    groupValue: null,
-                    onChanged: null,
-                  ),
-                  Expanded(
-                      child: TextFormField(
-                    initialValue: item,
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: controllers.length,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Radio(
+                  value: controllers[index].text,
+                  groupValue: null,
+                  onChanged: null,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    controller: controllers[index],
                     onChanged: (value) {
-                      var temp = [
-                        ...(widget.question as MultipleChoiceQuestion).choices
-                      ];
+                      var temp = List<String>.from(
+                          (widget.question as MultipleChoiceQuestion).choices);
                       temp[index] = value;
                       onChange(choices: temp);
                     },
-                  )),
-                ],
-              )),
-              AppSpacing.spacing_1.widthBox,
-              IconButton.filled(
-                onPressed: () {
-                  final temp = [
-                    ...(widget.question as MultipleChoiceQuestion).choices
-                  ];
-                  temp.insert(index + 1, '');
-                  onChange(choices: temp);
-                },
-                icon: const Icon(Icons.add),
-              ),
-              IconButton.outlined(
-                onPressed: () {
-                  onChange(
-                      choices:
-                          (widget.question as MultipleChoiceQuestion).choices
-                            ..removeAt(index));
-                },
-                icon: const Icon(
-                  Icons.delete,
+                  ),
                 ),
-              )
-            ],
-          );
-        }),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      controllers.insert(
+                          index + 1, TextEditingController(text: ''));
+                      var temp = List<String>.from(
+                          (widget.question as MultipleChoiceQuestion).choices);
+                      temp.insert(index + 1, '');
+                      onChange(choices: temp);
+                    });
+                  },
+                  icon: const Icon(Icons.add),
+                ),
+                if (controllers.length > 1)
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        controllers.removeAt(index);
+                        var temp = List<String>.from(
+                            (widget.question as MultipleChoiceQuestion)
+                                .choices);
+                        temp.removeAt(index);
+                        onChange(choices: temp);
+                      });
+                    },
+                    icon: const Icon(Icons.delete),
+                  ),
+              ],
+            );
+          },
+        ),
       ],
     );
   }
