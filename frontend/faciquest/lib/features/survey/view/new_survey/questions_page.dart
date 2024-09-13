@@ -29,75 +29,76 @@ class QuestionsPage extends StatelessWidget {
                 const Text('Please enter details below'),
                 AppSpacing.spacing_2.heightBox,
                 BlocBuilder<NewSurveyCubit, NewSurveyState>(
-                    builder: (context, state) {
-                  return Expanded(
-                    child: ReorderableListView.builder(
-                      footer: ElevatedButton.icon(
-                        onPressed: () => showQuestionModal(
-                          context,
-                          likertScale: state.survey.likertScale,
-                          onSubmit: (value) {
-                            cubit.newQuestion(
-                              value.copyWith(),
-                            );
-                          },
+                  builder: (context, state) {
+                    return Expanded(
+                      child: ReorderableListView.builder(
+                        footer: ElevatedButton.icon(
+                          onPressed: () => showQuestionModal(
+                            context,
+                            likertScale: state.survey.likertScale,
+                            onSubmit: (value) {
+                              cubit.newQuestion(
+                                value.copyWith(),
+                              );
+                            },
+                          ),
+                          icon: const Icon(Icons.add),
+                          label: const Center(
+                            child: Text('New Question'),
+                          ),
                         ),
-                        icon: const Icon(Icons.add),
-                        label: const Center(
-                          child: Text('New Question'),
-                        ),
-                      ),
-                      buildDefaultDragHandles: true,
-                      onReorder: (oldIndex, newIndex) {
-                        cubit.reorder(oldIndex, newIndex);
-                      },
-                      itemBuilder: (context, index) {
-                        return Card(
-                          key: Key('$index'),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  showQuestionModal(
-                                    context,
-                                    question: state.survey.questions[index],
-                                    likertScale: state.survey.likertScale,
-                                  );
-                                },
-                                child: IgnorePointer(
-                                  child: ListTile(
-                                    contentPadding: 0.padding,
-                                    minLeadingWidth: 8,
-                                    leading: const SizedBox(
-                                      width: 8,
-                                      child: Icon(Icons.drag_indicator),
-                                    ),
-                                    title: QuestionPreview(
+                        buildDefaultDragHandles: true,
+                        onReorder: (oldIndex, newIndex) {
+                          cubit.reorder(oldIndex, newIndex);
+                        },
+                        itemBuilder: (context, index) {
+                          return Card(
+                            key: Key('$index'),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    showQuestionModal(
+                                      context,
                                       question: state.survey.questions[index],
-                                      index: index + 1,
+                                      likertScale: state.survey.likertScale,
+                                    );
+                                  },
+                                  child: IgnorePointer(
+                                    child: ListTile(
+                                      contentPadding: 0.padding,
+                                      minLeadingWidth: 8,
+                                      leading: const SizedBox(
+                                        width: 8,
+                                        child: Icon(Icons.drag_indicator),
+                                      ),
+                                      title: QuestionPreview(
+                                        question: state.survey.questions[index],
+                                        index: index + 1,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                right: 0,
-                                child: questionActions(
-                                  context,
-                                  index,
-                                  state,
-                                  cubit,
+                                Positioned(
+                                  right: 0,
+                                  child: questionActions(
+                                    context,
+                                    index,
+                                    state,
+                                    cubit,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      itemCount: state.survey.questions.length,
-                    ),
-                  );
-                }),
+                              ],
+                            ),
+                          );
+                        },
+                        itemCount: state.survey.questions.length,
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -120,13 +121,25 @@ class QuestionsPage extends StatelessWidget {
               AppSpacing.spacing_0_5.widthBox,
               Expanded(
                 flex: 2,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: context.colorScheme.onPrimary,
-                    backgroundColor: context.colorScheme.primary,
-                  ),
-                  onPressed: () => context.pop(),
-                  child: const Center(child: Text('Submit Survey')),
+                child: BlocBuilder<NewSurveyCubit, NewSurveyState>(
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: context.colorScheme.onPrimary,
+                        backgroundColor: context.colorScheme.primary,
+                      ),
+                      onPressed: !state.survey.isValid || state.status.isLoading
+                          ? null
+                          : () => cubit.submitSurvey(),
+                      child: Center(
+                          child: state.status.isLoading
+                              ? const SizedBox(
+                                  height: 16,
+                                  width: 16,
+                                  child: CircularProgressIndicator())
+                              : const Text('Submit Survey')),
+                    );
+                  },
                 ),
               ),
             ],

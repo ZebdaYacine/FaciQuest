@@ -91,4 +91,10 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
       ),
     );
   }
+
+  submitSurvey() async {
+    emit(state.copyWith(status: Status.showLoading));
+    await Future.delayed(const Duration(seconds: 4));
+    emit(state.copyWith(status: Status.success));
+  }
 }

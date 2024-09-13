@@ -97,6 +97,8 @@ class SurveyEntity extends Equatable {
       questions,
     ];
   }
+
+  bool get isValid => name.isNotEmpty && questions.isNotEmpty;
 }
 
 enum LikertScale {
