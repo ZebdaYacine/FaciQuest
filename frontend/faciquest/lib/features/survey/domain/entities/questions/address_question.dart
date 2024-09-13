@@ -171,29 +171,3 @@ class AddressQuestion extends QuestionEntity {
     );
   }
 }
-
-final countries = [
-  'Algeria',
-];
-
-final states = {
-  'Algeria': [
-    'Adrar',
-    'Chlef',
-    'Laghouat',
-    'Oum El Bouaghi',
-    'Batna',
-    'Bejaia',
-    'Biskra',
-    'Bechar',
-    'Blida',
-    'Bouira',
-    'Tamanrasset',
-    'Tebessa',
-    'Tlemcen',
-    'Tiaret',
-    'Tizi Ouzou',
-    'Alger',
-    // TODO add more states
-  ],
-};

@@ -37,6 +37,7 @@ Future<void> setupDependencies() async {
     /// Route services
     ..registerSingleton<RouteService>(RouteService())
     ..registerLazySingleton(() => RouteManager())
+    ..registerSingleton(Data())
 
     /// Dio
     ..registerSingleton<Dio>(dio)
