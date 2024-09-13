@@ -259,7 +259,7 @@ class QuestionsPage extends StatelessWidget {
                 if (action == null || newIndex == null) return;
 
                 // Ensure there are enough questions to perform the action
-                if ((questions ?? []).length <= 1) {
+                if ((questions ?? []).isEmpty) {
                   return;
                 }
 
@@ -284,7 +284,7 @@ class QuestionsPage extends StatelessWidget {
                 }
 
                 // Ensure the newIndex stays within the valid range of the list
-                newIndex = newIndex!.clamp(0, temp.length);
+                // newIndex = newIndex!.clamp(0, temp.length);
 
                 // Insert the item at the new position
                 temp.insert(newIndex!, item);
