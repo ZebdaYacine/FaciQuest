@@ -24,25 +24,68 @@ class HomeView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            8.heightBox,
-            Text(
-              'Welcome to FaciQuest',
-              style: context.textTheme.headlineMedium,
-            ),
-            8.heightBox,
-            const Text('This is where you can view your surveys'),
-            const Text('or create a new one'),
-            8.heightBox,
-            ElevatedButton(
-              onPressed: () {
-                AppRoutes.manageMySurveys.push(context);
-              },
-              child: const Text('Manage Surveys'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              8.heightBox,
+              Text(
+                'Welcome to FaciQuest',
+                style: context.textTheme.headlineMedium,
+              ),
+              8.heightBox,
+              const Text('This is where you can view your surveys'),
+              const Text('or create a new one'),
+              8.heightBox,
+              ElevatedButton(
+                onPressed: () {
+                  AppRoutes.manageMySurveys.push(context);
+                },
+                child: const Text('Manage Surveys'),
+              ),
+              ...List.generate(
+                10,
+                (index) {
+                  return Card(
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(8),
+                      onTap: () {},
+                      child: Padding(
+                        padding: 8.padding,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Survey Title $index',
+                              style: context.textTheme.headlineSmall,
+                            ),
+                            AppSpacing.spacing_0_5.heightBox,
+                            Text(
+                              'Description of survey $index',
+                              style: context.textTheme.bodyMedium,
+                              maxLines: 2,
+                            ),
+                            Row(
+                              children: [
+                                const Spacer(),
+                                Text(
+                                  '10 DZD',
+                                  style:
+                                      context.textTheme.titleMedium?.copyWith(
+                                    color: Colors.green,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
