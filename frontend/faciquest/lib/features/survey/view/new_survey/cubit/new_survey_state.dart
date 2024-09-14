@@ -36,4 +36,9 @@ class NewSurveyState extends Equatable {
   }
 }
 
-enum NewSurveyPages { surveyDetails, questions }
+enum NewSurveyPages {
+  surveyDetails,
+  questions,
+  collectResponses,
+  analyseResults
+}

@@ -17,17 +17,33 @@ class NewSurveyView extends StatelessWidget {
           leading: const SizedBox(),
           title: const Text('New Survey'),
         ),
-        body: BlocSelector<NewSurveyCubit, NewSurveyState, NewSurveyPages>(
-          selector: (state) => state.page,
-          builder: (context, value) {
-            switch (value) {
-              case NewSurveyPages.surveyDetails:
-                return const _SurveyDetails();
-
-              case NewSurveyPages.questions:
-                return const QuestionsPage();
+        body: BlocListener<NewSurveyCubit, NewSurveyState>(
+          listener: (context, state) {
+            if (state.status.isSuccess) {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => const AppBackDrop(
+                  showHeaderContent: false,
+                  showDivider: false,
+                ),
+              );
             }
           },
+          child: BlocSelector<NewSurveyCubit, NewSurveyState, NewSurveyPages>(
+            selector: (state) => state.page,
+            builder: (context, value) {
+              switch (value) {
+                case NewSurveyPages.surveyDetails:
+                  return const _SurveyDetails();
+                case NewSurveyPages.questions:
+                  return const QuestionsPage();
+                case NewSurveyPages.collectResponses:
+                  return const CollectResponsesPage();
+                case NewSurveyPages.analyseResults:
+                  return const AnalyseResultsPage();
+              }
+            },
+          ),
         ),
         // floatingActionButton: FloatingActionButton(
         //   onPressed: () => showQuestionModal(context),
