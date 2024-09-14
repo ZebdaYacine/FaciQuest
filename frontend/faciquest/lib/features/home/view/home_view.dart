@@ -9,7 +9,6 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome Youcef'),
         actions: [
           InkWell(
             onTap: () {
@@ -24,28 +23,28 @@ class HomeView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              8.heightBox,
-              Text(
-                'Welcome to FaciQuest',
-                style: context.textTheme.headlineMedium,
-              ),
-              8.heightBox,
-              const Text('This is where you can view your surveys'),
-              const Text('or create a new one'),
-              8.heightBox,
-              ElevatedButton(
-                onPressed: () {
-                  AppRoutes.manageMySurveys.push(context);
-                },
-                child: const Text('Manage Surveys'),
-              ),
-              ...List.generate(
-                10,
-                (index) {
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            8.heightBox,
+            Text(
+              'Welcome to FaciQuest',
+              style: context.textTheme.headlineMedium,
+            ),
+            8.heightBox,
+            const Text('This is where you can view your surveys'),
+            const Text('or create a new one'),
+            8.heightBox,
+            ElevatedButton(
+              onPressed: () {
+                AppRoutes.manageMySurveys.push(context);
+              },
+              child: const Text('Manage Surveys'),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 20,
+                itemBuilder: (context, index) {
                   return Card(
                     child: InkWell(
                       borderRadius: BorderRadius.circular(8),
@@ -83,9 +82,9 @@ class HomeView extends StatelessWidget {
                     ),
                   );
                 },
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
