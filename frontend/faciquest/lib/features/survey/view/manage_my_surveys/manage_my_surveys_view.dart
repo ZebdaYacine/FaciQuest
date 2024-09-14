@@ -1,6 +1,7 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:awesome_extensions/awesome_extensions.dart' hide NavigatorExt;
 import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ManageMySurveysView extends StatefulWidget {
   const ManageMySurveysView({super.key});
@@ -16,6 +17,12 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Manage My Surveys'),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          context.pushNamed(AppRoutes.newSurvey.name);
+        },
+        label: const Text('Create Survey'), // Text on the button
       ),
       body: Column(
         children: [

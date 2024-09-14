@@ -58,12 +58,6 @@ class ProfileView extends StatelessWidget {
               leading: const Icon(Icons.notifications),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
-            ListTile(
-              onTap: () {},
-              title: const Text('Activity'),
-              leading: const Icon(Icons.history),
-              trailing: const Icon(Icons.arrow_forward_ios),
-            ),
             const Divider(
               thickness: 4,
             ),

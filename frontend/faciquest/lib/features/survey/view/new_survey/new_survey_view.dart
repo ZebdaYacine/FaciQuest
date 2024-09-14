@@ -13,9 +13,8 @@ class NewSurveyView extends StatelessWidget {
       create: (context) => NewSurveyCubit(),
       child: Scaffold(
         appBar: AppBar(
-          leading: const SizedBox(),
-          title: const Text('New Survey'),
-        ),
+            // title: const Text('New Survey'),
+            ),
         body: BlocListener<NewSurveyCubit, NewSurveyState>(
           listener: (context, state) {
             if (state.status.isSuccess) {
