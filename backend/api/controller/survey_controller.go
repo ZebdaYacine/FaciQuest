@@ -18,6 +18,7 @@ type SurveyController struct {
 func (sc *SurveyController) CreateSurveyRequest(c *gin.Context) {
 	log.Println("__***__***___________ CREATE SURVEY  REQUEST ___________***__***__")
 	create_survey_request := &domain.Survey{}
+
 	if !core.IsDataRequestSupported(create_survey_request, c) {
 		return
 	}
