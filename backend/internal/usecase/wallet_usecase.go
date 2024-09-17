@@ -23,8 +23,7 @@ type PaymentResulat struct {
 }
 
 var (
-	walletResulat  = &WalletResulat{}
-	paymentResulat = &PaymentParams{}
+	walletResulat = &WalletResulat{}
 )
 
 type WalletUseCase interface {

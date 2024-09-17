@@ -11,7 +11,7 @@ func ValidateSurvey(survey *domain.Survey) error {
 	if survey.Title == "" {
 		return fmt.Errorf("title is required")
 	}
-	if survey.Language == "" {
+	if len(survey.Languages) == 0 {
 		return fmt.Errorf("language is required")
 	}
 	if survey.LikertScale == "" {
@@ -40,13 +40,9 @@ type ServeyResulat struct {
 	Err  error
 }
 
-var (
-	surveyParams  = &SurveyParams{}
-	serveyResulat = &ServeyResulat{}
-)
-
 type SurveyUseCase interface {
 	CreateSurvey(c context.Context, survey *SurveyParams) *ServeyResulat
+	UpdateSurvey(c context.Context, survey *SurveyParams) *ServeyResulat
 }
 
 type surveyUseCase struct {
@@ -54,15 +50,7 @@ type surveyUseCase struct {
 	collection string
 }
 
-func NewSurveyUseCase(repo repository.SurveyRepository, collection string) SurveyUseCase {
-	return &surveyUseCase{
-		repo:       repo,
-		collection: collection,
-	}
-}
-
-// CreateSurvey implements SurveyRepository.
-func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *ServeyResulat {
+func crudServey(repo repository.SurveyRepository, c context.Context, params *SurveyParams, action string) *ServeyResulat {
 	if params.Data == nil {
 		return &ServeyResulat{
 			Data: nil,
@@ -77,15 +65,58 @@ func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *
 			Err:  err,
 		}
 	}
-	result, err := su.repo.CreateSurvey(c, *survey)
+	var result *domain.Survey
+	switch action {
+	case "delete":
+		{
+			result, err = repo.UpdateSurvey(c, *survey)
+
+		}
+	case "update":
+		{
+			result, err = repo.UpdateSurvey(c, *survey)
+
+		}
+	case "add":
+		{
+			result, err = repo.CreateSurvey(c, *survey)
+
+		}
+	default:
+		{
+			result, err = nil, nil
+		}
+	}
+	if err == nil && result != nil {
+		return &ServeyResulat{
+			Data: nil,
+			Err:  nil,
+		}
+	}
 	if err != nil {
 		return &ServeyResulat{
 			Data: nil,
-			Err:  fmt.Errorf("error creating survey: %v", err),
+			Err:  fmt.Errorf("error in  %v survey: %v", action, err),
 		}
 	}
 	return &ServeyResulat{
 		Data: result,
 		Err:  nil,
 	}
+}
+func NewSurveyUseCase(repo repository.SurveyRepository, collection string) SurveyUseCase {
+	return &surveyUseCase{
+		repo:       repo,
+		collection: collection,
+	}
+}
+
+// UpdateSurvey implements SurveyUseCase.
+func (su *surveyUseCase) UpdateSurvey(c context.Context, params *SurveyParams) *ServeyResulat {
+	return crudServey(su.repo, c, params, "update")
+}
+
+// CreateSurvey implements SurveyRepository.
+func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *ServeyResulat {
+	return crudServey(su.repo, c, params, "add")
 }

@@ -1,43 +1,175 @@
 package domain
 
+type QuestionType interface {
+	GetType() string
+}
+
 type Survey struct {
-	Title               string        `json:"title" bson:"title"`                                                 // Required
-	Description         string        `json:"description,omitempty" bson:"description,omitempty"`                 // Optional
-	GeneralInformation  []Information `json:"information,omitempty" bson:"information,omitempty"`                 // Optional
-	Language            string        `json:"language" bson:"language"`                                           // Required
-	AdditionalLanguages []string      `json:"additionalLanguages,omitempty" bson:"additionalLanguages,omitempty"` // Optional
-	LikertScale         string        `json:"likertScale" bson:"likertScale"`                                     // Required
-	Questions           []Question    `json:"questions" bson:"questions"`                                         // Required
-	Translations        []Translation `json:"translations,omitempty" bson:"translations,omitempty"`               // Optional
-	Sample              Sample        `json:"sample" bson:"sample"`
-	UserId              string        `bson:"userid"` // Required
-}
-
-type Information struct {
-	Name  string `json:"name" bson:"name"`   // Required if present
-	Value string `json:"value" bson:"value"` // Required if present
-}
-
-type Question struct {
-	Text         string   `json:"text" bson:"text"`                               // Required
-	ResponseType string   `json:"responseType" bson:"responseType"`               // Required
-	FileTypes    []string `json:"fileTypes,omitempty" bson:"fileTypes,omitempty"` // Optional
-	Image        string   `json:"image,omitempty" bson:"image,omitempty"`         // Optional
-	Order        int      `json:"order,omitempty" bson:"order,omitempty"`         // Optional
-}
-
-type Translation struct {
-	TranslatedText map[string]string `json:"translatedText" bson:"translatedText"` // Optional
+	ID          string         `json:"id" bson:"_id"`
+	UserId      string         `json:"userId"`
+	Title       string         `json:"name"`
+	Description string         `json:"description" bson:"description,omitempty"`
+	Status      string         `json:"status"`
+	Languages   []string       `json:"languages"`
+	Topics      []string       `json:"topics"`
+	LikertScale string         `json:"likertScale"`
+	Questions   []QuestionType `json:"questions"`
+	Sample      Sample         `json:"sample"`
 }
 
 type Sample struct {
-	Type     string   `json:"type" bson:"type"`         // Required
-	Size     int      `json:"size" bson:"size"`         // Required
-	Location Location `json:"location" bson:"location"` // Required
+	Size     int      `json:"size"`
+	Type     string   `json:"type"`
+	Location Location `json:"location"`
 }
 
 type Location struct {
-	Country string   `json:"country" bson:"country"`                 // Required
-	State   []string `json:"state,omitempty" bson:"state,omitempty"` // Optional
-	City    []string `json:"city,omitempty" bson:"city,omitempty"`   // Optional
+	Country string   `json:"country" bson:"country"`
+	State   []string `json:"state,omitempty" bson:"state,omitempty"`
+	City    []string `json:"city,omitempty" bson:"city,omitempty"`
+}
+
+type BaseQuestion struct {
+	Title string `json:"title"`
+	Order int    `json:"order"`
+}
+
+type StarRatingQuestion struct {
+	BaseQuestion
+	MaxRating int    `json:"maxRating"`
+	Shape     string `json:"shape"`
+	Color     string `json:"color"`
+}
+
+func (q StarRatingQuestion) GetType() string {
+	return "Star Rating"
+}
+
+type MultipleChoiceQuestion struct {
+	BaseQuestion
+	Choices []string `json:"choices"`
+}
+
+func (q MultipleChoiceQuestion) GetType() string {
+	return "Multiple Choice"
+}
+
+type ImageChoiceQuestion struct {
+	BaseQuestion
+	Choices     []ImageDetail `json:"choices"`
+	UseCheckbox bool          `json:"useCheckbox"`
+}
+
+func (q ImageChoiceQuestion) GetType() string {
+	return "Image Choice"
+}
+
+type CheckboxesQuestion struct {
+	BaseQuestion
+	Choices []string `json:"choices"`
+}
+
+func (q CheckboxesQuestion) GetType() string {
+	return "Checkboxes"
+}
+
+type DropdownQuestion struct {
+	BaseQuestion
+	Choices []string `json:"choices"`
+}
+
+func (q DropdownQuestion) GetType() string {
+	return "Dropdown"
+}
+
+type MatrixQuestion struct {
+	BaseQuestion
+	Rows        []string `json:"rows"`
+	Cols        []string `json:"cols"`
+	UseCheckbox bool     `json:"useCheckbox"`
+}
+
+func (q MatrixQuestion) GetType() string {
+	return "Matrix"
+}
+
+type FileUploadQuestion struct {
+	BaseQuestion
+	Instructions string   `json:"instructions,omitempty"`
+	AllowedExts  []string `json:"allowedExtensions"`
+}
+
+func (q FileUploadQuestion) GetType() string {
+	return "File Upload"
+}
+
+type ShortAnswerQuestion struct {
+	BaseQuestion
+	MaxLength int `json:"maxLength"`
+}
+
+func (q ShortAnswerQuestion) GetType() string {
+	return "Short Answer"
+}
+
+type CommentBoxQuestion struct {
+	BaseQuestion
+	MaxLength int `json:"maxLength"`
+	MaxLines  int `json:"maxLines"`
+}
+
+func (q CommentBoxQuestion) GetType() string {
+	return "Comment Box"
+}
+
+type SliderQuestion struct {
+	BaseQuestion
+	Min int `json:"min"`
+	Max int `json:"max"`
+}
+
+func (q SliderQuestion) GetType() string {
+	return "Slider"
+}
+
+type DateTimeQuestion struct {
+	BaseQuestion
+	CollectDate bool `json:"collectDateInfo"`
+	CollectTime bool `json:"collectTimeInfo"`
+}
+
+func (q DateTimeQuestion) GetType() string {
+	return "Date / Time"
+}
+
+type NameQuestion struct {
+	BaseQuestion
+	FirstNameLabel  string  `json:"firstNameLabel"`
+	LastNameLabel   string  `json:"lastNameLabel"`
+	FirstNameHint   *string `json:"firstNameHint,omitempty"`
+	LastNameHint    *string `json:"lastNameHint,omitempty"`
+	MiddleNameLabel *string `json:"middleNameLabel,omitempty"`
+	MiddleNameHint  *string `json:"middleNameHint,omitempty"`
+	ShowFirstName   bool    `json:"showFirstName"`
+	ShowLastName    bool    `json:"showLastName"`
+	ShowMiddleName  bool    `json:"showMiddleName"`
+}
+
+func (q NameQuestion) GetType() string {
+	return "Name"
+}
+
+type ImageQuestion struct {
+	BaseQuestion
+	Image ImageDetail `json:"image"`
+}
+
+func (q ImageQuestion) GetType() string {
+	return "Image"
+}
+
+type ImageDetail struct {
+	Caption *string `json:"caption,omitempty"`
+	AltText *string `json:"altText,omitempty"`
+	URL     *string `json:"url,omitempty"`
 }
