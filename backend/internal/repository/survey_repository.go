@@ -25,14 +25,15 @@ func NewSurveyRepository(db database.Database) SurveyRepository {
 // CreateSurvey implements SurveyRepository.
 func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error) {
 	collection := s.database.Collection("survey")
-
-	// Insert the survey into the collection
-	_, err := collection.InsertOne(c, survey)
+	resulat, err := collection.InsertOne(c, &survey)
 	if err != nil {
 		log.Printf("Failed to create survey: %v", err)
 		return nil, err
 	}
+	surveyId := resulat.(string)
+	survey.ID = surveyId
 	log.Printf("Created survey with ID %v", survey.ID)
+	log.Printf("Created survey  %v", survey)
 	return survey, nil
 }
 

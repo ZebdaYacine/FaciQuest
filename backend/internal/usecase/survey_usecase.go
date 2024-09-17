@@ -35,14 +35,14 @@ func ValidateSurvey(survey *domain.Survey) error {
 type SurveyParams struct {
 	Data *domain.Survey
 }
-type ServeyResulat struct {
-	Data any
+type SurveyResulat struct {
+	Data *domain.Survey
 	Err  error
 }
 
 type SurveyUseCase interface {
-	CreateSurvey(c context.Context, survey *SurveyParams) *ServeyResulat
-	UpdateSurvey(c context.Context, survey *SurveyParams) *ServeyResulat
+	CreateSurvey(c context.Context, survey *SurveyParams) *SurveyResulat
+	UpdateSurvey(c context.Context, survey *SurveyParams) *SurveyResulat
 }
 
 type surveyUseCase struct {
@@ -50,9 +50,9 @@ type surveyUseCase struct {
 	collection string
 }
 
-func crudServey(repo repository.SurveyRepository, c context.Context, params *SurveyParams, action string) *ServeyResulat {
+func crudServey(repo repository.SurveyRepository, c context.Context, params *SurveyParams, action string) *SurveyResulat {
 	if params.Data == nil {
-		return &ServeyResulat{
+		return &SurveyResulat{
 			Data: nil,
 			Err:  fmt.Errorf("data requeried"),
 		}
@@ -60,7 +60,7 @@ func crudServey(repo repository.SurveyRepository, c context.Context, params *Sur
 	survey := params.Data
 	err := ValidateSurvey(survey)
 	if err != nil {
-		return &ServeyResulat{
+		return &SurveyResulat{
 			Data: nil,
 			Err:  err,
 		}
@@ -87,19 +87,13 @@ func crudServey(repo repository.SurveyRepository, c context.Context, params *Sur
 			result, err = nil, nil
 		}
 	}
-	if err == nil && result != nil {
-		return &ServeyResulat{
-			Data: nil,
-			Err:  nil,
-		}
-	}
 	if err != nil {
-		return &ServeyResulat{
+		return &SurveyResulat{
 			Data: nil,
 			Err:  fmt.Errorf("error in  %v survey: %v", action, err),
 		}
 	}
-	return &ServeyResulat{
+	return &SurveyResulat{
 		Data: result,
 		Err:  nil,
 	}
@@ -112,11 +106,11 @@ func NewSurveyUseCase(repo repository.SurveyRepository, collection string) Surve
 }
 
 // UpdateSurvey implements SurveyUseCase.
-func (su *surveyUseCase) UpdateSurvey(c context.Context, params *SurveyParams) *ServeyResulat {
+func (su *surveyUseCase) UpdateSurvey(c context.Context, params *SurveyParams) *SurveyResulat {
 	return crudServey(su.repo, c, params, "update")
 }
 
 // CreateSurvey implements SurveyRepository.
-func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *ServeyResulat {
+func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *SurveyResulat {
 	return crudServey(su.repo, c, params, "add")
 }

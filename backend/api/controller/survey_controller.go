@@ -35,6 +35,6 @@ func (sc *SurveyController) CreateSurveyRequest(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "CREATE SURVEY REQUEST DONE SUCCESSFULY",
-		Data:    resulat.Data.(*domain.Survey),
+		Data:    resulat.Data,
 	})
 }
