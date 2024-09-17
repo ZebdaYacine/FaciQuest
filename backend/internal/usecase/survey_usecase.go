@@ -69,17 +69,17 @@ func crudServey(repo repository.SurveyRepository, c context.Context, params *Sur
 	switch action {
 	case "delete":
 		{
-			result, err = repo.UpdateSurvey(c, *survey)
+			result, err = repo.UpdateSurvey(c, survey)
 
 		}
 	case "update":
 		{
-			result, err = repo.UpdateSurvey(c, *survey)
+			result, err = repo.UpdateSurvey(c, survey)
 
 		}
 	case "add":
 		{
-			result, err = repo.CreateSurvey(c, *survey)
+			result, err = repo.CreateSurvey(c, survey)
 
 		}
 	default:

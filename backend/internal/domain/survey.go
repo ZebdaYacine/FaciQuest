@@ -1,5 +1,10 @@
 package domain
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
 type QuestionType interface {
 	GetType() string
 }
@@ -172,4 +177,63 @@ type ImageDetail struct {
 	Caption *string `json:"caption,omitempty"`
 	AltText *string `json:"altText,omitempty"`
 	URL     *string `json:"url,omitempty"`
+}
+
+func (s *Survey) UnmarshalJSON(data []byte) error {
+	type Alias Survey
+	aux := &struct {
+		Questions json.RawMessage `json:"questions"`
+		*Alias
+	}{
+		Alias: (*Alias)(s),
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	var questions []map[string]interface{}
+	if err := json.Unmarshal(aux.Questions, &questions); err != nil {
+		return err
+	}
+
+	for _, q := range questions {
+		questionType := q["type"].(string)
+		var qType QuestionType
+
+		switch questionType {
+		case "Star Rating":
+			var starQuestion StarRatingQuestion
+			if err := mapToStruct(q, &starQuestion); err != nil {
+				return err
+			}
+			qType = starQuestion
+		case "Multiple Choice":
+			var mcQuestion MultipleChoiceQuestion
+			if err := mapToStruct(q, &mcQuestion); err != nil {
+				return err
+			}
+			qType = mcQuestion
+		case "Image Choice":
+			var imgQuestion ImageChoiceQuestion
+			if err := mapToStruct(q, &imgQuestion); err != nil {
+				return err
+			}
+			qType = imgQuestion
+		default:
+			return fmt.Errorf("unknown question type: %s", questionType)
+		}
+
+		s.Questions = append(s.Questions, qType)
+	}
+
+	return nil
+}
+
+func mapToStruct(m map[string]interface{}, result interface{}) error {
+	data, err := json.Marshal(m)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(data, result)
 }

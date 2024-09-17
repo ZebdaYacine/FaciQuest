@@ -12,8 +12,8 @@ type surveyRepository struct {
 }
 
 type SurveyRepository interface {
-	CreateSurvey(c context.Context, survey domain.Survey) (*domain.Survey, error)
-	UpdateSurvey(c context.Context, survey domain.Survey) (*domain.Survey, error)
+	CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
+	UpdateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
 }
 
 func NewSurveyRepository(db database.Database) SurveyRepository {
@@ -23,19 +23,20 @@ func NewSurveyRepository(db database.Database) SurveyRepository {
 }
 
 // CreateSurvey implements SurveyRepository.
-func (s *surveyRepository) CreateSurvey(c context.Context, survey domain.Survey) (*domain.Survey, error) {
+func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error) {
 	collection := s.database.Collection("survey")
-	surveyId, err1 := collection.InsertOne(c, survey)
-	if err1 != nil {
-		log.Printf("Failed to create survey: %v", err1)
-		return nil, err1
+
+	// Insert the survey into the collection
+	_, err := collection.InsertOne(c, survey)
+	if err != nil {
+		log.Printf("Failed to create survey: %v", err)
+		return nil, err
 	}
-	log.Printf("Create survey with id %v", surveyId.(string))
-	survey.ID = surveyId.(string)
-	return &domain.Survey{}, nil
+	log.Printf("Created survey with ID %v", survey.ID)
+	return survey, nil
 }
 
 // UpdateSurvey implements SurveyRepository.
-func (s *surveyRepository) UpdateSurvey(c context.Context, survey domain.Survey) (*domain.Survey, error) {
+func (s *surveyRepository) UpdateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error) {
 	return &domain.Survey{}, nil
 }
