@@ -44,7 +44,6 @@ func ConvertBsonToStruct[T domain.Account](bsonData primitive.M) (*T, error) {
 		log.Panic("Error marshalling bson.M:", err)
 		return nil, err
 	}
-
 	err = bson.Unmarshal(bsonBytes, &model)
 	if err != nil {
 		log.Panic("Error unmarshalling to struct:", err)
@@ -66,10 +65,10 @@ func UpdateDoc[T domain.Account](c context.Context, collection database.Collecti
 		return nil, err
 	}
 	fmt.Print("Document is updated successfuly")
-	updatedUser, err := ConvertBsonToStruct[T](updatedDocument)
+	updatedObject, err := ConvertBsonToStruct[T](updatedDocument)
 	if err != nil {
 		log.Printf("Failed to convert bson to struct: %v", err)
 		return nil, err
 	}
-	return updatedUser, nil
+	return updatedObject, nil
 }

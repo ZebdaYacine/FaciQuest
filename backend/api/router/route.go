@@ -49,6 +49,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewCashOutWalletRouter(db, userRouter)
 
 	private.NewCreateSurveyRouter(db, userRouter)
+	private.NewUpdateSurveyRouter(db, userRouter)
 
 	adminRouter := gin.Group("/admin")
 	//Middleware to verify AccessToken

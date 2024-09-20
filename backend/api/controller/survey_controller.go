@@ -38,3 +38,27 @@ func (sc *SurveyController) CreateSurveyRequest(c *gin.Context) {
 		Data:    resulat.Data,
 	})
 }
+
+func (sc *SurveyController) UpdateSurveyRequest(c *gin.Context) {
+	log.Println("__***__***___________ UPDATE SURVEY  REQUEST ___________***__***__")
+	create_survey_request := &domain.Survey{}
+
+	if !core.IsDataRequestSupported(create_survey_request, c) {
+		return
+	}
+	userId := core.GetIdUser(c)
+	create_survey_request.UserId = userId
+	surveyParams := &usecase.SurveyParams{}
+	surveyParams.Data = create_survey_request
+	resulat := sc.SurveyUseCase.UpdateSurvey(c, surveyParams)
+	if resulat.Err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: resulat.Err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "UPDATE SURVEY REQUEST DONE SUCCESSFULY",
+		Data:    resulat.Data,
+	})
+}
