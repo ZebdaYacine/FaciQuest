@@ -54,43 +54,49 @@ class QuestionsPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return Card(
                             key: Key('$index'),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    showQuestionModal(
-                                      context,
-                                      question: state.survey.questions[index],
-                                      likertScale: state.survey.likertScale,
-                                    );
-                                  },
-                                  child: IgnorePointer(
-                                    child: ListTile(
-                                      contentPadding: 0.padding,
-                                      minLeadingWidth: 8,
-                                      leading: const SizedBox(
-                                        width: 8,
-                                        child: Icon(Icons.drag_indicator),
-                                      ),
-                                      title: QuestionPreview(
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                minHeight: 150,
+                              ),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {
+                                      showQuestionModal(
+                                        context,
                                         question: state.survey.questions[index],
-                                        index: index + 1,
+                                        likertScale: state.survey.likertScale,
+                                      );
+                                    },
+                                    child: IgnorePointer(
+                                      child: ListTile(
+                                        contentPadding: 0.padding,
+                                        minLeadingWidth: 8,
+                                        leading: const SizedBox(
+                                          width: 8,
+                                          child: Icon(Icons.drag_indicator),
+                                        ),
+                                        title: QuestionPreview(
+                                          question:
+                                              state.survey.questions[index],
+                                          index: index + 1,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  child: questionActions(
-                                    context,
-                                    index,
-                                    state,
-                                    cubit,
+                                  Positioned(
+                                    right: 0,
+                                    child: questionActions(
+                                      context,
+                                      index,
+                                      state,
+                                      cubit,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -152,6 +158,7 @@ class QuestionsPage extends StatelessWidget {
   Column questionActions(BuildContext context, int index, NewSurveyState state,
       NewSurveyCubit cubit) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         IconButton.filled(
           icon: const Icon(Icons.change_circle_outlined),
