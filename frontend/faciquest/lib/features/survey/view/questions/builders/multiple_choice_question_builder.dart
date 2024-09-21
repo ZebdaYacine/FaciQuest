@@ -22,33 +22,12 @@ class MultipleChoiceQuestionBuilder extends QuestionBuilder {
 class _MultipleChoiceQuestionBuilderState
     extends State<MultipleChoiceQuestionBuilder> {
   String? selectedType;
-  List<TextEditingController> controllers = [];
+  late var question = widget.question as MultipleChoiceQuestion;
 
   @override
-  void initState() {
-    super.initState();
-    controllers = (widget.question as MultipleChoiceQuestion)
-        .choices
-        .mapIndexed((index, choice) => TextEditingController(text: choice))
-        .toList();
-  }
-
-  @override
-  void didUpdateWidget(covariant MultipleChoiceQuestionBuilder oldWidget) {
+  void didUpdateWidget(MultipleChoiceQuestionBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    controllers = (widget.question as MultipleChoiceQuestion)
-        .choices
-        .mapIndexed((index, choice) => TextEditingController(text: choice))
-        .toList();
-  }
-
-  @override
-  void dispose() {
-    // Dispose all controllers to prevent memory leaks
-    for (var controller in controllers) {
-      controller.dispose();
-    }
-    super.dispose();
+    question = widget.question as MultipleChoiceQuestion;
   }
 
   // Synchronize choices with TextEditingControllers
@@ -56,7 +35,7 @@ class _MultipleChoiceQuestionBuilderState
     List<String>? choices,
   }) {
     widget.onChanged?.call(
-      (widget.question as MultipleChoiceQuestion).copyWith(
+      question.copyWith(
         choices: [...choices ?? []],
       ),
     );
@@ -76,13 +55,8 @@ class _MultipleChoiceQuestionBuilderState
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
-                  value: optionSizes.contains(
-                          (widget.question as MultipleChoiceQuestion)
-                              .choices
-                              .length)
-                      ? (widget.question as MultipleChoiceQuestion)
-                          .choices
-                          .length
+                  value: optionSizes.contains(question.choices.length)
+                      ? question.choices.length
                       : null,
                   items: [
                     const DropdownMenuItem(
@@ -145,21 +119,22 @@ class _MultipleChoiceQuestionBuilderState
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
-          itemCount: controllers.length,
+          itemCount: question.choices.length,
           itemBuilder: (context, index) {
+            final item = question.choices[index];
             return Row(
               children: [
                 Radio(
-                  value: controllers[index].text,
+                  value: item,
                   groupValue: null,
                   onChanged: null,
                 ),
                 Expanded(
                   child: TextFormField(
-                    controller: controllers[index],
+                    // controller: controllers[index],
+                    initialValue: item,
                     onChanged: (value) {
-                      var temp = List<String>.from(
-                          (widget.question as MultipleChoiceQuestion).choices);
+                      var temp = List<String>.from(question.choices);
                       temp[index] = value;
                       onChange(choices: temp);
                     },
@@ -168,24 +143,20 @@ class _MultipleChoiceQuestionBuilderState
                 IconButton(
                   onPressed: () {
                     setState(() {
-                      controllers.insert(
-                          index + 1, TextEditingController(text: ''));
-                      var temp = List<String>.from(
-                          (widget.question as MultipleChoiceQuestion).choices);
+                      // question.choices.insert(index + 1, '');
+                      var temp = List<String>.from(question.choices);
                       temp.insert(index + 1, '');
                       onChange(choices: temp);
                     });
                   },
                   icon: const Icon(Icons.add),
                 ),
-                if (controllers.length > 1)
+                if (question.choices.length > 1)
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        controllers.removeAt(index);
-                        var temp = List<String>.from(
-                            (widget.question as MultipleChoiceQuestion)
-                                .choices);
+                        // question.choices.removeAt(index);
+                        var temp = List<String>.from(question.choices);
                         temp.removeAt(index);
                         onChange(choices: temp);
                       });

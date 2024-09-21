@@ -68,6 +68,9 @@ class QuestionsPage extends StatelessWidget {
                                         context,
                                         question: state.survey.questions[index],
                                         likertScale: state.survey.likertScale,
+                                        onSubmit: (value) {
+                                          cubit.refreshList(value, index);
+                                        },
                                       );
                                     },
                                     child: IgnorePointer(

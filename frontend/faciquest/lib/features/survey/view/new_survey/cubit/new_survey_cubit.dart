@@ -100,4 +100,21 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
       page: NewSurveyPages.collectResponses,
     ));
   }
+
+  void refreshList(QuestionEntity value, int index) {
+    // Create a copy of the current list of questions
+    final updatedQuestions = List<QuestionEntity>.from(state.survey.questions);
+
+    // Replace the question at the given index with the new value
+    updatedQuestions[index] = value;
+
+    // Emit the updated state with the modified list of questions
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(
+          questions: updatedQuestions, // Use the updated list here
+        ),
+      ),
+    );
+  }
 }

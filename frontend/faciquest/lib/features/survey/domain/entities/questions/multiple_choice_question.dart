@@ -50,7 +50,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
   }
 
   @override
-  List<Object?> get props => [title, choices];
+  List<Object?> get props => [...super.props, choices];
   static MultipleChoiceQuestion copyFrom(QuestionEntity question) {
     return MultipleChoiceQuestion(
       title: question.title,

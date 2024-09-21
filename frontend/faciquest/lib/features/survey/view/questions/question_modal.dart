@@ -88,7 +88,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 ),
               AppSpacing.spacing_1.heightBox,
               DropdownButton(
-                value: questionType,
+                value: widget.question?.type ?? questionType,
                 isExpanded: true,
                 items: QuestionType.values.map(
                   (e) {
@@ -134,7 +134,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   widget.question!,
                   (value) {
                     widget.onChang?.call(value.copyWith(
-                      title: title,
+                      title: widget.question?.title ?? title,
                     ));
                     setState(() {});
                   },
