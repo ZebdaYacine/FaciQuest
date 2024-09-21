@@ -291,7 +291,7 @@ class QuestionsPage extends StatelessWidget {
                 }
 
                 // Ensure the newIndex stays within the valid range of the list
-                // newIndex = newIndex!.clamp(0, temp.length);
+                newIndex = newIndex!.clamp(0, temp.length);
 
                 // Insert the item at the new position
                 temp.insert(newIndex!, item);
