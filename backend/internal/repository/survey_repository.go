@@ -4,6 +4,7 @@ import (
 	"back-end/internal/domain"
 	"back-end/pkg/database"
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -39,31 +40,55 @@ func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey
 }
 
 // UpdateSurvey implements SurveyRepository.
-func (s *surveyRepository) UpdateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error) {
-	log.Println(survey)
+func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain.Survey) (*domain.Survey, error) {
 	collection := s.database.Collection("survey")
-	filterUpdate := bson.D{{Key: "_id", Value: survey.ID}}
+	filterUpdate := bson.D{{Key: "_id", Value: updatedSurvey.ID}}
 	update := bson.M{
 		"$set": bson.M{
-			"userId":      survey.UserId,
-			"name":        survey.Title,
-			"description": survey.Description,
-			"status":      survey.Status,
-			"languages":   survey.Languages,
-			"topics":      survey.Topics,
-			"likertScale": survey.LikertScale,
-			"questions":   convertQuestionsToConcrete(survey.Questions),
-			"sample":      survey.Sample,
+			"name":        updatedSurvey.Title,
+			"description": updatedSurvey.Description,
+			"status":      updatedSurvey.Status,
+			"languages":   updatedSurvey.Languages,
+			"topics":      updatedSurvey.Topics,
+			"likertScale": updatedSurvey.LikertScale,
+			//"questions":   convertQuestionsToConcrete(updatedSurvey.Questions),
+			"sample": bson.M{
+				"size":     updatedSurvey.Sample.Size,
+				"type":     updatedSurvey.Sample.Type,
+				"location": updatedSurvey.Sample.Location,
+			},
 		},
 	}
-
 	_, err := collection.UpdateOne(c, filterUpdate, update)
 	if err != nil {
 		log.Panic(err)
 		return nil, err
 	}
-	return survey, nil
+	// var new_survey *domain.Survey
+	// filter := bson.M{"_id": survey.ID}
+	// err = collection.FindOne(c, filter).Decode(new_survey)
+	// if err != nil {
+	// 	if err == mongo.ErrNoDocuments {
+	// 		return nil, fmt.Errorf("survey not found")
+	// 	}
+	// 	return nil, err
+	//}
+	return updatedSurvey, nil
+	// return core.UpdateDoc[domain.Survey](c, collection, update, filterUpdate)
+}
 
+func questionToBSON(question domain.QuestionType) (bson.M, error) {
+	data, err := json.Marshal(question)
+	if err != nil {
+		return nil, err
+	}
+
+	var result bson.M
+	if err := json.Unmarshal(data, &result); err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 func convertQuestionsToConcrete(questions []domain.QuestionType) []interface{} {
@@ -97,7 +122,6 @@ func convertQuestionsToConcrete(questions []domain.QuestionType) []interface{} {
 		case domain.ImageQuestion:
 			result = append(result, q)
 		default:
-			// Handle unknown types or log an error
 			fmt.Printf("Warning: unknown question type: %+v\n", q)
 		}
 	}

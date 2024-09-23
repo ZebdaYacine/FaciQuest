@@ -16,7 +16,8 @@ func TestSurveyRepository(t *testing.T) {
 		ctx := context.Background()
 		pr := repository.NewSurveyRepository(db)
 		survey := &domain.Survey{
-			Title:       "Customer Satisfaction Survey",
+			ID:          "66ee9278bbb036695b75ca49",
+			Title:       "Customer Satisfaction Survey 2024",
 			Description: "A survey to assess customer satisfaction",
 			Status:      "active",
 			Languages:   []string{"en", "fr"},
@@ -24,7 +25,7 @@ func TestSurveyRepository(t *testing.T) {
 			LikertScale: "5-point",
 			Questions:   []domain.QuestionType{}, // Add questions as needed
 			Sample: domain.Sample{
-				Size: 100,
+				Size: 1000,
 				Type: "random",
 				Location: domain.Location{
 					Country: "USA",
@@ -33,7 +34,7 @@ func TestSurveyRepository(t *testing.T) {
 				},
 			},
 		}
-		record, err := pr.CreateSurvey(ctx, survey)
+		record, err := pr.UpdateSurvey(ctx, survey)
 		if err == nil {
 			fmt.Println(record)
 		}
