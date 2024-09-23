@@ -1,3 +1,3 @@
-docker.exe system prune
-#docker inspect backend-redis-1 | grep.exe "IPAddress"
+cd backend
+docker system prune
 docker-compose up --build
