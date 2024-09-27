@@ -59,6 +59,8 @@ class _QuestionPreviewState extends State<QuestionPreview> {
             ),
           MultipleChoiceQuestion() => MultipleChoiceQuestionPreview(
               question: widget.question as MultipleChoiceQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as MultipleChoiceAnswer?,
             ),
           CheckboxesQuestion() => CheckboxesQuestionPreview(
               question: widget.question as CheckboxesQuestion,
