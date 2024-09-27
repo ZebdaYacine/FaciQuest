@@ -20,8 +20,23 @@ class CheckboxesQuestionPreview extends StatelessWidget {
         ...question.choices.map(
           (choice) {
             return CheckboxListTile(
-              value: true,
-              onChanged: (value) {},
+              value: answer?.selectedChoices.contains(choice) ?? false,
+              onChanged: (value) {
+                if (value == null) return;
+
+                final temp = {...answer?.selectedChoices ?? {}};
+                if (value) {
+                  temp.add(choice);
+                } else {
+                  temp.remove(choice);
+                }
+                onAnswerChanged?.call(
+                  CheckboxesAnswer(
+                    questionId: question.id,
+                    selectedChoices: temp,
+                  ),
+                );
+              },
               controlAffinity: ListTileControlAffinity.leading,
               title: Text(choice),
             );
