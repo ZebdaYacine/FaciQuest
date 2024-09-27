@@ -8,4 +8,14 @@ class SurveyState {
     this.status = Status.initial,
     this.survey = SurveyEntity.empty,
   });
+
+  SurveyState copyWith({
+    Status? status,
+    SurveyEntity? survey,
+  }) {
+    return SurveyState(
+      status: status ?? this.status,
+      survey: survey ?? this.survey,
+    );
+  }
 }

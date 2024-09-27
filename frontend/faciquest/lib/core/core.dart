@@ -9,3 +9,4 @@ export 'context_extension.dart';
 export 'mixins.dart';
 export 'widgets/widgets.dart';
 export 'data.dart';
+export 'dev_settings.dart';

@@ -1,3 +1,4 @@
+import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,8 +13,12 @@ class SurveyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SurveyCubit(),
+      create: (context) => SurveyCubit(
+        surveyId: surveyId,
+        repository: getIt<SurveyRepository>(),
+      )..getSurvey(),
       child: BlocBuilder<SurveyCubit, SurveyState>(
+        buildWhen: (previous, current) => previous.survey != current.survey,
         builder: (context, state) {
           if (state.status.isLoading) return const _LoadingState();
           if (state.status.isFailure) return const _FailureState();
@@ -25,12 +30,13 @@ class SurveyView extends StatelessWidget {
             ),
             body: ListView.builder(
               itemCount: state.survey.questions.length,
+              padding: AppSpacing.spacing_2.padding,
               itemBuilder: (context, index) {
                 final question = state.survey.questions[index];
                 return QuestionPreview(
                   question: question,
                   isPreview: false,
-                  
+                  index: index + 1,
                 );
               },
             ),
@@ -71,7 +77,9 @@ class _FailureState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Failure'),
+      ),
     );
   }
 }

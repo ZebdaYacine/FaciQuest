@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 part 'questions/star_rating_question.dart';
 part 'questions/multiple_choice_question.dart';
@@ -211,6 +212,39 @@ sealed class QuestionEntity extends Equatable {
     int? order,
     QuestionType? type,
   });
+
+  static List<QuestionEntity> dummyList() {
+    return [
+      StarRatingQuestion(
+        id: const Uuid().v4(),
+        title: 'Rating',
+        order: 1,
+        type: QuestionType.starRating,
+        maxRating: 5,
+      ),
+      MultipleChoiceQuestion(
+        id: const Uuid().v4(),
+        title: 'Multiple Choice',
+        order: 2,
+        choices: const ['Choice 1', 'Choice 2', 'Choice 3'],
+        type: QuestionType.multipleChoice,
+      ),
+      CheckboxesQuestion(
+        id: const Uuid().v4(),
+        title: 'Checkboxes',
+        choices: const ['Choice 1', 'Choice 2', 'Choice 3'],
+        order: 3,
+        type: QuestionType.checkboxes,
+      ),
+      DropdownQuestion(
+        id: const Uuid().v4(),
+        title: 'Dropdown',
+        
+        order: 4,
+        type: QuestionType.dropdown,
+      ),
+    ];
+  }
 }
 
 final Map<String, List<List<String>>> scaleOptions = {

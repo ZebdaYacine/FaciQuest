@@ -8,4 +8,7 @@ class AppUrls {
   static const authLogoutUrl = '$baseUrl/profile/logout';
   static const authSetNewPasswordUrl = '$baseUrl/profile/set-new-pwd';
   static const authVerifyOtpUrl = '$baseUrl/confirm-account';
+
+  /// survey
+  static String getSurveyUrl(String surveyId) => '$baseUrl/survey/$surveyId';
 }

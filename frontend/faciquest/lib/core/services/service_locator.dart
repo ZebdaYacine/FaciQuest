@@ -44,4 +44,5 @@ Future<void> setupDependencies() async {
     ..registerLazySingleton<DioService>(() => DioService(dio));
 
   registerAuth(getIt);
+  registerSurvey(getIt);
 }

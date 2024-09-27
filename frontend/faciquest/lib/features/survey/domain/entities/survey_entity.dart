@@ -3,10 +3,12 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/features/survey/survey.dart';
+import 'package:uuid/uuid.dart';
 
 enum SurveyStatus { draft, published, deleted }
 
 class SurveyEntity extends Equatable {
+  final String id;
   final String name;
   final String? description;
   final SurveyStatus status;
@@ -20,6 +22,7 @@ class SurveyEntity extends Equatable {
   bool get isNotEmpty => this != empty;
 
   const SurveyEntity({
+    this.id = '',
     this.name = '',
     this.description,
     this.status = SurveyStatus.draft,
@@ -104,6 +107,21 @@ class SurveyEntity extends Equatable {
   }
 
   bool get isValid => name.isNotEmpty && questions.isNotEmpty;
+
+  static Future<SurveyEntity?> dummy() {
+    return Future.delayed(
+      const Duration(seconds: 1),
+      () => SurveyEntity(
+        id: const Uuid().v4(),
+        name: 'Test Survey',
+        status: SurveyStatus.draft,
+        questions: QuestionEntity.dummyList(),
+        description: 'Test Description',
+        languages: const ['en', 'ar'],
+        topics: const ['test', 'test2'],
+      ),
+    );
+  }
 }
 
 enum LikertScale {
