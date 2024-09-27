@@ -8,6 +8,8 @@ abstract class SurveyDataSource {
   Future<void> createSurvey(SurveyEntity survey);
   Future<void> updateSurvey(SurveyEntity survey);
   Future<void> deleteSurvey(String surveyId);
+
+  Future<void> submitAnswers(Submission submission);
 }
 
 class SurveyDataSourceImpl implements SurveyDataSource {
@@ -51,5 +53,10 @@ class SurveyDataSourceImpl implements SurveyDataSource {
   Future<void> updateSurvey(SurveyEntity survey) {
     // TODO: implement updateSurvey
     throw UnimplementedError();
+  }
+
+  @override
+  Future<void> submitAnswers(Submission submission) async {
+    await Future.delayed(const Duration(seconds: 1));
   }
 }

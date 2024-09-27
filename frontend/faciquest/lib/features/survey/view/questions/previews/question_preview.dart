@@ -10,12 +10,12 @@ class QuestionPreview extends StatefulWidget {
     required this.question,
     this.index,
     this.isPreview = true,
-    this.initialAnswer,
+    this.answer,
     this.onAnswerChanged,
   });
   final int? index;
   final QuestionEntity question;
-  final AnswerEntity? initialAnswer;
+  final AnswerEntity? answer;
   final ValueChanged<AnswerEntity>? onAnswerChanged;
   final bool isPreview;
 
@@ -28,7 +28,7 @@ class _QuestionPreviewState extends State<QuestionPreview> {
   @override
   void initState() {
     super.initState();
-    _currentAnswer = widget.initialAnswer;
+    _currentAnswer = widget.answer;
   }
 
   void _handleAnswerChanged(AnswerEntity answer) {

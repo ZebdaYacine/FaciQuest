@@ -29,4 +29,9 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<void> updateSurvey(SurveyEntity survey) {
     return remoteDataSource.updateSurvey(survey);
   }
+
+  @override
+  Future<void> submitAnswers(Submission submission) {
+    return remoteDataSource.submitAnswers(submission);
+  }
 }

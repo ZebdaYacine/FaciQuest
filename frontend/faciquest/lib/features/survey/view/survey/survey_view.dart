@@ -1,3 +1,5 @@
+import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +14,12 @@ class SurveyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = SurveyCubit(
+      surveyId: surveyId,
+      repository: getIt<SurveyRepository>(),
+    )..getSurvey();
     return BlocProvider(
-      create: (context) => SurveyCubit(
-        surveyId: surveyId,
-        repository: getIt<SurveyRepository>(),
-      )..getSurvey(),
+      create: (context) => cubit,
       child: BlocBuilder<SurveyCubit, SurveyState>(
         buildWhen: (previous, current) => previous.survey != current.survey,
         builder: (context, state) {
@@ -28,15 +31,38 @@ class SurveyView extends StatelessWidget {
               title: Text(state.survey.name),
               centerTitle: false,
             ),
-            body: ListView.builder(
-              itemCount: state.survey.questions.length,
+            body: ListView.separated(
+              separatorBuilder: (context, index) =>
+                  AppSpacing.spacing_1.heightBox,
+              itemCount: state.survey.questions.length + 1,
               padding: AppSpacing.spacing_2.padding,
               itemBuilder: (context, index) {
+                if (index >= state.survey.questions.length) {
+                  return BlocBuilder<SurveyCubit, SurveyState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: state.submissionStatus.isLoading
+                            ? null
+                            : cubit.submit,
+                        child: Center(
+                          child: state.submissionStatus.isLoading
+                              ? const CircularProgressIndicator()
+                              : const Text('Submit'),
+                        ),
+                      );
+                    },
+                  );
+                }
                 final question = state.survey.questions[index];
+                final answer = state.answers.firstWhereOrNull(
+                  (element) => element.questionId == question.id,
+                );
                 return QuestionPreview(
                   question: question,
                   isPreview: false,
                   index: index + 1,
+                  answer: answer,
+                  onAnswerChanged: cubit.onAnswerChanged,
                 );
               },
             ),
@@ -56,6 +82,9 @@ class _LoadingState extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Survey Title ....'),
       ),
+      body: const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
@@ -67,6 +96,9 @@ class _EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
+      body: const Center(
+        child: Text('Survey not found'),
+      ),
     );
   }
 }

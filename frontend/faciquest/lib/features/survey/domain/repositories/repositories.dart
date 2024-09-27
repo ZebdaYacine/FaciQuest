@@ -6,4 +6,6 @@ abstract class SurveyRepository {
   Future<void> createSurvey(SurveyEntity survey);
   Future<void> updateSurvey(SurveyEntity survey);
   Future<void> deleteSurvey(String surveyId);
+
+  Future<void> submitAnswers(Submission submission);
 }
