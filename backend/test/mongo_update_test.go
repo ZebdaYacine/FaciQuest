@@ -16,8 +16,9 @@ func TestMongoUpdate(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		db := database.ConnectionDb()
 		collection := db.Collection("cashout_request")
-		filterUpdate := bson.M{"_id": "66cef6205d7b9a7bba565058"}
-		update := bson.M{"$set": domain.Payment{
+		filterUpdate := bson.M{"_id": "66ee9278bbb036695b75ca49"}
+		update := bson.M{"$set": 
+		domain.Payment{
 			PaymentRequestDate: 1727481600000,
 			Amount:             10000,
 			Status:             "Pending",

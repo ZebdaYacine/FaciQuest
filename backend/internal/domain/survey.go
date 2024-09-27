@@ -3,6 +3,8 @@ package domain
 import (
 	"encoding/json"
 	"fmt"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type QuestionType interface {
@@ -40,10 +42,11 @@ type BaseQuestion struct {
 }
 
 type StarRatingQuestion struct {
-	BaseQuestion
-	MaxRating int    `json:"maxRating" bson:"maxRating"`
-	Shape     string `json:"shape" bson:"shape"`
-	Color     string `json:"color" bson:"color"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	MaxRating    int          `json:"maxRating" bson:"maxRating"`
+	Shape        string       `json:"shape" bson:"shape"`
+	Color        string       `json:"color" bson:"color"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q StarRatingQuestion) GetType() string {
@@ -51,8 +54,9 @@ func (q StarRatingQuestion) GetType() string {
 }
 
 type MultipleChoiceQuestion struct {
-	BaseQuestion
-	Choices []string `json:"choices" bson:"choices"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	Choices      []string     `json:"choices" bson:"choices"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q MultipleChoiceQuestion) GetType() string {
@@ -60,9 +64,10 @@ func (q MultipleChoiceQuestion) GetType() string {
 }
 
 type ImageChoiceQuestion struct {
-	BaseQuestion
-	Choices     []ImageDetail `json:"choices" bson:"choices"`
-	UseCheckbox bool          `json:"useCheckbox" bson:"useCheckbox"`
+	BaseQuestion BaseQuestion  `json:"base_question" bson:"base_question"`
+	Choices      []ImageDetail `json:"choices" bson:"choices"`
+	UseCheckbox  bool          `json:"useCheckbox" bson:"useCheckbox"`
+	TypeQuestion string        `bson:"type"`
 }
 
 func (q ImageChoiceQuestion) GetType() string {
@@ -70,8 +75,9 @@ func (q ImageChoiceQuestion) GetType() string {
 }
 
 type CheckboxesQuestion struct {
-	BaseQuestion
-	Choices []string `json:"choices" bson:"choices"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	Choices      []string     `json:"choices" bson:"choices"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q CheckboxesQuestion) GetType() string {
@@ -79,8 +85,9 @@ func (q CheckboxesQuestion) GetType() string {
 }
 
 type DropdownQuestion struct {
-	BaseQuestion
-	Choices []string `json:"choices" bson:"choices"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	Choices      []string     `json:"choices" bson:"choices"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q DropdownQuestion) GetType() string {
@@ -88,10 +95,11 @@ func (q DropdownQuestion) GetType() string {
 }
 
 type MatrixQuestion struct {
-	BaseQuestion
-	Rows        []string `json:"rows" bson:"rows"`
-	Cols        []string `json:"cols" bson:"cols"`
-	UseCheckbox bool     `json:"useCheckbox" bson:"useCheckbox"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	Rows         []string     `json:"rows" bson:"rows"`
+	Cols         []string     `json:"cols" bson:"cols"`
+	UseCheckbox  bool         `json:"useCheckbox" bson:"useCheckbox"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q MatrixQuestion) GetType() string {
@@ -99,9 +107,10 @@ func (q MatrixQuestion) GetType() string {
 }
 
 type FileUploadQuestion struct {
-	BaseQuestion
-	Instructions string   `json:"instructions,omitempty" bson:"instructions,omitempty"`
-	AllowedExts  []string `json:"allowedExtensions" bson:"allowedExtensions"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	Instructions string       `json:"instructions,omitempty" bson:"instructions,omitempty"`
+	AllowedExts  []string     `json:"allowedExtensions" bson:"allowedExtensions"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q FileUploadQuestion) GetType() string {
@@ -109,8 +118,9 @@ func (q FileUploadQuestion) GetType() string {
 }
 
 type ShortAnswerQuestion struct {
-	BaseQuestion
-	MaxLength int `json:"maxLength" bson:"maxLength"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	MaxLength    int          `json:"maxLength" bson:"maxLength"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q ShortAnswerQuestion) GetType() string {
@@ -118,9 +128,10 @@ func (q ShortAnswerQuestion) GetType() string {
 }
 
 type CommentBoxQuestion struct {
-	BaseQuestion
-	MaxLength int `json:"maxLength" bson:"maxLength"`
-	MaxLines  int `json:"maxLines" bson:"maxLines"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	MaxLength    int          `json:"maxLength" bson:"maxLength"`
+	MaxLines     int          `json:"maxLines" bson:"maxLines"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q CommentBoxQuestion) GetType() string {
@@ -128,9 +139,10 @@ func (q CommentBoxQuestion) GetType() string {
 }
 
 type SliderQuestion struct {
-	BaseQuestion
-	Min int `json:"min" bson:"min"`
-	Max int `json:"max" bson:"max"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	Min          int          `json:"min" bson:"min"`
+	Max          int          `json:"max" bson:"max"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q SliderQuestion) GetType() string {
@@ -138,9 +150,10 @@ func (q SliderQuestion) GetType() string {
 }
 
 type DateTimeQuestion struct {
-	BaseQuestion
-	CollectDate bool `json:"collectDateInfo" bson:"collectDateInfo"`
-	CollectTime bool `json:"collectTimeInfo" bson:"collectTimeInfo"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	CollectDate  bool         `json:"collectDateInfo" bson:"collectDateInfo"`
+	CollectTime  bool         `json:"collectTimeInfo" bson:"collectTimeInfo"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q DateTimeQuestion) GetType() string {
@@ -148,16 +161,17 @@ func (q DateTimeQuestion) GetType() string {
 }
 
 type NameQuestion struct {
-	BaseQuestion
-	FirstNameLabel  string  `json:"firstNameLabel" bson:"firstNameLabel"`
-	LastNameLabel   string  `json:"lastNameLabel" bson:"lastNameLabel"`
-	FirstNameHint   *string `json:"firstNameHint,omitempty" bson:"firstNameHint,omitempty"`
-	LastNameHint    *string `json:"lastNameHint,omitempty" bson:"lastNameHint,omitempty"`
-	MiddleNameLabel *string `json:"middleNameLabel,omitempty" bson:"middleNameLabel,omitempty"`
-	MiddleNameHint  *string `json:"middleNameHint,omitempty" bson:"middleNameHint,omitempty"`
-	ShowFirstName   bool    `json:"showFirstName" bson:"showFirstName"`
-	ShowLastName    bool    `json:"showLastName" bson:"showLastName"`
-	ShowMiddleName  bool    `json:"showMiddleName" bson:"showMiddleName"`
+	BaseQuestion    BaseQuestion `json:"base_question" bson:"base_question"`
+	FirstNameLabel  string       `json:"firstNameLabel" bson:"firstNameLabel"`
+	LastNameLabel   string       `json:"lastNameLabel" bson:"lastNameLabel"`
+	FirstNameHint   *string      `json:"firstNameHint,omitempty" bson:"firstNameHint,omitempty"`
+	LastNameHint    *string      `json:"lastNameHint,omitempty" bson:"lastNameHint,omitempty"`
+	MiddleNameLabel *string      `json:"middleNameLabel,omitempty" bson:"middleNameLabel,omitempty"`
+	MiddleNameHint  *string      `json:"middleNameHint,omitempty" bson:"middleNameHint,omitempty"`
+	ShowFirstName   bool         `json:"showFirstName" bson:"showFirstName"`
+	ShowLastName    bool         `json:"showLastName" bson:"showLastName"`
+	ShowMiddleName  bool         `json:"showMiddleName" bson:"showMiddleName"`
+	TypeQuestion    string       `bson:"type"`
 }
 
 func (q NameQuestion) GetType() string {
@@ -165,8 +179,9 @@ func (q NameQuestion) GetType() string {
 }
 
 type ImageQuestion struct {
-	BaseQuestion
-	Image ImageDetail `json:"image" bson:"image"`
+	BaseQuestion BaseQuestion `json:"base_question" bson:"base_question"`
+	Image        ImageDetail  `json:"image" bson:"image"`
+	TypeQuestion string       `bson:"type"`
 }
 
 func (q ImageQuestion) GetType() string {
@@ -174,9 +189,30 @@ func (q ImageQuestion) GetType() string {
 }
 
 type ImageDetail struct {
-	Caption *string `json:"caption,omitempty" bson:"caption,omitempty"`
-	AltText *string `json:"altText,omitempty" bson:"altText,omitempty"`
-	URL     *string `json:"url,omitempty" bson:"url,omitempty"`
+	Caption      *string `json:"caption,omitempty" bson:"caption,omitempty"`
+	AltText      *string `json:"altText,omitempty" bson:"altText,omitempty"`
+	URL          *string `json:"url,omitempty" bson:"url,omitempty"`
+	TypeQuestion string  `bson:"type"`
+}
+
+type QuestionTypeWrapper struct {
+	Type         string       `bson:"type"`
+	Question     QuestionType `bson:"question"`
+	TypeQuestion string       `bson:"type"`
+}
+
+func (s *Survey) QuestionToBSON(question QuestionType) (bson.M, error) {
+	data, err := json.Marshal(question)
+	if err != nil {
+		return nil, err
+	}
+
+	var result bson.M
+	if err := json.Unmarshal(data, &result); err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 func (s *Survey) UnmarshalJSON(data []byte) error {
@@ -300,4 +336,121 @@ func mapToStruct(m map[string]interface{}, result interface{}) error {
 		return err
 	}
 	return json.Unmarshal(data, result)
+}
+
+// Custom unmarshalling logic to convert BSON to concrete types
+func (s *Survey) UnmarshalBSON(data []byte) error {
+	type Alias Survey
+	aux := &struct {
+		Questions []bson.Raw `bson:"questions"`
+		*Alias
+	}{
+		Alias: (*Alias)(s),
+	}
+
+	// Unmarshal survey fields except questions
+	if err := bson.Unmarshal(data, aux); err != nil {
+		return err
+	}
+
+	// Loop through the raw questions
+	for _, rawQuestion := range aux.Questions {
+		var questionMap map[string]interface{}
+		if err := bson.Unmarshal(rawQuestion, &questionMap); err != nil {
+			return err
+		}
+
+		questionType, ok := questionMap["type"].(string)
+		if !ok {
+			return fmt.Errorf("missing or invalid type field")
+		}
+
+		var qType QuestionType
+
+		// Switch based on the question type
+		switch questionType {
+		case "Star Rating":
+			var starQuestion StarRatingQuestion
+			if err := bson.Unmarshal(rawQuestion, &starQuestion); err != nil {
+				return err
+			}
+			qType = starQuestion
+		case "Multiple Choice":
+			var mcQuestion MultipleChoiceQuestion
+			if err := bson.Unmarshal(rawQuestion, &mcQuestion); err != nil {
+				return err
+			}
+			qType = mcQuestion
+		case "Image Choice":
+			var imageChoiceQuestion ImageChoiceQuestion
+			if err := bson.Unmarshal(rawQuestion, &imageChoiceQuestion); err != nil {
+				return err
+			}
+			qType = imageChoiceQuestion
+		case "Checkboxes":
+			var checkboxesQuestion CheckboxesQuestion
+			if err := bson.Unmarshal(rawQuestion, &checkboxesQuestion); err != nil {
+				return err
+			}
+			qType = checkboxesQuestion
+		case "Dropdown":
+			var dropdownQuestion DropdownQuestion
+			if err := bson.Unmarshal(rawQuestion, &dropdownQuestion); err != nil {
+				return err
+			}
+			qType = dropdownQuestion
+		case "Matrix":
+			var matrixQuestion MatrixQuestion
+			if err := bson.Unmarshal(rawQuestion, &matrixQuestion); err != nil {
+				return err
+			}
+			qType = matrixQuestion
+		case "File Upload":
+			var fileUploadQuestion FileUploadQuestion
+			if err := bson.Unmarshal(rawQuestion, &fileUploadQuestion); err != nil {
+				return err
+			}
+			qType = fileUploadQuestion
+		case "Short Answer":
+			var shortAnswerQuestion ShortAnswerQuestion
+			if err := bson.Unmarshal(rawQuestion, &shortAnswerQuestion); err != nil {
+				return err
+			}
+			qType = shortAnswerQuestion
+		case "Comment Box":
+			var commentBoxQuestion CommentBoxQuestion
+			if err := bson.Unmarshal(rawQuestion, &commentBoxQuestion); err != nil {
+				return err
+			}
+			qType = commentBoxQuestion
+		case "Slider":
+			var sliderQuestion SliderQuestion
+			if err := bson.Unmarshal(rawQuestion, &sliderQuestion); err != nil {
+				return err
+			}
+			qType = sliderQuestion
+		case "Date / Time":
+			var dateTimeQuestion DateTimeQuestion
+			if err := bson.Unmarshal(rawQuestion, &dateTimeQuestion); err != nil {
+				return err
+			}
+			qType = dateTimeQuestion
+		case "Name":
+			var nameQuestion NameQuestion
+			if err := bson.Unmarshal(rawQuestion, &nameQuestion); err != nil {
+				return err
+			}
+			qType = nameQuestion
+		case "Image":
+			var imageQuestion ImageQuestion
+			if err := bson.Unmarshal(rawQuestion, &imageQuestion); err != nil {
+				return err
+			}
+			qType = imageQuestion
+		default:
+			return fmt.Errorf("unknown question type: %s", questionType)
+		}
+		s.Questions = append(s.Questions, qType)
+	}
+	return nil
 }
