@@ -1,5 +1,4 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:collection/collection.dart';
 import 'package:faciquest/core/core.dart';
 
 import 'package:faciquest/features/survey/survey.dart';

@@ -40,7 +40,16 @@ class RouteManager {
         AppRoutes.wallet.goRoute(),
         AppRoutes.howItWorks.goRoute(),
         AppRoutes.newSurvey.goRoute(),
-        AppRoutes.survey.goRoute(),
+        AppRoutes.survey.goRoute(
+          [],
+          (context, goRouterState) {
+            return MaterialPage(
+              child: SurveyView(
+                surveyId: goRouterState.pathParameters['id'] ?? '',
+              ),
+            );
+          },
+        ),
         AppRoutes.manageMySurveys.goRoute(),
       ]),
     ],

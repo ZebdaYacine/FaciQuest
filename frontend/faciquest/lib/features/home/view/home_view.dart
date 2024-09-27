@@ -48,7 +48,14 @@ class HomeView extends StatelessWidget {
                   return Card(
                     child: InkWell(
                       borderRadius: BorderRadius.circular(8),
-                      onTap: () {},
+                      onTap: () {
+                        AppRoutes.survey.push(
+                          context,
+                          pathParameters: {
+                            'id': '$index',
+                          },
+                        );
+                      },
                       child: Padding(
                         padding: 8.padding,
                         child: Column(

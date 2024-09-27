@@ -14,6 +14,11 @@ class SurveyEntity extends Equatable {
   final List<String> topics;
   final LikertScale? likertScale;
   final List<QuestionEntity> questions;
+
+  static const empty = SurveyEntity();
+  bool get isEmpty => this == empty;
+  bool get isNotEmpty => this != empty;
+
   const SurveyEntity({
     this.name = '',
     this.description,

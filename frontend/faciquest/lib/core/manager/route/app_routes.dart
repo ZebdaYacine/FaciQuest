@@ -23,7 +23,7 @@ enum AppRoutes {
 
   //
   newSurvey('new-survey', 'New Survey', NewSurveyView()),
-  survey('survey/:id', 'Survey', SurveyView()),
+  survey('survey/:id', 'Survey', SurveyView(surveyId: '',)),
   manageMySurveys(
     'manage-my-surveys',
     'Manage My Surveys',
