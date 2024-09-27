@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 class DateTimeQuestionPreview extends StatefulWidget {
   const DateTimeQuestionPreview({
     required this.question,
+    required this.answer,
+    required this.onAnswerChanged,
     super.key,
   });
   final DateTimeQuestion question;
+  final DateTimeAnswer? answer;
+  final ValueChanged<DateTimeAnswer>? onAnswerChanged;
 
   @override
   State<DateTimeQuestionPreview> createState() =>

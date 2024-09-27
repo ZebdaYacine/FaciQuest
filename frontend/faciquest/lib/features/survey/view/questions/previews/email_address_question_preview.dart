@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 class EmailAddressQuestionPreview extends StatelessWidget {
   const EmailAddressQuestionPreview({
     required this.question,
+    required this.answer,
+    required this.onAnswerChanged,
     super.key,
   });
   final EmailAddressQuestion question;
+  final EmailAddressAnswer? answer;
+  final ValueChanged<EmailAddressAnswer>? onAnswerChanged;
   String? validateEmail(String? value) {
     const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
         r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'

@@ -9,9 +9,13 @@ import 'package:flutter/material.dart';
 class FileUploadQuestionPreview extends StatefulWidget {
   const FileUploadQuestionPreview({
     required this.question,
+    this.answer,
+    this.onAnswerChanged,
     super.key,
   });
   final FileUploadQuestion question;
+  final FileUploadAnswer? answer;
+  final ValueChanged<FileUploadAnswer>? onAnswerChanged;
 
   @override
   State<FileUploadQuestionPreview> createState() =>

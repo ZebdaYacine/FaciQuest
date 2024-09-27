@@ -6,9 +6,13 @@ import 'package:flutter/material.dart';
 class NameQuestionPreview extends StatelessWidget {
   const NameQuestionPreview({
     required this.question,
+    required this.answer,
+    required this.onAnswerChanged,
     super.key,
   });
   final NameQuestion question;
+  final NameAnswer? answer;
+  final ValueChanged<NameAnswer>? onAnswerChanged;
 
   @override
   Widget build(BuildContext context) {

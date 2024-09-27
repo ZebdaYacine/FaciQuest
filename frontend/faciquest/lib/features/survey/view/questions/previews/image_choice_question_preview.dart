@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 class ImageChoiceQuestionPreview extends StatelessWidget {
   const ImageChoiceQuestionPreview({
     required this.question,
+    required this.onAnswerChanged,
+    required this.answer,
     super.key,
   });
   final ImageChoiceQuestion question;
+  final ImageChoiceAnswer? answer;
+  final ValueChanged<ImageChoiceAnswer>? onAnswerChanged;
 
   @override
   Widget build(BuildContext context) {

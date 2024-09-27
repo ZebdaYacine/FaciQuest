@@ -1,4 +1,3 @@
-
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +5,13 @@ import 'package:flutter/material.dart';
 class DropdownQuestionPreview extends StatelessWidget {
   const DropdownQuestionPreview({
     required this.question,
+    this.onAnswerChanged,
+    this.answer,
     super.key,
   });
   final DropdownQuestion question;
+  final DropdownAnswer? answer;
+  final ValueChanged<DropdownAnswer>? onAnswerChanged;
 
   @override
   Widget build(BuildContext context) {

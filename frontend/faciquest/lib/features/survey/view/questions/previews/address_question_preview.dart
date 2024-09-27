@@ -6,9 +6,13 @@ import 'package:flutter/material.dart';
 class AddressQuestionPreview extends StatelessWidget {
   const AddressQuestionPreview({
     required this.question,
+    required this.onAnswerChanged,
+    required this.answer,
     super.key,
   });
   final AddressQuestion question;
+  final AddressAnswer? answer;
+  final ValueChanged<AddressAnswer>? onAnswerChanged;
 
   @override
   Widget build(BuildContext context) {

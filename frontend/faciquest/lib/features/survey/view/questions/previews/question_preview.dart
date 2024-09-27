@@ -64,45 +64,73 @@ class _QuestionPreviewState extends State<QuestionPreview> {
             ),
           CheckboxesQuestion() => CheckboxesQuestionPreview(
               question: widget.question as CheckboxesQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as CheckboxesAnswer?,
             ),
           DropdownQuestion() => DropdownQuestionPreview(
               question: widget.question as DropdownQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as DropdownAnswer?,
             ),
           FileUploadQuestion() => FileUploadQuestionPreview(
               question: widget.question as FileUploadQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as FileUploadAnswer?,
             ),
           AudioRecordQuestion() => AudioRecordQuestionPreview(
               question: widget.question as AudioRecordQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as AudioRecordAnswer?,
             ),
           ShortAnswerQuestion() => ShortTextQuestionPreview(
               question: widget.question as ShortAnswerQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as ShortAnswerAnswer?,
             ),
           CommentBoxQuestion() => CommentBoxQuestionPreview(
               question: widget.question as CommentBoxQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as CommentBoxAnswer?,
             ),
           SliderQuestion() => SliderQuestionPreview(
               question: widget.question as SliderQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as SliderAnswer?,
             ),
           DateTimeQuestion() => DateTimeQuestionPreview(
               question: widget.question as DateTimeQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as DateTimeAnswer?,
             ),
           MatrixQuestion() => MatrixQuestionPreview(
               question: widget.question as MatrixQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as MatrixAnswer?,
             ),
           ImageChoiceQuestion() => ImageChoiceQuestionPreview(
               question: widget.question as ImageChoiceQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as ImageChoiceAnswer?,
             ),
           NameQuestion() => NameQuestionPreview(
               question: widget.question as NameQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as NameAnswer?,
             ),
           EmailAddressQuestion() => EmailAddressQuestionPreview(
               question: widget.question as EmailAddressQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as EmailAddressAnswer?,
             ),
           PhoneQuestion() => PhoneQuestionPreview(
               question: widget.question as PhoneQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as PhoneAnswer?,
             ),
           AddressQuestion() => AddressQuestionPreview(
               question: widget.question as AddressQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as AddressAnswer?,
             ),
           TextQuestion() => TextQuestionPreview(
               question: widget.question as TextQuestion,

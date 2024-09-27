@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 class MatrixQuestionPreview extends StatelessWidget {
   const MatrixQuestionPreview({
     required this.question,
+    required this.answer,
+    required this.onAnswerChanged,
     super.key,
   });
   final MatrixQuestion question;
+  final MatrixAnswer? answer;
+  final ValueChanged<MatrixAnswer>? onAnswerChanged;
 
   @override
   Widget build(BuildContext context) {

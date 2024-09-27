@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 class CheckboxesQuestionPreview extends StatelessWidget {
   const CheckboxesQuestionPreview({
     required this.question,
+    required this.answer,
+    required this.onAnswerChanged,
     super.key,
   });
   final CheckboxesQuestion question;
+  final CheckboxesAnswer? answer;
+  final ValueChanged<CheckboxesAnswer>? onAnswerChanged;
 
   @override
   Widget build(BuildContext context) {

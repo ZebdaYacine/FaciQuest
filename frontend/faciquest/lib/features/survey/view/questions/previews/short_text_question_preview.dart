@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 class ShortTextQuestionPreview extends StatelessWidget {
   const ShortTextQuestionPreview({
     required this.question,
+    required this.answer,
+    required this.onAnswerChanged,
     super.key,
   });
   final ShortAnswerQuestion question;
+  final ShortAnswerAnswer? answer;
+  final ValueChanged<ShortAnswerAnswer>? onAnswerChanged;
 
   @override
   Widget build(BuildContext context) {
