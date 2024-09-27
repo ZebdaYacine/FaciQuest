@@ -6,11 +6,11 @@ class ImageChoiceQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.imageChoice,
-    this.choices = const [ImageChoice()],
-    this.useCheckbox = false,
+    this.choices = const [ImageChoice.empty],
+    this.multipleSelect = false,
   });
   final List<ImageChoice> choices;
-  final bool useCheckbox;
+  final bool multipleSelect;
   @override
   bool get isValid =>
       super.isValid &&
@@ -33,7 +33,7 @@ class ImageChoiceQuestion extends QuestionEntity {
       title: title ?? this.title,
       order: order ?? this.order,
       choices: choices ?? this.choices,
-      useCheckbox: useCheckbox ?? this.useCheckbox,
+      multipleSelect: useCheckbox ?? this.multipleSelect,
     );
   }
 
@@ -44,7 +44,7 @@ class ImageChoiceQuestion extends QuestionEntity {
       order: map['order'],
       choices: List<ImageChoice>.from(
           map['choices'].map((e) => ImageChoice.fromMap(e))),
-      useCheckbox: map['useCheckbox'],
+      multipleSelect: map['useCheckbox'],
     );
   }
 
@@ -53,12 +53,12 @@ class ImageChoiceQuestion extends QuestionEntity {
     return <String, dynamic>{
       ...super.toMap(),
       'choices': choices.map((e) => e.toMap()).toList(),
-      'useCheckbox': useCheckbox,
+      'useCheckbox': multipleSelect,
     };
   }
 
   @override
-  List<Object?> get props => [...super.props, choices, useCheckbox];
+  List<Object?> get props => [...super.props, choices, multipleSelect];
   static ImageChoiceQuestion copyFrom(QuestionEntity question) {
     return ImageChoiceQuestion(
       id: question.id,
@@ -69,27 +69,31 @@ class ImageChoiceQuestion extends QuestionEntity {
 }
 
 class ImageChoice with EquatableMixin {
+  final String id;
   final String? caption;
   final String? altText;
   final File? image;
   final String? url;
 
   const ImageChoice({
+    required this.id,
     this.caption,
     this.altText,
     this.image,
     this.url,
   });
   @override
-  List<Object?> get props => [caption, altText, image, url];
+  List<Object?> get props => [id, caption, altText, image, url];
 
   ImageChoice copyWith({
+    String? id,
     String? caption,
     String? altText,
     File? image,
     String? url,
   }) {
     return ImageChoice(
+      id: id ?? this.id,
       caption: caption ?? this.caption,
       altText: altText ?? this.altText,
       image: image ?? this.image,
@@ -99,6 +103,7 @@ class ImageChoice with EquatableMixin {
 
   static ImageChoice fromMap(Map<String, dynamic> map) {
     return ImageChoice(
+      id: map['id'],
       caption: map['caption'],
       altText: map['altText'],
       url: map['url'],
@@ -107,6 +112,7 @@ class ImageChoice with EquatableMixin {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'caption': caption,
       'altText': altText,
       'url': url,
@@ -115,7 +121,7 @@ class ImageChoice with EquatableMixin {
     };
   }
 
-  static const empty = ImageChoice();
+  static const empty = ImageChoice(id: '');
   bool get isEmpty => this == ImageChoice.empty;
 
   bool get isNotEmpty => this != ImageChoice.empty;

@@ -17,8 +17,15 @@ class SliderQuestionPreview extends StatelessWidget {
     return Slider(
       min: question.min,
       max: question.max,
-      value: 5,
-      onChanged: (newValue) {},
+      value: answer?.value ?? question.min,
+      onChanged: (newValue) {
+        onAnswerChanged?.call(
+          SliderAnswer(
+            questionId: question.id,
+            value: newValue,
+          ),
+        );
+      },
     );
   }
 }

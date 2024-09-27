@@ -13,45 +13,72 @@ class ImageChoiceQuestionPreview extends StatelessWidget {
   final ImageChoiceAnswer? answer;
   final ValueChanged<ImageChoiceAnswer>? onAnswerChanged;
 
+  void _handleAnswerChanged(String? value) {
+    if (value == null) return;
+    final newAnswer = (answer ??
+            ImageChoiceAnswer(
+              multipleSelect: question.multipleSelect,
+              questionId: question.id,
+              selectedChoices: {value},
+            ))
+        .setValue(value);
+    onAnswerChanged?.call(newAnswer);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      runSpacing: 4,
+      spacing: 4,
       children: [
         for (var image in question.choices) ...[
           Stack(
             children: [
-              Container(
-                padding: 2.padding,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: context.colorScheme.primary,
-                    width: 4,
+              InkWell(
+                onTap: () {
+                  _handleAnswerChanged(image.id);
+                },
+                child: Ink(
+                  padding: 2.padding,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: answer?.getSelectedChoice(image.id) == image.id
+                          ? Colors.green
+                          : context.colorScheme.primary,
+                      width: 4,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: AspectRatio(
-                  aspectRatio: 4 / 3,
-                  child: (image.url != null)
-                      ? Image.network(
-                          image.url!,
-                          fit: BoxFit.cover,
-                        )
-                      : (image.image != null)
-                          ? Image.file(
-                              image.image!,
-                              fit: BoxFit.cover,
-                            )
-                          : Text(image.altText ?? ''),
+                  child: AspectRatio(
+                    aspectRatio: 4 / 3,
+                    child: (image.url != null)
+                        ? Image.network(
+                            image.url!,
+                            fit: BoxFit.cover,
+                          )
+                        : (image.image != null)
+                            ? Image.file(
+                                image.image!,
+                                fit: BoxFit.cover,
+                              )
+                            : Text(image.altText ?? ''),
+                  ),
                 ),
               ),
               Positioned(
                 right: 0,
-                child: question.useCheckbox
-                    ? Checkbox(value: true, onChanged: (value) {})
+                child: question.multipleSelect
+                    ? Checkbox(
+                        value: answer?.getSelectedChoice(image.id) != '',
+                        onChanged: (value) {
+                          _handleAnswerChanged(image.id);
+                        })
                     : Radio(
-                        value: true,
-                        groupValue: true,
-                        onChanged: (value) {},
+                        value: image.id,
+                        groupValue: answer?.getSelectedChoice(image.id),
+                        onChanged: (value) {
+                          _handleAnswerChanged(image.id);
+                        },
                       ),
               ),
             ],

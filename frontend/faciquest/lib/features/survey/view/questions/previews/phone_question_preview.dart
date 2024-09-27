@@ -16,6 +16,7 @@ class PhoneQuestionPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntlPhoneField(
+      initialValue: answer?.value,
       decoration: const InputDecoration(
         labelText: 'Phone Number',
         border: OutlineInputBorder(
@@ -23,7 +24,14 @@ class PhoneQuestionPreview extends StatelessWidget {
         ),
       ),
       initialCountryCode: 'DZ',
-      onChanged: (phone) {},
+      onChanged: (phone) {
+        onAnswerChanged?.call(
+          PhoneAnswer(
+            questionId: question.id,
+            value: phone.completeNumber,
+          ),
+        );
+      },
     );
   }
 }

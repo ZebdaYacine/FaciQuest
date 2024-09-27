@@ -14,11 +14,20 @@ class ShortTextQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      initialValue: answer?.value,
       decoration: const InputDecoration(
           // hintText: question.hint,
           ),
       maxLength: question.maxLength,
+      onChanged: (value) {
+        onAnswerChanged?.call(
+          ShortAnswerAnswer(
+            questionId: question.id,
+            value: value,
+          ),
+        );
+      },
     );
   }
 }

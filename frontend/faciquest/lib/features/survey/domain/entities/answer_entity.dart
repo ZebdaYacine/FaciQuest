@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
 
 part 'answers/address_answer.dart';
 part 'answers/star_rating_answer.dart';

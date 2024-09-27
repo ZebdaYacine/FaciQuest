@@ -243,7 +243,121 @@ sealed class QuestionEntity extends Equatable {
         order: 4,
         type: QuestionType.dropdown,
       ),
+      ShortAnswerQuestion(
+        id: const Uuid().v4(),
+        title: 'Short Answer',
+        order: 5,
+        type: QuestionType.shortAnswer,
+      ),
+      CommentBoxQuestion(
+        id: const Uuid().v4(),
+        title: 'Comment Box',
+        order: 6,
+        type: QuestionType.commentBox,
+      ),
+      SliderQuestion(
+        id: const Uuid().v4(),
+        title: 'Slider',
+        order: 7,
+        type: QuestionType.slider,
+        min: 0,
+        max: 10,
+      ),
+      DateTimeQuestion(
+        id: const Uuid().v4(),
+        title: 'Date / Time',
+        order: 8,
+        type: QuestionType.dateTime,
+      ),
+      AudioRecordQuestion(
+        id: const Uuid().v4(),
+        title: 'Audio Record',
+        order: 9,
+        type: QuestionType.audioRecord,
+      ),
+      MatrixQuestion(
+        id: const Uuid().v4(),
+        title: 'Matrix',
+        order: 10,
+        type: QuestionType.matrix,
+        rows: const ['Row 1', 'Row 2'],
+        cols: const ['Col 1', 'Col 2'],
+      ),
+      MatrixQuestion(
+        id: const Uuid().v4(),
+        title: 'Matrix',
+        order: 11,
+        useCheckbox: true,
+        type: QuestionType.matrix,
+        rows: const ['Row 1', 'Row 2'],
+        cols: const ['Col 1', 'Col 2'],
+      ),
+      ImageChoiceQuestion(
+        id: const Uuid().v4(),
+        title: 'Image Choice',
+        choices: [
+          ImageChoice(
+            id: const Uuid().v4(),
+            altText: 'Choice 1',
+            url: 'https://picsum.photos/id/237/200/300',
+          ),
+          ImageChoice(
+            id: const Uuid().v4(),
+            altText: 'Choice 2',
+            url: 'https://picsum.photos/id/238/200/300',
+          ),
+          ImageChoice(
+            id: const Uuid().v4(),
+            altText: 'Choice 3',
+            url: 'https://picsum.photos/id/239/200/300',
+          ),
+        ],
+        order: 11,
+        type: QuestionType.imageChoice,
+      ),
+      NameQuestion(
+        id: const Uuid().v4(),
+        title: 'Name',
+        order: 12,
+        type: QuestionType.nameType,
+      ),
+      EmailAddressQuestion(
+        id: const Uuid().v4(),
+        title: 'Email Address',
+        order: 13,
+        type: QuestionType.emailAddress,
+      ),
+      PhoneQuestion(
+        id: const Uuid().v4(),
+        title: 'Phone Number',
+        order: 14,
+        type: QuestionType.phoneNumber,
+      ),
+      AddressQuestion(
+        id: const Uuid().v4(),
+        title: 'Address',
+        order: 15,
+        type: QuestionType.address,
+      ),
+      TextQuestion(
+        id: const Uuid().v4(),
+        title: 'Text',
+        order: 16,
+        type: QuestionType.text,
+      ),
+      ImageQuestion(
+        id: const Uuid().v4(),
+        title: 'Image',
+        image: ImageChoice(
+          id: const Uuid().v4(),
+          url: 'https://picsum.photos/200/300',
+          altText: 'Image',
+        ),
+        order: 17,
+        type: QuestionType.image,
+      ),
     ];
+    // ]..shuffle();
   }
 }
 

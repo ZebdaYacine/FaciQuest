@@ -14,9 +14,18 @@ class CommentBoxQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      initialValue: answer?.value,
       maxLength: question.maxLength,
       maxLines: question.maxLines,
+      onChanged: (value) {
+        onAnswerChanged?.call(
+          CommentBoxAnswer(
+            questionId: question.id,
+            value: value,
+          ),
+        );
+      },
     );
   }
 }

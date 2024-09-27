@@ -19,29 +19,59 @@ class NameQuestionPreview extends StatelessWidget {
     return Column(
       children: [
         if (question.showFirstName) ...[
-          TextField(
+          TextFormField(
+            initialValue: answer?.firstName,
             decoration: InputDecoration(
               labelText: question.firstNameLabel,
               hintText: question.firstNameHint,
             ),
+            onChanged: (value) {
+              onAnswerChanged?.call(
+                (answer ??
+                        NameAnswer(
+                          questionId: question.id,
+                        ))
+                    .copyWith(firstName: value),
+              );
+            },
           ),
         ],
         if (question.showLastName) ...[
           AppSpacing.spacing_1.heightBox,
-          TextField(
+          TextFormField(
+            initialValue: answer?.lastName,
             decoration: InputDecoration(
               labelText: question.lastNameLabel,
               hintText: question.lastNameHint,
             ),
+            onChanged: (value) {
+              onAnswerChanged?.call(
+                (answer ??
+                        NameAnswer(
+                          questionId: question.id,
+                        ))
+                    .copyWith(lastName: value),
+              );
+            },
           ),
         ],
         if (question.showMiddleName) ...[
           AppSpacing.spacing_1.heightBox,
-          TextField(
+          TextFormField(
+            initialValue: answer?.middleName,
             decoration: InputDecoration(
               labelText: question.middleNameLabel,
               hintText: question.middleNameHint,
             ),
+            onChanged: (value) {
+              onAnswerChanged?.call(
+                (answer ??
+                        NameAnswer(
+                          questionId: question.id,
+                        ))
+                    .copyWith(middleName: value),
+              );
+            },
           ),
         ]
       ],

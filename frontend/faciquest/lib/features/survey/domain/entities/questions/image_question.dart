@@ -5,7 +5,7 @@ class ImageQuestion extends QuestionEntity {
     required super.id,
     required super.title,
     required super.order,
-    this.image = const ImageChoice(),
+    this.image = ImageChoice.empty,
     super.type = QuestionType.image,
   });
 

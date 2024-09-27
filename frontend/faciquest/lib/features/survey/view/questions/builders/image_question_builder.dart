@@ -12,17 +12,17 @@ class ImageQuestionBuilder extends QuestionBuilder {
   });
 
   @override
-  State<ImageQuestionBuilder> createState() =>
-      _AudioRecordQuestionBuilderState();
+  State<ImageQuestionBuilder> createState() => _ImageQuestionBuilderState();
 }
 
-class _AudioRecordQuestionBuilderState extends State<ImageQuestionBuilder>
+class _ImageQuestionBuilderState extends State<ImageQuestionBuilder>
     with BuildFormMixin {
   onChange({
     File? image,
   }) {
     widget.onChanged?.call((widget.question as ImageQuestion).copyWith(
       image: ImageChoice(
+        id: (widget.question as ImageQuestion).image.id,
         image: image,
       ),
     ));

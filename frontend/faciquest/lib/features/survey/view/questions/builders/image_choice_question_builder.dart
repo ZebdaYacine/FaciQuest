@@ -4,6 +4,7 @@ import 'package:faciquest/core/core.dart';
 
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class ImageChoiceQuestionBuilder extends QuestionBuilder {
   const ImageChoiceQuestionBuilder({
@@ -40,7 +41,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
       mainAxisSize: MainAxisSize.min,
       children: [
         CheckboxListTile(
-          value: (widget.question as ImageChoiceQuestion).useCheckbox,
+          value: (widget.question as ImageChoiceQuestion).multipleSelect,
           onChanged: (e) {
             onChange(useCheckbox: e);
           },
@@ -55,7 +56,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    (widget.question as ImageChoiceQuestion).useCheckbox
+                    (widget.question as ImageChoiceQuestion).multipleSelect
                         ? Checkbox(
                             value: false,
                             onChanged: (value) {},
@@ -109,7 +110,11 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                   final temp = [
                     ...(widget.question as ImageChoiceQuestion).choices
                   ];
-                  temp.insert(index + 1, const ImageChoice());
+                  temp.insert(
+                      index + 1,
+                      ImageChoice(
+                        id: const Uuid().v4(),
+                      ));
                   onChange(choices: temp);
                 },
                 icon: const Icon(Icons.add),
@@ -120,7 +125,13 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                     ...(widget.question as ImageChoiceQuestion).choices
                   ];
                   choices.removeAt(index);
-                  if (choices.isEmpty) choices = [const ImageChoice()];
+                  if (choices.isEmpty) {
+                    choices = [
+                      ImageChoice(
+                        id: const Uuid().v4(),
+                      )
+                    ];
+                  }
                   onChange(choices: choices);
                 },
                 icon: const Icon(

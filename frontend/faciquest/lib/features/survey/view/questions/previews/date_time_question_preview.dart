@@ -19,7 +19,7 @@ class DateTimeQuestionPreview extends StatefulWidget {
 }
 
 class _DateTimeQuestionPreviewState extends State<DateTimeQuestionPreview> {
-  final controller = TextEditingController();
+  late final controller = TextEditingController(text: widget.answer?.value);
   @override
   void dispose() {
     controller.dispose();
@@ -40,6 +40,15 @@ class _DateTimeQuestionPreviewState extends State<DateTimeQuestionPreview> {
         if (date != null) {
           controller.text = DateFormat('dd/MM/yyyy').format(date);
         }
+      },
+      readOnly: true,
+      onChanged: (value) {
+        widget.onAnswerChanged?.call(
+          DateTimeAnswer(
+            questionId: widget.question.id,
+            value: value,
+          ),
+        );
       },
       decoration: const InputDecoration(
           // hintText: question.hint,

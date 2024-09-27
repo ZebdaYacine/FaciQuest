@@ -55,19 +55,44 @@ class MatrixQuestionPreview extends StatelessWidget {
                 ),
               ),
             ),
-            ...question.cols.map((_) {
+            ...question.cols.map((col) {
+              bool isSelected = answer?.getValue(row, col) ?? false;
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: question.useCheckbox
-                      ? const Checkbox(
-                          value: false,
-                          onChanged: null,
+                      ? Checkbox(
+                          value: isSelected,
+                          onChanged: (bool? value) {
+                            if (value != null && onAnswerChanged != null) {
+                              final newAnswer = (answer ??
+                                      MatrixAnswer.empty(
+                                        questionId: question.id,
+                                        rows: question.rows,
+                                        cols: question.cols,
+                                        useCheckboxes: true,
+                                      ))
+                                  .setValue(row, col, value);
+                              onAnswerChanged!(newAnswer);
+                            }
+                          },
                         )
-                      : const Radio(
-                          value: true,
-                          groupValue: null,
-                          onChanged: null,
+                      : Radio<String>(
+                          value: col,
+                          groupValue: answer?.getSelectedColumn(row),
+                          onChanged: (String? value) {
+                            if (value != null && onAnswerChanged != null) {
+                              final newAnswer = (answer ??
+                                      MatrixAnswer.empty(
+                                        questionId: question.id,
+                                        rows: question.rows,
+                                        cols: question.cols,
+                                        useCheckboxes: false,
+                                      ))
+                                  .setValue(row, col, true);
+                              onAnswerChanged!(newAnswer);
+                            }
+                          },
                         ),
                 ),
               );
