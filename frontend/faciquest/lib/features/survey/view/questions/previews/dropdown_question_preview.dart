@@ -18,7 +18,7 @@ class DropdownQuestionPreview extends StatelessWidget {
     return Padding(
       padding: AppSpacing.spacing_2.horizontalPadding,
       child: DropdownButton(
-        value: null,
+        value: answer?.selectedChoice,
         isExpanded: true,
         items: question.choices.map(
           (e) {
@@ -28,7 +28,14 @@ class DropdownQuestionPreview extends StatelessWidget {
             );
           },
         ).toList(),
-        onChanged: (value) {},
+        onChanged: (value) {
+          onAnswerChanged?.call(
+            DropdownAnswer(
+              questionId: question.id,
+              selectedChoice: value,
+            ),
+          );
+        },
       ),
     );
   }

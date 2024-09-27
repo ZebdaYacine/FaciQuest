@@ -239,7 +239,7 @@ sealed class QuestionEntity extends Equatable {
       DropdownQuestion(
         id: const Uuid().v4(),
         title: 'Dropdown',
-        
+        choices: const ['Choice 1', 'Choice 2', 'Choice 3'],
         order: 4,
         type: QuestionType.dropdown,
       ),
