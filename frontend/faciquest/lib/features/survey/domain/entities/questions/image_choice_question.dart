@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class ImageChoiceQuestion extends QuestionEntity {
   const ImageChoiceQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.imageChoice,
@@ -20,6 +21,7 @@ class ImageChoiceQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
@@ -27,6 +29,7 @@ class ImageChoiceQuestion extends QuestionEntity {
     bool? useCheckbox,
   }) {
     return ImageChoiceQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       choices: choices ?? this.choices,
@@ -36,6 +39,7 @@ class ImageChoiceQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return ImageChoiceQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       choices: List<ImageChoice>.from(
@@ -54,9 +58,10 @@ class ImageChoiceQuestion extends QuestionEntity {
   }
 
   @override
-  List<Object?> get props => [title, choices, useCheckbox];
+  List<Object?> get props => [...super.props, choices, useCheckbox];
   static ImageChoiceQuestion copyFrom(QuestionEntity question) {
     return ImageChoiceQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

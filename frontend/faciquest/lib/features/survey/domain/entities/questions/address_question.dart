@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class AddressQuestion extends QuestionEntity {
   const AddressQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.address,
@@ -79,6 +80,7 @@ class AddressQuestion extends QuestionEntity {
       ];
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
@@ -103,6 +105,7 @@ class AddressQuestion extends QuestionEntity {
     bool? showCountry,
   }) {
     return AddressQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       streetAddress1Label: streetAddress1Label ?? this.streetAddress1Label,
@@ -130,6 +133,7 @@ class AddressQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return AddressQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       streetAddress1Label: map['streetAddress1Label'],
@@ -166,6 +170,7 @@ class AddressQuestion extends QuestionEntity {
 
   static AddressQuestion copyFrom(QuestionEntity question) {
     return AddressQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

@@ -4,83 +4,109 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 
-class QuestionPreview extends StatelessWidget {
+class QuestionPreview extends StatefulWidget {
   const QuestionPreview({
     super.key,
     required this.question,
     this.index,
-    this.isPreview =true,
+    this.isPreview = true,
+    this.initialAnswer,
+    this.onAnswerChanged,
   });
   final int? index;
   final QuestionEntity question;
-  final bool isPreview ;
+  final AnswerEntity? initialAnswer;
+  final ValueChanged<AnswerEntity>? onAnswerChanged;
+  final bool isPreview;
+
+  @override
+  State<QuestionPreview> createState() => _QuestionPreviewState();
+}
+
+class _QuestionPreviewState extends State<QuestionPreview> {
+  late AnswerEntity? _currentAnswer;
+  @override
+  void initState() {
+    super.initState();
+    _currentAnswer = widget.initialAnswer;
+  }
+
+  void _handleAnswerChanged(AnswerEntity answer) {
+    setState(() {
+      _currentAnswer = answer;
+    });
+    widget.onAnswerChanged?.call(answer);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (!(question is TextQuestion || question is ImageQuestion)) ...[
+        if (!(widget.question is TextQuestion ||
+            widget.question is ImageQuestion)) ...[
           Text(
-            '$index. ${question.title}',
+            '${widget.index}. ${widget.question.title}',
             style: context.headlineSmall,
           ),
           AppSpacing.spacing_1.heightBox,
         ],
-        switch (question) {
+        switch (widget.question) {
           StarRatingQuestion() => StarRatingQuestionPreview(
-              question: question as StarRatingQuestion,
+              question: widget.question as StarRatingQuestion,
+              onAnswerChanged: _handleAnswerChanged,
+              answer: _currentAnswer as StarRatingAnswer?,
             ),
           MultipleChoiceQuestion() => MultipleChoiceQuestionPreview(
-              question: question as MultipleChoiceQuestion,
+              question: widget.question as MultipleChoiceQuestion,
             ),
           CheckboxesQuestion() => CheckboxesQuestionPreview(
-              question: question as CheckboxesQuestion,
+              question: widget.question as CheckboxesQuestion,
             ),
           DropdownQuestion() => DropdownQuestionPreview(
-              question: question as DropdownQuestion,
+              question: widget.question as DropdownQuestion,
             ),
           FileUploadQuestion() => FileUploadQuestionPreview(
-              question: question as FileUploadQuestion,
+              question: widget.question as FileUploadQuestion,
             ),
           AudioRecordQuestion() => AudioRecordQuestionPreview(
-              question: question as AudioRecordQuestion,
+              question: widget.question as AudioRecordQuestion,
             ),
           ShortAnswerQuestion() => ShortTextQuestionPreview(
-              question: question as ShortAnswerQuestion,
+              question: widget.question as ShortAnswerQuestion,
             ),
           CommentBoxQuestion() => CommentBoxQuestionPreview(
-              question: question as CommentBoxQuestion,
+              question: widget.question as CommentBoxQuestion,
             ),
           SliderQuestion() => SliderQuestionPreview(
-              question: question as SliderQuestion,
+              question: widget.question as SliderQuestion,
             ),
           DateTimeQuestion() => DateTimeQuestionPreview(
-              question: question as DateTimeQuestion,
+              question: widget.question as DateTimeQuestion,
             ),
           MatrixQuestion() => MatrixQuestionPreview(
-              question: question as MatrixQuestion,
+              question: widget.question as MatrixQuestion,
             ),
           ImageChoiceQuestion() => ImageChoiceQuestionPreview(
-              question: question as ImageChoiceQuestion,
+              question: widget.question as ImageChoiceQuestion,
             ),
           NameQuestion() => NameQuestionPreview(
-              question: question as NameQuestion,
+              question: widget.question as NameQuestion,
             ),
           EmailAddressQuestion() => EmailAddressQuestionPreview(
-              question: question as EmailAddressQuestion,
+              question: widget.question as EmailAddressQuestion,
             ),
           PhoneQuestion() => PhoneQuestionPreview(
-              question: question as PhoneQuestion,
+              question: widget.question as PhoneQuestion,
             ),
           AddressQuestion() => AddressQuestionPreview(
-              question: question as AddressQuestion,
+              question: widget.question as AddressQuestion,
             ),
           TextQuestion() => TextQuestionPreview(
-              question: question as TextQuestion,
+              question: widget.question as TextQuestion,
             ),
           ImageQuestion() => ImageQuestionPreview(
-              question: question as ImageQuestion,
+              question: widget.question as ImageQuestion,
             ),
         }
       ],

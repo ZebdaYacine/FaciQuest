@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class EmailAddressQuestion extends QuestionEntity {
   const EmailAddressQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.emailAddress,
@@ -16,6 +17,7 @@ class EmailAddressQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
@@ -24,6 +26,7 @@ class EmailAddressQuestion extends QuestionEntity {
     bool? showEmailAddress,
   }) {
     return EmailAddressQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       emailAddressLabel: emailAddressLabel ?? this.emailAddressLabel,
@@ -34,6 +37,7 @@ class EmailAddressQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return EmailAddressQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       emailAddressLabel: map['emailAddressLabel'],
@@ -54,6 +58,7 @@ class EmailAddressQuestion extends QuestionEntity {
 
   static EmailAddressQuestion copyFrom(QuestionEntity question) {
     return EmailAddressQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

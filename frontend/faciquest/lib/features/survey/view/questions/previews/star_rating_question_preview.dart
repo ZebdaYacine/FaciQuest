@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 class StarRatingQuestionPreview extends StatelessWidget {
   const StarRatingQuestionPreview({
     required this.question,
+    required this.answer,
+    required this.onAnswerChanged,
     super.key,
   });
   final StarRatingQuestion question;
+  final StarRatingAnswer? answer;
+  final ValueChanged<StarRatingAnswer>? onAnswerChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +20,15 @@ class StarRatingQuestionPreview extends StatelessWidget {
       size: RatingSize.large,
       shape: question.shape,
       color: question.color,
-      value: 3,
-      onChanged: (value) {},
+      value: answer?.rating ?? 0,
+      onChanged: (value) {
+        onAnswerChanged?.call(
+          StarRatingAnswer(
+            questionId: question.id,
+            rating: value,
+          ),
+        );
+      },
     );
   }
 }

@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class PhoneQuestion extends QuestionEntity {
   const PhoneQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.phoneNumber,
@@ -16,6 +17,7 @@ class PhoneQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
@@ -24,6 +26,7 @@ class PhoneQuestion extends QuestionEntity {
     bool? showPhone,
   }) {
     return PhoneQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       phoneLabel: phoneLabel ?? this.phoneLabel,
@@ -34,6 +37,7 @@ class PhoneQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return PhoneQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       phoneLabel: map['phoneLabel'],
@@ -54,6 +58,7 @@ class PhoneQuestion extends QuestionEntity {
 
   static PhoneQuestion copyFrom(QuestionEntity question) {
     return PhoneQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

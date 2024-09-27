@@ -2,6 +2,6 @@ part of '../answer_entity.dart';
 
 ///
 
-class MatrixQuestion extends AnswerEntity {
-  const MatrixQuestion({required super.questionId});
+class MatrixAnswer extends AnswerEntity {
+  const MatrixAnswer({required super.questionId});
 }

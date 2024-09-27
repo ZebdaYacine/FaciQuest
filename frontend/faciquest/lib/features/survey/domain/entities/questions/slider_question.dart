@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class SliderQuestion extends QuestionEntity {
   const SliderQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.slider,
@@ -13,6 +14,7 @@ class SliderQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
@@ -20,6 +22,7 @@ class SliderQuestion extends QuestionEntity {
     double? max,
   }) {
     return SliderQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       min: min ?? this.min,
@@ -29,6 +32,7 @@ class SliderQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return SliderQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       min: map['min'],
@@ -46,10 +50,11 @@ class SliderQuestion extends QuestionEntity {
   }
 
   @override
-  List<Object?> get props => [title, min, max];
+  List<Object?> get props => [super.props, min, max];
 
   static SliderQuestion copyFrom(QuestionEntity question) {
     return SliderQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

@@ -1,5 +1,5 @@
 part of '../answer_entity.dart';
 
-class ShortAnswerQuestion extends AnswerEntity {
-  const ShortAnswerQuestion({required super.questionId});
+class ShortAnswerAnswer extends AnswerEntity {
+  const ShortAnswerAnswer({required super.questionId});
 }

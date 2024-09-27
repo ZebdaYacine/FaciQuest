@@ -6,6 +6,7 @@ class StarRatingQuestion extends QuestionEntity {
   final Color color;
 
   const StarRatingQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.starRating,
@@ -16,6 +17,7 @@ class StarRatingQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return StarRatingQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       maxRating: map['maxRating'],
@@ -37,6 +39,7 @@ class StarRatingQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
@@ -45,6 +48,7 @@ class StarRatingQuestion extends QuestionEntity {
     Color? color,
   }) {
     return StarRatingQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       type: type ?? this.type,
@@ -59,6 +63,7 @@ class StarRatingQuestion extends QuestionEntity {
 
   static StarRatingQuestion copyFrom(QuestionEntity question) {
     return StarRatingQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

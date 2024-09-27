@@ -1,5 +1,5 @@
 part of '../answer_entity.dart';
 
-class EmailAddressQuestion extends AnswerEntity {
-  const EmailAddressQuestion({required super.questionId});
+class EmailAddressAnswer extends AnswerEntity {
+  const EmailAddressAnswer({required super.questionId});
 }

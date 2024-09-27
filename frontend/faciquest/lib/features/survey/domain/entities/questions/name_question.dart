@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class NameQuestion extends QuestionEntity {
   const NameQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.nameType,
@@ -26,6 +27,7 @@ class NameQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
@@ -40,6 +42,7 @@ class NameQuestion extends QuestionEntity {
     bool? showMiddleName,
   }) {
     return NameQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       firstNameLabel: firstNameLabel ?? this.firstNameLabel,
@@ -56,6 +59,7 @@ class NameQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return NameQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       firstNameLabel: map['firstNameLabel'],
@@ -88,6 +92,7 @@ class NameQuestion extends QuestionEntity {
 
   static NameQuestion copyFrom(QuestionEntity question) {
     return NameQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

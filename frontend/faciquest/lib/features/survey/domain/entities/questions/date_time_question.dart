@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class DateTimeQuestion extends QuestionEntity {
   const DateTimeQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.dateTime,
@@ -20,6 +21,7 @@ class DateTimeQuestion extends QuestionEntity {
     bool? collectTimeInfo,
   }) {
     return DateTimeQuestion(
+        id: id,
         title: title ?? this.title,
         order: order ?? this.order,
         collectDateInfo: collectDateInfo ?? this.collectDateInfo,
@@ -28,6 +30,7 @@ class DateTimeQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return DateTimeQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       collectDateInfo: map['collectDateInfo'],
@@ -49,6 +52,7 @@ class DateTimeQuestion extends QuestionEntity {
 
   static DateTimeQuestion copyFrom(QuestionEntity question) {
     return DateTimeQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

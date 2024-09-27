@@ -128,6 +128,7 @@ enum QuestionType {
 }
 
 sealed class QuestionEntity extends Equatable {
+  final String id;
   final String title;
   final int order;
   final QuestionType type;
@@ -144,6 +145,7 @@ sealed class QuestionEntity extends Equatable {
       ];
 
   const QuestionEntity({
+    required this.id,
     required this.title,
     required this.order,
     required this.type,
@@ -152,6 +154,7 @@ sealed class QuestionEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'title': title,
       'order': order,
       'type': type.name,

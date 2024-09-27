@@ -1,5 +1,5 @@
 part of '../answer_entity.dart';
 
-class DropdownQuestion extends AnswerEntity {
-  const DropdownQuestion({required super.questionId});
+class DropdownAnswer extends AnswerEntity {
+  const DropdownAnswer({required super.questionId});
 }

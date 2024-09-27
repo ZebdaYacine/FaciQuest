@@ -4,6 +4,7 @@ part of '../question_entity.dart';
 /// respondents select a single answer from a defined list of choices.
 class MultipleChoiceQuestion extends QuestionEntity {
   const MultipleChoiceQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.multipleChoice,
@@ -21,12 +22,14 @@ class MultipleChoiceQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
     List<String>? choices,
   }) {
     return MultipleChoiceQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       choices: choices ?? this.choices,
@@ -35,6 +38,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return MultipleChoiceQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       choices: List<String>.from(map['choices']),
@@ -53,6 +57,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
   List<Object?> get props => [...super.props, choices];
   static MultipleChoiceQuestion copyFrom(QuestionEntity question) {
     return MultipleChoiceQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

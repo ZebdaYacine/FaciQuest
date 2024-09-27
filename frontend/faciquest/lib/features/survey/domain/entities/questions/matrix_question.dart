@@ -4,6 +4,7 @@ part of '../question_entity.dart';
 
 class MatrixQuestion extends QuestionEntity {
   const MatrixQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.matrix,
@@ -25,6 +26,7 @@ class MatrixQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
@@ -33,6 +35,7 @@ class MatrixQuestion extends QuestionEntity {
     bool? useCheckbox,
   }) {
     return MatrixQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       rows: rows ?? this.rows,
@@ -43,6 +46,7 @@ class MatrixQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return MatrixQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       rows: List<String>.from(map['rows']),
@@ -62,10 +66,11 @@ class MatrixQuestion extends QuestionEntity {
   }
 
   @override
-  List<Object?> get props => [title, rows, useCheckbox, cols];
+  List<Object?> get props => [...super.props, rows, useCheckbox, cols];
 
   static MatrixQuestion copyFrom(QuestionEntity question) {
     return MatrixQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

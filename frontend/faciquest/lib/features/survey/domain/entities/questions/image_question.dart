@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class ImageQuestion extends QuestionEntity {
   const ImageQuestion({
+    required super.id,
     required super.title,
     required super.order,
     this.image = const ImageChoice(),
@@ -14,12 +15,14 @@ class ImageQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     String? title,
     int? order,
     QuestionType? type,
     ImageChoice? image,
   }) {
     return ImageQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       image: image ?? this.image,
@@ -28,6 +31,7 @@ class ImageQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return ImageQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       image: ImageChoice.fromMap(map['image']),
@@ -44,6 +48,7 @@ class ImageQuestion extends QuestionEntity {
 
   static ImageQuestion copyFrom(QuestionEntity question) {
     return ImageQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );

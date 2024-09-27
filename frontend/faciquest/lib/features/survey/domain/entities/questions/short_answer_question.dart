@@ -2,6 +2,7 @@ part of '../question_entity.dart';
 
 class ShortAnswerQuestion extends QuestionEntity {
   const ShortAnswerQuestion({
+    required super.id,
     required super.title,
     required super.order,
     super.type = QuestionType.shortAnswer,
@@ -12,6 +13,7 @@ class ShortAnswerQuestion extends QuestionEntity {
 
   @override
   QuestionEntity copyWith({
+    String? id,
     int? order,
     String? titleLarge,
     QuestionType? type,
@@ -20,6 +22,7 @@ class ShortAnswerQuestion extends QuestionEntity {
     int? maxLength,
   }) {
     return ShortAnswerQuestion(
+      id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       maxLength: maxLength ?? this.maxLength,
@@ -28,6 +31,7 @@ class ShortAnswerQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return ShortAnswerQuestion(
+      id: map['id'],
       title: map['title'],
       order: map['order'],
       maxLength: map['maxLength'],
@@ -43,9 +47,10 @@ class ShortAnswerQuestion extends QuestionEntity {
   }
 
   @override
-  List<Object?> get props => [title, maxLength];
+  List<Object?> get props => [super.props, maxLength];
   static ShortAnswerQuestion copyFrom(QuestionEntity question) {
     return ShortAnswerQuestion(
+      id: question.id,
       title: question.title,
       order: question.order,
     );
