@@ -6,7 +6,12 @@ import (
 	"back-end/pkg/database"
 	"context"
 	"fmt"
+	"log"
 	"testing"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func TestSurveyRepository(t *testing.T) {
@@ -15,62 +20,38 @@ func TestSurveyRepository(t *testing.T) {
 		if db == nil {
 			t.Fatal("Database connection failed")
 		}
-
 		ctx := context.Background()
 		pr := repository.NewSurveyRepository(db)
 		if pr == nil {
 			t.Fatal("Failed to create SurveyRepository")
 		}
-
-		survey := &domain.Survey{
-			ID:          "66f6ca55656638fc88386478",
-			Title:       "Customer Satisfaction Survey 2024",
-			Description: "A survey to assess customer satisfaction",
-			Status:      "active",
-			Languages:   []string{"en", "fr"},
-			Topics:      []string{"service", "quality"},
-			LikertScale: "5-point",
-			Questions: []domain.QuestionType{
-				domain.MultipleChoiceQuestion{
-					BaseQuestion: domain.BaseQuestion{
-						Title: "How satisfied were you with our service?",
-						Order: 1,
-					},
-					Choices: []string{
-						"Very satisfied",
-						"Satisfactory",
-						"Neither satisfied nor dissatisfied",
-						"Dissatisfied",
-						"Very dissatisfied",
-					},
-				},
-				domain.StarRatingQuestion{
-					BaseQuestion: domain.BaseQuestion{
-						Title: "How satisfied were you with our quality?",
-						Order: 2,
-					},
-					MaxRating: 5,
-					Shape:     "circle",
-					Color:     "blue",
-				},
-			}, // Add questions as needed
-			Sample: domain.Sample{
-				Size: 1000,
-				Type: "random",
-				Location: domain.Location{
-					Country: "USA",
-					State:   []string{"California"},
-					City:    []string{"San Francisco"},
-				},
-			},
-		}
-		record, err := pr.UpdateSurvey(ctx, survey)
-
+		id, err := primitive.ObjectIDFromHex("66f70b3d16d7d7eaea313efc")
 		if err != nil {
-			t.Fatal("Failed to update survey:", err)
+			log.Fatal(err)
+		}
+		filterUpdate := bson.D{{Key: "_id", Value: id}}
+		collection := db.Collection("survey")
+
+		// Fetch the raw BSON data
+		var rawData bson.M
+		err = collection.FindOne(ctx, filterUpdate).Decode(&rawData)
+		if err != nil {
+			if err == mongo.ErrNoDocuments {
+				t.Fatal("Survey not found")
+			} else {
+				t.Fatal("Error fetching survey:", err)
+			}
 		}
 
-		fmt.Println(record.Questions[0])
-	},
-	)
+		// Unmarshal into your Survey struct
+		new_survey := &domain.Survey{}
+		bytes, err := bson.Marshal(rawData)
+		if err != nil {
+			t.Fatal("Failed to marshal raw data:", err)
+		}
+		new_survey.UnmarshalBSON(bytes)
+
+		// Check the struct
+		fmt.Printf("Survey Struct: %+v\n", new_survey)
+	})
 }

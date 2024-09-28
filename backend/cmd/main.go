@@ -16,6 +16,7 @@
 
 // type Survey struct {
 // 	ID        string         `bson:"_id"`
+// 	Name      string         `bson:"name"`
 // 	Questions []QuestionType `bson:"questions"`
 // }
 
@@ -44,15 +45,21 @@
 // 	type Alias Survey
 // 	aux := &struct {
 // 		Questions []bson.Raw `bson:"questions"`
+// 		Name      string     `bson:"name"`
+// 		ID        string     `bson:"_id"`
 // 		*Alias
 // 	}{
 // 		Alias: (*Alias)(s),
 // 	}
 
-// 	if err := bson.Unmarshal(data, &aux); err != nil {
+// 	if err := bson.Unmarshal(data, aux); err != nil {
 // 		return err
 // 	}
 
+// 	s.Name = aux.Name
+// 	s.ID = aux.ID
+
+// 	// Process each question based on its type
 // 	for _, rawQuestion := range aux.Questions {
 // 		var questionMap map[string]interface{}
 // 		if err := bson.Unmarshal(rawQuestion, &questionMap); err != nil {
@@ -101,6 +108,7 @@
 // }
 
 // func main() {
+// 	// MongoDB connection options
 // 	clientOptions := options.Client().ApplyURI("mongodb+srv://root:root@db.wkzekin.mongodb.net/?retryWrites=true&w=majority&appName=db")
 // 	client, err := mongo.Connect(context.TODO(), clientOptions)
 // 	if err != nil {
@@ -113,51 +121,23 @@
 // 		}
 // 	}()
 
+// 	// Select collection
 // 	collection := client.Database("FaciQuest").Collection("surveys")
 
-// 	survey1 := Survey{
-// 		ID: "1234",
-// 		Questions: []QuestionType{
-// 			StarRatingQuestion{
-// 				BaseQuestion: "Rate the product ====================",
-// 				MaxRating:    5,
-// 				TypeQuestion: "Star Rating",
-// 			},
-// 			MultipleChoiceQuestion{
-// 				BaseQuestion: "Choose your favorite color",
-// 				Choices:      []string{"Red", "Green", "Blue"},
-// 				TypeQuestion: "Multiple Choice",
-// 			},
-// 		},
-// 	}
-
-// 	result, err := collection.InsertOne(context.TODO(), survey1)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	fmt.Println("Inserted document with ID:", result.InsertedID)
-
+// 	// Test survey retrieval
 // 	surveyID := "1234"
-
 // 	survey, err := readSurveyFromDB(collection, surveyID)
 // 	if err != nil {
 // 		log.Fatal("Failed to read survey:", err)
 // 	}
 
-//		fmt.Printf("Survey ID: %s\n", survey.ID)
-//		for _, q := range survey.Questions {
-//			switch q.GetType() {
-//			case "Star Rating":
-//				starQuestion := q.(StarRatingQuestion) // Non-pointer assertion
-//				fmt.Printf("Base Question: %s, Max Rating: %d\n", starQuestion.BaseQuestion, starQuestion.MaxRating)
-//			case "Multiple Choice":
-//				mcQuestion := q.(MultipleChoiceQuestion) // Non-pointer assertion
-//				fmt.Printf("Base Question: %s, Choices: %v\n", mcQuestion.BaseQuestion, mcQuestion.Choices)
-//			}
-//			fmt.Printf("Question Type: %s\n", q.GetType())
-//		}
-//	}
+// 	fmt.Printf("Survey ID: %s\n", survey.ID)
+// 	fmt.Printf("Survey Name: %s\n", survey.Name)
+// 	for _, question := range survey.Questions {
+// 		fmt.Printf("Question Type: %s\n", question.GetType())
+// 	}
+// }
+
 package main
 
 import (

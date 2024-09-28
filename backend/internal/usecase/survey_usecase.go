@@ -8,7 +8,7 @@ import (
 )
 
 func ValidateSurvey(survey *domain.Survey) error {
-	if survey.Title == "" {
+	if survey.Name == "" {
 		return fmt.Errorf("title is required")
 	}
 	if len(survey.Languages) == 0 {

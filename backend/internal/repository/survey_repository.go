@@ -1,15 +1,14 @@
 package repository
 
 import (
+	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/pkg/database"
 	"context"
-	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type surveyRepository struct {
@@ -49,19 +48,21 @@ func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain
 	}
 	filterUpdate := bson.D{{Key: "_id", Value: id}}
 	update := bson.M{"$set": updatedSurvey}
-	_, err = collection.UpdateOne(c, filterUpdate, update)
-	if err != nil {
-		log.Panic(err)
-		return nil, err
-	}
-	new_survey := &domain.Survey{}
-	err = collection.FindOne(c, filterUpdate).Decode(new_survey)
-	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			return nil, fmt.Errorf("survey not found")
-		}
-		return nil, err
-	}
+	// _, err = collection.UpdateOne(c, filterUpdate, update)
+	// if err != nil {
+	// 	log.Panic(err)
+	// 	return nil, err
+	// }
+	// new_survey := &domain.Survey{}
+	// err = collection.FindOne(c, filterUpdate).Decode(new_survey)
+	// if err != nil {
+	// 	if err == mongo.ErrNoDocuments {
+	// 		return nil, fmt.Errorf("survey not found")
+	// 	}
+	// 	return nil, err
+	// }
+	// fmt.Println(new_survey.Languages)
+	// return new_survey, nil
+	return core.UpdateDoc[domain.Survey](c, collection, update, filterUpdate)
 
-	return new_survey, nil
 }
