@@ -1,11 +1,41 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:uuid/uuid.dart';
 
 enum SurveyStatus { draft, published, deleted }
+
+enum SurveyAction {
+  newSurvey,
+  edit,
+  preview,
+  analyze,
+  delete,
+  collectResponses,
+  ;
+
+  static SurveyAction? fromValue(String? value) {
+    if (value == null) return null;
+    switch (value) {
+      case 'newSurvey':
+        return SurveyAction.newSurvey;
+      case 'edit':
+        return SurveyAction.edit;
+      case 'preview':
+        return SurveyAction.preview;
+      case 'analyze':
+        return SurveyAction.analyze;
+      case 'delete':
+        return SurveyAction.delete;
+      case 'collectResponses':
+        return SurveyAction.collectResponses;
+    }
+    return null;
+  }
+}
 
 class SurveyEntity extends Equatable {
   final String id;
@@ -16,12 +46,18 @@ class SurveyEntity extends Equatable {
   final List<String> topics;
   final LikertScale? likertScale;
   final List<QuestionEntity> questions;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  //
+  final int responseCount;
+  final int viewCount;
+  final int questionCount;
 
-  static const empty = SurveyEntity();
+  static final empty = SurveyEntity();
   bool get isEmpty => this == empty;
   bool get isNotEmpty => this != empty;
 
-  const SurveyEntity({
+  SurveyEntity({
     this.id = '',
     this.name = '',
     this.description,
@@ -30,7 +66,13 @@ class SurveyEntity extends Equatable {
     this.topics = const [],
     this.questions = const [],
     this.likertScale,
-  });
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    this.responseCount = 0,
+    this.viewCount = 0,
+    this.questionCount = 0,
+  })  : createdAt = createdAt ?? DateTime.now(),
+        updatedAt = updatedAt ?? DateTime.now();
 
   SurveyEntity copyWith(
       {String? name,
@@ -121,6 +163,36 @@ class SurveyEntity extends Equatable {
         topics: const ['test', 'test2'],
       ),
     );
+  }
+
+  static Future<List<SurveyEntity>> dummyList() async {
+    return [
+      SurveyEntity(
+        id: const Uuid().v4(),
+        name: 'Test Survey',
+        status: SurveyStatus.draft,
+        responseCount: Random().nextInt(50),
+        viewCount: 50 + Random().nextInt(10),
+        questions: QuestionEntity.dummyList(),
+        description: 'Test Description',
+        languages: const ['en', 'ar'],
+        topics: const ['test', 'test2'],
+      ),
+      SurveyEntity(
+        id: const Uuid().v4(),
+        name: 'Unit Test Survey',
+        responseCount: Random().nextInt(50),
+        viewCount: 50 + Random().nextInt(10),
+        status: SurveyStatus.draft,
+        questions: QuestionEntity.dummyList()..shuffle(),
+        createdAt: DateTime.now().subtract(Duration(
+          days: Random().nextInt(30),
+        )),
+        description: 'Test Description',
+        languages: const ['en', 'ar'],
+        topics: const ['test', 'test2'],
+      ),
+    ];
   }
 }
 

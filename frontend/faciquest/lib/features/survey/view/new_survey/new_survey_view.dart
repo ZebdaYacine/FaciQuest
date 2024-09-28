@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewSurveyView extends StatelessWidget {
-  const NewSurveyView({super.key});
+  const NewSurveyView({
+    super.key,
+    required this.surveyAction,
+  });
+
+  final SurveyAction surveyAction;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewSurveyCubit(),
+      create: (context) => NewSurveyCubit(surveyAction),
       child: Scaffold(
         appBar: AppBar(
             // title: const Text('New Survey'),
@@ -39,6 +44,8 @@ class NewSurveyView extends StatelessWidget {
                   return const CollectResponsesPage();
                 case NewSurveyPages.analyseResults:
                   return const AnalyseResultsPage();
+                case NewSurveyPages.summary:
+                  return const SummaryPage();
               }
             },
           ),

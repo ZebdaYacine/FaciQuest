@@ -7,16 +7,24 @@ class ImageQuestionPreview extends StatelessWidget {
     super.key,
   });
   final ImageQuestion question;
-  
 
   @override
   Widget build(BuildContext context) {
     if (question.image.url != null) {
-      return Image.network(question.image.url!);
+      return AspectRatio(
+        aspectRatio: 4 / 3,
+        child: Image.network(
+          question.image.url!,
+        ),
+      );
     } else if (question.image.image != null) {
-      return Image.file(question.image.image!);
+      return Image.file(
+        question.image.image!,
+      );
     } else {
-      return Text(question.image.altText ?? '');
+      return Text(
+        question.image.altText ?? '',
+      );
     }
   }
 }

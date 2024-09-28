@@ -22,8 +22,18 @@ enum AppRoutes {
   howItWorks('how-it-works', 'How It Works', HowItWorksView()),
 
   //
-  newSurvey('new-survey', 'New Survey', NewSurveyView()),
-  survey('survey/:id', 'Survey', SurveyView(surveyId: '',)),
+  newSurvey(
+      'new-survey/:id',
+      'New Survey',
+      NewSurveyView(
+        surveyAction: SurveyAction.newSurvey,
+      )),
+  survey(
+      'survey/:id',
+      'Survey',
+      SurveyView(
+        surveyId: '',
+      )),
   manageMySurveys(
     'manage-my-surveys',
     'Manage My Surveys',

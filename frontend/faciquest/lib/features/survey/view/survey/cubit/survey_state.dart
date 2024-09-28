@@ -7,12 +7,12 @@ class SurveyState extends Equatable {
 
   final Set<AnswerEntity> answers;
 
-  const SurveyState({
+  SurveyState({
     this.status = Status.initial,
     this.submissionStatus = Status.initial,
-    this.survey = SurveyEntity.empty,
+    SurveyEntity? survey,
     this.answers = const {},
-  });
+  }) : survey = survey ?? SurveyEntity.empty;
 
   SurveyState copyWith({
     Status? status,

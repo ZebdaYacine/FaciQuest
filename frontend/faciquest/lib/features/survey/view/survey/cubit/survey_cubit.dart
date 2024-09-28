@@ -9,7 +9,7 @@ class SurveyCubit extends Cubit<SurveyState> {
   SurveyCubit({
     required this.surveyId,
     required this.repository,
-  }) : super(const SurveyState());
+  }) : super(SurveyState());
   final String surveyId;
   final SurveyRepository repository;
 

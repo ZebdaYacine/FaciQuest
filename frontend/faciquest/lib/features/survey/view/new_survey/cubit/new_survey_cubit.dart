@@ -6,7 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'new_survey_state.dart';
 
 class NewSurveyCubit extends Cubit<NewSurveyState> {
-  NewSurveyCubit() : super(const NewSurveyState());
+  NewSurveyCubit(SurveyAction action)
+      : super(NewSurveyState(
+          page: _pageFromAction(action),
+        ));
 
   void onSurveyNameChanged(String value) {
     emit(
@@ -40,14 +43,16 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
 
   next() {
     emit(state.copyWith(
-      page: NewSurveyPages.values[(state.page.index + 1) % 2],
+      page: NewSurveyPages
+          .values[(state.page.index + 1) % NewSurveyPages.values.length],
     ));
   }
 
   back() {
     emit(
       state.copyWith(
-        page: NewSurveyPages.values[(state.page.index - 1) % 2],
+        page: NewSurveyPages
+            .values[(state.page.index - 1) % NewSurveyPages.values.length],
       ),
     );
   }
@@ -116,5 +121,21 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
         ),
       ),
     );
+  }
+}
+
+NewSurveyPages _pageFromAction(SurveyAction action) {
+  switch (action) {
+    case SurveyAction.delete:
+    case SurveyAction.newSurvey:
+      return NewSurveyPages.surveyDetails;
+    case SurveyAction.edit:
+      return NewSurveyPages.summary;
+    case SurveyAction.preview:
+      return NewSurveyPages.questions;
+    case SurveyAction.analyze:
+      return NewSurveyPages.analyseResults;
+    case SurveyAction.collectResponses:
+      return NewSurveyPages.collectResponses;
   }
 }

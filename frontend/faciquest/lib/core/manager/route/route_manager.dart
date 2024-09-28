@@ -39,7 +39,16 @@ class RouteManager {
         AppRoutes.personalInfo.goRoute(),
         AppRoutes.wallet.goRoute(),
         AppRoutes.howItWorks.goRoute(),
-        AppRoutes.newSurvey.goRoute(),
+        AppRoutes.newSurvey.goRoute([], (context, goRouterState) {
+          final surveyAction =
+              goRouterState.extra as SurveyAction? ?? SurveyAction.newSurvey;
+
+          return MaterialPage(
+            child: NewSurveyView(
+              surveyAction: surveyAction,
+            ),
+          );
+        }),
         AppRoutes.survey.goRoute(
           [],
           (context, goRouterState) {

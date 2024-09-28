@@ -6,12 +6,12 @@ class NewSurveyState extends Equatable {
   final Status status;
   final String? msg;
 
-  const NewSurveyState({
-    this.survey = const SurveyEntity(),
+  NewSurveyState({
+    SurveyEntity? survey,
     this.page = NewSurveyPages.surveyDetails,
     this.status = Status.initial,
     this.msg,
-  });
+  }) : survey = survey ?? SurveyEntity.empty;
 
   @override
   List<Object?> get props => [
@@ -37,6 +37,7 @@ class NewSurveyState extends Equatable {
 }
 
 enum NewSurveyPages {
+  summary,
   surveyDetails,
   questions,
   collectResponses,

@@ -96,7 +96,12 @@ class HomeView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          AppRoutes.newSurvey.push(context);
+          AppRoutes.newSurvey.push(
+            context,
+            pathParameters: {
+              'id': '-1',
+            },
+          );
         },
         child: const Icon(Icons.add),
       ),

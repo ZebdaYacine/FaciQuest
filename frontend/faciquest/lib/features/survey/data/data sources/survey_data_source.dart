@@ -10,6 +10,7 @@ abstract class SurveyDataSource {
   Future<void> deleteSurvey(String surveyId);
 
   Future<void> submitAnswers(Submission submission);
+  Future<List<SurveyEntity>> fetchMySurveys();
 }
 
 class SurveyDataSourceImpl implements SurveyDataSource {
@@ -57,6 +58,23 @@ class SurveyDataSourceImpl implements SurveyDataSource {
 
   @override
   Future<void> submitAnswers(Submission submission) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 3));
+  }
+
+  @override
+  Future<List<SurveyEntity>> fetchMySurveys() async {
+    if (DevSettings.useDummyData) {
+      await Future.delayed(const Duration(seconds: 1));
+      return SurveyEntity.dummyList();
+    }
+    final response = await dioClient.get(
+      '/survey/my',
+    );
+    if (response.statusCode == 200) {
+      return (response.data as List)
+          .map((e) => SurveyEntity.fromJson(e))
+          .toList();
+    }
+    return [];
   }
 }

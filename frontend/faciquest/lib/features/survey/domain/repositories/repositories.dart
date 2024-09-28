@@ -8,4 +8,6 @@ abstract class SurveyRepository {
   Future<void> deleteSurvey(String surveyId);
 
   Future<void> submitAnswers(Submission submission);
+
+  Future<List<SurveyEntity>> fetchMySurveys();
 }
