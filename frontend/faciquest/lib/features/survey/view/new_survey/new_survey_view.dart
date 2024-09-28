@@ -8,36 +8,47 @@ class NewSurveyView extends StatelessWidget {
   const NewSurveyView({
     super.key,
     required this.surveyAction,
+    required this.surveyId,
   });
 
   final SurveyAction surveyAction;
+  final String surveyId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewSurveyCubit(surveyAction),
+      create: (context) => NewSurveyCubit(
+        action: surveyAction,
+        surveyId: surveyId,
+        repository: getIt<SurveyRepository>(),
+      )..fetchSurvey(),
       child: Scaffold(
         appBar: AppBar(
             // title: const Text('New Survey'),
             ),
         body: BlocListener<NewSurveyCubit, NewSurveyState>(
           listener: (context, state) {
-            if (state.status.isSuccess) {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) => const AppBackDrop(
-                  showHeaderContent: false,
-                  showDivider: false,
-                ),
-              );
-            }
+            // if (state.status.isSuccess) {
+            //   showModalBottomSheet(
+            //     context: context,
+            //     builder: (context) => const AppBackDrop(
+            //       showHeaderContent: false,
+            //       showDivider: false,
+            //     ),
+            //   );
+            // }
           },
-          child: BlocSelector<NewSurveyCubit, NewSurveyState, NewSurveyPages>(
-            selector: (state) => state.page,
-            builder: (context, value) {
-              switch (value) {
+          child: BlocBuilder<NewSurveyCubit, NewSurveyState>(
+            builder: (context, state) {
+              if (state.status.isFailure) {
+                return Center(child: Text(state.msg ?? 'Error Occurred'));
+              } else if (state.status.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              switch (state.page) {
                 case NewSurveyPages.surveyDetails:
-                  return const _SurveyDetails();
+                  return _SurveyDetails(surveyId);
                 case NewSurveyPages.questions:
                   return const QuestionsPage();
                 case NewSurveyPages.collectResponses:
@@ -45,7 +56,9 @@ class NewSurveyView extends StatelessWidget {
                 case NewSurveyPages.analyseResults:
                   return const AnalyseResultsPage();
                 case NewSurveyPages.summary:
-                  return const SummaryPage();
+                  return SummaryPage(
+                    survey: state.survey,
+                  );
               }
             },
           ),
@@ -60,7 +73,8 @@ class NewSurveyView extends StatelessWidget {
 }
 
 class _SurveyDetails extends StatelessWidget {
-  const _SurveyDetails();
+  const _SurveyDetails(this.surveyId);
+  final String surveyId;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +118,13 @@ class _SurveyDetails extends StatelessWidget {
                   ),
                   foregroundColor: context.colorScheme.error,
                 ),
-                onPressed: () => context.pop(),
+                onPressed: () {
+                  if (surveyId.isEmpty || surveyId == '-1') {
+                    context.pop();
+                  } else {
+                    context.read<NewSurveyCubit>().goToSummary();
+                  }
+                },
                 child: const Center(child: Text('Cancel')),
               ),
             ],

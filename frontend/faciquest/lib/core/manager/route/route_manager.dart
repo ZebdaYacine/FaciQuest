@@ -46,6 +46,7 @@ class RouteManager {
           return MaterialPage(
             child: NewSurveyView(
               surveyAction: surveyAction,
+              surveyId: goRouterState.pathParameters['id'] ?? '-1',
             ),
           );
         }),

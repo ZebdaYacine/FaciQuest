@@ -6,11 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'new_survey_state.dart';
 
 class NewSurveyCubit extends Cubit<NewSurveyState> {
-  NewSurveyCubit(SurveyAction action)
-      : super(NewSurveyState(
+  NewSurveyCubit({
+    required this.surveyId,
+    required SurveyAction action,
+    required this.repository,
+  }) : super(NewSurveyState(
           page: _pageFromAction(action),
         ));
-
+  final SurveyRepository repository;
+  final String surveyId;
   void onSurveyNameChanged(String value) {
     emit(
       state.copyWith(
@@ -121,6 +125,49 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
         ),
       ),
     );
+  }
+
+  Future<void> fetchSurvey() async {
+    if (surveyId.isNotEmpty && surveyId != '-1') {
+      emit(state.copyWith(status: Status.showLoading));
+      await repository.getSurveyById(surveyId).then(
+        (value) {
+          emit(state.copyWith(survey: value, status: Status.success));
+        },
+      ).catchError((e) {
+        emit(state.copyWith(status: Status.failure, msg: e.toString()));
+      });
+    } else {
+      emit(state.copyWith(page: _pageFromAction(SurveyAction.newSurvey)));
+    }
+  }
+
+  void editSurvey() {
+    emit(state.copyWith(
+      page: NewSurveyPages.surveyDetails,
+    ));
+  }
+
+  void sendSurvey() {
+    emit(state.copyWith(
+      page: NewSurveyPages.collectResponses,
+    ));
+  }
+
+  void analyzeSurvey() {
+    emit(state.copyWith(
+      page: NewSurveyPages.analyseResults,
+    ));
+  }
+
+  void deleteSurvey() {
+    //TODO: Implement delete survey
+  }
+
+  void goToSummary() {
+    emit(state.copyWith(
+      page: NewSurveyPages.summary,
+    ));
   }
 }
 

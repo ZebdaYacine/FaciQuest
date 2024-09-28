@@ -54,6 +54,8 @@ class SurveyEntity extends Equatable {
   final int questionCount;
 
   static final empty = SurveyEntity();
+
+  final List<CollectorEntity> collectors;
   bool get isEmpty => this == empty;
   bool get isNotEmpty => this != empty;
 
@@ -65,6 +67,7 @@ class SurveyEntity extends Equatable {
     this.languages = const [],
     this.topics = const [],
     this.questions = const [],
+    this.collectors = const [],
     this.likertScale,
     DateTime? createdAt,
     DateTime? updatedAt,

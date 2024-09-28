@@ -239,8 +239,10 @@ class SurveyBadge extends StatelessWidget {
   const SurveyBadge({
     super.key,
     required this.status,
+    this.large = false,
   });
   final SurveyStatus status;
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
@@ -251,7 +253,9 @@ class SurveyBadge extends StatelessWidget {
       ),
       label: Text(
         'Open',
-        style: context.textTheme.bodyMedium,
+        style: large
+            ? context.textTheme.titleMedium
+            : context.textTheme.bodyMedium,
       ),
       backgroundColor: Colors.greenAccent,
     );

@@ -27,6 +27,7 @@ enum AppRoutes {
       'New Survey',
       NewSurveyView(
         surveyAction: SurveyAction.newSurvey,
+        surveyId: '-1',
       )),
   survey(
       'survey/:id',
