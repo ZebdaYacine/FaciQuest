@@ -43,6 +43,7 @@ type SurveyResulat struct {
 type SurveyUseCase interface {
 	CreateSurvey(c context.Context, survey *SurveyParams) *SurveyResulat
 	UpdateSurvey(c context.Context, survey *SurveyParams) *SurveyResulat
+	DeleteSurvey(c context.Context, survey *SurveyParams) (bool, error)
 }
 
 type surveyUseCase struct {
@@ -50,7 +51,7 @@ type surveyUseCase struct {
 	collection string
 }
 
-func crudServey(repo repository.SurveyRepository, c context.Context, params *SurveyParams, action string) *SurveyResulat {
+func crudServey(repo repository.SurveyRepository, c context.Context, params *SurveyParams, action string) interface{} {
 	if params.Data == nil {
 		return &SurveyResulat{
 			Data: nil,
@@ -69,8 +70,11 @@ func crudServey(repo repository.SurveyRepository, c context.Context, params *Sur
 	switch action {
 	case "delete":
 		{
-			result, err = repo.UpdateSurvey(c, survey)
-
+			value, err := repo.DeleteSurvey(c, survey.ID, survey.UserId)
+			if err != nil {
+				return err
+			}
+			return value
 		}
 	case "update":
 		{
@@ -105,12 +109,38 @@ func NewSurveyUseCase(repo repository.SurveyRepository, collection string) Surve
 	}
 }
 
+// DeleteSurvey implements SurveyUseCase.
+func (su *surveyUseCase) DeleteSurvey(c context.Context, params *SurveyParams) (bool, error) {
+	value := crudServey(su.repo, c, params, "delete")
+	result, ok := value.(error)
+	if !ok {
+		return false, result
+	}
+	return true, nil
+}
+
 // UpdateSurvey implements SurveyUseCase.
 func (su *surveyUseCase) UpdateSurvey(c context.Context, params *SurveyParams) *SurveyResulat {
-	return crudServey(su.repo, c, params, "update")
+	value := crudServey(su.repo, c, params, "update")
+	result, ok := value.(SurveyResulat)
+	if !ok {
+		return &SurveyResulat{
+			Data: nil,
+			Err:  fmt.Errorf("invalid result type"),
+		}
+	}
+	return &result
 }
 
 // CreateSurvey implements SurveyRepository.
 func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *SurveyResulat {
-	return crudServey(su.repo, c, params, "add")
+	value := crudServey(su.repo, c, params, "add")
+	result, ok := value.(SurveyResulat)
+	if !ok {
+		return &SurveyResulat{
+			Data: nil,
+			Err:  fmt.Errorf("invalid result type"),
+		}
+	}
+	return &result
 }

@@ -39,8 +39,14 @@ type ForgetPasswordModel struct {
 	// NewPassword string `form:"newpassword"`
 }
 
+type DeleteSurveyModel struct {
+	// UserName    string `form:"username"`
+	// Token       string `form:"token"`
+	SurveyId string `form:"surveyId"`
+}
+
 type Account interface {
 	SignupModel | LoginModel | ConfirmationModel |
 		Wallet | SetNewPasswordModel | User |
-		ForgetPasswordModel | Payment | Survey
+		ForgetPasswordModel | Payment | Survey | DeleteSurveyModel
 }

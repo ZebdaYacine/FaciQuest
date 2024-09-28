@@ -19,12 +19,48 @@ type surveyRepository struct {
 type SurveyRepository interface {
 	CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
 	UpdateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
+	DeleteSurvey(c context.Context, surveyId string, userId string) (bool, error)
+	GetMySurveys(c context.Context, userId string) ([]*domain.Survey, error)
+	GetSurveyById(c context.Context, surveyId string) (*domain.Survey, error)
 }
 
 func NewSurveyRepository(db database.Database) SurveyRepository {
 	return &surveyRepository{
 		database: db,
 	}
+}
+
+// DeleteSurvey implements SurveyRepository.
+func (s *surveyRepository) DeleteSurvey(c context.Context, surveyId string, userId string) (bool, error) {
+	collection := s.database.Collection("survey")
+	id, err := primitive.ObjectIDFromHex(surveyId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	filter := bson.D{
+		{Key: "_id", Value: id},
+		{Key: "userId", Value: userId},
+	}
+	result, err := collection.DeleteOne(c, &filter)
+	if err != nil {
+		log.Printf("Failed to create survey: %v", err)
+		return false, err
+	}
+	if result.DeletedCount == 0 {
+		fmt.Println("No documents matched the filter")
+		return false, nil
+	}
+	return true, nil
+}
+
+// GetSurveyById implements SurveyRepository.
+func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string) (*domain.Survey, error) {
+	panic("unimplemented")
+}
+
+// GetMySurveys implements SurveyRepository.
+func (s *surveyRepository) GetMySurveys(c context.Context, userId string) ([]*domain.Survey, error) {
+	panic("unimplemented")
 }
 
 // CreateSurvey implements SurveyRepository.
@@ -63,5 +99,4 @@ func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain
 		return nil, err
 	}
 	return new_survey, nil
-	//return core.UpdateDoc[domain.Survey](c, collection, update, filterUpdate)
 }

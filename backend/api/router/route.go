@@ -50,6 +50,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 
 	private.NewCreateSurveyRouter(db, userRouter)
 	private.NewUpdateSurveyRouter(db, userRouter)
+	private.NewDeleteSurveyRouter(db, userRouter)
 
 	adminRouter := gin.Group("/admin")
 	//Middleware to verify AccessToken

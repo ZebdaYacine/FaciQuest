@@ -20,6 +20,7 @@ type Database interface {
 
 type Collection interface {
 	InsertOne(context.Context, interface{}) (interface{}, error)
+	DeleteOne(context.Context, interface{}) (*mongo.DeleteResult, error)
 	FindOne(context.Context, interface{}) SingleResult
 	UpdateOne(context.Context, interface{}, interface{}, ...*options.UpdateOptions) (*mongo.UpdateResult, error)
 }
@@ -99,6 +100,11 @@ func (mc *mongoCollection) FindOne(ctx context.Context, filter interface{}) Sing
 
 func (mc *mongoCollection) UpdateOne(ctx context.Context, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {
 	return mc.coll.UpdateOne(ctx, filter, update, opts[:]...)
+}
+
+// DeleteOne implements Collection.
+func (mc *mongoCollection) DeleteOne(ctx context.Context, filter interface{}) (*mongo.DeleteResult, error) {
+	return mc.coll.DeleteOne(ctx, filter)
 }
 
 func ConnectionDb() Database {
