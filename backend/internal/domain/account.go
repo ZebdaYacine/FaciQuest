@@ -42,7 +42,7 @@ type ForgetPasswordModel struct {
 type DeleteSurveyModel struct {
 	// UserName    string `form:"username"`
 	// Token       string `form:"token"`
-	SurveyId string `form:"surveyId"`
+	SurveyId string `json:"surveyId"`
 }
 
 type Account interface {

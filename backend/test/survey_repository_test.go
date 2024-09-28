@@ -55,3 +55,34 @@ func TestSurveyRepository(t *testing.T) {
 		fmt.Printf("Survey Struct: %+v\n", new_survey)
 	})
 }
+
+func TestDeleteSurveyRepository(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		db := database.ConnectionDb()
+		if db == nil {
+			t.Fatal("Database connection failed")
+		}
+		ctx := context.Background()
+		pr := repository.NewSurveyRepository(db)
+		if pr == nil {
+			t.Fatal("Failed to create SurveyRepository")
+		}
+
+		id, err := primitive.ObjectIDFromHex("66f7f9fcc7a88c9b5746ebbc")
+		if err != nil {
+			log.Fatal(err)
+		}
+		filter := bson.M{
+			"_id":    id,
+			"userId": "66ced91b015ced6ece935ed4",
+		}
+		result, err := db.Collection("survey").DeleteOne(ctx, &filter)
+		if err != nil {
+			log.Printf("Failed to create survey: %v", err)
+		}
+		if result.DeletedCount == 0 {
+			fmt.Println("No documents matched the filter")
+		}
+
+	})
+}

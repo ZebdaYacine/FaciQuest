@@ -66,25 +66,24 @@ func (sc *SurveyController) UpdateSurveyRequest(c *gin.Context) {
 func (sc *SurveyController) DeleteSurveyRequest(c *gin.Context) {
 	log.Println("__***__***___________ DELETE SURVEY  REQUEST ___________***__***__")
 	var DeleteSurvey domain.DeleteSurveyModel
-	var survey *domain.Survey
+	survey := &domain.Survey{}
 	if !core.IsDataRequestSupported(&DeleteSurvey, c) {
 		return
 	}
-	log.Println(DeleteSurvey.SurveyId)
 	userId := core.GetIdUser(c)
 	survey.ID = DeleteSurvey.SurveyId
 	survey.UserId = userId
 	surveyParams := &usecase.SurveyParams{}
 	surveyParams.Data = survey
-	resulat := sc.SurveyUseCase.UpdateSurvey(c, surveyParams)
-	if resulat.Err != nil {
+	resulat, err := sc.SurveyUseCase.DeleteSurvey(c, surveyParams)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
-			Message: resulat.Err.Error(),
+			Message: err.Error(),
 		})
 		return
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "UPDATE SURVEY REQUEST DONE SUCCESSFULY",
-		Data:    resulat.Data,
+		Message: "DELETE SURVEY REQUEST DONE SUCCESSFULY",
+		Data:    resulat,
 	})
 }

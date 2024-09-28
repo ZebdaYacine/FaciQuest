@@ -23,7 +23,6 @@ var RediServer = pkg.GET_REDIS_SERVER_SEETING()
 func IsDataRequestSupported[T domain.Account](data *T, c *gin.Context) bool {
 	err := c.ShouldBindJSON(data)
 	if err != nil {
-		log.Panicf(err.Error())
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Data sent not supported the api format "})
 		return false
 	}
