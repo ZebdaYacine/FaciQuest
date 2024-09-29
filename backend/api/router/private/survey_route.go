@@ -36,3 +36,12 @@ func NewDeleteSurveyRouter(db database.Database, group *gin.RouterGroup) {
 	}
 	group.POST("delete-survey", sc.DeleteSurveyRequest)
 }
+
+func NewGetSurveyByIdRouter(db database.Database, group *gin.RouterGroup) {
+	sr := repository.NewSurveyRepository(db)
+	su := usecase.NewSurveyUseCase(sr, core.SURVEY)
+	sc := &controller.SurveyController{
+		SurveyUseCase: su, // usecase for insured operations
+	}
+	group.POST("get-survey", sc.GetSurveyRequest)
+}

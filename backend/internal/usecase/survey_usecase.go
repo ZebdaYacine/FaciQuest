@@ -44,6 +44,7 @@ type SurveyUseCase interface {
 	CreateSurvey(c context.Context, survey *SurveyParams) *SurveyResulat
 	UpdateSurvey(c context.Context, survey *SurveyParams) *SurveyResulat
 	DeleteSurvey(c context.Context, survey *SurveyParams) (bool, error)
+	GetSurveyById(c context.Context, survey *SurveyParams) *SurveyResulat
 }
 
 type surveyUseCase struct {
@@ -52,31 +53,43 @@ type surveyUseCase struct {
 }
 
 func crudServey(repo repository.SurveyRepository, c context.Context, params *SurveyParams, action string) *SurveyResulat {
+	survey := params.Data
+	var err error
 	if params.Data == nil {
 		return &SurveyResulat{
 			Data: nil,
 			Err:  fmt.Errorf("data requeried"),
 		}
 	}
-	survey := params.Data
-	err := ValidateSurvey(survey)
-	if err != nil {
-		return &SurveyResulat{
-			Data: nil,
-			Err:  err,
-		}
-	}
 	var result *domain.Survey
 	switch action {
 	case "update":
 		{
+			err = ValidateSurvey(survey)
+			if err != nil {
+				return &SurveyResulat{
+					Data: nil,
+					Err:  err,
+				}
+			}
 			result, err = repo.UpdateSurvey(c, survey)
 
 		}
 	case "add":
 		{
+			err = ValidateSurvey(survey)
+			if err != nil {
+				return &SurveyResulat{
+					Data: nil,
+					Err:  err,
+				}
+			}
 			result, err = repo.CreateSurvey(c, survey)
 
+		}
+	case "getOne":
+		{
+			result, err = repo.GetSurveyById(c, params.Data.ID, params.Data.UserId)
 		}
 	default:
 		{
@@ -99,6 +112,12 @@ func NewSurveyUseCase(repo repository.SurveyRepository, collection string) Surve
 		repo:       repo,
 		collection: collection,
 	}
+}
+
+// GetSurveyById implements SurveyUseCase.
+func (su *surveyUseCase) GetSurveyById(c context.Context, params *SurveyParams) *SurveyResulat {
+	return crudServey(su.repo, c, params, "getOne")
+
 }
 
 // DeleteSurvey implements SurveyUseCase.

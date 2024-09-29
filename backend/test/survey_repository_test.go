@@ -68,7 +68,7 @@ func TestDeleteSurveyRepository(t *testing.T) {
 			t.Fatal("Failed to create SurveyRepository")
 		}
 
-		id, err := primitive.ObjectIDFromHex("66f7f9fcc7a88c9b5746ebbc")
+		id, err := primitive.ObjectIDFromHex("66f90ee708e617ee94de5eb4")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -76,13 +76,13 @@ func TestDeleteSurveyRepository(t *testing.T) {
 			"_id":    id,
 			"userId": "66ced91b015ced6ece935ed4",
 		}
-		result, err := db.Collection("survey").DeleteOne(ctx, &filter)
+		survey := &domain.Survey{}
+		err = db.Collection("survey").FindOne(ctx, &filter).Decode(survey)
 		if err != nil {
 			log.Printf("Failed to create survey: %v", err)
 		}
-		if result.DeletedCount == 0 {
-			fmt.Println("No documents matched the filter")
-		}
+
+		fmt.Println(survey)
 
 	})
 }

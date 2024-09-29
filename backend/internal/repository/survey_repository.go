@@ -21,7 +21,7 @@ type SurveyRepository interface {
 	UpdateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
 	DeleteSurvey(c context.Context, surveyId string, userId string) (bool, error)
 	GetMySurveys(c context.Context, userId string) ([]*domain.Survey, error)
-	GetSurveyById(c context.Context, surveyId string) (*domain.Survey, error)
+	GetSurveyById(c context.Context, surveyId string, userId string) (*domain.Survey, error)
 }
 
 func NewSurveyRepository(db database.Database) SurveyRepository {
@@ -54,14 +54,18 @@ func (s *surveyRepository) DeleteSurvey(c context.Context, surveyId string, user
 }
 
 // GetSurveyById implements SurveyRepository.
-func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string) (*domain.Survey, error) {
+func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, userId string) (*domain.Survey, error) {
 	collection := s.database.Collection("survey")
 	new_survey := &domain.Survey{}
 	id, err := primitive.ObjectIDFromHex(surveyId)
 	if err != nil {
 		log.Fatal(err)
 	}
-	filter := bson.D{{Key: "_id", Value: id}}
+	filter := bson.M{
+		"_id":    id,
+		"userId": userId,
+	}
+	fmt.Println(filter)
 	err = collection.FindOne(c, filter).Decode(new_survey)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
