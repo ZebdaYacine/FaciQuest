@@ -37,9 +37,9 @@ func (s *surveyRepository) DeleteSurvey(c context.Context, surveyId string, user
 	if err != nil {
 		log.Fatal(err)
 	}
-	filter := bson.D{
-		{Key: "_id", Value: id},
-		{Key: "userId", Value: userId},
+	filter := bson.M{
+		"_id":    id,
+		"userId": userId,
 	}
 	result, err := collection.DeleteOne(c, &filter)
 	if err != nil {
@@ -55,7 +55,21 @@ func (s *surveyRepository) DeleteSurvey(c context.Context, surveyId string, user
 
 // GetSurveyById implements SurveyRepository.
 func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string) (*domain.Survey, error) {
-	panic("unimplemented")
+	collection := s.database.Collection("survey")
+	new_survey := &domain.Survey{}
+	id, err := primitive.ObjectIDFromHex(surveyId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	filter := bson.D{{Key: "_id", Value: id}}
+	err = collection.FindOne(c, filter).Decode(new_survey)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, fmt.Errorf("survey not found")
+		}
+		return nil, err
+	}
+	return new_survey, nil
 }
 
 // GetMySurveys implements SurveyRepository.

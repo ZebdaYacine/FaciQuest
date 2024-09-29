@@ -51,7 +51,7 @@ type surveyUseCase struct {
 	collection string
 }
 
-func crudServey(repo repository.SurveyRepository, c context.Context, params *SurveyParams, action string) interface{} {
+func crudServey(repo repository.SurveyRepository, c context.Context, params *SurveyParams, action string) *SurveyResulat {
 	if params.Data == nil {
 		return &SurveyResulat{
 			Data: nil,
@@ -68,14 +68,6 @@ func crudServey(repo repository.SurveyRepository, c context.Context, params *Sur
 	}
 	var result *domain.Survey
 	switch action {
-	case "delete":
-		{
-			value, err := repo.DeleteSurvey(c, survey.ID, survey.UserId)
-			if err != nil {
-				return err
-			}
-			return value
-		}
 	case "update":
 		{
 			result, err = repo.UpdateSurvey(c, survey)
@@ -111,36 +103,19 @@ func NewSurveyUseCase(repo repository.SurveyRepository, collection string) Surve
 
 // DeleteSurvey implements SurveyUseCase.
 func (su *surveyUseCase) DeleteSurvey(c context.Context, params *SurveyParams) (bool, error) {
-	value := crudServey(su.repo, c, params, "delete")
-	result, ok := value.(error)
-	if !ok {
-		return false, result
+	value, err := su.repo.DeleteSurvey(c, params.Data.ID, params.Data.UserId)
+	if err != nil {
+		return value, err
 	}
-	return true, nil
+	return value, err
 }
 
 // UpdateSurvey implements SurveyUseCase.
 func (su *surveyUseCase) UpdateSurvey(c context.Context, params *SurveyParams) *SurveyResulat {
-	value := crudServey(su.repo, c, params, "update")
-	result, ok := value.(SurveyResulat)
-	if !ok {
-		return &SurveyResulat{
-			Data: nil,
-			Err:  fmt.Errorf("invalid result type"),
-		}
-	}
-	return &result
+	return crudServey(su.repo, c, params, "update")
 }
 
 // CreateSurvey implements SurveyRepository.
 func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *SurveyResulat {
-	value := crudServey(su.repo, c, params, "add")
-	result, ok := value.(SurveyResulat)
-	if !ok {
-		return &SurveyResulat{
-			Data: nil,
-			Err:  fmt.Errorf("invalid result type"),
-		}
-	}
-	return &result
+	return crudServey(su.repo, c, params, "add")
 }

@@ -75,6 +75,7 @@ func (sc *SurveyController) DeleteSurveyRequest(c *gin.Context) {
 	survey.UserId = userId
 	surveyParams := &usecase.SurveyParams{}
 	surveyParams.Data = survey
+	log.Println(surveyParams.Data)
 	resulat, err := sc.SurveyUseCase.DeleteSurvey(c, surveyParams)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
