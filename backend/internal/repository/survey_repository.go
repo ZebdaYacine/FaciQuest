@@ -20,7 +20,7 @@ type SurveyRepository interface {
 	CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
 	UpdateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
 	DeleteSurvey(c context.Context, surveyId string, userId string) (bool, error)
-	GetMySurveys(c context.Context, userId string) ([]*domain.Survey, error)
+	GetMySurveys(c context.Context, userId string) (*[]domain.Survey, error)
 	GetSurveyById(c context.Context, surveyId string, userId string) (*domain.Survey, error)
 }
 
@@ -77,8 +77,26 @@ func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, use
 }
 
 // GetMySurveys implements SurveyRepository.
-func (s *surveyRepository) GetMySurveys(c context.Context, userId string) ([]*domain.Survey, error) {
-	panic("unimplemented")
+func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]domain.Survey, error) {
+	collection := s.database.Collection("survey")
+	list_surveys := []domain.Survey{}
+	filter := bson.M{
+		"userId": userId,
+	}
+	fmt.Println(filter)
+	list, err := collection.Find(c, filter)
+	if err != nil {
+		return nil, err
+	}
+	for list.Next(c) {
+		new_survey := domain.Survey{}
+		if err := list.Decode(new_survey); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(new_survey)
+		list_surveys = append(list_surveys, new_survey)
+	}
+	return &list_surveys, nil
 }
 
 // CreateSurvey implements SurveyRepository.
