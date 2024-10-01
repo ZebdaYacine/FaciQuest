@@ -9,6 +9,7 @@ import (
 	"log"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -93,6 +94,29 @@ func TestDeleteSurveyRepository(t *testing.T) {
 		}
 
 		fmt.Println(len(list_surveys))
+
+	})
+}
+
+func TestGetMySurvey(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		db := database.ConnectionDb()
+		if db == nil {
+			t.Fatal("Database connection failed")
+		}
+		ctx := context.Background()
+		pr := repository.NewSurveyRepository(db)
+		if pr == nil {
+			t.Fatal("Failed to create SurveyRepository")
+		}
+		survey := &domain.Survey{UserId: "66ced91b015ced6ece935ed4"}
+		sr := repository.NewSurveyRepository(db)
+
+		record, err := sr.GetMySurveys(ctx, survey.UserId)
+		if err == nil {
+			print(record)
+		}
+		assert.NoError(t, err)
 
 	})
 }

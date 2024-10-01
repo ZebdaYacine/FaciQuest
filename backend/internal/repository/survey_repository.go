@@ -90,7 +90,7 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 	}
 	for list.Next(c) {
 		new_survey := domain.Survey{}
-		if err := list.Decode(new_survey); err != nil {
+		if err := list.Decode(&new_survey); err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println(new_survey)
