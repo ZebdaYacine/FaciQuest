@@ -2,14 +2,10 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:faciquest/core/core.dart';
-import 'package:faciquest/features/survey/survey.dart';
-import 'package:faciquest/features/survey/view/new_survey/collectors_modals/targeting_criteria_modal.dart';
+import 'package:faciquest/features/features.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'age_modal.dart';
-import 'country_selection_modal.dart';
-import 'gender_modal.dart';
 
 Future<void> showBuyTargetedResponsesModal(BuildContext context) async {
   showModalBottomSheet<void>(
@@ -111,7 +107,13 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
                       AppSpacing.spacing_2.widthBox,
                       FilledButton.icon(
                         onPressed: () async {
-                        final result = await  showTargetingCriteriaModal(context);
+                          final result =
+                              await showTargetingCriteriaModal(context);
+                          if (result != null) {
+                            setState(() {
+                              selectedCriteria = result;
+                            });
+                          }
                         },
                         icon: const Icon(Icons.add),
                         label: const Text('Add targeting criteria'),
@@ -222,7 +224,9 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
               foregroundColor: context.colorScheme.onPrimary,
               backgroundColor: context.colorScheme.primary,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showPaymentModal(context);
+            },
             child: const Center(child: Text('Checkout')),
           ),
         ],
