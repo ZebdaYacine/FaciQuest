@@ -22,51 +22,51 @@ class NewSurveyView extends StatelessWidget {
         surveyId: surveyId,
         repository: getIt<SurveyRepository>(),
       )..fetchSurvey(),
-      child: Scaffold(
-        appBar: AppBar(
-            // title: const Text('New Survey'),
-            ),
-        body: BlocListener<NewSurveyCubit, NewSurveyState>(
-          listener: (context, state) {
-            // if (state.status.isSuccess) {
-            //   showModalBottomSheet(
-            //     context: context,
-            //     builder: (context) => const AppBackDrop(
-            //       showHeaderContent: false,
-            //       showDivider: false,
-            //     ),
-            //   );
-            // }
-          },
-          child: BlocBuilder<NewSurveyCubit, NewSurveyState>(
-            builder: (context, state) {
-              if (state.status.isFailure) {
-                return Center(child: Text(state.msg ?? 'Error Occurred'));
-              } else if (state.status.isLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
+      child: BlocListener<NewSurveyCubit, NewSurveyState>(
+        listener: (context, state) {
+          // if (state.status.isSuccess) {
+          //   showModalBottomSheet(
+          //     context: context,
+          //     builder: (context) => const AppBackDrop(
+          //       showHeaderContent: false,
+          //       showDivider: false,
+          //     ),
+          //   );
+          // }
+        },
+        child: BlocBuilder<NewSurveyCubit, NewSurveyState>(
+          builder: (context, state) {
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text(state.page.title),
+                  centerTitle: false,
+                ),
+                body: Builder(
+                  builder: (context) {
+                    if (state.status.isFailure) {
+                      return Center(child: Text(state.msg ?? 'Error Occurred'));
+                    } else if (state.status.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
 
-              switch (state.page) {
-                case NewSurveyPages.surveyDetails:
-                  return _SurveyDetails(surveyId);
-                case NewSurveyPages.questions:
-                  return const QuestionsPage();
-                case NewSurveyPages.collectResponses:
-                  return const CollectResponsesPage();
-                case NewSurveyPages.analyseResults:
-                  return const AnalyseResultsPage();
-                case NewSurveyPages.summary:
-                  return SummaryPage(
-                    survey: state.survey,
-                  );
-              }
-            },
-          ),
+                    switch (state.page) {
+                      case NewSurveyPages.surveyDetails:
+                        return _SurveyDetails(surveyId);
+                      case NewSurveyPages.questions:
+                        return const QuestionsPage();
+                      case NewSurveyPages.collectResponses:
+                        return const CollectResponsesPage();
+                      case NewSurveyPages.analyseResults:
+                        return const AnalyseResultsPage();
+                      case NewSurveyPages.summary:
+                        return SummaryPage(
+                          survey: state.survey,
+                        );
+                    }
+                  },
+                ));
+          },
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => showQuestionModal(context),
-        //   child: const Text('new Question'),
-        // ),
       ),
     );
   }

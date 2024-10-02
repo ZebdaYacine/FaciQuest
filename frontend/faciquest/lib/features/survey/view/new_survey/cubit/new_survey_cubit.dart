@@ -47,6 +47,7 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
 
   next() {
     emit(state.copyWith(
+      previousPage: state.page,
       page: NewSurveyPages
           .values[(state.page.index + 1) % NewSurveyPages.values.length],
     ));
@@ -55,8 +56,9 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
   back() {
     emit(
       state.copyWith(
-        page: NewSurveyPages
-            .values[(state.page.index - 1) % NewSurveyPages.values.length],
+        page: (state.page == NewSurveyPages.questions)
+            ? NewSurveyPages.surveyDetails
+            : state.previousPage,
       ),
     );
   }
@@ -107,6 +109,7 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     emit(state.copyWith(
       status: Status.success,
       page: NewSurveyPages.collectResponses,
+      previousPage: state.page,
     ));
   }
 
@@ -145,18 +148,21 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
   void editSurvey() {
     emit(state.copyWith(
       page: NewSurveyPages.surveyDetails,
+      previousPage: state.page,
     ));
   }
 
   void sendSurvey() {
     emit(state.copyWith(
       page: NewSurveyPages.collectResponses,
+      previousPage: state.page,
     ));
   }
 
   void analyzeSurvey() {
     emit(state.copyWith(
       page: NewSurveyPages.analyseResults,
+      previousPage: state.page,
     ));
   }
 
@@ -167,6 +173,7 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
   void goToSummary() {
     emit(state.copyWith(
       page: NewSurveyPages.summary,
+      previousPage: state.page,
     ));
   }
 }

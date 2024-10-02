@@ -3,15 +3,18 @@ part of 'new_survey_cubit.dart';
 class NewSurveyState extends Equatable {
   final SurveyEntity survey;
   final NewSurveyPages page;
+  final NewSurveyPages previousPage;
   final Status status;
   final String? msg;
 
   NewSurveyState({
     SurveyEntity? survey,
     this.page = NewSurveyPages.surveyDetails,
+    NewSurveyPages? previousPage,
     this.status = Status.initial,
     this.msg,
-  }) : survey = survey ?? SurveyEntity.empty;
+  })  : survey = survey ?? SurveyEntity.empty,
+        previousPage = previousPage ?? page;
 
   @override
   List<Object?> get props => [
@@ -24,12 +27,14 @@ class NewSurveyState extends Equatable {
   NewSurveyState copyWith({
     SurveyEntity? survey,
     NewSurveyPages? page,
+    NewSurveyPages? previousPage,
     Status? status,
     String? msg,
   }) {
     return NewSurveyState(
       survey: survey ?? this.survey,
       page: page ?? this.page,
+      previousPage: previousPage ?? this.previousPage,
       status: status ?? Status.initial,
       msg: msg,
     );
@@ -37,9 +42,13 @@ class NewSurveyState extends Equatable {
 }
 
 enum NewSurveyPages {
-  summary,
-  surveyDetails,
-  questions,
-  collectResponses,
-  analyseResults
+  summary('Summary'),
+  surveyDetails('Survey Details'),
+  questions('Questions'),
+  collectResponses('Collect Responses'),
+  analyseResults('Analyse Results');
+
+  final String title;
+
+  const NewSurveyPages(this.title);
 }
