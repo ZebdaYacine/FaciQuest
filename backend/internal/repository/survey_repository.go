@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,7 +21,7 @@ type SurveyRepository interface {
 	CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
 	UpdateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
 	DeleteSurvey(c context.Context, surveyId string, userId string) (bool, error)
-	GetMySurveys(c context.Context, userId string) (*[]domain.Survey, error)
+	GetMySurveys(c context.Context, userId string) (*[]domain.SurveyBadge, error)
 	GetSurveyById(c context.Context, surveyId string, userId string) (*domain.Survey, error)
 }
 
@@ -77,19 +78,18 @@ func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, use
 }
 
 // GetMySurveys implements SurveyRepository.
-func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]domain.Survey, error) {
+func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]domain.SurveyBadge, error) {
 	collection := s.database.Collection("survey")
-	list_surveys := []domain.Survey{}
+	list_surveys := []domain.SurveyBadge{}
 	filter := bson.M{
 		"userId": userId,
 	}
-	fmt.Println(filter)
 	list, err := collection.Find(c, filter)
 	if err != nil {
 		return nil, err
 	}
 	for list.Next(c) {
-		new_survey := domain.Survey{}
+		new_survey := domain.SurveyBadge{}
 		if err := list.Decode(&new_survey); err != nil {
 			log.Fatal(err)
 		}
@@ -102,6 +102,8 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 // CreateSurvey implements SurveyRepository.
 func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error) {
 	collection := s.database.Collection("survey")
+	survey.CreatedAt = time.Now()
+	// survey.UpdatedAt = time.Now()
 	resulat, err := collection.InsertOne(c, &survey)
 	if err != nil {
 		log.Printf("Failed to create survey: %v", err)
@@ -120,7 +122,11 @@ func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain
 		log.Fatal(err)
 	}
 	filterUpdate := bson.D{{Key: "_id", Value: id}}
-	update := bson.M{"$set": updatedSurvey}
+	update := bson.M{
+		"$set": updatedSurvey,
+		"$currentDate": bson.M{
+			"updatedAt": true,
+		}}
 	_, err = collection.UpdateOne(c, filterUpdate, update)
 	if err != nil {
 		log.Panic(err)

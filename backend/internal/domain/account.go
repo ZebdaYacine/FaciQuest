@@ -46,5 +46,6 @@ type GetSurveyModel struct {
 type Account interface {
 	SignupModel | LoginModel | ConfirmationModel |
 		Wallet | SetNewPasswordModel | User |
-		ForgetPasswordModel | Payment | Survey | GetSurveyModel
+		ForgetPasswordModel | Payment |
+		Survey | GetSurveyModel | SurveyBadge
 }

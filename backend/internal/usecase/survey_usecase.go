@@ -41,7 +41,7 @@ type SurveyResulat struct {
 }
 
 type SurveysResulat struct {
-	List *[]domain.Survey
+	List *[]domain.SurveyBadge
 	Err  error
 }
 

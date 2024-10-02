@@ -109,7 +109,8 @@ func TestGetMySurvey(t *testing.T) {
 		if pr == nil {
 			t.Fatal("Failed to create SurveyRepository")
 		}
-		survey := &domain.Survey{UserId: "66ced91b015ced6ece935ed4"}
+		survey := &domain.Survey{}
+		survey.UserId = "66ced91b015ced6ece935ed4"
 		sr := repository.NewSurveyRepository(db)
 
 		record, err := sr.GetMySurveys(ctx, survey.UserId)
