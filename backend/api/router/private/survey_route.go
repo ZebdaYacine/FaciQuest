@@ -43,7 +43,7 @@ func NewGetSurveyByIdRouter(db database.Database, group *gin.RouterGroup) {
 	sc := &controller.SurveyController{
 		SurveyUseCase: su, // usecase for insured operations
 	}
-	group.POST("get-survey", sc.GetSurveyRequest)
+	group.GET("get-survey", sc.GetSurveyRequest)
 }
 
 func NewGetMySurveysRouter(db database.Database, group *gin.RouterGroup) {
@@ -52,5 +52,5 @@ func NewGetMySurveysRouter(db database.Database, group *gin.RouterGroup) {
 	sc := &controller.SurveyController{
 		SurveyUseCase: su, // usecase for insured operations
 	}
-	group.POST("get-my-surveys", sc.GetMySurveysRequest)
+	group.GET("get-my-surveys", sc.GetMySurveysRequest)
 }

@@ -16,7 +16,7 @@ func NewGeteWalletRouter(db database.Database, group *gin.RouterGroup) {
 	wc := &controller.PaymentController{
 		WalletUseCase: wu, // usecase for insured operations
 	}
-	group.POST("get-wallet", wc.GetWalletRequest)
+	group.GET("get-wallet", wc.GetWalletRequest)
 }
 
 func NewUpdateWalletRouter(db database.Database, group *gin.RouterGroup) {

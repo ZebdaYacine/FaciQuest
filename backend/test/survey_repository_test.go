@@ -112,7 +112,6 @@ func TestGetMySurvey(t *testing.T) {
 		survey := &domain.Survey{}
 		survey.UserId = "66ced91b015ced6ece935ed4"
 		sr := repository.NewSurveyRepository(db)
-
 		record, err := sr.GetMySurveys(ctx, survey.UserId)
 		if err == nil {
 			print(record)

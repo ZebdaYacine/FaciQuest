@@ -28,10 +28,21 @@ type SurveyBadge struct {
 }
 
 type Survey struct {
-	SurveyBadge
-	LikertScale string         `json:"likertScale" bson:"likertScale"`
-	Questions   []QuestionType `json:"questions" bson:"questions"`
-	Sample      Sample         `json:"sample,omitempty" bson:"sample,omitempty"`
+	ID             string         `json:"_id"`
+	UserId         string         `json:"userId" bson:"userId"`
+	Name           string         `json:"name" bson:"name"`
+	Description    string         `json:"description,omitempty" bson:"description,omitempty"`
+	Status         string         `json:"status" bson:"status"`
+	Languages      []string       `json:"languages" bson:"languages"`
+	Topics         []string       `json:"topics" bson:"topics"`
+	Views          int            `json:"views" bson:"views"`
+	CountQuestions int            `json:"countQuestions" bson:"countQuestions"`
+	CountAnswers   int            `json:"countAnswers" bson:"countAnswers"`
+	CreatedAt      time.Time      `bson:"createdAt"`
+	UpdatedAt      time.Time      `bson:"updatedAt"`
+	LikertScale    string         `json:"likertScale" bson:"likertScale"`
+	Questions      []QuestionType `json:"questions" bson:"questions"`
+	Sample         Sample         `json:"sample,omitempty" bson:"sample,omitempty"`
 }
 
 type Sample struct {

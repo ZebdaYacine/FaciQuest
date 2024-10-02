@@ -20,21 +20,23 @@ func ValidateSurvey(survey *domain.Survey) error {
 	if len(survey.Questions) == 0 {
 		return fmt.Errorf("at least one question is required")
 	}
-	if survey.Sample.Type == "" {
-		return fmt.Errorf("sample Type is required")
+
+	if survey.Sample.Type != "" {
+		if survey.Sample.Size <= 0 {
+			return fmt.Errorf("sample Size must be greater than 0")
+		}
+		if survey.Sample.Location.Country == "" {
+			return fmt.Errorf("sample Location Country is required")
+		}
 	}
-	if survey.Sample.Size <= 0 {
-		return fmt.Errorf("sample Size must be greater than 0")
-	}
-	if survey.Sample.Location.Country == "" {
-		return fmt.Errorf("sample Location Country is required")
-	}
+
 	return nil
 }
 
 type SurveyParams struct {
 	Data *domain.Survey
 }
+
 type SurveyResulat struct {
 	Data *domain.Survey
 	Err  error

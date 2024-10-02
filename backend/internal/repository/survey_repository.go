@@ -88,13 +88,28 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 	if err != nil {
 		return nil, err
 	}
+	defer list.Close(c)
+	survey_badge := domain.SurveyBadge{}
 	for list.Next(c) {
-		new_survey := domain.SurveyBadge{}
+		new_survey := domain.Survey{}
 		if err := list.Decode(&new_survey); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(new_survey)
-		list_surveys = append(list_surveys, new_survey)
+		fmt.Println(new_survey.ID)
+		survey_badge.ID = new_survey.ID
+		survey_badge.Name = new_survey.Name
+		survey_badge.Status = new_survey.Status
+		survey_badge.Description = new_survey.Description
+		survey_badge.Topics = new_survey.Topics
+		survey_badge.UserId = new_survey.UserId
+		survey_badge.CreatedAt = new_survey.CreatedAt
+		survey_badge.UpdatedAt = new_survey.UpdatedAt
+		survey_badge.Languages = new_survey.Languages
+		survey_badge.CountQuestions = len(new_survey.Questions)
+		list_surveys = append(list_surveys, survey_badge)
+	}
+	if err := list.Err(); err != nil {
+		return nil, err
 	}
 	return &list_surveys, nil
 }
@@ -121,12 +136,11 @@ func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain
 	if err != nil {
 		log.Fatal(err)
 	}
+	updatedSurvey.UpdatedAt = time.Now()
 	filterUpdate := bson.D{{Key: "_id", Value: id}}
 	update := bson.M{
 		"$set": updatedSurvey,
-		"$currentDate": bson.M{
-			"updatedAt": true,
-		}}
+	}
 	_, err = collection.UpdateOne(c, filterUpdate, update)
 	if err != nil {
 		log.Panic(err)

@@ -116,17 +116,14 @@ func (sc *SurveyController) GetSurveyRequest(c *gin.Context) {
 
 func (sc *SurveyController) GetMySurveysRequest(c *gin.Context) {
 	log.Println("__***__***___________ GET MY SURVEYS  REQUEST ___________***__***__")
-	var Survey domain.GetSurveyModel
-	survey := &domain.SurveyBadge{}
-	if !core.IsDataRequestSupported(&Survey, c) {
-		return
-	}
+
 	userId := core.GetIdUser(c)
-	survey.ID = Survey.SurveyId
-	survey.UserId = userId
 	surveyParams := &usecase.SurveyParams{}
+	survey := &domain.Survey{}
+	survey.UserId = userId
 	surveyParams.Data = survey
-	result := sc.SurveyUseCase.GetSurveyById(c, surveyParams)
+
+	result := sc.SurveyUseCase.GetMySurveys(c, surveyParams)
 	if err := result.Err; err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: err.Error(),
@@ -135,6 +132,6 @@ func (sc *SurveyController) GetMySurveysRequest(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "GET SURVEY REQUEST DONE SUCCESSFULY",
-		Data:    result.Data,
+		Data:    result.List,
 	})
 }
