@@ -155,7 +155,7 @@ class SurveyEntity extends Equatable {
 
   static Future<SurveyEntity?> dummy() {
     return Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 50),
       () => SurveyEntity(
         id: const Uuid().v4(),
         name: 'Test Survey',

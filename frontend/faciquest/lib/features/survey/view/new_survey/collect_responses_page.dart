@@ -1,7 +1,11 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 
 import 'package:faciquest/core/core.dart';
+import 'package:faciquest/features/survey/survey.dart';
+import 'package:faciquest/features/survey/view/new_survey/collectors_modals/buy_targeted_responses_modal.dart';
+import 'package:faciquest/features/survey/view/new_survey/collectors_modals/web_link_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CollectResponsesPage extends StatefulWidget {
   const CollectResponsesPage({super.key});
@@ -11,549 +15,210 @@ class CollectResponsesPage extends StatefulWidget {
 }
 
 class _CollectResponsesPageState extends State<CollectResponsesPage> {
-  double population = 200;
-  double get price => population * 1.5;
-  Gender gender = Gender.both;
-  RangeValues range = const RangeValues(18, 99);
-  Set<String> countries = {'Algeria'};
-  Set<Province> provinces = {};
-  Set<City> cities = {};
-
-  Set<String> get selectedCountries => {
-        ...countries,
-        ...provinces.map((e) => e.name),
-        ...cities.map((e) => e.name),
-      };
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.spacing_2,
+        const Expanded(child: CollectorsTable()),
+        const Divider(
+          thickness: 2,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              AppSpacing.spacing_2.heightBox,
+              Text(
+                'Add a new collector',
+                style: context.textTheme.titleLarge,
               ),
-              child: Column(
+              AppSpacing.spacing_2.heightBox,
+              Row(
                 children: [
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          const Icon(
-                            Icons.people_outline_rounded,
-                            size: 100,
-                          ),
-                          Text(
-                            'How many responses do you need?',
-                            style: context.textTheme.titleMedium,
-                          ),
-                          AppSpacing.spacing_2.heightBox,
-                          Slider(
-                            value: population,
-                            min: 50,
-                            label: '${population.round()}',
-                            max: 5000,
-                            onChanged: (value) {
-                              setState(() {
-                                population = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            '${population.round()}',
-                            style: context.textTheme.titleLarge,
-                          ),
-                        ],
-                      ),
+                  Expanded(
+                    child: _CollectorWidget(
+                      icon: Icons.link,
+                      title: 'Web Link',
+                      onTap: () {
+                        showWebLinkModal(context);
+                      },
+                      description:
+                          'Ideal for sharing via email, social media, etc.',
                     ),
                   ),
-                  AppSpacing.spacing_2.heightBox,
-                  Card(
-                    child: Column(
-                      children: [
-                        AppSpacing.spacing_2.heightBox,
-                        Text(
-                          'Who do you want to survey?',
-                          style: context.textTheme.titleMedium,
-                        ),
-                        AppSpacing.spacing_2.heightBox,
-                        ListTile(
-                          leading: const Icon(Icons.language),
-                          trailing: const Icon(Icons.chevron_right_rounded),
-                          title: const Text('Country'),
-                          subtitle: Text(
-                            selectedCountries.join(', '),
-                            maxLines: 2,
-                          ),
-                          onTap: () async {
-                            final result = await showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return const CountryModal();
-                              },
-                            );
-
-                            if (result != null && result is Map) {
-                              setState(() {
-                                countries = result['countries'] as Set<String>;
-                                provinces =
-                                    result['provinces'] as Set<Province>;
-                                cities = result['cities'] as Set<City>;
-                              });
-                            }
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.person_outline_rounded),
-                          trailing: const Icon(Icons.chevron_right_rounded),
-                          title: const Text('Gender'),
-                          subtitle: Text(gender.name),
-                          onTap: () async {
-                            final result = await showModalBottomSheet(
-                              context: context,
-                              builder: (context) => const GenderModal(),
-                            );
-                            if (result != null && result is Gender) {
-                              setState(() {
-                                gender = result;
-                              });
-                            }
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.people_outline),
-                          trailing: const Icon(Icons.chevron_right_rounded),
-                          title: const Text('Age Range'),
-                          subtitle: Text(
-                            '${range.start.round()} - ${range.end.round()}',
-                          ),
-                          onTap: () async {
-                            final result = await showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return const AgeModal();
-                              },
-                            );
-                            if (result != null && result is RangeValues) {
-                              setState(() {
-                                range = result;
-                              });
-                            }
-                          },
-                        ),
-                        // const Divider(),
-                        // ListTile(
-                        //   leading: const Icon(Icons.monetization_on_outlined),
-                        //   trailing: const Icon(Icons.chevron_right_rounded),
-                        //   title: const Text('Income Range'),
-                        //   subtitle: const Text(r'0$ - $200k'),
-                        //   onTap: () {},
-                        // ),
-                        // const Divider(),
-                        // AppSpacing.spacing_1.heightBox,
-                        // ElevatedButton.icon(
-                        //   onPressed: () {},
-                        //   icon: const Icon(Icons.add),
-                        //   label: const Text('Add targeting criteria'),
-                        // ),
-                        // AppSpacing.spacing_1.heightBox,
-                      ],
+                  AppSpacing.spacing_2.widthBox,
+                  Expanded(
+                    child: _CollectorWidget(
+                      icon: Icons.person_search_rounded,
+                      onTap: () {
+                        showBuyTargetedResponsesModal(context);
+                      },
+                      title: 'Targeted Responses',
+                      description: 'Find people who fit your criteria',
                     ),
                   ),
-                  AppSpacing.spacing_2.heightBox,
                 ],
-              ),
-            ),
+              )
+            ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Estimated cost',
-                    style: context.textTheme.titleLarge,
-                  ),
-                  Text('${price.toStringAsFixed(2)} \$',
-                      style: context.textTheme.titleLarge),
-                ],
-              ),
-              AppSpacing.spacing_2.heightBox,
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: context.colorScheme.onPrimary,
-                  backgroundColor: context.colorScheme.primary,
+              OutlinedButton(
+                onPressed: () {
+                  context.read<NewSurveyCubit>().back();
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                  side: const BorderSide(color: Colors.red),
                 ),
-                onPressed: () {},
-                child: const Center(child: Text('Checkout')),
+                child: const Text('Back'),
+              ),
+              8.widthBox,
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    context.read<NewSurveyCubit>().next();
+                  },
+                  icon: const Icon(Icons.bar_chart),
+                  label: const Text('Analyze Results'),
+                ),
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
 }
 
-enum Gender { male, female, both }
+class _CollectorWidget extends StatelessWidget {
+  const _CollectorWidget({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.icon,
+    this.onTap,
+  });
 
-class GenderModal extends StatefulWidget {
-  const GenderModal({super.key});
+  final String title;
+  final String description;
+  final IconData icon;
+  final VoidCallback? onTap;
 
-  @override
-  State<GenderModal> createState() => _GenderModalState();
-}
-
-class _GenderModalState extends State<GenderModal> {
-  Gender? selectedGender = Gender.both;
   @override
   Widget build(BuildContext context) {
-    return AppBackDrop(
-      showDivider: false,
-      showHeaderContent: false,
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Gender',
-            style: context.textTheme.titleLarge,
-          ),
-          AppSpacing.spacing_2.heightBox,
-          RadioListTile<Gender>(
-            value: Gender.both,
-            groupValue: selectedGender,
-            title: const Text('Both'),
-            onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
-            },
-          ),
-          RadioListTile<Gender>(
-            value: Gender.male,
-            groupValue: selectedGender,
-            title: const Text('Male'),
-            onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
-            },
-          ),
-          RadioListTile<Gender>(
-            value: Gender.female,
-            groupValue: selectedGender,
-            title: const Text('Female'),
-            onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
-            },
-          ),
-        ],
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      actions: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: context.colorScheme.onPrimary,
-          backgroundColor: context.colorScheme.primary,
-        ),
-        onPressed: () {
-          context.pop(result: selectedGender);
-        },
-        child: const Center(
-          child: Text('save'),
-        ),
-      ),
-    );
-  }
-}
-
-class AgeModal extends StatefulWidget {
-  const AgeModal({super.key});
-
-  @override
-  State<AgeModal> createState() => _AgeModalState();
-}
-
-class _AgeModalState extends State<AgeModal> {
-  RangeValues values = const RangeValues(18, 99);
-  @override
-  Widget build(BuildContext context) {
-    return AppBackDrop(
-      showDivider: false,
-      showHeaderContent: false,
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Gender',
-            style: context.textTheme.titleLarge,
-          ),
-          AppSpacing.spacing_2.heightBox,
-          RangeSlider(
-            values: values,
-            min: 0,
-            max: 120,
-            labels: RangeLabels(values.start.toString(), values.end.toString()),
-            divisions: 120,
-            onChanged: (value) {
-              setState(() {
-                values = value;
-              });
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Min: ${values.start.toStringAsFixed(0)}'),
-                Text('Max: ${values.end.toStringAsFixed(0)}'),
-              ],
-            ),
-          )
-        ],
-      ),
-      actions: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: context.colorScheme.onPrimary,
-          backgroundColor: context.colorScheme.primary,
-        ),
-        onPressed: () {
-          context.pop(result: values);
-        },
-        child: const Center(
-          child: Text('save'),
-        ),
-      ),
-    );
-  }
-}
-
-class CountryModal extends StatefulWidget {
-  const CountryModal({super.key});
-
-  @override
-  State<CountryModal> createState() => _CountryModalState();
-}
-
-class _CountryModalState extends State<CountryModal> {
-  @override
-  void initState() {
-    super.initState();
-    countries = {...getIt<Data>().countries};
-  }
-
-  bool regionTargeting = true;
-  bool cityTargeting = false;
-
-  Set<String> countries = {};
-  Set<Province> provinces = {};
-  Set<City> cities = {};
-  @override
-  Widget build(BuildContext context) {
-    return AppBackDrop(
-      showDivider: false,
-      showHeaderContent: false,
-      body: SingleChildScrollView(
+      onPressed: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Icon(
+              icon,
+              size: 40,
+            ),
             Text(
-              'Country',
-              style: context.textTheme.titleLarge,
+              title,
+              textAlign: TextAlign.center,
             ),
-            AppSpacing.spacing_2.heightBox,
-            Wrap(
-              alignment: WrapAlignment.start,
-              children: [
-                for (final country in getIt<Data>().countries)
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ChoiceChip(
-                      label: Text(country),
-                      selected: countries.contains(country),
-                      onSelected: (value) {
-                        setState(() {
-                          if (value) {
-                            countries.add(country);
-                          } else {
-                            countries.remove(country);
-                          }
-                        });
-                      },
-                    ),
-                  ),
-              ],
-            ),
-            AppSpacing.spacing_2.heightBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Region targeting :',
-                  style: context.textTheme.titleLarge,
-                ),
-                Switch(
-                  value: regionTargeting && countries.length == 1,
-                  onChanged: countries.length == 1
-                      ? (value) {
-                          setState(() {
-                            regionTargeting = value;
-                          });
-                        }
-                      : null,
-                )
-              ],
-            ),
-            if (regionTargeting && countries.length == 1)
-              DropdownButton<Province>(
-                isExpanded: true,
-                items: [
-                  const DropdownMenuItem(
-                    value: null,
-                    child: Text('select a wilaya'),
-                  ),
-                  ...getIt<Data>().provinces.map(
-                    (e) {
-                      return DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          '${e.id}. ${e.name}',
-                        ),
-                      );
-                    },
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value == null) return;
-                  setState(() {
-                    provinces.add(value);
-                  });
-                },
-              ),
-            AppSpacing.spacing_2.heightBox,
-            Wrap(
-              children: [
-                for (final province in provinces)
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ChoiceChip(
-                      label: Text(province.name),
-                      selected: provinces.contains(province),
-                      onSelected: (value) {
-                        setState(() {
-                          if (value) {
-                            provinces.add(province);
-                          } else {
-                            provinces.remove(province);
-                          }
-                        });
-                      },
-                    ),
-                  ),
-              ],
-            ),
-            AppSpacing.spacing_2.heightBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'City targeting :',
-                  style: context.textTheme.titleLarge,
-                ),
-                Switch(
-                  value: cityTargeting && provinces.length == 1,
-                  onChanged: provinces.length == 1
-                      ? (value) {
-                          setState(() {
-                            cityTargeting = value;
-                          });
-                        }
-                      : null,
-                )
-              ],
-            ),
-            if (cityTargeting && provinces.length == 1)
-              DropdownButton<City>(
-                isExpanded: true,
-                items: [
-                  const DropdownMenuItem(
-                    value: null,
-                    child: Text('select a city'),
-                  ),
-                  ...getIt<Data>()
-                      .provinces[int.parse(provinces.first.id) - 1]
-                      .cities
-                      .map(
-                    (e) {
-                      return DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          '${e.id}. ${e.name}',
-                        ),
-                      );
-                    },
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value == null) return;
-                  setState(() {
-                    cities.add(value);
-                  });
-                },
-              ),
-            AppSpacing.spacing_2.heightBox,
-            Wrap(
-              children: [
-                for (final city in cities)
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ChoiceChip(
-                      label: Text(city.name),
-                      selected: cities.contains(city),
-                      onSelected: (value) {
-                        setState(() {
-                          if (value) {
-                            cities.add(city);
-                          } else {
-                            cities.remove(city);
-                          }
-                        });
-                      },
-                    ),
-                  ),
-              ],
+            AppSpacing.spacing_1.heightBox,
+            Text(
+              description,
+              style: context.textTheme.bodySmall,
+              textAlign: TextAlign.center,
             )
           ],
         ),
       ),
-      actions: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: context.colorScheme.onPrimary,
-          backgroundColor: context.colorScheme.primary,
-        ),
-        onPressed: () {
-          context.pop(result: {
-            'countries': countries,
-            'provinces': provinces,
-            'cities': cities,
-          });
-        },
-        child: const Center(
-          child: Text('save'),
-        ),
-      ),
+    );
+  }
+}
+
+class CollectorsTable extends StatelessWidget {
+  const CollectorsTable({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NewSurveyCubit, NewSurveyState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16).copyWith(top: 0),
+              child: Text(
+                'Total Responses: ${state.survey.responseCount}',
+                style: context.textTheme.titleMedium,
+              ),
+            ),
+            if (state.survey.collectors.isEmpty) ...[
+              const Spacer(),
+              Center(
+                child: Text(
+                  'please create a collector',
+                  style: context.textTheme.titleLarge,
+                ),
+              ),
+              const Spacer(),
+            ] else
+              Table(
+                columnWidths: const {
+                  0: FlexColumnWidth(1),
+                  1: FlexColumnWidth(5),
+                  2: FlexColumnWidth(2),
+                  3: FlexColumnWidth(3),
+                  4: FlexColumnWidth(1),
+                },
+                children: [
+                  TableRow(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      children: [
+                        '',
+                        'Nickname',
+                        'Status',
+                        'Responses',
+                        '',
+                      ]
+                          .map((e) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 4,
+                                ),
+                                child: Center(child: Text(e)),
+                              ))
+                          .toList()),
+                  ...state.survey.collectors.map(
+                    (e) => TableRow(
+                      children: [
+                        Icon(
+                          e.type.icon,
+                        ),
+                        Text(e.name),
+                        Text(e.status.name),
+                        Text('${e.responsesCount}'),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.edit),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+          ],
+        );
+      },
     );
   }
 }
