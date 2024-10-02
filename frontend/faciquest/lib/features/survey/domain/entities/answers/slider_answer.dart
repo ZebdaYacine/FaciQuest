@@ -18,4 +18,9 @@ class SliderAnswer extends AnswerEntity {
 
   @override
   List<Object?> get props => [super.props, value];
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(
+        value: value.toString(),
+      );
 }

@@ -34,6 +34,7 @@ dependencies:
   intl_phone_field: ^3.2.0
   uuid: ^4.5.1
   multi_dropdown: ^3.0.1
+  pluto_grid: ^8.0.0
 
 dev_dependencies:
   flutter_test:

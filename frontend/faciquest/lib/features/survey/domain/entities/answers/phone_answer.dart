@@ -18,4 +18,7 @@ class PhoneAnswer extends AnswerEntity {
       'value': value,
     };
   }
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(value: value);
 }

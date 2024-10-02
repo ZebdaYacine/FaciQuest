@@ -18,4 +18,9 @@ class DropdownAnswer extends AnswerEntity {
       'selectedChoice': selectedChoice,
     };
   }
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(
+        value: selectedChoice,
+      );
 }

@@ -18,4 +18,9 @@ class EmailAddressAnswer extends AnswerEntity {
       'value': value,
     };
   }
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(
+        value: value,
+      );
 }

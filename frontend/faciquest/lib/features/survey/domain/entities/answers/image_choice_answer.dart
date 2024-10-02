@@ -49,4 +49,7 @@ class ImageChoiceAnswer extends AnswerEntity {
       (element) => element == id,
     );
   }
+
+  @override
+  PlutoCell get plutoCell => PlutoCell();
 }

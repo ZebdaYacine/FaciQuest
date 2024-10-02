@@ -15,4 +15,7 @@ class StarRatingAnswer extends AnswerEntity {
       'rating': rating,
     };
   }
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(value: rating);
 }

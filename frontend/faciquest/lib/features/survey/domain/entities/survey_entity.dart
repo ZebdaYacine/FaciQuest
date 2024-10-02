@@ -46,6 +46,7 @@ class SurveyEntity extends Equatable {
   final List<String> topics;
   final LikertScale? likertScale;
   final List<QuestionEntity> questions;
+  final List<Submission> submissions;
   final DateTime createdAt;
   final DateTime? updatedAt;
   //
@@ -68,6 +69,7 @@ class SurveyEntity extends Equatable {
     this.topics = const [],
     this.questions = const [],
     this.collectors = const [],
+    this.submissions = const [],
     this.likertScale,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -77,14 +79,17 @@ class SurveyEntity extends Equatable {
   })  : createdAt = createdAt ?? DateTime.now(),
         updatedAt = updatedAt ?? DateTime.now();
 
-  SurveyEntity copyWith(
-      {String? name,
-      String? description,
-      SurveyStatus? status,
-      List<String>? languages,
-      List<String>? topics,
-      LikertScale? likertScale,
-      List<QuestionEntity>? questions}) {
+  SurveyEntity copyWith({
+    String? name,
+    String? description,
+    SurveyStatus? status,
+    List<String>? languages,
+    List<String>? topics,
+    LikertScale? likertScale,
+    List<QuestionEntity>? questions,
+    List<Submission>? submissions,
+    List<CollectorEntity>? collectors,
+  }) {
     return SurveyEntity(
       name: name ?? this.name,
       description: description ?? this.description,
@@ -93,6 +98,8 @@ class SurveyEntity extends Equatable {
       topics: topics ?? this.topics,
       likertScale: likertScale ?? this.likertScale,
       questions: questions ?? this.questions,
+      submissions: submissions ?? this.submissions,
+      collectors: collectors ?? this.collectors,
     );
   }
 
@@ -127,6 +134,16 @@ class SurveyEntity extends Equatable {
               .map(QuestionEntity.fromMap)
               .toList()
           : <QuestionEntity>[],
+      // answers: map['answers'] != null
+      //     ? (map['answers'] as List<Map<String, dynamic>>)
+      //         .map(AnswerEntity.fromMap)
+      //         .toList()
+      //     : <AnswerEntity>[],
+      // collectors: map['collectors'] != null
+      //     ? (map['collectors'] as List<Map<String, dynamic>>)
+      //         .map(CollectorEntity.fromMap)
+      //         .toList()
+      //     : <CollectorEntity>[],
     );
   }
 
@@ -148,6 +165,8 @@ class SurveyEntity extends Equatable {
       likertScale,
       status,
       questions,
+      submissions,
+      collectors,
     ];
   }
 

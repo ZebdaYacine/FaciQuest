@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 part 'answers/address_answer.dart';
 part 'answers/star_rating_answer.dart';
@@ -20,8 +21,10 @@ part 'answers/phone_answer.dart';
 part 'answers/text_answer.dart';
 part 'answers/image_answer.dart';
 
-class AnswerEntity extends Equatable {
+abstract class AnswerEntity extends Equatable {
   final String questionId;
+
+  PlutoCell get plutoCell;
 
   const AnswerEntity({required this.questionId});
 

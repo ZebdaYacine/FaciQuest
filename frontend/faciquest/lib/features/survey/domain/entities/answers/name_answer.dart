@@ -37,4 +37,9 @@ class NameAnswer extends AnswerEntity {
 
   @override
   List<Object?> get props => [super.props, firstName, lastName, middleName];
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(
+        value: '${firstName ?? ''} ${middleName ?? ''} ${lastName ?? ''}',
+      );
 }

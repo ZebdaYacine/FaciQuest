@@ -59,4 +59,10 @@ class AddressAnswer extends AnswerEntity {
       country: country ?? this.country,
     );
   }
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(
+        value:
+            '${streetAddress1 ?? ''} ${streetAddress2 ?? ''} ${city ?? ''} ${state ?? ''} ${postalCode ?? ''} ${country ?? ''}',
+      );
 }

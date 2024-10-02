@@ -13,11 +13,16 @@ class CheckboxesAnswer extends AnswerEntity {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'questionId': questionId,
+      ...super.toMap(),
       'selectedOptions': selectedChoices.toList(),
     };
   }
 
   @override
   List<Object?> get props => [super.props, selectedChoices];
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(
+        value: selectedChoices.toList().join(', '),
+      );
 }

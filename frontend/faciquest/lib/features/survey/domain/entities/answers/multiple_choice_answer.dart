@@ -22,4 +22,9 @@ class MultipleChoiceAnswer extends AnswerEntity {
   List<Object?> get props {
     return [...super.props, selectedChoice];
   }
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(
+        value: selectedChoice,
+      );
 }

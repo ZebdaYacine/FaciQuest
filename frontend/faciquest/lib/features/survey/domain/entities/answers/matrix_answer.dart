@@ -62,4 +62,9 @@ class MatrixAnswer extends AnswerEntity {
             orElse: () => const MapEntry('', false))
         .key;
   }
+
+  @override
+  PlutoCell get plutoCell => PlutoCell(
+    value: values,
+  );
 }
