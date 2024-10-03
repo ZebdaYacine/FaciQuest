@@ -28,21 +28,10 @@ type SurveyBadge struct {
 }
 
 type Survey struct {
-	ID             string         `json:"_id"`
-	UserId         string         `json:"userId" bson:"userId"`
-	Name           string         `json:"name" bson:"name"`
-	Description    string         `json:"description,omitempty" bson:"description,omitempty"`
-	Status         string         `json:"status" bson:"status"`
-	Languages      []string       `json:"languages" bson:"languages"`
-	Topics         []string       `json:"topics" bson:"topics"`
-	Views          int            `json:"views" bson:"views"`
-	CountQuestions int            `json:"countQuestions" bson:"countQuestions"`
-	CountAnswers   int            `json:"countAnswers" bson:"countAnswers"`
-	CreatedAt      time.Time      `bson:"createdAt"`
-	UpdatedAt      time.Time      `bson:"updatedAt"`
-	LikertScale    string         `json:"likertScale" bson:"likertScale"`
-	Questions      []QuestionType `json:"questions" bson:"questions"`
-	Sample         Sample         `json:"sample,omitempty" bson:"sample,omitempty"`
+	SurveyBadge
+	LikertScale string         `json:"likertScale" bson:"likertScale"`
+	Questions   []QuestionType `json:"questions" bson:"questions"`
+	Sample      Sample         `json:"sample,omitempty" bson:"sample,omitempty"`
 }
 
 type Sample struct {
@@ -370,36 +359,23 @@ func mapToStruct(m map[string]interface{}, result interface{}) error {
 func (s *Survey) UnmarshalBSON(data []byte) error {
 	type Alias Survey
 	aux := &struct {
-		ID          string     `bson:"_id"`
-		UserId      string     `bson:"userId"`
-		Description string     `bson:"description,omitempty"`
-		Status      string     `bson:"status"`
-		Languages   []string   `bson:"languages"`
-		Topics      []string   `bson:"topics"`
 		LikertScale string     `bson:"likertScale"`
 		Sample      Sample     `bson:"sample"`
-		Name        string     `bson:"name"`
 		Questions   []bson.Raw `bson:"questions"`
+		SurveyBadge
 		*Alias
 	}{
 		Alias: (*Alias)(s),
 	}
 
-	// Unmarshal survey fields except questions
 	if err := bson.Unmarshal(data, aux); err != nil {
 		return err
 	}
-	s.UserId = aux.UserId
-	s.ID = aux.ID
-	s.Languages = aux.Languages
-	s.Topics = aux.Topics
-	s.Status = aux.Status
+
+	s.SurveyBadge = aux.SurveyBadge
 	s.LikertScale = aux.LikertScale
-	s.Name = aux.Name
-	s.Description = aux.Description
 	s.Sample = aux.Sample
 
-	// Loop through the raw questions
 	for _, rawQuestion := range aux.Questions {
 		var questionMap map[string]interface{}
 		if err := bson.Unmarshal(rawQuestion, &questionMap); err != nil {

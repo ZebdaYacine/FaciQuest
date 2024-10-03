@@ -25,7 +25,7 @@ func NewUpdateSurveyRouter(db database.Database, group *gin.RouterGroup) {
 	sc := &controller.SurveyController{
 		SurveyUseCase: su, // usecase for insured operations
 	}
-	group.POST("update-survey", sc.UpdateSurveyRequest)
+	group.PUT("update-survey", sc.UpdateSurveyRequest)
 }
 
 func NewDeleteSurveyRouter(db database.Database, group *gin.RouterGroup) {
@@ -34,7 +34,7 @@ func NewDeleteSurveyRouter(db database.Database, group *gin.RouterGroup) {
 	sc := &controller.SurveyController{
 		SurveyUseCase: su, // usecase for insured operations
 	}
-	group.POST("delete-survey", sc.DeleteSurveyRequest)
+	group.DELETE("delete-survey", sc.DeleteSurveyRequest)
 }
 
 func NewGetSurveyByIdRouter(db database.Database, group *gin.RouterGroup) {

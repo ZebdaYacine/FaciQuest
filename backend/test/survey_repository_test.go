@@ -26,7 +26,7 @@ func TestSurveyRepository(t *testing.T) {
 		if pr == nil {
 			t.Fatal("Failed to create SurveyRepository")
 		}
-		id, err := primitive.ObjectIDFromHex("66f70b3d16d7d7eaea313efc")
+		id, err := primitive.ObjectIDFromHex("66fd50e3494ea58f2044e718")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -68,32 +68,35 @@ func TestDeleteSurveyRepository(t *testing.T) {
 		if pr == nil {
 			t.Fatal("Failed to create SurveyRepository")
 		}
-
-		// id, err := primitive.ObjectIDFromHex("66f90ee708e617ee94de5eb4")
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
+		//id, err := primitive.ObjectIDFromHex("66fd50e3494ea58f2044e718")
+		// Filter by userId
+		userId := "66ced91b015ced6ece935ed4"
 		filter := bson.M{
-			// "_id":    id,
-			"userId": "66ced91b015ced6ece935ed4",
+			"surveybadge.userId": userId,
 		}
-		// survey := &domain.Survey{}
-		// err = db.Collection("survey").FindOne(ctx, &filter).Decode(survey)
-		list, err := db.Collection("survey").Find(ctx, &filter)
+		collection := db.Collection("survey")
+
+		// Find all surveys that match the filter
+		cursor, err := collection.Find(ctx, filter)
 		if err != nil {
-			log.Printf("Failed to create survey: %v", err)
+			log.Fatal(err)
 		}
-		list_surveys := []domain.Survey{}
-		for list.Next(ctx) {
-			new_survey := domain.Survey{}
-			if err := list.Decode(new_survey); err != nil {
+		defer cursor.Close(ctx)
+
+		fmt.Println(cursor.Next(ctx))
+		var surveys []domain.Survey
+		for cursor.Next(ctx) {
+			var survey domain.Survey
+			if err := cursor.Decode(&survey); err != nil {
 				log.Fatal(err)
 			}
-			fmt.Println(new_survey)
-			list_surveys = append(list_surveys, new_survey)
+			surveys = append(surveys, survey)
 		}
 
-		fmt.Println(len(list_surveys))
+		// Print all found surveys
+		for _, survey := range surveys {
+			fmt.Printf("Survey ID: %s, Name: %s, UserID: %s, Status: %s\n", survey.ID, survey.Name, survey.UserId, survey.Status)
+		}
 
 	})
 }
@@ -111,12 +114,12 @@ func TestGetMySurvey(t *testing.T) {
 		}
 		survey := &domain.Survey{}
 		survey.UserId = "66ced91b015ced6ece935ed4"
+		survey.ID = "66fd50e3494ea58f2044e718"
 		sr := repository.NewSurveyRepository(db)
-		record, err := sr.GetMySurveys(ctx, survey.UserId)
+		record, err := sr.GetSurveyById(ctx, survey.ID, survey.UserId)
 		if err == nil {
 			print(record)
 		}
 		assert.NoError(t, err)
-
 	})
 }
