@@ -12,17 +12,16 @@ class ManageMySurveysCubit extends Cubit<ManageMySurveysState> {
     emit(state.copyWith(searchQuery: value));
   }
 
-  fetchSurveys() {
-    emit(state.copyWith(status: Status.showLoading));
-    repository
-        .fetchMySurveys()
-        .then(
-          (surveys) =>
-              emit(state.copyWith(status: Status.success, surveys: surveys)),
-        )
-        .catchError(
-          (error) => emit(
-              state.copyWith(status: Status.failure, msg: error.toString())),
-        );
+  Future<void> fetchSurveys() async {
+    try {
+      emit(state.copyWith(status: Status.showLoading));
+      final surveys = await repository.fetchMySurveys();
+      emit(state.copyWith(status: Status.success, surveys: surveys));
+    } catch (e) {
+      emit(state.copyWith(
+        status: Status.failure,
+        msg: e.toString(),
+      ));
+    }
   }
 }

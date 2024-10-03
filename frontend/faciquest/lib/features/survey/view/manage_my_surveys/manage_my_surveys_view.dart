@@ -4,6 +4,7 @@ import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ManageMySurveysView extends StatefulWidget {
   const ManageMySurveysView({super.key});
@@ -13,11 +14,16 @@ class ManageMySurveysView extends StatefulWidget {
 }
 
 class _ManageMySurveysViewState extends State<ManageMySurveysView> {
+  final cubit = ManageMySurveysCubit(getIt<SurveyRepository>());
+  @override
+  void initState() {
+    super.initState();
+    cubit.fetchSurveys();
+  }
+
   var viewStyle = ViewStyle.grid;
   @override
   Widget build(BuildContext context) {
-    final cubit = ManageMySurveysCubit(getIt<SurveyRepository>())
-      ..fetchSurveys();
     return BlocProvider(
       create: (context) => cubit,
       child: Scaffold(
@@ -82,17 +88,33 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> {
             AppSpacing.spacing_1.heightBox,
             BlocBuilder<ManageMySurveysCubit, ManageMySurveysState>(
               builder: (context, state) {
+                if (state.status.isFailure) {
+                  return KErrorWidget(
+                    message: state.msg,
+                  );
+                }
                 if (viewStyle == ViewStyle.grid) {
                   return Expanded(
-                    child: GridSurveys(
-                      surveys: state.filteredSurveys,
+                    child: Skeletonizer(
+                      enabled: state.status.isLoading,
+                      child: GridSurveys(
+                        surveys: state.status.isLoading
+                            ? SurveyEntity.dummyList()
+                            : state.filteredSurveys,
+                      ),
                     ),
                   );
                 } else {
                   return Expanded(
+                    child: Skeletonizer(
+                      enabled: state.status.isLoading,
                       child: ListSurveys(
-                    surveys: state.filteredSurveys,
-                  ));
+                        surveys: state.status.isLoading
+                            ? SurveyEntity.dummyList()
+                            : state.filteredSurveys,
+                      ),
+                    ),
+                  );
                 }
               },
             )
@@ -312,24 +334,12 @@ class ListSurveys extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: surveys.length,
       itemBuilder: (context, index) {
+        final survey = surveys[index];
         return ListTile(
-          trailing: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz_outlined),
-          ),
-          leading: Badge(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 2,
-            ),
-            label: Text(
-              'Open',
-              style: context.textTheme.bodyMedium,
-            ),
-            backgroundColor: Colors.greenAccent,
-          ),
+          trailing: SurveyActions(surveyId: survey.id),
+          leading: SurveyBadge(status: survey.status),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -337,13 +347,13 @@ class ListSurveys extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '$index survey',
+                    survey.name,
                     style: context.textTheme.titleLarge,
                     maxLines: 2,
                   ),
                   FittedBox(
                     child: Text(
-                      'Updated : 2022-01-01',
+                      'Updated : ${survey.updatedAt.toString().substring(0, 10)}',
                       style: context.textTheme.bodySmall,
                     ),
                   ),
@@ -358,7 +368,7 @@ class ListSurveys extends StatelessWidget {
                   ),
                   AppSpacing.spacing_1.widthBox,
                   Text(
-                    '$index ',
+                    '${survey.responseCount}',
                     style: context.textTheme.bodySmall,
                   ),
                 ],

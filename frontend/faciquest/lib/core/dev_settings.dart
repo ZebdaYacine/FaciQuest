@@ -1,3 +1,3 @@
 class DevSettings {
-  static bool useDummyData = true;
+  static bool useDummyData = false;
 }

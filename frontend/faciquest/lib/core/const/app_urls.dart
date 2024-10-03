@@ -1,5 +1,7 @@
 class AppUrls {
-  static const baseUrl = 'http://localhost:9000';
+  static const useLocalhost = true;
+  static const baseUrl =
+      useLocalhost ? 'http://localhost:9000' : 'http://105.109.18.143:9000';
 
   /// Auth Urls
   static const authLoginUrl = '$baseUrl/login';
@@ -10,5 +12,11 @@ class AppUrls {
   static const authVerifyOtpUrl = '$baseUrl/confirm-account';
 
   /// survey
-  static String getSurveyUrl(String surveyId) => '$baseUrl/survey/$surveyId';
+  static const createSurvey = '$baseUrl/profile/create-survey';
+  static const updateSurvey = '$baseUrl/profile/update-survey';
+  static const deleteSurvey = '$baseUrl/profile/delete-survey';
+  static const getSurvey = '$baseUrl/profile/get-survey';
+  static const getSurveys = '$baseUrl/profile/get-surveys';
+  static const submitAnswers = '$baseUrl/profile/submit-answers';
+  static const getMySurveys = '$baseUrl/profile/get-my-surveys';
 }

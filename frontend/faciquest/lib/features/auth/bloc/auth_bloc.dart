@@ -50,10 +50,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(
       state.copyWith(
         user: event.user,
-        authStatus: AuthStatus.authenticated,
-        // authStatus: event.user == null
-        //     ? AuthStatus.unauthenticated
-        //     : AuthStatus.authenticated,
+        // authStatus: AuthStatus.authenticated,
+        authStatus: event.user == null
+            ? AuthStatus.unauthenticated
+            : AuthStatus.authenticated,
       ),
     );
     if (state.refreshRoute) {

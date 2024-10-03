@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:uuid/uuid.dart';
 
-enum SurveyStatus { draft, published, deleted }
+enum SurveyStatus { active, draft, published, deleted }
 
 enum SurveyAction {
   newSurvey,
@@ -117,6 +117,7 @@ class SurveyEntity extends Equatable {
 
   factory SurveyEntity.fromMap(Map<String, dynamic> map) {
     return SurveyEntity(
+      id: map['_id'] as String? ?? '',
       name: map['name'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,
@@ -124,16 +125,33 @@ class SurveyEntity extends Equatable {
         (element) => element.name == map['status'] as String?,
         orElse: () => SurveyStatus.draft,
       ),
-      languages: List<String>.from((map['languages'] as List<String>)),
-      topics: List<String>.from((map['topics'] as List<String>)),
+      languages: map['languages'] != null && map['languages'] is List
+          ? (map['languages'] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList()
+          : const [],
+      topics: map['topics'] != null && map['topics'] is List
+          ? (map['topics'] as List<dynamic>).map((e) => e.toString()).toList()
+          : const [],
       likertScale: map['likertScale'] != null
           ? LikertScale.fromMap(map['likertScale'] as String)
           : null,
       questions: map['questions'] != null
-          ? (map['questions'] as List<Map<String, dynamic>>)
-              .map(QuestionEntity.fromMap)
+          ? (map['questions'] as List)
+              .map((e) => QuestionEntity.fromMap(e as Map<String, dynamic>))
               .toList()
           : <QuestionEntity>[],
+      viewCount: map['views'] != null ? map['views'] as int : 0,
+      questionCount:
+          map['countQuestions'] != null ? map['countQuestions'] as int : 0,
+      responseCount:
+          map['countAnswers'] != null ? map['countAnswers'] as int : 0,
+      createdAt: map['createdAt'] != null && map['createdAt'] is DateTime
+          ? map['createdAt'] as DateTime
+          : null,
+      updatedAt: map['updatedAt'] != null && map['updatedAt'] is DateTime
+          ? map['updatedAt'] as DateTime
+          : null,
       // answers: map['answers'] != null
       //     ? (map['answers'] as List<Map<String, dynamic>>)
       //         .map(AnswerEntity.fromMap)
@@ -187,7 +205,7 @@ class SurveyEntity extends Equatable {
     );
   }
 
-  static Future<List<SurveyEntity>> dummyList() async {
+  static List<SurveyEntity> dummyList() {
     return [
       SurveyEntity(
         id: const Uuid().v4(),
@@ -196,6 +214,20 @@ class SurveyEntity extends Equatable {
         responseCount: Random().nextInt(50),
         viewCount: 50 + Random().nextInt(10),
         questions: QuestionEntity.dummyList(),
+        description: 'Test Description',
+        languages: const ['en', 'ar'],
+        topics: const ['test', 'test2'],
+      ),
+      SurveyEntity(
+        id: const Uuid().v4(),
+        name: 'Unit Test Survey',
+        responseCount: Random().nextInt(50),
+        viewCount: 50 + Random().nextInt(10),
+        status: SurveyStatus.draft,
+        questions: QuestionEntity.dummyList()..shuffle(),
+        createdAt: DateTime.now().subtract(Duration(
+          days: Random().nextInt(30),
+        )),
         description: 'Test Description',
         languages: const ['en', 'ar'],
         topics: const ['test', 'test2'],

@@ -8,7 +8,6 @@ abstract class SurveyDataSource {
   Future<void> createSurvey(SurveyEntity survey);
   Future<void> updateSurvey(SurveyEntity survey);
   Future<void> deleteSurvey(String surveyId);
-
   Future<void> submitAnswers(Submission submission);
   Future<List<SurveyEntity>> fetchMySurveys();
 }
@@ -18,10 +17,7 @@ class SurveyDataSourceImpl implements SurveyDataSource {
 
   SurveyDataSourceImpl({required this.dioClient});
   @override
-  Future<void> createSurvey(SurveyEntity survey) {
-    // TODO: implement createSurvey
-    throw UnimplementedError();
-  }
+  Future<void> createSurvey(SurveyEntity survey) async {}
 
   @override
   Future<void> deleteSurvey(String surveyId) {
@@ -31,48 +27,53 @@ class SurveyDataSourceImpl implements SurveyDataSource {
 
   @override
   Future<SurveyEntity?> getSurveyById(String surveyId) async {
-    if (DevSettings.useDummyData) {
-      await Future.delayed(const Duration(seconds: 1));
-      return SurveyEntity.dummy();
-    }
+    logInfo('SurveyDataSourceImpl:getSurveyById $surveyId');
+
     final response = await dioClient.get(
-      '/survey/$surveyId',
+      AppUrls.getSurvey,
+      data: {
+        'surveyId': surveyId,
+      },
     );
-    if (response.statusCode == 200) {
-      return SurveyEntity.fromJson(response.data);
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is Map) {
+      return SurveyEntity.fromMap(response.data['date']);
     }
     return null;
   }
 
   @override
   Future<List<SurveyEntity>> getSurveys() {
+    logInfo('SurveyDataSourceImpl:getSurveys');
     // TODO: implement getSurveys
     throw UnimplementedError();
   }
 
   @override
   Future<void> updateSurvey(SurveyEntity survey) {
+    logInfo('SurveyDataSourceImpl:updateSurvey');
     // TODO: implement updateSurvey
     throw UnimplementedError();
   }
 
   @override
   Future<void> submitAnswers(Submission submission) async {
+    logInfo('SurveyDataSourceImpl:submitAnswers');
     await Future.delayed(const Duration(seconds: 3));
   }
 
   @override
   Future<List<SurveyEntity>> fetchMySurveys() async {
-    if (DevSettings.useDummyData) {
-      await Future.delayed(const Duration(seconds: 1));
-      return SurveyEntity.dummyList();
-    }
-    final response = await dioClient.get(
-      '/survey/my',
+    logInfo('SurveyDataSourceImpl:fetchMySurveys');
+    final response = await dioClient.get<Map<String, dynamic>>(
+      AppUrls.getMySurveys,
     );
-    if (response.statusCode == 200) {
-      return (response.data as List)
-          .map((e) => SurveyEntity.fromJson(e))
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is List) {
+      return (response.data!['date'] as List? ?? [])
+          .map((e) => SurveyEntity.fromMap(e))
           .toList();
     }
     return [];

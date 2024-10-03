@@ -33,13 +33,13 @@ class ImageChoiceQuestion extends QuestionEntity {
       title: title ?? this.title,
       order: order ?? this.order,
       choices: choices ?? this.choices,
-      multipleSelect: useCheckbox ?? this.multipleSelect,
+      multipleSelect: useCheckbox ?? multipleSelect,
     );
   }
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return ImageChoiceQuestion(
-      id: map['id'],
+      id: map['_id'] ?? '',
       title: map['title'],
       order: map['order'],
       choices: List<ImageChoice>.from(
@@ -103,7 +103,7 @@ class ImageChoice with EquatableMixin {
 
   static ImageChoice fromMap(Map<String, dynamic> map) {
     return ImageChoice(
-      id: map['id'],
+      id: map['_id']??'',
       caption: map['caption'],
       altText: map['altText'],
       url: map['url'],
