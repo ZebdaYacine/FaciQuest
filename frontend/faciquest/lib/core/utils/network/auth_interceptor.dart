@@ -12,7 +12,7 @@ class AuthInterceptor extends Interceptor {
   ) async {
     final token = await SecuredStorageKeys.token.getStoredValue() as String?;
     options.headers.addAll({
-      if (token != null) 'Token': token,
+      'Authorization': 'Bearer $token',
     });
     return handler.next(options);
   }
