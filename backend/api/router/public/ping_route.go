@@ -15,5 +15,5 @@ func NewPingRouter(db database.Database, group *gin.RouterGroup) {
 	ic := &controller.TestController{
 		UserUsecase: uc, // usecase for insured operations
 	}
-	group.POST("ping", ic.PingRequest)
+	group.GET("ping", ic.PingRequest)
 }

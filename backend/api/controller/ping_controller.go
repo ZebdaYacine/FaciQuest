@@ -16,8 +16,8 @@ type TestController struct {
 func (ic *TestController) PingRequest(c *gin.Context) {
 	log.Println("__________________________RECEVING PING REQUEST__________________________")
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "TEST IS WORKE SUCCESSFULY",
-		Data:    ".......",
+		Message: "PING IS WORKE SUCCESSFULY",
+		Data:    "WESH CV.....!!!",
 	})
 	//insertedID, err := ic.UserUsecase.SignUp(c&{})
 }
