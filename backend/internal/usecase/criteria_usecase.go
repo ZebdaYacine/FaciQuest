@@ -115,8 +115,8 @@ func (*criteriaUseCase) DeleteCriteria(c context.Context, params *CriteriaParams
 }
 
 // GetCriterias implements CriteriaUseCase.
-func (*criteriaUseCase) GetCriterias(c context.Context, params *CriteriaParams) *CriteriaResulat {
-	panic("unimplemented")
+func (cu *criteriaUseCase) GetCriterias(c context.Context, params *CriteriaParams) *CriteriaResulat {
+	return crudCriteria(cu.repo, c, params, "getAll").(*CriteriaResulat)
 }
 
 // UpdateCriteria implements CriteriaUseCase.
