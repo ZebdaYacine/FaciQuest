@@ -30,7 +30,7 @@ type CriteriaUseCase interface {
 	CreateCriteria(c context.Context, params *CriteriaParams) *CriteriaResulat
 	UpdateCriteria(c context.Context, params *CriteriaParams) *CriteriaResulat
 	DeleteCriteria(c context.Context, params *CriteriaParams) (bool, error)
-	GetCriterias(c context.Context, params *CriteriaParams) *CriteriaResulat
+	GetCriterias(c context.Context, params *CriteriaParams) *CriteriasResulat
 }
 
 func NewCriteriaUseCase(repo repository.CriteriaRepository, collection string) CriteriaUseCase {
@@ -75,7 +75,7 @@ func crudCriteria(repo repository.CriteriaRepository, c context.Context, params 
 		}
 	case "getAll":
 		{
-			result, err := repo.GetCriterias(c, params.Data.ID)
+			result, err := repo.GetCriterias(c)
 			if err != nil {
 				return &CriteriasResulat{
 					Data: nil,
@@ -115,8 +115,8 @@ func (*criteriaUseCase) DeleteCriteria(c context.Context, params *CriteriaParams
 }
 
 // GetCriterias implements CriteriaUseCase.
-func (cu *criteriaUseCase) GetCriterias(c context.Context, params *CriteriaParams) *CriteriaResulat {
-	return crudCriteria(cu.repo, c, params, "getAll").(*CriteriaResulat)
+func (cu *criteriaUseCase) GetCriterias(c context.Context, params *CriteriaParams) *CriteriasResulat {
+	return crudCriteria(cu.repo, c, params, "getAll").(*CriteriasResulat)
 }
 
 // UpdateCriteria implements CriteriaUseCase.

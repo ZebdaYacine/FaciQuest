@@ -54,11 +54,14 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewGetSurveyByIdRouter(db, userRouter)
 	private.NewGetMySurveysRouter(db, userRouter)
 
+	private.NewGetCriteriaRouter(db, userRouter)
+
 	adminRouter := gin.Group("/admin")
 	//Middleware to verify AccessToken
 	adminRouter.Use(middleware.JwtAuthMiddleware(
 		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
 		"Admin"))
 	private.NewUpdatePaymentStatusRouter(db, adminRouter)
+	private.NewCreateCriteriaRouter(db, adminRouter)
 
 }

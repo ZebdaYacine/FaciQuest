@@ -20,7 +20,7 @@ type CriteriaRepository interface {
 	CreateCriteria(c context.Context, criteria *domain.Criteria) (*domain.Criteria, error)
 	UpdateCriteria(c context.Context, criteria *domain.Criteria) (*domain.Criteria, error)
 	DeleteCriteria(c context.Context, criteriaId string) (bool, error)
-	GetCriterias(c context.Context, criteria string) (*[]domain.Criteria, error)
+	GetCriterias(c context.Context) (*[]domain.Criteria, error)
 }
 
 func NewCriteriaRepository(db database.Database) CriteriaRepository {
@@ -70,18 +70,16 @@ func (cr *criteriaRepository) DeleteCriteria(c context.Context, criteriaId strin
 }
 
 // GetCriterias implements CriteriaRepository.
-func (cr *criteriaRepository) GetCriterias(c context.Context, criteriaId string) (*[]domain.Criteria, error) {
+func (cr *criteriaRepository) GetCriterias(c context.Context) (*[]domain.Criteria, error) {
 	collection := cr.database.Collection("criteria")
-	id, err := primitive.ObjectIDFromHex(criteriaId)
-	if err != nil {
-		log.Fatal(err)
-	}
-	filter := bson.M{
-		"_id": id,
-	}
+	// id, err := primitive.ObjectIDFromHex(criteriaId)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	filter := bson.M{}
 	list, err := collection.Find(c, filter)
 	if err != nil {
-		log.Printf("Failed to load criteria: %v", err)
+		log.Printf("Failed to load criterias: %v", err)
 		return nil, err
 	}
 	list_criterias := []domain.Criteria{}
