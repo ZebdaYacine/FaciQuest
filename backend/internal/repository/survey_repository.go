@@ -96,7 +96,7 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 		}
 		survey_badge := domain.SurveyBadge{}
 		survey_badge = new_survey.SurveyBadge
-		
+
 		list_surveys = append(list_surveys, survey_badge)
 	}
 	return &list_surveys, nil

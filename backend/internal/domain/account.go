@@ -47,5 +47,5 @@ type Account interface {
 	SignupModel | LoginModel | ConfirmationModel |
 		Wallet | SetNewPasswordModel | User |
 		ForgetPasswordModel | Payment |
-		Survey | GetSurveyModel | SurveyBadge
+		Survey | GetSurveyModel | SurveyBadge | Criteria
 }
