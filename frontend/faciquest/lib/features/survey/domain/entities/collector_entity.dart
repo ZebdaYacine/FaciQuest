@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,20 +13,68 @@ class CollectorEntity {
   final DateTime? createdDate;
   final String surveyId;
   final String? webUrl;
+  // audience criteria props
+  final double? population;
+  final Gender? gender;
+  final RangeValues? ageRange;
+  final List<String> countries;
+  final List<Province> provinces;
+  final List<City> cities;
   final List<TargetingCriteria> targetingCriteria;
 
   CollectorEntity({
-    required this.id,
+    this.id = '-',
     required this.surveyId,
+    required this.name,
     this.type = CollectorType.link,
     this.webUrl,
-    required this.name,
-    required this.status,
-    required this.responsesCount,
-    required this.viewsCount,
+    this.status = CollectorStatus.draft,
+    this.responsesCount = 0,
+    this.viewsCount = 0,
     this.targetingCriteria = const [],
+    this.gender,
+    this.ageRange,
+    this.population,
+    this.countries = const [],
+    this.provinces = const [],
+    this.cities = const [],
     this.createdDate,
   });
+
+  CollectorEntity copyWith({
+    String? surveyId,
+    CollectorType? type,
+    String? webUrl,
+    String? name,
+    CollectorStatus? status,
+    int? responsesCount,
+    int? viewsCount,
+    double? population,
+    List<TargetingCriteria>? targetingCriteria,
+    Gender? gender,
+    RangeValues? ageRange,
+    List<String>? countries,
+    List<Province>? provinces,
+    List<City>? cities,
+  }) {
+    return CollectorEntity(
+      id: id,
+      surveyId: surveyId ?? this.surveyId,
+      type: type ?? this.type,
+      webUrl: webUrl ?? this.webUrl,
+      name: name ?? this.name,
+      status: status ?? this.status,
+      responsesCount: responsesCount ?? this.responsesCount,
+      viewsCount: viewsCount ?? this.viewsCount,
+      population: population ?? this.population,
+      targetingCriteria: targetingCriteria ?? this.targetingCriteria,
+      gender: gender ?? this.gender,
+      ageRange: ageRange ?? this.ageRange,
+      countries: countries ?? this.countries,
+      provinces: provinces ?? this.provinces,
+      cities: cities ?? this.cities,
+    );
+  }
 }
 
 enum CollectorStatus { open, draft, deleted, checkingPayment }

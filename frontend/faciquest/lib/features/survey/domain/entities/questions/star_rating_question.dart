@@ -17,7 +17,7 @@ class StarRatingQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return StarRatingQuestion(
-      id: map['id'],
+      id: map['id'] ?? '',
       title: map['title'],
       order: map['order'],
       maxRating: map['maxRating'],

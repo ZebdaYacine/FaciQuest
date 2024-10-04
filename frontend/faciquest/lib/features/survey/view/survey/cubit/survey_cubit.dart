@@ -45,4 +45,6 @@ class SurveyCubit extends Cubit<SurveyState> {
       ),
     );
   }
+
+  void fetchCollectors() {}
 }

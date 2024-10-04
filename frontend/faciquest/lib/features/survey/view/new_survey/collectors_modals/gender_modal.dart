@@ -2,7 +2,6 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
 
-enum Gender { male, female, both }
 
 class GenderModal extends StatefulWidget {
   const GenderModal({super.key});

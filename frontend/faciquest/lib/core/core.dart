@@ -10,3 +10,4 @@ export 'mixins.dart';
 export 'widgets/widgets.dart';
 export 'data.dart';
 export 'dev_settings.dart';
+export 'models.dart';

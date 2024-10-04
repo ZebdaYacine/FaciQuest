@@ -45,7 +45,7 @@ class NewSurveyView extends StatelessWidget {
                   builder: (context) {
                     if (state.status.isFailure) {
                       return Center(child: Text(state.msg ?? 'Error Occurred'));
-                    } else if (state.status.isLoading) {
+                    } else if (state.status.isLoading && state.survey.isEmpty) {
                       return const Center(child: CircularProgressIndicator());
                     }
 
@@ -152,12 +152,14 @@ class __NewSurveyFormState extends State<_NewSurveyForm> with BuildFormMixin {
         Text('Survey Name *', style: context.textTheme.bodyLarge),
         buildInputForm(
           'Survey Name',
+          initialValue: cubit.state.survey.name,
           onChange: cubit.onSurveyNameChanged,
         ),
         AppSpacing.spacing_2.heightBox,
         Text('Survey Description', style: context.textTheme.bodyLarge),
         buildInputForm(
           'Survey Description',
+          initialValue: cubit.state.survey.description,
           maxLines: 3,
           onChange: cubit.onSurveyDescriptionChanged,
         ),

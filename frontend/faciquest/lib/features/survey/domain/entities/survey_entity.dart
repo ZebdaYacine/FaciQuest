@@ -65,7 +65,7 @@ class SurveyEntity extends Equatable {
     this.name = '',
     this.description,
     this.status = SurveyStatus.draft,
-    this.languages = const [],
+    this.languages = const ['en', 'ar'],
     this.topics = const [],
     this.questions = const [],
     this.collectors = const [],
@@ -105,19 +105,20 @@ class SurveyEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'name': name,
-      'description': description,
-      'status': status.name,
-      'languages': languages,
-      'topics': topics,
-      'likertScale': likertScale?.name,
-      'questions': questions.map((e) => e.toMap()).toList(),
+      "name": name,
+      "description": description,
+      // 'status': status.name,
+      "languages": ["en", "fr"],
+      "topics": topics,
+      // "likertScale": likertScale?.getScale().toString(),
+      "likertScale": "5-point",
+      "questions": questions.map((e) => e.toMap()).toList(),
     };
   }
 
   factory SurveyEntity.fromMap(Map<String, dynamic> map) {
     return SurveyEntity(
-      id: map['_id'] as String? ?? '',
+      id: map['id'] as String? ?? '',
       name: map['name'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,
@@ -146,11 +147,11 @@ class SurveyEntity extends Equatable {
           map['countQuestions'] != null ? map['countQuestions'] as int : 0,
       responseCount:
           map['countAnswers'] != null ? map['countAnswers'] as int : 0,
-      createdAt: map['createdAt'] != null && map['createdAt'] is DateTime
-          ? map['createdAt'] as DateTime
+      createdAt: map['createdAt'] != null && map['createdAt'] is String
+          ? DateTime.tryParse(map['createdAt'])
           : null,
-      updatedAt: map['updatedAt'] != null && map['updatedAt'] is DateTime
-          ? map['updatedAt'] as DateTime
+      updatedAt: map['updatedAt'] != null && map['updatedAt'] is String
+          ? DateTime.tryParse(map['updatedAt'])
           : null,
       // answers: map['answers'] != null
       //     ? (map['answers'] as List<Map<String, dynamic>>)

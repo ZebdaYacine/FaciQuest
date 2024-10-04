@@ -2,6 +2,7 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 
 Future<Set<TargetingCriteria>?> showTargetingCriteriaModal(
@@ -25,8 +26,18 @@ class TargetingCriteriaModal extends StatefulWidget {
 }
 
 class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<NewSurveyCubit>().fetchTargetingCriteria().then((value) {
+      setState(() {
+        list = value;
+      });
+    });
+  }
+
   String searchQuery = '';
-  List<TargetingCriteria> list = TargetingCriteria.dummy();
+  List<TargetingCriteria> list = [];
 
   Set<TargetingCriteria> selectedChoices = {};
 

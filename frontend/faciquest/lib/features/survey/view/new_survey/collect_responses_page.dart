@@ -16,6 +16,12 @@ class CollectResponsesPage extends StatefulWidget {
 
 class _CollectResponsesPageState extends State<CollectResponsesPage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<SurveyCubit>().fetchCollectors();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,8 +46,11 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
                     child: _CollectorWidget(
                       icon: Icons.link,
                       title: 'Web Link',
-                      onTap: () {
-                        showWebLinkModal(context);
+                      onTap: () async {
+                        await showWebLinkModal(context);
+                        if (context.mounted) {
+                          context.read<NewSurveyCubit>().fetchCollectors();
+                        }
                       },
                       description:
                           'Ideal for sharing via email, social media, etc.',
@@ -51,8 +60,11 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
                   Expanded(
                     child: _CollectorWidget(
                       icon: Icons.person_search_rounded,
-                      onTap: () {
-                        showBuyTargetedResponsesModal(context);
+                      onTap: () async {
+                        await showBuyTargetedResponsesModal(context);
+                        if (context.mounted) {
+                          context.read<NewSurveyCubit>().fetchCollectors();
+                        }
                       },
                       title: 'Targeted Responses',
                       description: 'Find people who fit your criteria',

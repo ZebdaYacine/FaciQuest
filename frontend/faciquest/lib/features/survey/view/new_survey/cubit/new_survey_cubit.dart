@@ -8,11 +8,12 @@ part 'new_survey_state.dart';
 class NewSurveyCubit extends Cubit<NewSurveyState> {
   NewSurveyCubit({
     required this.surveyId,
-    required SurveyAction action,
+    required this.action,
     required this.repository,
   }) : super(NewSurveyState(
           page: _pageFromAction(action),
         ));
+  final SurveyAction action;
   final SurveyRepository repository;
   final String surveyId;
   void onSurveyNameChanged(String value) {
@@ -104,13 +105,29 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
   }
 
   submitSurvey() async {
-    emit(state.copyWith(status: Status.showLoading));
-    await Future.delayed(const Duration(seconds: 4));
-    emit(state.copyWith(
-      status: Status.success,
-      page: NewSurveyPages.collectResponses,
-      previousPage: state.page,
-    ));
+    if (action != SurveyAction.newSurvey && action != SurveyAction.edit) {
+      return;
+    }
+    try {
+      SurveyEntity? result;
+      emit(state.copyWith(status: Status.showLoading));
+      if (action == SurveyAction.newSurvey) {
+        result = await repository.createSurvey(state.survey);
+      } else {
+        result = await repository.updateSurvey(state.survey);
+      }
+      emit(state.copyWith(
+        status: Status.success,
+        survey: result,
+        page: NewSurveyPages.collectResponses,
+        previousPage: state.page,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: Status.failure,
+        msg: e.toString(),
+      ));
+    }
   }
 
   void refreshList(QuestionEntity value, int index) {
@@ -166,8 +183,12 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     ));
   }
 
-  void deleteSurvey() {
-    //TODO: Implement delete survey
+  Future<void> deleteSurvey() async {
+    try {
+      await repository.deleteSurvey(surveyId);
+    } catch (e) {
+      emit(state.copyWith(status: Status.failure, msg: e.toString()));
+    }
   }
 
   void goToSummary() {
@@ -175,6 +196,30 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
       page: NewSurveyPages.summary,
       previousPage: state.page,
     ));
+  }
+
+  void fetchCollectors() async {
+    final collectors = await repository.getMyCollectors(state.survey.id);
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(
+          collectors: collectors,
+        ),
+      ),
+    );
+  }
+
+  Future<List<TargetingCriteria>> fetchTargetingCriteria() {
+    return repository.getTargetingCriteria();
+  }
+
+  Future<double?> estimatePrice(CollectorEntity collector) async {
+    try {
+      return repository.estimatePrice(collector);
+    } catch (e) {
+      emit(state.copyWith(status: Status.failure, msg: e.toString()));
+    }
+    return null;
   }
 }
 

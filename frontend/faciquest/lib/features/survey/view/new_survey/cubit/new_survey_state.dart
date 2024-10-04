@@ -6,6 +6,7 @@ class NewSurveyState extends Equatable {
   final NewSurveyPages previousPage;
   final Status status;
   final String? msg;
+  
 
   NewSurveyState({
     SurveyEntity? survey,

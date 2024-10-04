@@ -31,13 +31,14 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> {
           title: const Text('Manage My Surveys'),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            context.pushNamed(
+          onPressed: () async {
+            await context.pushNamed(
               AppRoutes.newSurvey.name,
               pathParameters: {
                 'id': '-1',
               },
             );
+            cubit.fetchSurveys();
           },
           label: const Text('Create Survey'), // Text on the button
         ),
@@ -169,14 +170,17 @@ class GridSurveys extends StatelessWidget {
       itemBuilder: (context, index) {
         final survey = surveys[index];
         return InkWell(
-          onTap: () {
-            context.pushNamed(
+          onTap: () async {
+            await context.pushNamed(
               AppRoutes.newSurvey.name,
               extra: SurveyAction.edit,
               pathParameters: {
                 'id': survey.id,
               },
             );
+            if (context.mounted) {
+              context.read<ManageMySurveysCubit>().fetchSurveys();
+            }
           },
           child: Card(
               child: Padding(
@@ -314,14 +318,17 @@ class SurveyActions extends StatelessWidget {
           ),
         ];
       },
-      onSelected: (value) {
-        context.pushNamed(
+      onSelected: (value) async {
+        await context.pushNamed(
           AppRoutes.newSurvey.name,
           extra: value,
           pathParameters: {
             'id': surveyId,
           },
         );
+        if (context.mounted) {
+          context.read<ManageMySurveysCubit>().fetchSurveys();
+        }
       },
     );
   }

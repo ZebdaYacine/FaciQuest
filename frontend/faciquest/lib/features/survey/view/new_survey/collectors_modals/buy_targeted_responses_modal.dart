@@ -15,7 +15,16 @@ Future<void> showBuyTargetedResponsesModal(BuildContext context) async {
     builder: (BuildContext _) {
       return BlocProvider.value(
         value: context.read<NewSurveyCubit>(),
-        child: const BuyTargetedResponsesModal(),
+        child: BuyTargetedResponsesModal(
+          collector: CollectorEntity(
+            id: 'null',
+            surveyId: context.read<NewSurveyCubit>().state.survey.id,
+            name: '',
+            status: CollectorStatus.draft,
+            responsesCount: 0,
+            viewsCount: 0,
+          ),
+        ),
       );
     },
   );
@@ -24,9 +33,9 @@ Future<void> showBuyTargetedResponsesModal(BuildContext context) async {
 class BuyTargetedResponsesModal extends StatefulWidget {
   const BuyTargetedResponsesModal({
     super.key,
-    this.collector,
+    required this.collector,
   });
-  final CollectorEntity? collector;
+  final CollectorEntity collector;
 
   @override
   State<BuyTargetedResponsesModal> createState() =>
@@ -34,8 +43,19 @@ class BuyTargetedResponsesModal extends StatefulWidget {
 }
 
 class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
+  late final cubit = context.read<NewSurveyCubit>();
   double population = 200;
-  double get price => population * 1.5;
+  Future<double?> get price => cubit.estimatePrice(
+        widget.collector.copyWith(
+          population: population,
+          gender: gender,
+          ageRange: range,
+          countries: countries.toList(),
+          provinces: provinces.toList(),
+          cities: cities.toList(),
+          targetingCriteria: selectedCriteria.toList(),
+        ),
+      );
   Gender gender = Gender.both;
   RangeValues range = const RangeValues(18, 99);
   Set<String> countries = {'Algeria'};
@@ -214,8 +234,13 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
                 'Estimated cost',
                 style: context.textTheme.titleLarge,
               ),
-              Text('${price.toStringAsFixed(2).replaceAll('.', ',')} DZD',
-                  style: context.textTheme.titleLarge),
+              FutureBuilder<double?>(
+                  future: price,
+                  builder: (context, snapshot) {
+                    return Text(
+                        '${snapshot.data?.toStringAsFixed(2).replaceAll('.', ',') ?? '----'} DZD',
+                        style: context.textTheme.titleLarge);
+                  }),
             ],
           ),
           AppSpacing.spacing_2.heightBox,
