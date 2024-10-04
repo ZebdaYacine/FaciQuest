@@ -37,3 +37,4 @@ vendor/
 *.swp
 *.swo
 *.swn
+.env
