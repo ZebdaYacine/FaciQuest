@@ -96,20 +96,17 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 		}
 		survey_badge := domain.SurveyBadge{}
 		survey_badge = new_survey.SurveyBadge
+		
 		list_surveys = append(list_surveys, survey_badge)
 	}
-	fmt.Println(list_surveys)
-
 	return &list_surveys, nil
 }
 
 // CreateSurvey implements SurveyRepository.
 func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error) {
 	collection := s.database.Collection("survey")
-
 	survey.CreatedAt = time.Now()
 	// survey.UpdatedAt = time.Now()
-
 	resulat, err := collection.InsertOne(c, &survey)
 	if err != nil {
 		log.Printf("Failed to create survey: %v", err)
@@ -117,6 +114,13 @@ func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey
 	}
 	surveyId := resulat.(string)
 	survey.ID = surveyId
+	log.Println(survey)
+	survey, err = s.UpdateSurvey(c, survey)
+	if err != nil {
+		log.Printf("Failed to update survey: %v", err)
+		return nil, err
+	}
+	log.Println(survey)
 	return survey, nil
 }
 

@@ -13,7 +13,7 @@ type QuestionType interface {
 }
 
 type SurveyBadge struct {
-	ID             string    `json:"_id"`
+	ID             string    `json:"id" bson:"id"`
 	UserId         string    `json:"userId" bson:"userId"`
 	Name           string    `json:"name" bson:"name"`
 	Description    string    `json:"description,omitempty" bson:"description,omitempty"`

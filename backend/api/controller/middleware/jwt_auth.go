@@ -3,6 +3,7 @@ package middleware
 import (
 	"back-end/api/controller/model"
 	util "back-end/util/token"
+	"log"
 	"net/http"
 	"strings"
 
@@ -10,6 +11,7 @@ import (
 )
 
 func accessDenied(c *gin.Context, err string) {
+	log.Println(err)
 	c.JSON(http.StatusUnauthorized, model.ErrorResponse{Message: err})
 	c.Abort()
 }

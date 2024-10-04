@@ -95,7 +95,7 @@ func TestDeleteSurveyRepository(t *testing.T) {
 
 		// Print all found surveys
 		for _, survey := range surveys {
-			fmt.Printf("Survey ID: %s, Name: %s, UserID: %s, Status: %s\n", survey.ID, survey.Name, survey.UserId, survey.Status)
+			fmt.Printf("Survey ID: %s \n", survey.SurveyBadge.ID)
 		}
 
 	})
@@ -114,11 +114,11 @@ func TestGetMySurvey(t *testing.T) {
 		}
 		survey := &domain.Survey{}
 		survey.UserId = "66ced91b015ced6ece935ed4"
-		survey.ID = "66fd50e3494ea58f2044e718"
+		// survey.ID = "66fd50e3494ea58f2044e718"
 		sr := repository.NewSurveyRepository(db)
-		record, err := sr.GetSurveyById(ctx, survey.ID, survey.UserId)
-		if err == nil {
-			print(record)
+		record, err := sr.GetMySurveys(ctx, survey.UserId)
+		for _, survey := range *record {
+			fmt.Printf("survey ID: %s\n", survey.ID)
 		}
 		assert.NoError(t, err)
 	})
