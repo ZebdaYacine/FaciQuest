@@ -114,7 +114,6 @@ func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey
 	}
 	surveyId := resulat.(string)
 	survey.ID = surveyId
-	log.Println(survey)
 	survey, err = s.UpdateSurvey(c, survey)
 	if err != nil {
 		log.Printf("Failed to update survey: %v", err)

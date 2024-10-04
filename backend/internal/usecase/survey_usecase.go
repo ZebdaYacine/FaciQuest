@@ -5,6 +5,7 @@ import (
 	"back-end/internal/repository"
 	"context"
 	"fmt"
+	"log"
 )
 
 func ValidateSurvey(survey *domain.Survey) error {
@@ -80,6 +81,7 @@ func crudServey(repo repository.SurveyRepository, c context.Context, params *Sur
 					Err:  err,
 				}
 			}
+			log.Println(survey)
 			result, err = repo.UpdateSurvey(c, survey)
 
 		}
