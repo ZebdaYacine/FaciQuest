@@ -11,6 +11,7 @@ import (
 	util "back-end/util/token"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -197,7 +198,6 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 func (ic *AccountController) LogoutRequest(c *gin.Context) {
 	log.Println("LOGOUT REQUEST")
 	authHeader := c.Request.Header.Get("Authorization")
-	log.Println(authHeader)
 	t := strings.Split(authHeader, " ")
 	token := t[1]
 	// Check if the token is empty
@@ -206,7 +206,8 @@ func (ic *AccountController) LogoutRequest(c *gin.Context) {
 		return
 	}
 	expiration, _ := util.ExtractFieldFromToken(token, core.RootServer.SECRET_KEY, "exp")
-	timestamp := int64(expiration.(float64))
+	str := expiration.(string)
+	timestamp, _ := strconv.ParseInt(str, 10, 64)
 	f := time.Unix(timestamp, 0)
 	now := time.Now()
 	duration := f.Sub(now)
