@@ -1,72 +1,10 @@
-# Binaries for programs and plugins
-*.exe
-*.dll
-*.so
-*.dylib
 
-# Output of `go build`, `go install`, or `go test`
-/bin/
-/cmd/
-*.out
-*.test
-
-# Dependency directories
-/vendor/
-/Godeps/
-
-# Go modules
-/go.sum
-/go.mod
-
-# Go workspace file
-/go.work
-/go.work.sum
-
-# IDE-specific settings
 .vscode/
-.idea/
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# Logs and debugging
-*.log
-*.trace
-
-# Temporary files
-*.tmp
-*.swp
-*.bak
-
-# Coverage output
-*.coverprofile
-*.cov
-
-# Debug files
-*.prof
-
-# VSCode specific
-.vscode/
-
 
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary, built with `go test -c`
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
-# Dependency directories (remove the comment below to include it)
-# vendor/
-
-# Go workspace file
-# go.work
-# go.work.sum
 
 backend/.env
