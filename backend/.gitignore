@@ -1,0 +1,11 @@
+
+# VSCode specific
+.vscode/
+
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+backend/.env
