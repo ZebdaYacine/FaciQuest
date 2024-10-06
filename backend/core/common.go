@@ -32,7 +32,12 @@ func IsDataRequestSupported[T domain.Account](data *T, c *gin.Context) bool {
 func GetIdUser(c *gin.Context) string {
 	authHeader := c.Request.Header.Get("Authorization")
 	token := strings.Split(authHeader, " ")
-	id, _ := util.ExtractFieldFromToken(token[1], RootServer.SECRET_KEY, "id")
+	log.Println(token)
+	id, err := util.ExtractFieldFromToken(token[1], RootServer.SECRET_KEY, "id")
+	if err != nil {
+		log.Printf("Failed to extract id from token: %v", err)
+		return ""
+	}
 	return id.(string)
 }
 
