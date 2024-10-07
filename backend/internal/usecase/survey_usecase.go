@@ -54,6 +54,7 @@ type SurveyUseCase interface {
 	DeleteSurvey(c context.Context, survey *SurveyParams) (bool, error)
 	GetSurveyById(c context.Context, survey *SurveyParams) *SurveyResulat
 	GetMySurveys(c context.Context, survey *SurveyParams) *SurveysResulat
+	GetAllSurveys(c context.Context) *SurveysResulat
 }
 
 type surveyUseCase struct {
@@ -101,9 +102,23 @@ func crudServey(repo repository.SurveyRepository, c context.Context, params *Sur
 		{
 			result, err = repo.GetSurveyById(c, params.Data.ID, params.Data.UserId)
 		}
-	case "getAll":
+	case "getMySurveys":
 		{
 			result, err := repo.GetMySurveys(c, params.Data.UserId)
+			if err != nil {
+				return &SurveysResulat{
+					List: nil,
+					Err:  fmt.Errorf("error in  %v survey: %v", action, err),
+				}
+			}
+			return &SurveysResulat{
+				List: result,
+				Err:  nil,
+			}
+		}
+	case "getAll":
+		{
+			result, err := repo.GetAllSurveys(c)
 			if err != nil {
 				return &SurveysResulat{
 					List: nil,
@@ -138,9 +153,14 @@ func NewSurveyUseCase(repo repository.SurveyRepository, collection string) Surve
 	}
 }
 
+// GetAllSurveys implements SurveyUseCase.
+func (su *surveyUseCase) GetAllSurveys(c context.Context) *SurveysResulat {
+	return crudServey(su.repo, c, nil, "getAll").(*SurveysResulat)
+}
+
 // GetMySurveys implements SurveyUseCase.
 func (su *surveyUseCase) GetMySurveys(c context.Context, params *SurveyParams) *SurveysResulat {
-	return crudServey(su.repo, c, params, "getAll").(*SurveysResulat)
+	return crudServey(su.repo, c, params, "getMySurveys").(*SurveysResulat)
 }
 
 // GetSurveyById implements SurveyUseCase.

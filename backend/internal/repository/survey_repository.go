@@ -23,6 +23,7 @@ type SurveyRepository interface {
 	DeleteSurvey(c context.Context, surveyId string, userId string) (bool, error)
 	GetMySurveys(c context.Context, userId string) (*[]domain.SurveyBadge, error)
 	GetSurveyById(c context.Context, surveyId string, userId string) (*domain.Survey, error)
+	GetAllSurveys(c context.Context) (*[]domain.SurveyBadge, error)
 }
 
 func NewSurveyRepository(db database.Database) SurveyRepository {
@@ -75,6 +76,28 @@ func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, use
 	}
 	fmt.Println(new_survey)
 	return new_survey, nil
+}
+
+// GetAllSurveys implements SurveyRepository.
+func (s *surveyRepository) GetAllSurveys(c context.Context) (*[]domain.SurveyBadge, error) {
+	collection := s.database.Collection("survey")
+	filter := bson.M{}
+	list, err := collection.Find(c, filter)
+	if err != nil {
+		log.Printf("Failed to load surveys: %v", err)
+		return nil, err
+	}
+	list_surveys := []domain.SurveyBadge{}
+	for list.Next(c) {
+		new_survey := domain.Survey{}
+		if err := list.Decode(&new_survey); err != nil {
+			log.Fatal(err)
+		}
+		survey_badge := domain.SurveyBadge{}
+		survey_badge = new_survey.SurveyBadge
+		list_surveys = append(list_surveys, survey_badge)
+	}
+	return &list_surveys, nil
 }
 
 // GetMySurveys implements SurveyRepository.
