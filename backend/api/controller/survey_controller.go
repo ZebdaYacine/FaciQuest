@@ -109,7 +109,7 @@ func (sc *SurveyController) GetSurveyRequest(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "GET SURVEY REQUEST DONE SUCCESSFULY",
+		Message: "GET SURVEY BY ID REQUEST DONE SUCCESSFULY",
 		Data:    result.Data,
 	})
 }
@@ -131,7 +131,22 @@ func (sc *SurveyController) GetMySurveysRequest(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "GET SURVEY REQUEST DONE SUCCESSFULY",
+		Message: "GET MY SURVEYS REQUEST DONE SUCCESSFULY",
+		Data:    result.List,
+	})
+}
+
+func (sc *SurveyController) GetAllSurveysRequest(c *gin.Context) {
+	log.Println("__***__***___________ GET All SURVEYS  REQUEST ___________***__***__")
+	result := sc.SurveyUseCase.GetAllSurveys(c)
+	if err := result.Err; err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "GET ALL SURVEYS REQUEST DONE SUCCESSFULY",
 		Data:    result.List,
 	})
 }

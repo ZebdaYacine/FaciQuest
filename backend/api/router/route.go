@@ -53,6 +53,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewDeleteSurveyRouter(db, userRouter)
 	private.NewGetSurveyByIdRouter(db, userRouter)
 	private.NewGetMySurveysRouter(db, userRouter)
+	private.NewGetAllSurveysRouter(db, userRouter)
 
 	private.NewGetCriteriaRouter(db, userRouter)
 
