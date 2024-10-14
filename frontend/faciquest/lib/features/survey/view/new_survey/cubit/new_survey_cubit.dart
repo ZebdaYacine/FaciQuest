@@ -199,7 +199,7 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
   }
 
   void fetchCollectors() async {
-    final collectors = await repository.getMyCollectors(state.survey.id);
+    final collectors = await repository.getSurveyCollectors(state.survey.id);
     emit(
       state.copyWith(
         survey: state.survey.copyWith(
@@ -210,6 +210,9 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
   }
 
   Future<List<TargetingCriteria>> fetchTargetingCriteria() {
+    if (state.targetingCriteria.isNotEmpty) {
+      return Future.value(state.targetingCriteria);
+    }
     return repository.getTargetingCriteria();
   }
 

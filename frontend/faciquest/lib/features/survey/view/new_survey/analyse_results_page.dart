@@ -76,7 +76,8 @@ class _AnswersGrid extends StatefulWidget {
 }
 
 class _AnswersGridState extends State<_AnswersGrid> {
-  late final PlutoGridStateManager stateManager;
+  PlutoGridStateManager? stateManager;
+  late final survey = context.read<NewSurveyCubit>().state.survey;
   Future<PlutoLazyPaginationResponse> fetch(
     PlutoLazyPaginationRequest request,
   ) async {
@@ -89,58 +90,52 @@ class _AnswersGridState extends State<_AnswersGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewSurveyCubit, NewSurveyState>(
-      builder: (context, state) {
-        return PlutoGrid(
-          onLoaded: (event) {
-            stateManager = event.stateManager;
-          },
-          columns: state.survey.questions.map((question) {
-            return PlutoColumn(
-              title: question.title,
-              field: question.id,
-              type: PlutoColumnType.text(),
-            );
-          }).toList(),
-          configuration: const PlutoGridConfiguration(),
-          rows: state.survey.submissions
-              .map(
-                (submission) => PlutoRow(
-                  cells: {
-                    for (final answer in submission.answers)
-                      answer.questionId: answer.plutoCell,
-                  },
-                ),
-              )
-              .toList(),
-          createFooter: (stateManager) {
-            return PlutoLazyPagination(
-              // Determine the first page.
-              // Default is 1.
-              initialPage: 1,
+    return PlutoGrid(
+      key: const ValueKey('PlutoGrid'),
+      columns: survey.questions.map((question) {
+        return PlutoColumn(
+          title: question.title,
+          field: question.id,
+          type: PlutoColumnType.text(),
+        );
+      }).toList(),
+      configuration: const PlutoGridConfiguration(),
+      rows: survey.submissions
+          .map(
+            (submission) => PlutoRow(
+              cells: {
+                for (final answer in submission.answers)
+                  answer.questionId: answer.plutoCell,
+              },
+            ),
+          )
+          .toList(),
+      createFooter: (stateManager) {
+        return PlutoLazyPagination(
+          // Determine the first page.
+          // Default is 1.
+          initialPage: 1,
 
-              // First call the fetch function to determine whether to load the page.
-              // Default is true.
-              initialFetch: true,
+          // First call the fetch function to determine whether to load the page.
+          // Default is true.
+          initialFetch: true,
 
-              // Decide whether sorting will be handled by the server.
-              // If false, handle sorting on the client side.
-              // Default is true.
-              fetchWithSorting: true,
+          // Decide whether sorting will be handled by the server.
+          // If false, handle sorting on the client side.
+          // Default is true.
+          fetchWithSorting: true,
 
-              // Decide whether filtering is handled by the server.
-              // If false, handle filtering on the client side.
-              // Default is true.
-              fetchWithFiltering: true,
+          // Decide whether filtering is handled by the server.
+          // If false, handle filtering on the client side.
+          // Default is true.
+          fetchWithFiltering: true,
 
-              // Determines the page size to move to the previous and next page buttons.
-              // Default value is null. In this case,
-              // it moves as many as the number of page buttons visible on the screen.
-              pageSizeToMove: null,
-              fetch: fetch,
-              stateManager: stateManager,
-            );
-          },
+          // Determines the page size to move to the previous and next page buttons.
+          // Default value is null. In this case,
+          // it moves as many as the number of page buttons visible on the screen.
+          pageSizeToMove: null,
+          fetch: fetch,
+          stateManager: stateManager,
         );
       },
     );

@@ -16,7 +16,7 @@ class SurveyCubit extends Cubit<SurveyState> {
   Future<void> submit() async {
     emit(state.copyWith(submissionStatus: Status.showLoading));
     await repository.submitAnswers(
-      Submission(
+      SubmissionEntity(
         answers: state.answers.toList(),
         surveyId: surveyId,
       ),

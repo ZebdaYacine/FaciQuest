@@ -43,7 +43,7 @@ class NewSurveyView extends StatelessWidget {
                 ),
                 body: Builder(
                   builder: (context) {
-                    if (state.status.isFailure) {
+                    if (state.status.isFailure && state.survey.isEmpty) {
                       return Center(child: Text(state.msg ?? 'Error Occurred'));
                     } else if (state.status.isLoading && state.survey.isEmpty) {
                       return const Center(child: CircularProgressIndicator());

@@ -33,7 +33,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }
 
   @override
-  Future<void> submitAnswers(Submission submission) {
+  Future<void> submitAnswers(SubmissionEntity submission) {
     return remoteDataSource.submitAnswers(submission);
   }
 
@@ -63,17 +63,12 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }
 
   @override
-  Future<List<CollectorEntity>> getMyCollectors(String surveyId) {
-    return remoteDataSource.getMyCollectors(surveyId);
+  Future<List<CollectorEntity>> getSurveyCollectors(String surveyId) {
+    return remoteDataSource.getSurveyCollectors(surveyId);
   }
 
   @override
   Future<List<TargetingCriteria>> getTargetingCriteria() {
     return remoteDataSource.getTargetingCriteria();
-  }
-
-  @override
-  Future<void> updateCollector(CollectorEntity collector) {
-    return remoteDataSource.updateCollector(collector);
   }
 }

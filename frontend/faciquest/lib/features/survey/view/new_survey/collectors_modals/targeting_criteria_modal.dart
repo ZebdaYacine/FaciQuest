@@ -12,8 +12,11 @@ Future<Set<TargetingCriteria>?> showTargetingCriteriaModal(
     context: context,
     isScrollControlled: true,
     constraints: BoxConstraints(maxHeight: context.height * 0.9),
-    builder: (BuildContext context) {
-      return const TargetingCriteriaModal();
+    builder: (BuildContext _) {
+      return BlocProvider.value(
+        value: context.read<NewSurveyCubit>()..fetchTargetingCriteria(),
+        child: const TargetingCriteriaModal(),
+      );
     },
   );
 }

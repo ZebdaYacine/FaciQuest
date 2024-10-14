@@ -19,4 +19,10 @@ class AppUrls {
   static const getSurveys = '$baseUrl/profile/get-surveys';
   static const submitAnswers = '$baseUrl/profile/submit-answers';
   static const getMySurveys = '$baseUrl/profile/get-my-surveys';
+  static const getSurveyCollectors = '$baseUrl/profile/get-survey-collectors';
+  static const getTargetingCriteria = '$baseUrl/profile/get-criterias';
+  static const confirmPayment = '$baseUrl/profile/confirm-payment';
+  static const estimatePrice = '$baseUrl/profile/estimate-price';
+  static const createCollector = '$baseUrl/profile/create-collector';
+  static const deleteCollector = '$baseUrl/profile/delete-collector';
 }

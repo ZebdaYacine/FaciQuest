@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-class CollectorEntity {
+class CollectorEntity extends Equatable {
   final String id;
   final String name;
   final CollectorStatus status;
@@ -22,62 +25,198 @@ class CollectorEntity {
   final List<City> cities;
   final List<TargetingCriteria> targetingCriteria;
 
-  CollectorEntity({
+  const CollectorEntity({
     this.id = '-',
-    required this.surveyId,
     required this.name,
-    this.type = CollectorType.link,
-    this.webUrl,
     this.status = CollectorStatus.draft,
+    this.type = CollectorType.link,
     this.responsesCount = 0,
     this.viewsCount = 0,
-    this.targetingCriteria = const [],
+    this.createdDate,
+    required this.surveyId,
+    this.webUrl,
+    this.population,
     this.gender,
     this.ageRange,
-    this.population,
     this.countries = const [],
     this.provinces = const [],
     this.cities = const [],
-    this.createdDate,
+    this.targetingCriteria = const [],
   });
 
   CollectorEntity copyWith({
-    String? surveyId,
-    CollectorType? type,
-    String? webUrl,
+    String? id,
     String? name,
     CollectorStatus? status,
+    CollectorType? type,
     int? responsesCount,
     int? viewsCount,
+    DateTime? createdDate,
+    String? surveyId,
+    String? webUrl,
     double? population,
-    List<TargetingCriteria>? targetingCriteria,
     Gender? gender,
     RangeValues? ageRange,
     List<String>? countries,
     List<Province>? provinces,
     List<City>? cities,
+    List<TargetingCriteria>? targetingCriteria,
   }) {
     return CollectorEntity(
-      id: id,
-      surveyId: surveyId ?? this.surveyId,
-      type: type ?? this.type,
-      webUrl: webUrl ?? this.webUrl,
+      id: id ?? this.id,
       name: name ?? this.name,
       status: status ?? this.status,
+      type: type ?? this.type,
       responsesCount: responsesCount ?? this.responsesCount,
       viewsCount: viewsCount ?? this.viewsCount,
+      createdDate: createdDate ?? this.createdDate,
+      surveyId: surveyId ?? this.surveyId,
+      webUrl: webUrl ?? this.webUrl,
       population: population ?? this.population,
-      targetingCriteria: targetingCriteria ?? this.targetingCriteria,
       gender: gender ?? this.gender,
       ageRange: ageRange ?? this.ageRange,
       countries: countries ?? this.countries,
       provinces: provinces ?? this.provinces,
       cities: cities ?? this.cities,
+      targetingCriteria: targetingCriteria ?? this.targetingCriteria,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'type': type.toMap(),
+      'surveyId': surveyId,
+      if (type == CollectorType.targetAudience) ...{
+        'population': population,
+        'gender': gender?.toMap(),
+        'ageRange': ageRange?.toMap(),
+        'countries': countries,
+        'provinces': provinces.map((x) => x.toMap()).toList(),
+        'cities': cities.map((x) => x.toMap()).toList(),
+        'targetingCriteria': targetingCriteria.map((x) => x.toMap()).toList(),
+      } else
+        'webUrl': webUrl,
+    };
+  }
+
+  factory CollectorEntity.fromMap(Map<String, dynamic> map) {
+    return CollectorEntity(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      status: CollectorStatus.fromMap(map['status'] as String?) ??
+          CollectorStatus.draft,
+      type: CollectorType.fromMap(map['type'] as String?) ??
+          CollectorType.targetAudience,
+      responsesCount: (map['responsesCount'] as num?)?.toInt() ?? 0,
+      viewsCount: (map['viewsCount'] as num?)?.toInt() ?? 0,
+      createdDate: map['createdDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              (map['createdDate'] as num?)?.toInt() ?? 0)
+          : null,
+      surveyId: map['surveyId'] as String,
+      webUrl: map['webUrl'] != null ? map['webUrl'] as String : null,
+      population: map['population'] != null
+          ? (map['population'] as num).toDouble()
+          : null,
+      gender: map['gender'] != null
+          ? Gender.fromMap(map['gender'] as String?) ?? Gender.both
+          : null,
+      ageRange:
+          map['ageRange']['start'] is double && map['ageRange']['end'] is double
+              ? RangeValues(
+                  map['ageRange']['start'] as double,
+                  map['ageRange']['end'] as double,
+                )
+              : null,
+      countries: List<String>.from((map['countries'] as List<String>)),
+      provinces: map['provinces'] is List
+          ? List<Province>.from(
+              (map['provinces'] as List).map<Province>(
+                (x) => Province.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
+      cities: map['cities'] is List
+          ? List<City>.from(
+              (map['cities'] as List).map<City>(
+                (x) => City.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
+      targetingCriteria: List<TargetingCriteria>.from(
+        (map['targetingCriteria'] as List).map<TargetingCriteria>(
+          (x) => TargetingCriteria.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory CollectorEntity.fromJson(String source) =>
+      CollectorEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props {
+    return [
+      id,
+      name,
+      status,
+      type,
+      responsesCount,
+      viewsCount,
+      createdDate,
+      surveyId,
+      webUrl,
+      population,
+      gender,
+      ageRange,
+      countries,
+      provinces,
+      cities,
+      targetingCriteria,
+    ];
   }
 }
 
-enum CollectorStatus { open, draft, deleted, checkingPayment }
+enum CollectorStatus {
+  open,
+  draft,
+  deleted,
+  checkingPayment;
+
+  String toMap() {
+    switch (this) {
+      case CollectorStatus.open:
+        return 'open';
+      case CollectorStatus.draft:
+        return 'draft';
+      case CollectorStatus.deleted:
+        return 'deleted';
+      case CollectorStatus.checkingPayment:
+        return 'checkingPayment';
+    }
+  }
+
+  static CollectorStatus? fromMap(String? status) {
+    switch (status) {
+      case 'open':
+        return CollectorStatus.open;
+      case 'draft':
+        return CollectorStatus.draft;
+      case 'deleted':
+        return CollectorStatus.deleted;
+      case 'checkingPayment':
+        return CollectorStatus.checkingPayment;
+    }
+    return null;
+  }
+}
 
 enum CollectorType {
   link,
@@ -91,9 +230,28 @@ enum CollectorType {
         return Icons.person;
     }
   }
+
+  String toMap() {
+    switch (this) {
+      case CollectorType.link:
+        return 'link';
+      case CollectorType.targetAudience:
+        return 'targetAudience';
+    }
+  }
+
+  static CollectorType? fromMap(String? type) {
+    switch (type) {
+      case 'link':
+        return CollectorType.link;
+      case 'targetAudience':
+        return CollectorType.targetAudience;
+    }
+    return null;
+  }
 }
 
-class TargetingCriteria {
+class TargetingCriteria extends Equatable {
   const TargetingCriteria({
     this.id = '',
     this.category,
@@ -283,20 +441,99 @@ class TargetingCriteria {
   }) {
     return TargetingCriteria(
       id: id ?? this.id,
-      category: category,
+      category: category ?? this.category,
       title: title ?? this.title,
-      description: description,
+      description: description ?? this.description,
       choices: choices ?? this.choices,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'category': category,
+      'title': title,
+      'description': description,
+      'choices': choices.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory TargetingCriteria.fromMap(Map<String, dynamic> map) {
+    return TargetingCriteria(
+      id: map['id'] as String,
+      category: map['category'] != null ? map['category'] as String : null,
+      title: map['title'] as String,
+      description:
+          map['description'] != null ? map['description'] as String : null,
+      choices: List<CriteriaChoices>.from(
+        (map['choices'] as List<int>).map<CriteriaChoices>(
+          (x) => CriteriaChoices.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory TargetingCriteria.fromJson(String source) =>
+      TargetingCriteria.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props {
+    return [
+      id,
+      category,
+      title,
+      description,
+      choices,
+    ];
+  }
 }
 
-class CriteriaChoices {
+class CriteriaChoices extends Equatable {
   final String id;
   final String title;
 
-  CriteriaChoices({
+  const CriteriaChoices({
     required this.id,
     required this.title,
   });
+
+  CriteriaChoices copyWith({
+    String? id,
+    String? title,
+  }) {
+    return CriteriaChoices(
+      id: id ?? this.id,
+      title: title ?? this.title,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'title': title,
+    };
+  }
+
+  factory CriteriaChoices.fromMap(Map<String, dynamic> map) {
+    return CriteriaChoices(
+      id: map['id'] as String,
+      title: map['title'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory CriteriaChoices.fromJson(String source) =>
+      CriteriaChoices.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object> get props => [id, title];
 }

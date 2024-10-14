@@ -4,31 +4,28 @@ class NewSurveyState extends Equatable {
   final SurveyEntity survey;
   final NewSurveyPages page;
   final NewSurveyPages previousPage;
+  final List<TargetingCriteria> targetingCriteria;
   final Status status;
   final String? msg;
-  
 
   NewSurveyState({
     SurveyEntity? survey,
     this.page = NewSurveyPages.surveyDetails,
     NewSurveyPages? previousPage,
     this.status = Status.initial,
+    this.targetingCriteria = const [],
     this.msg,
   })  : survey = survey ?? SurveyEntity.empty,
         previousPage = previousPage ?? page;
 
   @override
-  List<Object?> get props => [
-        survey,
-        status,
-        page,
-        msg,
-      ];
+  List<Object?> get props => [survey, status, page, msg, targetingCriteria];
 
   NewSurveyState copyWith({
     SurveyEntity? survey,
     NewSurveyPages? page,
     NewSurveyPages? previousPage,
+    List<TargetingCriteria>? targetingCriteria,
     Status? status,
     String? msg,
   }) {
@@ -37,6 +34,7 @@ class NewSurveyState extends Equatable {
       page: page ?? this.page,
       previousPage: previousPage ?? this.previousPage,
       status: status ?? Status.initial,
+      targetingCriteria: targetingCriteria ?? this.targetingCriteria,
       msg: msg,
     );
   }

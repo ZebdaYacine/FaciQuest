@@ -11,3 +11,4 @@ export 'widgets/widgets.dart';
 export 'data.dart';
 export 'dev_settings.dart';
 export 'models.dart';
+export 'range_values_extensions.dart';

@@ -46,7 +46,7 @@ class SurveyEntity extends Equatable {
   final List<String> topics;
   final LikertScale? likertScale;
   final List<QuestionEntity> questions;
-  final List<Submission> submissions;
+  final List<SubmissionEntity> submissions;
   final DateTime createdAt;
   final DateTime? updatedAt;
   //
@@ -87,7 +87,7 @@ class SurveyEntity extends Equatable {
     List<String>? topics,
     LikertScale? likertScale,
     List<QuestionEntity>? questions,
-    List<Submission>? submissions,
+    List<SubmissionEntity>? submissions,
     List<CollectorEntity>? collectors,
   }) {
     return SurveyEntity(
@@ -109,7 +109,7 @@ class SurveyEntity extends Equatable {
       "description": description,
       // 'status': status.name,
       "languages": ["en", "fr"],
-      "topics": topics,
+      "topics": ["service", "quality"],
       // "likertScale": likertScale?.getScale().toString(),
       "likertScale": "5-point",
       "questions": questions.map((e) => e.toMap()).toList(),
@@ -118,7 +118,7 @@ class SurveyEntity extends Equatable {
 
   factory SurveyEntity.fromMap(Map<String, dynamic> map) {
     return SurveyEntity(
-      id: map['id'] as String? ?? '',
+      id: map['_id'] as String? ?? '',
       name: map['name'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,

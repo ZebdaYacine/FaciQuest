@@ -38,11 +38,11 @@ abstract class AnswerEntity extends Equatable {
   }
 }
 
-class Submission {
+class SubmissionEntity {
   final List<AnswerEntity> answers;
   final String surveyId;
 
-  Submission({
+  SubmissionEntity({
     required this.answers,
     required this.surveyId,
   });

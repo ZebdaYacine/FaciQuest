@@ -2,8 +2,6 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
-import 'package:faciquest/features/survey/view/new_survey/collectors_modals/buy_targeted_responses_modal.dart';
-import 'package:faciquest/features/survey/view/new_survey/collectors_modals/web_link_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +16,7 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
   @override
   void initState() {
     super.initState();
-    context.read<SurveyCubit>().fetchCollectors();
+    context.read<NewSurveyCubit>().fetchCollectors();
   }
 
   @override
@@ -42,21 +40,21 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
               AppSpacing.spacing_2.heightBox,
               Row(
                 children: [
-                  Expanded(
-                    child: _CollectorWidget(
-                      icon: Icons.link,
-                      title: 'Web Link',
-                      onTap: () async {
-                        await showWebLinkModal(context);
-                        if (context.mounted) {
-                          context.read<NewSurveyCubit>().fetchCollectors();
-                        }
-                      },
-                      description:
-                          'Ideal for sharing via email, social media, etc.',
-                    ),
-                  ),
-                  AppSpacing.spacing_2.widthBox,
+                  // Expanded(
+                  //   child: _CollectorWidget(
+                  //     icon: Icons.link,
+                  //     title: 'Web Link',
+                  //     onTap: () async {
+                  //       await showWebLinkModal(context);
+                  //       if (context.mounted) {
+                  //         context.read<NewSurveyCubit>().fetchCollectors();
+                  //       }
+                  //     },
+                  //     description:
+                  //         'Ideal for sharing via email, social media, etc.',
+                  //   ),
+                  // ),
+                  // AppSpacing.spacing_2.widthBox,
                   Expanded(
                     child: _CollectorWidget(
                       icon: Icons.person_search_rounded,
