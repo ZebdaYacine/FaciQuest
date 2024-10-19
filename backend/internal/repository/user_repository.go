@@ -59,6 +59,7 @@ func (ar *userRepository) GetUserById(c context.Context, id string) (*domain.Use
 func getUser(filter any, collection database.Collection, c context.Context) (*domain.User, error) {
 	var result bson.M
 	err := collection.FindOne(c, filter).Decode(&result)
+	log.Println(filter)
 	if err != nil {
 		log.Print(err)
 		return nil, err
