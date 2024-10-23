@@ -24,6 +24,7 @@ type collectorUseCase struct {
 type CollectorUseCase interface {
 	CreateCollector(c context.Context, params *CollectorParams) *CollectorResulat
 	DeleteCollector(c context.Context, params *CollectorParams) (bool, error)
+	GetCollector(c context.Context, params *CollectorParams) *CollectorResulat
 }
 
 func NewColllectorUseCase(repo repository.CollectorRepository, collection string) CollectorUseCase {
@@ -66,6 +67,10 @@ func crudCollector(repo repository.CollectorRepository, c context.Context, param
 			}
 			return result
 		}
+	case "getBySurveyId":
+		{
+
+		}
 	default:
 		{
 			result, err = nil, nil
@@ -90,5 +95,10 @@ func (*collectorUseCase) CreateCollector(c context.Context, params *CollectorPar
 
 // DeleteCriteria implements CollectorUseCase.
 func (*collectorUseCase) DeleteCollector(c context.Context, params *CollectorParams) (bool, error) {
+	panic("unimplemented")
+}
+
+// GetCollector implements CollectorUseCase.
+func (*collectorUseCase) GetCollector(c context.Context, params *CollectorParams) *CollectorResulat {
 	panic("unimplemented")
 }

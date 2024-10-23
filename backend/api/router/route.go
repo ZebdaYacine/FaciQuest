@@ -41,28 +41,34 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 
 	// All Private APIs
 
+	//Auth API
 	private.NewSetNewPwdRouter(db, userRouter)
 	private.NewUpdateProfileRouter(db, userRouter)
 	private.NewLogoutRouterRouter(db, userRouter, redis)
-
+	//Wallet API
 	private.NewUpdateWalletRouter(db, userRouter)
 	private.NewCashOutWalletRouter(db, userRouter)
-
+	//Survey API
 	private.NewCreateSurveyRouter(db, userRouter)
 	private.NewUpdateSurveyRouter(db, userRouter)
 	private.NewDeleteSurveyRouter(db, userRouter)
 	private.NewGetSurveyByIdRouter(db, userRouter)
 	private.NewGetMySurveysRouter(db, userRouter)
 	private.NewGetAllSurveysRouter(db, userRouter)
-
+	//Criteria API
 	private.NewGetCriteriaRouter(db, userRouter)
+	//Collector API
+	private.NewCreateCollectorRouter(db, userRouter)
+	private.NewDeleteCollectorRouter(db, userRouter)
+	//Submission API
+	private.NewSubmissionAnswerRouter(db, userRouter)
 
 	adminRouter := gin.Group("/admin")
+
 	//Middleware to verify AccessToken
 	adminRouter.Use(middleware.JwtAuthMiddleware(
 		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
 		"Admin"))
 	private.NewUpdatePaymentStatusRouter(db, adminRouter)
 	private.NewCreateCriteriaRouter(db, adminRouter)
-
 }

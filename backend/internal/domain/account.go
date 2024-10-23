@@ -48,5 +48,5 @@ type Account interface {
 		Wallet | SetNewPasswordModel | User |
 		ForgetPasswordModel | Payment |
 		Survey | GetSurveyModel | SurveyBadge |
-		Criteria | Collector
+		Criteria | Collector | Submission
 }

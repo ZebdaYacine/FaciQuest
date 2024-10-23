@@ -12,7 +12,7 @@ import (
 
 func NewCreateCollectorRouter(db database.Database, group *gin.RouterGroup) {
 	cr := repository.NewCollectorRepository(db)
-	cu := usecase.NewColllectorUseCase(cr, core.SURVEY)
+	cu := usecase.NewColllectorUseCase(cr, core.COLLECTOR)
 	cc := &controller.CollectorController{
 		CollectorUseCase: cu,
 	}
@@ -21,7 +21,7 @@ func NewCreateCollectorRouter(db database.Database, group *gin.RouterGroup) {
 
 func NewDeleteCollectorRouter(db database.Database, group *gin.RouterGroup) {
 	cr := repository.NewCollectorRepository(db)
-	cu := usecase.NewColllectorUseCase(cr, core.SURVEY)
+	cu := usecase.NewColllectorUseCase(cr, core.COLLECTOR)
 	cc := &controller.CollectorController{
 		CollectorUseCase: cu,
 	}

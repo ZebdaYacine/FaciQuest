@@ -251,12 +251,10 @@ func (s *Survey) QuestionToBSON(question QuestionType) (bson.M, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	var result bson.M
 	if err := json.Unmarshal(data, &result); err != nil {
 		return nil, err
 	}
-
 	return result, nil
 }
 

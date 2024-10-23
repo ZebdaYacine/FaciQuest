@@ -13,6 +13,7 @@ type collectorRepository struct {
 type CollectorRepository interface {
 	CreateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
 	DeleteCollector(c context.Context, collectorId string) (bool, error)
+	GetCollector(c context.Context, collectorId *domain.Collector) (*domain.Collector, error)
 }
 
 func NewCollectorRepository(db database.Database) CollectorRepository {
@@ -21,13 +22,18 @@ func NewCollectorRepository(db database.Database) CollectorRepository {
 	}
 }
 
-// CreateCriteria implements CriteriaRepository.
+// GetCollector implements CollectorRepository.
+func (cu *collectorRepository) GetCollector(c context.Context, collectorId *domain.Collector) (*domain.Collector, error) {
+	panic("unimplemented")
+}
+
+// CreateCriteria implements CollectorRepository.
 func (cu *collectorRepository) CreateCollector(c context.Context, criteria *domain.Collector) (*domain.Collector, error) {
 
 	return nil, nil
 }
 
-// DeleteCriteria implements CriteriaRepository.
+// DeleteCriteria implements CollectorRepository.
 func (cr *collectorRepository) DeleteCollector(c context.Context, criteriaId string) (bool, error) {
 
 	return true, nil
