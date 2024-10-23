@@ -45,7 +45,7 @@ func (s *surveyRepository) DeleteSurvey(c context.Context, surveyId string, user
 	}
 	result, err := collection.DeleteOne(c, &filter)
 	if err != nil {
-		log.Printf("Failed to create survey: %v", err)
+		log.Printf("Failed to delete survey: %v", err)
 		return false, err
 	}
 	if result.DeletedCount == 0 {

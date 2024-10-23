@@ -60,6 +60,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	//Collector API
 	private.NewCreateCollectorRouter(db, userRouter)
 	private.NewDeleteCollectorRouter(db, userRouter)
+	private.NewGetCollectorRouter(db, userRouter)
 	//Submission API
 	private.NewSubmissionAnswerRouter(db, userRouter)
 

@@ -11,7 +11,7 @@ type CollectorParams struct {
 	Data *domain.Collector
 }
 
-type CollectorResulat struct {
+type CollectorResult struct {
 	Data *domain.Collector
 	Err  error
 }
@@ -22,9 +22,9 @@ type collectorUseCase struct {
 }
 
 type CollectorUseCase interface {
-	CreateCollector(c context.Context, params *CollectorParams) *CollectorResulat
+	CreateCollector(c context.Context, params *CollectorParams) *CollectorResult
 	DeleteCollector(c context.Context, params *CollectorParams) (bool, error)
-	GetCollector(c context.Context, params *CollectorParams) *CollectorResulat
+	GetCollector(c context.Context, params *CollectorParams) *CollectorResult
 }
 
 func NewColllectorUseCase(repo repository.CollectorRepository, collection string) CollectorUseCase {
@@ -38,7 +38,7 @@ func crudCollector(repo repository.CollectorRepository, c context.Context, param
 	collector := params.Data
 	var err error
 	if params.Data == nil {
-		return &CriteriasResulat{
+		return &CollectorResult{
 			Data: nil,
 			Err:  fmt.Errorf("data requeried"),
 		}
@@ -49,7 +49,7 @@ func crudCollector(repo repository.CollectorRepository, c context.Context, param
 		{
 			err = collector.Validate()
 			if err != nil {
-				return &CollectorResulat{
+				return &CollectorResult{
 					Data: nil,
 					Err:  err,
 				}
@@ -58,18 +58,31 @@ func crudCollector(repo repository.CollectorRepository, c context.Context, param
 		}
 	case "delete":
 		{
+			if collector.ID != "" {
+				return nil
+			}
 			result, err := repo.DeleteCollector(c, collector.ID)
 			if err != nil {
-				return &CollectorResulat{
-					Data: nil,
-					Err:  fmt.Errorf("error in  %v survey: %v", action, err),
-				}
+				return nil
 			}
 			return result
 		}
 	case "getBySurveyId":
 		{
-
+			if collector.SurveyID != "" {
+				return &CollectorResult{
+					Data: nil,
+					Err:  fmt.Errorf("survey id is required to get a collector"),
+				}
+			}
+			result, err := repo.GetCollector(c, collector.SurveyID)
+			if err != nil {
+				return &CollectorResult{
+					Data: nil,
+					Err:  fmt.Errorf("error in  %v collector: %v", action, err),
+				}
+			}
+			return result
 		}
 	default:
 		{
@@ -77,28 +90,36 @@ func crudCollector(repo repository.CollectorRepository, c context.Context, param
 		}
 	}
 	if err != nil {
-		return &CollectorResulat{
+		return &CollectorResult{
 			Data: nil,
 			Err:  fmt.Errorf("error in  %v survey: %v", action, err),
 		}
 	}
-	return &CollectorResulat{
+	return &CollectorResult{
 		Data: result,
 		Err:  nil,
 	}
 }
 
 // CreateCriteria implements CollectorUseCase.
-func (*collectorUseCase) CreateCollector(c context.Context, params *CollectorParams) *CollectorResulat {
-	panic("unimplemented")
+func (cu *collectorUseCase) CreateCollector(c context.Context, params *CollectorParams) *CollectorResult {
+	return crudCollector(cu.repo, c, params, "add").(*CollectorResult)
 }
 
 // DeleteCriteria implements CollectorUseCase.
-func (*collectorUseCase) DeleteCollector(c context.Context, params *CollectorParams) (bool, error) {
-	panic("unimplemented")
+func (cu *collectorUseCase) DeleteCollector(c context.Context, params *CollectorParams) (bool, error) {
+	col := params.Data.ID
+	if col != "" {
+		return false, fmt.Errorf(" id specified for collector")
+	}
+	result, err := cu.repo.DeleteCollector(c, col)
+	if err != nil {
+		return false, err
+	}
+	return result, nil
 }
 
 // GetCollector implements CollectorUseCase.
-func (*collectorUseCase) GetCollector(c context.Context, params *CollectorParams) *CollectorResulat {
-	panic("unimplemented")
+func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorParams) *CollectorResult {
+	return crudCollector(cu.repo, c, params, "add").(*CollectorResult)
 }

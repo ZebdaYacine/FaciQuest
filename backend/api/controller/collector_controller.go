@@ -22,9 +22,18 @@ func (cc *CollectorController) CreateCollectorRequest(c *gin.Context) {
 		return
 	}
 	log.Println(new_collector)
+	params := usecase.CollectorParams{}
+	params.Data = &new_collector
+	result := cc.CollectorUseCase.CreateCollector(c, &params)
+	if result.Err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: result.Err.Error(),
+		})
+		return
+	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "CREATE COLLECTOR REQUEST DONE SUCCESSFULY",
-		Data:    nil,
+		Data:    new_collector,
 	})
 }
 
@@ -35,8 +44,39 @@ func (cc *CollectorController) DeleteCollectorRequest(c *gin.Context) {
 		return
 	}
 	log.Println(new_collector)
+	params := usecase.CollectorParams{}
+	params.Data = &new_collector
+	result, err := cc.CollectorUseCase.DeleteCollector(c, &params)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: err.Error(),
+		})
+		return
+	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "DELETE COLLECTOR REQUEST DONE SUCCESSFULY",
+		Data:    result,
+	})
+}
+
+func (cc *CollectorController) GetCollectorBySurveyIdRequest(c *gin.Context) {
+	log.Println("__***__***___________ GET COLLECTOR BY SUREVY ID REQUEST ___________***__***__")
+	var new_collector domain.Collector
+	if !core.IsDataRequestSupported(&new_collector, c) {
+		return
+	}
+	log.Println(new_collector)
+	params := usecase.CollectorParams{}
+	params.Data = &new_collector
+	result := cc.CollectorUseCase.GetCollector(c, &params)
+	if result.Err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: result.Err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "GET COLLECTOR BY SUREVY ID REQUEST DONE SUCCESSFULY",
 		Data:    nil,
 	})
 }
