@@ -20,6 +20,7 @@ type collectorRepository struct {
 type CollectorRepository interface {
 	CreateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
 	DeleteCollector(c context.Context, collectorId string) (bool, error)
+	UpdateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
 	GetCollector(c context.Context, collectorId string) (*domain.Collector, error)
 }
 
@@ -39,7 +40,12 @@ func (cu *collectorRepository) CreateCollector(c context.Context, collector *dom
 	}
 	collectorId := result.(string)
 	collector.ID = collectorId
-
+	collector, err = cu.UpdateCollector(c, collector)
+	if err != nil {
+		log.Printf("Failed to update collector: %v", err)
+		return nil, err
+	}
+	log.Println(collector)
 	return collector, nil
 }
 
@@ -68,15 +74,11 @@ func (cr *collectorRepository) DeleteCollector(c context.Context, collectorId st
 // GetCollector implements CollectorRepository.
 func (cr *collectorRepository) GetCollector(c context.Context, surveyID string) (*domain.Collector, error) {
 	collection := cr.database.Collection(core.COLLECTOR)
-	id, err := primitive.ObjectIDFromHex(surveyID)
 	new_collector := &domain.Collector{}
-	if err != nil {
-		log.Fatal(err)
-	}
 	filter := bson.M{
-		"_id": id,
+		"surveyID": surveyID,
 	}
-	err = collection.FindOne(c, filter).Decode(new_collector)
+	err := collection.FindOne(c, filter).Decode(new_collector)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return nil, fmt.Errorf("collector not found")
@@ -84,5 +86,32 @@ func (cr *collectorRepository) GetCollector(c context.Context, surveyID string) 
 		return nil, err
 	}
 	fmt.Println(new_collector)
+	return new_collector, nil
+}
+
+// UpdateCriteria implements CollectorRepository.
+func (cr *collectorRepository) UpdateCollector(c context.Context, col *domain.Collector) (*domain.Collector, error) {
+	collection := cr.database.Collection(core.COLLECTOR)
+	id, err := primitive.ObjectIDFromHex(col.ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	filterUpdate := bson.D{{Key: "_id", Value: id}}
+	update := bson.M{
+		"$set": col,
+	}
+	_, err = collection.UpdateOne(c, filterUpdate, update)
+	if err != nil {
+		log.Panic(err)
+		return nil, err
+	}
+	new_collector := &domain.Collector{}
+	err = collection.FindOne(c, filterUpdate).Decode(new_collector)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, fmt.Errorf("collector not found")
+		}
+		return nil, err
+	}
 	return new_collector, nil
 }

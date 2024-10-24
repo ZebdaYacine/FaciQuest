@@ -113,7 +113,7 @@ func (cr *criteriaRepository) UpdateCriteria(c context.Context, criteria *domain
 	err = collection.FindOne(c, filterUpdate).Decode(new_criteria)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, fmt.Errorf("survey not found")
+			return nil, fmt.Errorf("criteria not found")
 		}
 		return nil, err
 	}
