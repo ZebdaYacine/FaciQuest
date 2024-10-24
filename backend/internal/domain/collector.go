@@ -13,7 +13,7 @@ type Collector struct {
 	ID             string         `json:"id" bson:"id"`
 	Name           string         `json:"name" bson:"name"`
 	Type           CollectorType  `json:"type" bson:"type"`
-	SurveyID       string         `json:"surveyID" bson:"surveyID"`
+	SurveyId       string         `json:"surveyId" bson:"surveyId"`
 	TargetAudience TargetAudience `json:"targetAudience,omitempty" bson:"targetAudience"`
 	WebCollector   WebCollector   `json:"webCollector,omitempty" bson:"webCollector"`
 }

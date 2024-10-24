@@ -61,11 +61,12 @@ func (cc *CollectorController) DeleteCollectorRequest(c *gin.Context) {
 
 func (cc *CollectorController) GetCollectorBySurveyIdRequest(c *gin.Context) {
 	log.Println("__***__***___________ GET COLLECTOR BY SUREVY ID REQUEST ___________***__***__")
-	var new_collector domain.Collector
-	if !core.IsDataRequestSupported(&new_collector, c) {
+	var survey domain.GetBySurveyIdModel
+	if !core.IsDataRequestSupported(&survey, c) {
 		return
 	}
-	log.Println(new_collector)
+	new_collector := domain.Collector{}
+	new_collector.SurveyId = survey.SurveyId
 	params := usecase.CollectorParams{}
 	params.Data = &new_collector
 	result := cc.CollectorUseCase.GetCollector(c, &params)
@@ -77,6 +78,6 @@ func (cc *CollectorController) GetCollectorBySurveyIdRequest(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "GET COLLECTOR BY SUREVY ID REQUEST DONE SUCCESSFULY",
-		Data:    nil,
+		Data:    result.Data,
 	})
 }

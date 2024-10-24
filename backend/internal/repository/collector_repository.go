@@ -76,8 +76,9 @@ func (cr *collectorRepository) GetCollector(c context.Context, surveyID string) 
 	collection := cr.database.Collection(core.COLLECTOR)
 	new_collector := &domain.Collector{}
 	filter := bson.M{
-		"surveyID": surveyID,
+		"surveyId": surveyID,
 	}
+	fmt.Println(filter)
 	err := collection.FindOne(c, filter).Decode(new_collector)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -85,7 +86,7 @@ func (cr *collectorRepository) GetCollector(c context.Context, surveyID string) 
 		}
 		return nil, err
 	}
-	fmt.Println(new_collector)
+	log.Println(new_collector)
 	return new_collector, nil
 }
 

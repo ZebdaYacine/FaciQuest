@@ -69,20 +69,19 @@ func crudCollector(repo repository.CollectorRepository, c context.Context, param
 		}
 	case "getBySurveyId":
 		{
-			if collector.SurveyID != "" {
+			if collector.SurveyId == "" {
 				return &CollectorResult{
 					Data: nil,
-					Err:  fmt.Errorf("survey id is required to get a collector"),
+					Err:  fmt.Errorf("surveyId is required to get a collector"),
 				}
 			}
-			result, err := repo.GetCollector(c, collector.SurveyID)
+			result, err = repo.GetCollector(c, collector.SurveyId)
 			if err != nil {
 				return &CollectorResult{
 					Data: nil,
 					Err:  fmt.Errorf("error in  %v collector: %v", action, err),
 				}
 			}
-			return result
 		}
 	default:
 		{
@@ -92,7 +91,7 @@ func crudCollector(repo repository.CollectorRepository, c context.Context, param
 	if err != nil {
 		return &CollectorResult{
 			Data: nil,
-			Err:  fmt.Errorf("error in  %v survey: %v", action, err),
+			Err:  fmt.Errorf("error in  %v collector: %v", action, err),
 		}
 	}
 	return &CollectorResult{
@@ -109,8 +108,8 @@ func (cu *collectorUseCase) CreateCollector(c context.Context, params *Collector
 // DeleteCriteria implements CollectorUseCase.
 func (cu *collectorUseCase) DeleteCollector(c context.Context, params *CollectorParams) (bool, error) {
 	col := params.Data.ID
-	if col != "" {
-		return false, fmt.Errorf(" id specified for collector")
+	if col == "" {
+		return false, fmt.Errorf("id specified for collector")
 	}
 	result, err := cu.repo.DeleteCollector(c, col)
 	if err != nil {
@@ -121,5 +120,5 @@ func (cu *collectorUseCase) DeleteCollector(c context.Context, params *Collector
 
 // GetCollector implements CollectorUseCase.
 func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorParams) *CollectorResult {
-	return crudCollector(cu.repo, c, params, "add").(*CollectorResult)
+	return crudCollector(cu.repo, c, params, "getBySurveyId").(*CollectorResult)
 }

@@ -65,7 +65,7 @@ func (sc *SurveyController) UpdateSurveyRequest(c *gin.Context) {
 
 func (sc *SurveyController) DeleteSurveyRequest(c *gin.Context) {
 	log.Println("__***__***___________ DELETE SURVEY  REQUEST ___________***__***__")
-	var DeleteSurvey domain.GetSurveyModel
+	var DeleteSurvey domain.GetBySurveyIdModel
 	survey := &domain.Survey{}
 	if !core.IsDataRequestSupported(&DeleteSurvey, c) {
 		return
@@ -91,7 +91,7 @@ func (sc *SurveyController) DeleteSurveyRequest(c *gin.Context) {
 
 func (sc *SurveyController) GetSurveyRequest(c *gin.Context) {
 	log.Println("__***__***___________ GET SURVEY  REQUEST ___________***__***__")
-	var Survey domain.GetSurveyModel
+	var Survey domain.GetBySurveyIdModel
 	survey := &domain.Survey{}
 	if !core.IsDataRequestSupported(&Survey, c) {
 		return

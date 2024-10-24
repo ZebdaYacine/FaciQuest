@@ -39,7 +39,7 @@ type ForgetPasswordModel struct {
 	// NewPassword string `form:"newpassword"`
 }
 
-type GetSurveyModel struct {
+type GetBySurveyIdModel struct {
 	SurveyId string `json:"surveyId"`
 }
 
@@ -47,6 +47,6 @@ type Account interface {
 	SignupModel | LoginModel | ConfirmationModel |
 		Wallet | SetNewPasswordModel | User |
 		ForgetPasswordModel | Payment |
-		Survey | GetSurveyModel | SurveyBadge |
+		Survey | GetBySurveyIdModel | SurveyBadge |
 		Criteria | Collector | Submission
 }

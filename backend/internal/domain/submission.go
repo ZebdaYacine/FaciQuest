@@ -7,6 +7,15 @@ type Answer struct {
 
 	Rating string `json:"rating,omitempty" bson:"rating,omitempty"`
 
+	SelectedChoices []string `json:"selectedChoices,omitempty" bson:"selectedChoices,omitempty"`
+	MultipleSelect  bool     `json:"multipleSelect,omitempty" bson:"multipleSelect,omitempty"`
+
+	SelectedChoice string `json:"selectedChoice,omitempty" bson:"selectedChoice,omitempty"`
+
+	LastName   string `json:"lastName,omitempty" bson:"lastName,omitempty"`
+	FirstName  string `json:"firstName,omitempty" bson:"firstName,omitempty"`
+	MiddleName string `json:"middleName,omitempty" bson:"middleName,omitempty"`
+
 	StreetAddress1 string `json:"streetAddress1,omitempty" bson:"streetAddress1,omitempty"`
 	StreetAddress2 string `json:"streetAddress2,omitempty" bson:"streetAddress2,omitempty"`
 	City           string `json:"city,omitempty" bson:"city,omitempty"`
