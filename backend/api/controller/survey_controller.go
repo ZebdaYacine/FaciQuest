@@ -5,6 +5,7 @@ import (
 	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/internal/usecase"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -116,13 +117,12 @@ func (sc *SurveyController) GetSurveyRequest(c *gin.Context) {
 
 func (sc *SurveyController) GetMySurveysRequest(c *gin.Context) {
 	log.Println("__***__***___________ GET MY SURVEYS  REQUEST ___________***__***__")
-
 	userId := core.GetIdUser(c)
+	fmt.Println("userId : ", userId)
 	surveyParams := &usecase.SurveyParams{}
 	survey := &domain.Survey{}
 	survey.UserId = userId
 	surveyParams.Data = survey
-
 	result := sc.SurveyUseCase.GetMySurveys(c, surveyParams)
 	if err := result.Err; err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
@@ -130,6 +130,8 @@ func (sc *SurveyController) GetMySurveysRequest(c *gin.Context) {
 		})
 		return
 	}
+	log.Println(result)
+
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "GET MY SURVEYS REQUEST DONE SUCCESSFULY",
 		Data:    result.List,

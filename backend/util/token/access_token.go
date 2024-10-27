@@ -3,6 +3,7 @@ package util
 import (
 	"back-end/api/controller/model"
 	"fmt"
+	"log"
 	"time"
 
 	jwt "github.com/golang-jwt/jwt/v4"
@@ -56,11 +57,14 @@ func ExtractFieldFromToken(requestToken string, secret string, feild string) (an
 		return "", fmt.Errorf("invalid Token")
 	}
 	val, ok := claims[feild]
+	log.Println(ok)
 	switch val.(type) {
 	case string:
 		return claims[feild].(string), nil
 	case float64:
 		return claims[feild].(float64), nil
+	case int32:
+		return claims[feild].(int32), nil
 	default:
 		return nil, nil
 	}

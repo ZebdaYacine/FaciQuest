@@ -57,10 +57,12 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewGetAllSurveysRouter(db, userRouter)
 	//Criteria API
 	private.NewGetCriteriaRouter(db, userRouter)
+	private.NewCreateCriteriaRouter(db, userRouter)
 	//Collector API
 	private.NewCreateCollectorRouter(db, userRouter)
 	private.NewDeleteCollectorRouter(db, userRouter)
 	private.NewGetCollectorRouter(db, userRouter)
+	private.NewEsstimatePriceByCollectorRouter(db, userRouter)
 	//Submission API
 	private.NewSubmissionAnswerRouter(db, userRouter)
 

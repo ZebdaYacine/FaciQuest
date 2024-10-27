@@ -22,6 +22,7 @@ type CollectorRepository interface {
 	DeleteCollector(c context.Context, collectorId string) (bool, error)
 	UpdateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
 	GetCollector(c context.Context, collectorId string) (*domain.Collector, error)
+	EstimatePriceByCollector(c context.Context, collector *domain.Collector) float64
 }
 
 func NewCollectorRepository(db database.Database) CollectorRepository {
@@ -115,4 +116,9 @@ func (cr *collectorRepository) UpdateCollector(c context.Context, col *domain.Co
 		return nil, err
 	}
 	return new_collector, nil
+}
+
+// EstimatePriceByCollector implements CollectorRepository.
+func (cu *collectorRepository) EstimatePriceByCollector(c context.Context, collector *domain.Collector) float64 {
+	return 2.25 * float64(collector.TargetAudience.Population)
 }

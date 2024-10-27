@@ -81,3 +81,24 @@ func (cc *CollectorController) GetCollectorBySurveyIdRequest(c *gin.Context) {
 		Data:    result.Data,
 	})
 }
+
+func (cc *CollectorController) EsstimatePriceRequest(c *gin.Context) {
+	log.Println("__***__***___________ Esstimate Price REQUEST ___________***__***__")
+	var new_collector domain.Collector
+	if !core.IsDataRequestSupported(&new_collector, c) {
+		return
+	}
+	params := &usecase.CollectorParams{}
+	params.Data = &new_collector
+	result, err := cc.CollectorUseCase.EstimatePriceByCollector(c, params.Data)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "ESSTIMATE PRICE REQUEST DONE SUCCESSFULY",
+		Data:    result,
+	})
+}
