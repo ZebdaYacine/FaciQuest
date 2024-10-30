@@ -18,57 +18,61 @@ class SurveyView extends StatelessWidget {
       surveyId: surveyId,
       repository: getIt<SurveyRepository>(),
     )..getSurvey();
-    return BlocProvider(
-      create: (context) => cubit,
-      child: BlocBuilder<SurveyCubit, SurveyState>(
-        buildWhen: (previous, current) => previous.survey != current.survey,
-        builder: (context, state) {
-          if (state.status.isLoading) return const _LoadingState();
-          if (state.status.isFailure) return const _FailureState();
-          if (state.survey.isEmpty) return const _EmptyState();
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(state.survey.name),
-              centerTitle: false,
-            ),
-            body: ListView.separated(
-              separatorBuilder: (context, index) =>
-                  AppSpacing.spacing_1.heightBox,
-              itemCount: state.survey.questions.length + 1,
-              padding: AppSpacing.spacing_2.padding,
-              itemBuilder: (context, index) {
-                if (index >= state.survey.questions.length) {
-                  return BlocBuilder<SurveyCubit, SurveyState>(
-                    builder: (context, state) {
-                      return ElevatedButton(
-                        onPressed: state.submissionStatus.isLoading
-                            ? null
-                            : cubit.submit,
-                        child: Center(
-                          child: state.submissionStatus.isLoading
-                              ? const CircularProgressIndicator()
-                              : const Text('Submit'),
-                        ),
+    return Builder(
+      builder: (_) {
+        return BlocProvider(
+          create: (context) => cubit,
+          child: BlocBuilder<SurveyCubit, SurveyState>(
+            buildWhen: (previous, current) => previous.survey != current.survey,
+            builder: (context, state) {
+              if (state.status.isLoading) return const _LoadingState();
+              if (state.status.isFailure) return const _FailureState();
+              if (state.survey.isEmpty) return const _EmptyState();
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(state.survey.name),
+                  centerTitle: false,
+                ),
+                body: ListView.separated(
+                  separatorBuilder: (context, index) =>
+                      AppSpacing.spacing_1.heightBox,
+                  itemCount: state.survey.questions.length + 1,
+                  padding: AppSpacing.spacing_2.padding,
+                  itemBuilder: (context, index) {
+                    if (index >= state.survey.questions.length) {
+                      return BlocBuilder<SurveyCubit, SurveyState>(
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: state.submissionStatus.isLoading
+                                ? null
+                                : cubit.submit,
+                            child: Center(
+                              child: state.submissionStatus.isLoading
+                                  ? const CircularProgressIndicator()
+                                  : const Text('Submit'),
+                            ),
+                          );
+                        },
                       );
-                    },
-                  );
-                }
-                final question = state.survey.questions[index];
-                final answer = state.answers.firstWhereOrNull(
-                  (element) => element.questionId == question.id,
-                );
-                return QuestionPreview(
-                  question: question,
-                  isPreview: false,
-                  index: index + 1,
-                  answer: answer,
-                  onAnswerChanged: cubit.onAnswerChanged,
-                );
-              },
-            ),
-          );
-        },
-      ),
+                    }
+                    final question = state.survey.questions[index];
+                    final answer = state.answers.firstWhereOrNull(
+                      (element) => element.questionId == question.id,
+                    );
+                    return QuestionPreview(
+                      question: question,
+                      isPreview: false,
+                      index: index + 1,
+                      answer: answer,
+                      onAnswerChanged: cubit.onAnswerChanged,
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        );
+      }
     );
   }
 }
