@@ -55,7 +55,7 @@ class SummaryPage extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(
-                            '${survey.questions.length}',
+                            '${survey.responseCount}',
                             style: context.textTheme.headlineMedium,
                           ),
                           const Spacer(),
@@ -66,6 +66,7 @@ class SummaryPage extends StatelessWidget {
                   AppSpacing.spacing_2.widthBox,
                   Expanded(
                     child: Card(
+                      color: survey.status.color,
                       child: Padding(
                         padding: AppSpacing.spacing_2.padding,
                         child: Column(
@@ -77,9 +78,11 @@ class SummaryPage extends StatelessWidget {
                             ),
                             AppSpacing.spacing_0_5.heightBox,
                             const Spacer(),
-                            SurveyBadge(
-                              status: survey.status,
-                              large: true,
+                            Center(
+                              child: Text(
+                                survey.status.name.capitalizeFirst,
+                                style: context.textTheme.headlineLarge,
+                              ),
                             ),
                             const Spacer(),
                           ],

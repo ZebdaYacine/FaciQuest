@@ -4,9 +4,28 @@ import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/features/survey/survey.dart';
+import 'package:flutter/material.dart';
 import 'package:objectid/objectid.dart';
 
-enum SurveyStatus { active, draft, published, deleted }
+enum SurveyStatus {
+  active,
+  draft,
+  published,
+  deleted;
+
+  Color get color {
+    switch (this) {
+      case SurveyStatus.active:
+        return Colors.green;
+      case SurveyStatus.draft:
+        return Colors.grey;
+      case SurveyStatus.published:
+        return Colors.amber;
+      case SurveyStatus.deleted:
+        return Colors.red;
+    }
+  }
+}
 
 enum SurveyAction {
   newSurvey,

@@ -16,4 +16,6 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
   void onEmailChanged(String value) {}
 
   void onPhoneChanged(String value) {}
+
+  void onBirthDateChanged(DateTime date) {}
 }

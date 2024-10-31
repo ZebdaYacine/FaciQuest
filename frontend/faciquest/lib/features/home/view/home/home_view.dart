@@ -49,6 +49,12 @@ class HomeView extends StatelessWidget {
               Expanded(
                 child: BlocBuilder<HomeCubit, HomeState>(
                   builder: (context, state) {
+                    if (state.status.isFailure) {
+                      return const _FailureState();
+                    }
+                    if (state.status.isSuccess && state.surveys.isEmpty) {
+                      return const _EmptyState();
+                    }
                     return Skeletonizer(
                       enabled: state.status.isLoading,
                       child: ListView.builder(
@@ -90,9 +96,26 @@ class HomeView extends StatelessWidget {
   }
 }
 
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('No surveys found');
+  }
+}
+
+class _FailureState extends StatelessWidget {
+  const _FailureState();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Something went wrong');
+  }
+}
+
 class _SurveyCard extends StatelessWidget {
   const _SurveyCard({
-    super.key,
     this.surveyEntity,
   });
 
