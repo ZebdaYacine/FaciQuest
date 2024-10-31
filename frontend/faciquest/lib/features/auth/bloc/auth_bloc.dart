@@ -50,8 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(
       state.copyWith(
         user: event.user,
-        // authStatus: AuthStatus.authenticated,
-        authStatus: event.user == null
+        authStatus: event.user == null || event.user == UserEntity.empty
             ? AuthStatus.unauthenticated
             : AuthStatus.authenticated,
       ),

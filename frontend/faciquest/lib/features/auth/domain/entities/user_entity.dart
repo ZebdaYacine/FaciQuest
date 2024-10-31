@@ -52,13 +52,13 @@ class UserEntity extends Equatable {
   }
 
   factory UserEntity.fromMap(Map<String, dynamic> map) {
-
+    final data = map['Data'] as Map<String, dynamic>? ?? {};
     return UserEntity(
-      id: map['id'] as String? ?? '',
-      email: map['email'] as String? ?? '',
-      firstName: map['name'] as String? ?? '',
-      lastName: map['lastName'] as String? ?? '',
-      phone: map['phone'] as String? ?? '',
+      id: data['_id'] as String? ?? '',
+      email: data['email'] as String? ?? '',
+      firstName: data['name'] as String? ?? '',
+      lastName: data['lastName'] as String? ?? '',
+      phone: data['phone'] as String? ?? '',
     );
   }
 
@@ -73,4 +73,7 @@ class UserEntity extends Equatable {
   @override
   List<Object> get props =>
       [id, email, firstName, lastName, phone, password, username];
+
+  bool get isNotEmpty => this != UserEntity.empty;
+  bool get isEmpty => this == UserEntity.empty;
 }

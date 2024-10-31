@@ -9,19 +9,21 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = getIt<AuthBloc>().state.user;
     return Scaffold(
       appBar: AppBar(
         actions: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Youcef Goudjal'),
-                  Text('+2130663519649'),
-                ],
-              ),
+              if (user != null && user.isNotEmpty)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('${user.firstName} ${user.lastName}'),
+                    Text('+${user.phone}'),
+                  ],
+                ),
               AppSpacing.spacing_1.widthBox,
               const CircleAvatar(
                 child: Text('YG'),
