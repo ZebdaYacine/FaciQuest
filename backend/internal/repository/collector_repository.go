@@ -21,7 +21,7 @@ type CollectorRepository interface {
 	CreateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
 	DeleteCollector(c context.Context, collectorId string) (bool, error)
 	UpdateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
-	GetCollector(c context.Context, collectorId string) (*domain.Collector, error)
+	GetCollector(c context.Context, collectorId string) ([]*domain.Collector, error)
 	EstimatePriceByCollector(c context.Context, collector *domain.Collector) float64
 }
 
@@ -73,22 +73,26 @@ func (cr *collectorRepository) DeleteCollector(c context.Context, collectorId st
 }
 
 // GetCollector implements CollectorRepository.
-func (cr *collectorRepository) GetCollector(c context.Context, surveyID string) (*domain.Collector, error) {
+// TODO: get list of collectors
+func (cr *collectorRepository) GetCollector(c context.Context, surveyID string) ([]*domain.Collector, error) {
 	collection := cr.database.Collection(core.COLLECTOR)
-	new_collector := &domain.Collector{}
 	filter := bson.M{
 		"surveyId": surveyID,
 	}
-	fmt.Println(filter)
-	err := collection.FindOne(c, filter).Decode(new_collector)
+	list, err := collection.Find(c, filter)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			return nil, fmt.Errorf("collector not found")
-		}
+		log.Printf("Failed to load collectors: %v", err)
 		return nil, err
 	}
-	log.Println(new_collector)
-	return new_collector, nil
+	list_collectors := []*domain.Collector{}
+	for list.Next(c) {
+		new_collector := domain.Collector{}
+		if err := list.Decode(new_collector); err != nil {
+			log.Fatal(err)
+		}
+		list_collectors = append(list_collectors, &new_collector)
+	}
+	return list_collectors, nil
 }
 
 // UpdateCriteria implements CollectorRepository.

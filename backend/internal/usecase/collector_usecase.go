@@ -16,6 +16,11 @@ type CollectorResult struct {
 	Err  error
 }
 
+type CollectorsResult struct {
+	Data []*domain.Collector
+	Err  error
+}
+
 type collectorUseCase struct {
 	repo       repository.CollectorRepository
 	collection string
@@ -24,7 +29,7 @@ type collectorUseCase struct {
 type CollectorUseCase interface {
 	CreateCollector(c context.Context, params *CollectorParams) *CollectorResult
 	DeleteCollector(c context.Context, params *CollectorParams) (bool, error)
-	GetCollector(c context.Context, params *CollectorParams) *CollectorResult
+	GetCollector(c context.Context, params *CollectorParams) *CollectorsResult
 	EstimatePriceByCollector(c context.Context, collector *domain.Collector) (float64, error)
 }
 
@@ -68,22 +73,6 @@ func crudCollector(repo repository.CollectorRepository, c context.Context, param
 			}
 			return result
 		}
-	case "getBySurveyId":
-		{
-			if collector.SurveyId == "" {
-				return &CollectorResult{
-					Data: nil,
-					Err:  fmt.Errorf("surveyId is required to get a collector"),
-				}
-			}
-			result, err = repo.GetCollector(c, collector.SurveyId)
-			if err != nil {
-				return &CollectorResult{
-					Data: nil,
-					Err:  fmt.Errorf("error in  %v collector: %v", action, err),
-				}
-			}
-		}
 	default:
 		{
 			result, err = nil, nil
@@ -120,16 +109,28 @@ func (cu *collectorUseCase) DeleteCollector(c context.Context, params *Collector
 }
 
 // GetCollector implements CollectorUseCase.
-func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorParams) *CollectorResult {
-	return crudCollector(cu.repo, c, params, "getBySurveyId").(*CollectorResult)
+func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorParams) *CollectorsResult {
+	collector := params.Data
+	if collector.SurveyId == "" {
+		return &CollectorsResult{
+			Data: nil,
+			Err:  fmt.Errorf("survey id required"),
+		}
+	}
+	result, err := cu.repo.GetCollector(c, collector.SurveyId)
+	if err != nil {
+		return &CollectorsResult{
+			Data: nil,
+			Err:  err,
+		}
+	}
+	return &CollectorsResult{
+		Data: result,
+		Err:  nil,
+	}
 }
 
 // EstimatePriceByCollector implements CollectorUseCase.
 func (cu *collectorUseCase) EstimatePriceByCollector(c context.Context, collector *domain.Collector) (float64, error) {
-	//err := collector.Validate()
-	// if err != nil {
-	// 	return cu.repo.EstimatePriceByCollector(c, collector), nil
-	// }
-	// return 0.0, err
 	return cu.repo.EstimatePriceByCollector(c, collector), nil
 }

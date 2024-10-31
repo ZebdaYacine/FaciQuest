@@ -23,6 +23,7 @@ type SurveyBadge struct {
 	Views          int       `json:"views" bson:"views"`
 	CountQuestions int       `json:"countQuestions" bson:"countQuestions"`
 	CountAnswers   int       `json:"countAnswers" bson:"countAnswers"`
+	Price          float64   `json:"price,omitempty" bson:"price,omitempty"`
 	CreatedAt      time.Time `bson:"createdAt"`
 	UpdatedAt      time.Time `bson:"updatedAt"`
 }
@@ -45,14 +46,6 @@ type Location struct {
 	State   []string `json:"state,omitempty" bson:"state,omitempty"`
 	City    []string `json:"city,omitempty" bson:"city,omitempty"`
 }
-
-// type BaseQuestion struct {
-// 	ID           string `json:"id" bson:"id"`
-// 	Title        string `json:"title" bson:"title"`
-// 	Order        int    `json:"order" bson:"order"`
-// 	TypeQuestion string `json:"type" bson:"type"`
-// 	IsRequired   bool   `json:"isrequired" bson:"isrequired"`
-// }
 
 type StarRatingQuestion struct {
 	ID           string `json:"id" bson:"id"`

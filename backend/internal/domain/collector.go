@@ -19,19 +19,21 @@ type Collector struct {
 }
 
 type Gender struct {
-	GenderName string `json:"genderName" bson:"genderName"`
+	Value string `json:"value" bson:"value"`
 }
 
 type AgeRange struct {
-	MinAge int `json:"minAge"`
-	MaxAge int `json:"maxAge"`
+	Start int `json:"start" bson:"start"`
+	End   int `json:"end", bson:"end"`
 }
 
 type TargetAudience struct {
-	Population        int        `json:"population" bson:"population"`
+	Population        int       `json:"population" bson:"population"`
 	Gender            []Gender   `json:"gender" bson:"gender"`
 	AgeRange          []AgeRange `json:"ageRange" bson:"ageRange"`
-	Location          Location   `json:"location" bson:"location"`
+	Countries         []string   `json:"countries" bson:"countries"`
+	Provinces         []string   `json:"provinces,omitempty" bson:"provinces,omitempty"`
+	Cities            []string   `json:"cities,omitempty" bson:"cities,omitempty"`
 	TargetingCriteria []Criteria `json:"targetingCriteria" bson:"targetingCriteria"`
 }
 

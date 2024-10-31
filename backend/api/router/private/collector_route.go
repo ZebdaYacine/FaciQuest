@@ -34,7 +34,7 @@ func NewGetCollectorRouter(db database.Database, group *gin.RouterGroup) {
 	cc := &controller.CollectorController{
 		CollectorUseCase: cu,
 	}
-	group.GET("get-collector-by-surveyId", cc.GetCollectorBySurveyIdRequest)
+	group.GET("get-survey-collectors", cc.GetCollectorBySurveyIdRequest)
 }
 
 func NewEsstimatePriceByCollectorRouter(db database.Database, group *gin.RouterGroup) {

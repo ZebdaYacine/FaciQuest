@@ -5,7 +5,7 @@ type Answer struct {
 
 	Value string `json:"value,omitempty" bson:"value,omitempty"`
 
-	Rating string `json:"rating,omitempty" bson:"rating,omitempty"`
+	//Rating float64 `json:"rating,omitempty" bson:"rating,omitempty"`
 
 	SelectedChoices []string `json:"selectedChoices,omitempty" bson:"selectedChoices,omitempty"`
 	MultipleSelect  bool     `json:"multipleSelect,omitempty" bson:"multipleSelect,omitempty"`

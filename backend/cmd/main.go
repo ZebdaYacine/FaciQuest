@@ -157,4 +157,5 @@ func main() {
 	db := database.ConnectionDb()
 	server.InitGinServer(db, redis)
 	log.Printf("STRINGING SERVER %s", common.RootServer.SECRET_KEY)
+
 }
