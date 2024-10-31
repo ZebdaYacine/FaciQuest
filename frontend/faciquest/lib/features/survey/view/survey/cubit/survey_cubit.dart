@@ -15,22 +15,36 @@ class SurveyCubit extends Cubit<SurveyState> {
 
   Future<void> submit() async {
     emit(state.copyWith(submissionStatus: Status.showLoading));
-    await repository.submitAnswers(
-      SubmissionEntity(
-        collectorId: state.survey.collectorId ?? '',
-        answers: state.answers.toList(),
-        surveyId: surveyId,
-      ),
-    );
+    try {
+      await repository.submitAnswers(
+        SubmissionEntity(
+          collectorId: state.survey.collectorId ?? state.survey.id,
+          answers: state.answers.toList(),
+          surveyId: surveyId,
+        ),
+      );
 
-    if (!isClosed) emit(state.copyWith(submissionStatus: Status.success));
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            submissionStatus: Status.success,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!isClosed) {
+        emit(state.copyWith(
+          submissionStatus: Status.failure,
+        ));
+      }
+    }
   }
 
   Future<void> getSurvey() async {
     try {
       emit(state.copyWith(status: Status.showLoading));
       final survey = await repository.getSurveyById(surveyId);
-      emit(state.copyWith(status: Status.success, survey: survey));
+      emit(state.copyWith(survey: survey));
     } catch (e) {
       emit(state.copyWith(status: Status.failure));
     }

@@ -4,7 +4,7 @@ import 'package:faciquest/core/core.dart';
 
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:objectid/objectid.dart';
 
 class ImageChoiceQuestionBuilder extends QuestionBuilder {
   const ImageChoiceQuestionBuilder({
@@ -113,7 +113,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                   temp.insert(
                       index + 1,
                       ImageChoice(
-                        id: const Uuid().v4(),
+                        id: ObjectId().hexString,
                       ));
                   onChange(choices: temp);
                 },
@@ -128,7 +128,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                   if (choices.isEmpty) {
                     choices = [
                       ImageChoice(
-                        id: const Uuid().v4(),
+                        id: ObjectId().hexString,
                       )
                     ];
                   }

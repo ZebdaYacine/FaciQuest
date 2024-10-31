@@ -24,4 +24,9 @@ class ManageMySurveysCubit extends Cubit<ManageMySurveysState> {
       ));
     }
   }
+
+  void deleteSurvey(String surveyId) {
+    repository.deleteSurvey(surveyId);
+    fetchSurveys();
+  }
 }

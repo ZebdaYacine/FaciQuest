@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:objectid/objectid.dart';
 
 class CollectorEntity extends Equatable {
   final String id;
@@ -89,13 +89,15 @@ class CollectorEntity extends Equatable {
       'type': type.toMap(),
       'surveyId': surveyId,
       if (type == CollectorType.targetAudience) ...{
-        'population': population,
-        'gender': gender?.toMap(),
-        'ageRange': ageRange?.toMap(),
-        'countries': countries,
-        'provinces': provinces.map((x) => x.toMap()).toList(),
-        'cities': cities.map((x) => x.toMap()).toList(),
-        'targetingCriteria': targetingCriteria.map((x) => x.toMap()).toList(),
+        'targetAudience': {
+          'population': population,
+          'gender': gender?.toMap(),
+          'ageRange': ageRange?.toMap(),
+          'countries': countries,
+          'provinces': provinces.map((x) => x.toMap()).toList(),
+          'cities': cities.map((x) => x.toMap()).toList(),
+          'targetingCriteria': targetingCriteria.map((x) => x.toMap()).toList(),
+        }
       } else
         'webUrl': webUrl,
     };
@@ -268,164 +270,164 @@ class TargetingCriteria extends Equatable {
   static List<TargetingCriteria> dummy() {
     return [
       TargetingCriteria(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         category: 'Most popular',
         title: 'Education',
         description:
             'What is the highest level of school that you have completed?',
         choices: [
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Elementary School',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'High School',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'College',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'University',
           ),
         ],
       ),
       TargetingCriteria(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         category: 'Most popular',
         title: 'Marital Status',
         description: 'What is your marital status?',
         choices: [
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Single',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Married',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Divorced',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Widowed',
           ),
         ],
       ),
       TargetingCriteria(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         category: 'Most popular',
         title: 'Parental Status',
         description: 'What is your parental status?',
         choices: [
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'No children',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Has children',
           ),
         ],
       ),
       TargetingCriteria(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Race',
         category: 'Most popular',
         description: 'What is your ethnicity? (Please select all that apply.)',
         choices: [
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'American Indian or Alaska Native',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Asian',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Black or African American',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Native Hawaiian or Other Pacific Islander',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'White',
           ),
         ],
       ),
       TargetingCriteria(
         title: 'Religion',
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         category: 'Most popular',
         description: 'What is your religion? (Please select all that apply.)',
         choices: [
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Islam',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'No religion',
           ),
         ],
       ),
       TargetingCriteria(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         category: 'Employment',
         title: 'Employment Status',
         description:
             'Which of the following categories best describes your employment status?',
         choices: [
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Employed part-time',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Employed full-time',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Unemployed',
           ),
           CriteriaChoices(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             title: 'Retired',
           ),
         ],
       ),
       TargetingCriteria(
-          id: const Uuid().v4(),
+          id: ObjectId().hexString,
           category: 'Employment',
           title: 'Job Level',
           description:
               'Which of the following best describes your current job level?',
           choices: [
             CriteriaChoices(
-              id: const Uuid().v4(),
+              id: ObjectId().hexString,
               title: 'Entry-level',
             ),
             CriteriaChoices(
-              id: const Uuid().v4(),
+              id: ObjectId().hexString,
               title: 'Mid-level',
             ),
             CriteriaChoices(
-              id: const Uuid().v4(),
+              id: ObjectId().hexString,
               title: 'Senior-level',
             ),
             CriteriaChoices(
-              id: const Uuid().v4(),
+              id: ObjectId().hexString,
               title: 'Manager',
             ),
             CriteriaChoices(
-              id: const Uuid().v4(),
+              id: ObjectId().hexString,
               title: 'Director',
             ),
           ]),

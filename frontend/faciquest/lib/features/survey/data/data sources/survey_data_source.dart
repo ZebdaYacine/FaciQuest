@@ -207,7 +207,7 @@ class SurveyDataSourceImpl implements SurveyDataSource {
   @override
   Future<double> estimatePrice(CollectorEntity collector) async {
     logInfo('SurveyDataSourceImpl:estimatePrice');
-    final response = await dioClient.post<Map<String, dynamic>>(
+    final response = await dioClient.get<Map<String, dynamic>>(
       AppUrls.estimatePrice,
       data: collector.toMap(),
     );

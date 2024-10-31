@@ -17,12 +17,12 @@ class AppUrls {
   static const deleteSurvey = '$baseUrl/profile/delete-survey';
   static const getSurvey = '$baseUrl/profile/get-survey';
   static const getSurveys = '$baseUrl/profile/get-all-surveys';
-  static const submitAnswers = '$baseUrl/profile/submit-answers';
+  static const submitAnswers = '$baseUrl/profile/submit-answer';
   static const getMySurveys = '$baseUrl/profile/get-my-surveys';
   static const getSurveyCollectors = '$baseUrl/profile/get-survey-collectors';
   static const getTargetingCriteria = '$baseUrl/profile/get-criterias';
   static const confirmPayment = '$baseUrl/profile/confirm-payment';
-  static const estimatePrice = '$baseUrl/profile/estimate-price';
+  static const estimatePrice = '$baseUrl/profile/esstimate-price';
   static const createCollector = '$baseUrl/profile/create-collector';
   static const deleteCollector = '$baseUrl/profile/delete-collector';
 }

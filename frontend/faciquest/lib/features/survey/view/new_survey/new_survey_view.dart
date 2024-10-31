@@ -80,24 +80,25 @@ class _SurveyDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: AppSpacing.spacing_2.padding,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Create New Survey',
-                  style: context.textTheme.headlineLarge,
-                ),
-                const Text('Please enter details below'),
-                AppSpacing.spacing_2.heightBox,
-                const _NewSurveyForm(),
-              ],
+        Expanded(
+          child: Padding(
+            padding: AppSpacing.spacing_2.padding,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Create New Survey',
+                    style: context.textTheme.headlineLarge,
+                  ),
+                  const Text('Please enter details below'),
+                  AppSpacing.spacing_2.heightBox,
+                  const _NewSurveyForm(),
+                ],
+              ),
             ),
           ),
         ),
-        const Spacer(),
         Padding(
           padding: AppSpacing.spacing_2.padding,
           child: Column(

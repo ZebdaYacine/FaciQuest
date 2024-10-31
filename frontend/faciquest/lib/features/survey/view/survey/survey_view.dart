@@ -4,6 +4,7 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class SurveyView extends StatelessWidget {
   const SurveyView({
@@ -18,10 +19,40 @@ class SurveyView extends StatelessWidget {
       surveyId: surveyId,
       repository: getIt<SurveyRepository>(),
     )..getSurvey();
-    return Builder(
-      builder: (_) {
-        return BlocProvider(
-          create: (context) => cubit,
+    return Builder(builder: (_) {
+      return BlocProvider(
+        create: (context) => cubit,
+        child: BlocListener<SurveyCubit, SurveyState>(
+          listener: (context, state) {
+            if (state.submissionStatus.isSuccess) {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return AppBackDrop(
+                    showHeaderContent: false,
+                    showDivider: false,
+                    body: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        LottieBuilder.asset(
+                          'assets/lottie/success.json',
+                          height: 300,
+                          fit: BoxFit.cover,
+                          repeat: false,
+                          animate: true,
+                        ),
+                        AppSpacing.spacing_2.heightBox,
+                        const Text(
+                          'Answer Submitted',
+                        ),
+                        AppSpacing.spacing_2.heightBox,
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+          },
           child: BlocBuilder<SurveyCubit, SurveyState>(
             buildWhen: (previous, current) => previous.survey != current.survey,
             builder: (context, state) {
@@ -71,9 +102,9 @@ class SurveyView extends StatelessWidget {
               );
             },
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 }
 

@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/features/survey/survey.dart';
-import 'package:uuid/uuid.dart';
+import 'package:objectid/objectid.dart';
 
 enum SurveyStatus { active, draft, published, deleted }
 
@@ -235,7 +235,7 @@ class SurveyEntity extends Equatable {
     return Future.delayed(
       const Duration(milliseconds: 50),
       () => SurveyEntity(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         name: 'Test Survey',
         status: SurveyStatus.draft,
         questions: QuestionEntity.dummyList(),
@@ -249,7 +249,7 @@ class SurveyEntity extends Equatable {
   static List<SurveyEntity> dummyList() {
     return [
       SurveyEntity(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         name: 'Test Survey',
         status: SurveyStatus.draft,
         responseCount: Random().nextInt(50),
@@ -260,7 +260,7 @@ class SurveyEntity extends Equatable {
         topics: const ['test', 'test2'],
       ),
       SurveyEntity(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         name: 'Unit Test Survey',
         responseCount: Random().nextInt(50),
         viewCount: 50 + Random().nextInt(10),
@@ -274,7 +274,7 @@ class SurveyEntity extends Equatable {
         topics: const ['test', 'test2'],
       ),
       SurveyEntity(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         name: 'Unit Test Survey',
         responseCount: Random().nextInt(50),
         viewCount: 50 + Random().nextInt(10),

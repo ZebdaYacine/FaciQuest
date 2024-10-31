@@ -38,7 +38,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return MultipleChoiceQuestion(
-      id: map['_id'] ?? '',
+      id: map['id'] ?? '',
       title: map['title'],
       order: map['order'],
       choices: List<String>.from(map['choices']),

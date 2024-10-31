@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:objectid/objectid.dart';
 
 part 'questions/star_rating_question.dart';
 part 'questions/multiple_choice_question.dart';
@@ -216,47 +216,47 @@ sealed class QuestionEntity extends Equatable {
   static List<QuestionEntity> dummyList() {
     return [
       StarRatingQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Rating',
         order: 1,
         type: QuestionType.starRating,
         maxRating: 5,
       ),
       MultipleChoiceQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Multiple Choice',
         order: 2,
         choices: const ['Choice 1', 'Choice 2', 'Choice 3'],
         type: QuestionType.multipleChoice,
       ),
       CheckboxesQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Checkboxes',
         choices: const ['Choice 1', 'Choice 2', 'Choice 3'],
         order: 3,
         type: QuestionType.checkboxes,
       ),
       DropdownQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Dropdown',
         choices: const ['Choice 1', 'Choice 2', 'Choice 3'],
         order: 4,
         type: QuestionType.dropdown,
       ),
       ShortAnswerQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Short Answer',
         order: 5,
         type: QuestionType.shortAnswer,
       ),
       CommentBoxQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Comment Box',
         order: 6,
         type: QuestionType.commentBox,
       ),
       SliderQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Slider',
         order: 7,
         type: QuestionType.slider,
@@ -264,19 +264,19 @@ sealed class QuestionEntity extends Equatable {
         max: 10,
       ),
       DateTimeQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Date / Time',
         order: 8,
         type: QuestionType.dateTime,
       ),
       AudioRecordQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Audio Record',
         order: 9,
         type: QuestionType.audioRecord,
       ),
       MatrixQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Matrix',
         order: 10,
         type: QuestionType.matrix,
@@ -284,7 +284,7 @@ sealed class QuestionEntity extends Equatable {
         cols: const ['Col 1', 'Col 2'],
       ),
       MatrixQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Matrix',
         order: 11,
         useCheckbox: true,
@@ -293,21 +293,21 @@ sealed class QuestionEntity extends Equatable {
         cols: const ['Col 1', 'Col 2'],
       ),
       ImageChoiceQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Image Choice',
         choices: [
           ImageChoice(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             altText: 'Choice 1',
             url: 'https://picsum.photos/id/237/200/300',
           ),
           ImageChoice(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             altText: 'Choice 2',
             url: 'https://picsum.photos/id/238/200/300',
           ),
           ImageChoice(
-            id: const Uuid().v4(),
+            id: ObjectId().hexString,
             altText: 'Choice 3',
             url: 'https://picsum.photos/id/239/200/300',
           ),
@@ -316,40 +316,40 @@ sealed class QuestionEntity extends Equatable {
         type: QuestionType.imageChoice,
       ),
       NameQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Name',
         order: 12,
         type: QuestionType.nameType,
       ),
       EmailAddressQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Email Address',
         order: 13,
         type: QuestionType.emailAddress,
       ),
       PhoneQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Phone Number',
         order: 14,
         type: QuestionType.phoneNumber,
       ),
       AddressQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Address',
         order: 15,
         type: QuestionType.address,
       ),
       TextQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Text',
         order: 16,
         type: QuestionType.text,
       ),
       ImageQuestion(
-        id: const Uuid().v4(),
+        id: ObjectId().hexString,
         title: 'Image',
         image: ImageChoice(
-          id: const Uuid().v4(),
+          id: ObjectId().hexString,
           url: 'https://picsum.photos/200/300',
           altText: 'Image',
         ),

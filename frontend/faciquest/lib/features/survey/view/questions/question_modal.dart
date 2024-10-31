@@ -2,7 +2,7 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:objectid/objectid.dart';
 
 Future<void> showQuestionModal(
   BuildContext context, {
@@ -113,7 +113,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                           title: title,
                         ) ??
                         StarRatingQuestion(
-                          id: const Uuid().v4(),
+                          id: ObjectId().hexString,
                           title: title,
                           order: 0,
                         ),

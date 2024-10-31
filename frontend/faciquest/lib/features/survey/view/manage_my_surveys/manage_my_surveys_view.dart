@@ -319,13 +319,42 @@ class SurveyActions extends StatelessWidget {
         ];
       },
       onSelected: (value) async {
-        await context.pushNamed(
-          AppRoutes.newSurvey.name,
-          extra: value,
-          pathParameters: {
-            'id': surveyId,
-          },
-        );
+        if (value == SurveyAction.delete) {
+          await showDialog(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                  title: const Text('Delete Survey'),
+                  content: const Text(
+                      'Are you sure you want to delete this survey?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                        context
+                            .read<ManageMySurveysCubit>()
+                            .deleteSurvey(surveyId);
+                      },
+                      child: const Text('Delete'),
+                    ),
+                  ]);
+            },
+          );
+        } else {
+          await context.pushNamed(
+            AppRoutes.newSurvey.name,
+            extra: value,
+            pathParameters: {
+              'id': surveyId,
+            },
+          );
+        }
         if (context.mounted) {
           context.read<ManageMySurveysCubit>().fetchSurveys();
         }
