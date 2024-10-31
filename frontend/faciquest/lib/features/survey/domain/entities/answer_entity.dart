@@ -36,21 +36,37 @@ abstract class AnswerEntity extends Equatable {
       'questionId': questionId,
     };
   }
+
+  AnswerEntity.fromMap(Map<String, dynamic> map)
+      : questionId = map['questionId'];
 }
 
 class SubmissionEntity {
   final List<AnswerEntity> answers;
   final String surveyId;
+  final String collectorId;
 
   SubmissionEntity({
     required this.answers,
     required this.surveyId,
+    required this.collectorId,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'surveyId': surveyId,
+      'collectorId': collectorId,
       'answers': answers.map((answer) => answer.toMap()).toList(),
     };
   }
+
+  SubmissionEntity.fromMap(Map<String, dynamic> map)
+      : answers = [],
+        // List<AnswerEntity>.from(
+        //     map['answers'].map(
+        //       (answer) => AnswerEntity.fromMap(answer),
+        //     ),
+        //   ),
+        surveyId = map['surveyId'],
+        collectorId = map['collectorId'];
 }

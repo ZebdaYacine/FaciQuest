@@ -16,7 +16,7 @@ class AppUrls {
   static const updateSurvey = '$baseUrl/profile/update-survey';
   static const deleteSurvey = '$baseUrl/profile/delete-survey';
   static const getSurvey = '$baseUrl/profile/get-survey';
-  static const getSurveys = '$baseUrl/profile/get-surveys';
+  static const getSurveys = '$baseUrl/profile/get-all-surveys';
   static const submitAnswers = '$baseUrl/profile/submit-answers';
   static const getMySurveys = '$baseUrl/profile/get-my-surveys';
   static const getSurveyCollectors = '$baseUrl/profile/get-survey-collectors';

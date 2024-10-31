@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:faciquest/features/features.dart';
 
 abstract class SurveyRepository {
+  ///
   Future<List<SurveyEntity>> getSurveys();
   Future<SurveyEntity?> getSurveyById(String surveyId);
   Future<SurveyEntity?> createSurvey(SurveyEntity survey);

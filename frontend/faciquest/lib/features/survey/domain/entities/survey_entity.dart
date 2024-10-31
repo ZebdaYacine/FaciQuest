@@ -39,16 +39,42 @@ enum SurveyAction {
 
 class SurveyEntity extends Equatable {
   final String id;
+
+  /// the name of the survey
   final String name;
+
+  /// the description of the survey
   final String? description;
+
+  /// the status of the survey
+  /// can be active, draft, published, deleted
   final SurveyStatus status;
+
+  /// list of languages that the survey supports
   final List<String> languages;
+
+  /// list of topics that the user wants to focus on
+  /// like (engineering, management, etc...)
   final List<String> topics;
+
+  /// the likert scale of the survey
   final LikertScale? likertScale;
+
+  /// the list of questions in the survey
   final List<QuestionEntity> questions;
+
+  /// the list of submissions for this survey
+  /// by default it is empty
+  /// but it will be filled if the user is the owner of the survey
   final List<SubmissionEntity> submissions;
   final DateTime createdAt;
   final DateTime? updatedAt;
+
+  /// the id of the collector who created the survey
+  final String? collectorId;
+
+  /// the price of the survey after the user submits the answers
+  final double? price;
   //
   final int responseCount;
   final int viewCount;
@@ -64,6 +90,7 @@ class SurveyEntity extends Equatable {
     this.id = '',
     this.name = '',
     this.description,
+    this.collectorId,
     this.status = SurveyStatus.draft,
     this.languages = const ['en', 'ar'],
     this.topics = const [],
@@ -71,6 +98,7 @@ class SurveyEntity extends Equatable {
     this.collectors = const [],
     this.submissions = const [],
     this.likertScale,
+    this.price,
     DateTime? createdAt,
     DateTime? updatedAt,
     this.responseCount = 0,
@@ -126,6 +154,18 @@ class SurveyEntity extends Equatable {
         (element) => element.name == map['status'] as String?,
         orElse: () => SurveyStatus.draft,
       ),
+      price: map['price'] != null ? (map['price'] as num).toDouble() : null,
+      collectors: map['collectors'] != null
+          ? (map['collectors'] as List)
+              .map((e) => CollectorEntity.fromMap(e as Map<String, dynamic>))
+              .toList()
+          : const [],
+      collectorId: map['collectorId'] as String?,
+      submissions: map['submissions'] != null
+          ? (map['submissions'] as List)
+              .map((e) => SubmissionEntity.fromMap(e as Map<String, dynamic>))
+              .toList()
+          : const [],
       languages: map['languages'] != null && map['languages'] is List
           ? (map['languages'] as List<dynamic>)
               .map((e) => e.toString())
