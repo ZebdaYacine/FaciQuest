@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: go-api
+    container_name: go-api
+    env_file: .env
+    ports:
+      - "9000:$SERVER_PORT"
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis:latest"
+    command: ["redis-server", "--bind", "0.0.0.0"]
+    ports:
+      - "6379:6379"
