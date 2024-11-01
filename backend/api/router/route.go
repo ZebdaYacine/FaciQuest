@@ -37,7 +37,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 		"User"))
 
 	//Middleware to verify is token in black list
-	userRouter.Use(middleware.JwtBlackListMiddleware(redis))
+	// userRouter.Use(middleware.JwtBlackListMiddleware(redis))
 
 	// All Private APIs
 
