@@ -12,5 +12,5 @@ type Payment struct {
 type ConfirmPayment struct {
 	CollectorId    string `json:"collectorId" bson:"collectorId"`
 	ProofOfPayment string `json:"proof_of_payment" bson:"proof_of_payment"`
-	FileBase64     string `json:"file_base64"`
+	FileName       string `json:"file_name" bson:"file_name"`
 }

@@ -52,5 +52,5 @@ func NewConfirmPaymentRouter(db database.Database, group *gin.RouterGroup) {
 	cc := &controller.CollectorController{
 		CollectorUseCase: cu,
 	}
-	group.GET("confirm-payment", cc.ConfirmPaymentRequest)
+	group.POST("confirm-payment", cc.ConfirmPaymentRequest)
 }
