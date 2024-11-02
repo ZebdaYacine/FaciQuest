@@ -31,6 +31,7 @@ type CollectorUseCase interface {
 	DeleteCollector(c context.Context, params *CollectorParams) (bool, error)
 	GetCollector(c context.Context, params *CollectorParams) *CollectorsResult
 	EstimatePriceByCollector(c context.Context, collector *domain.Collector) (float64, error)
+	ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool
 }
 
 func NewColllectorUseCase(repo repository.CollectorRepository, collection string) CollectorUseCase {
@@ -133,4 +134,12 @@ func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorPar
 // EstimatePriceByCollector implements CollectorUseCase.
 func (cu *collectorUseCase) EstimatePriceByCollector(c context.Context, collector *domain.Collector) (float64, error) {
 	return cu.repo.EstimatePriceByCollector(c, collector), nil
+}
+
+// ConfirmPayment implements CollectorUseCase.
+func (cu *collectorUseCase) ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool {
+	if ConfirmPayment.CollectorId == "" {
+		return false
+	}
+	return cu.repo.ConfirmPayment(c, ConfirmPayment)
 }

@@ -5,6 +5,7 @@ import (
 	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/internal/usecase"
+	"encoding/base64"
 	"log"
 	"net/http"
 
@@ -83,7 +84,7 @@ func (cc *CollectorController) GetCollectorBySurveyIdRequest(c *gin.Context) {
 }
 
 func (cc *CollectorController) EsstimatePriceRequest(c *gin.Context) {
-	log.Println("__***__***___________ Esstimate Price REQUEST ___________***__***__")
+	log.Println("__***__***___________ Estimate Price REQUEST ___________***__***__")
 	var new_collector domain.Collector
 	if !core.IsDataRequestSupported(&new_collector, c) {
 		return
@@ -97,6 +98,25 @@ func (cc *CollectorController) EsstimatePriceRequest(c *gin.Context) {
 		})
 		return
 	}
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "ESTIMATE PRICE REQUEST DONE SUCCESSFULY",
+		Data:    result,
+	})
+}
+
+func (cc *CollectorController) ConfirmPaymentRequest(c *gin.Context) {
+	log.Println("__***__***___________ Confirm Payment REQUEST ___________***__***__")
+	var new_cofirm_payment domain.ConfirmPayment
+	if !core.IsDataRequestSupported(&new_cofirm_payment, c) {
+		return
+	}
+	decodedData, err := base64.StdEncoding.DecodeString(new_cofirm_payment.ProofOfPayment)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to decode Base64 data"})
+		return
+	}
+	log.Println(decodedData)
+	result := cc.CollectorUseCase.ConfirmPayment(c, &new_cofirm_payment)
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "ESSTIMATE PRICE REQUEST DONE SUCCESSFULY",
 		Data:    result,

@@ -23,6 +23,7 @@ type CollectorRepository interface {
 	UpdateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
 	GetCollector(c context.Context, collectorId string) ([]*domain.Collector, error)
 	EstimatePriceByCollector(c context.Context, collector *domain.Collector) float64
+	ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool
 }
 
 func NewCollectorRepository(db database.Database) CollectorRepository {
@@ -125,4 +126,9 @@ func (cr *collectorRepository) UpdateCollector(c context.Context, col *domain.Co
 // EstimatePriceByCollector implements CollectorRepository.
 func (cu *collectorRepository) EstimatePriceByCollector(c context.Context, collector *domain.Collector) float64 {
 	return 2.25 * float64(collector.TargetAudience.Population)
+}
+
+// ConfirmPayment implements CollectorRepository.
+func (cu *collectorRepository) ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool {
+	return true
 }

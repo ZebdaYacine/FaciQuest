@@ -43,5 +43,14 @@ func NewEsstimatePriceByCollectorRouter(db database.Database, group *gin.RouterG
 	cc := &controller.CollectorController{
 		CollectorUseCase: cu,
 	}
-	group.GET("esstimate-price", cc.EsstimatePriceRequest)
+	group.GET("estimate-price", cc.EsstimatePriceRequest)
+}
+
+func NewConfirmPaymentRouter(db database.Database, group *gin.RouterGroup) {
+	cr := repository.NewCollectorRepository(db)
+	cu := usecase.NewColllectorUseCase(cr, core.COLLECTOR)
+	cc := &controller.CollectorController{
+		CollectorUseCase: cu,
+	}
+	group.GET("confirm-payment", cc.ConfirmPaymentRequest)
 }

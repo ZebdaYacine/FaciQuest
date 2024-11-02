@@ -8,3 +8,9 @@ type Payment struct {
 	Status             string  `json:"status" bson:"status"`
 	PaymentDate        int64   `json:"payment_date" bson:"payment_date"`
 }
+
+type ConfirmPayment struct {
+	CollectorId    string `json:"collectorId" bson:"collectorId"`
+	ProofOfPayment string `json:"proof_of_payment" bson:"proof_of_payment"`
+	FileBase64     string `json:"file_base64"`
+}
