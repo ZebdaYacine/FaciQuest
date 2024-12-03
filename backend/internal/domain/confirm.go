@@ -28,9 +28,9 @@ type AgeRange struct {
 }
 
 type TargetAudience struct {
-	Population        int       `json:"population" bson:"population"`
-	Gender            []Gender   `json:"gender" bson:"gender"`
-	AgeRange          []AgeRange `json:"ageRange" bson:"ageRange"`
+	Population        int        `json:"population" bson:"population"`
+	Gender            string     `json:"gender" bson:"gender"`
+	AgeRange          AgeRange   `json:"ageRange" bson:"ageRange"`
 	Countries         []string   `json:"countries" bson:"countries"`
 	Provinces         []string   `json:"provinces,omitempty" bson:"provinces,omitempty"`
 	Cities            []string   `json:"cities,omitempty" bson:"cities,omitempty"`
@@ -48,9 +48,10 @@ func (c *Collector) Validate() error {
 		}
 	}
 	if c.Type == Audience {
-		if c.TargetAudience.Population == 0 ||
-			len(c.TargetAudience.Gender) == 0 ||
-			len(c.TargetAudience.AgeRange) == 0 {
+		if c.TargetAudience.Population > 0 &&
+			c.TargetAudience.Gender != "" &&
+			c.TargetAudience.AgeRange.Start > 0 &&
+			c.TargetAudience.AgeRange.End > 0 {
 			/*||
 			len(c.TargetAudience.TargetingCriteria) == 0 */
 			return fmt.Errorf("audience is required for TargetAudience type")

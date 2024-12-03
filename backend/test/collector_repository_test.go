@@ -41,6 +41,7 @@ func TestGetCollectorRepository(t *testing.T) {
 		}
 		id := "6702b064d460015c11da5fb9"
 		r, err := pr.GetCollector(ctx, id)
+		log.Println(err)
 		if err != nil {
 			t.Fatalf("Failed to Get collector: %v", err)
 		}

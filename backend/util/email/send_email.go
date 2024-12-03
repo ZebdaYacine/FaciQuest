@@ -19,7 +19,6 @@ func GenerateDigit() (string, error) {
 	for i := 0; i < n; i++ {
 		digits[i] = digits[i]%10 + '0'
 	}
-
 	return string(digits), nil
 }
 

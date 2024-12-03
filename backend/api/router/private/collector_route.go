@@ -28,7 +28,7 @@ func NewDeleteCollectorRouter(db database.Database, group *gin.RouterGroup) {
 	group.DELETE("delete-collector", cc.DeleteCollectorRequest)
 }
 
-func NewGetCollectorRouter(db database.Database, group *gin.RouterGroup) {
+func NewGetCollectorBySurveyIDRouter(db database.Database, group *gin.RouterGroup) {
 	cr := repository.NewCollectorRepository(db)
 	cu := usecase.NewColllectorUseCase(cr, core.COLLECTOR)
 	cc := &controller.CollectorController{

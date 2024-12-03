@@ -61,7 +61,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	//Collector API
 	private.NewCreateCollectorRouter(db, userRouter)
 	private.NewDeleteCollectorRouter(db, userRouter)
-	private.NewGetCollectorRouter(db, userRouter)
+	private.NewGetCollectorBySurveyIDRouter(db, userRouter)
 	private.NewEsstimatePriceByCollectorRouter(db, userRouter)
 	private.NewConfirmPaymentRouter(db, userRouter)
 	//Submission API

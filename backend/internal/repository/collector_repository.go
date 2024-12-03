@@ -87,12 +87,13 @@ func (cr *collectorRepository) GetCollector(c context.Context, surveyID string) 
 	}
 	list_collectors := []*domain.Collector{}
 	for list.Next(c) {
-		new_collector := domain.Collector{}
+		new_collector := &domain.Collector{}
 		if err := list.Decode(new_collector); err != nil {
 			log.Fatal(err)
 		}
-		list_collectors = append(list_collectors, &new_collector)
+		list_collectors = append(list_collectors, new_collector)
 	}
+	log.Println(list_collectors)
 	return list_collectors, nil
 }
 
