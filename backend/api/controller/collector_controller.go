@@ -6,6 +6,7 @@ import (
 	"back-end/internal/domain"
 	"back-end/internal/usecase"
 	"encoding/base64"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -62,6 +63,8 @@ func (cc *CollectorController) DeleteCollectorRequest(c *gin.Context) {
 
 func (cc *CollectorController) GetCollectorBySurveyIdRequest(c *gin.Context) {
 	log.Println("__***__***___________ GET COLLECTOR BY SUREVY ID REQUEST ___________***__***__")
+	userId := core.GetIdUser(c)
+	fmt.Println("userId : ", userId)
 	var survey domain.GetBySurveyIdModel
 	if !core.IsDataRequestSupported(&survey, c) {
 		return
@@ -70,7 +73,7 @@ func (cc *CollectorController) GetCollectorBySurveyIdRequest(c *gin.Context) {
 	new_collector.SurveyId = survey.SurveyId
 	params := usecase.CollectorParams{}
 	params.Data = &new_collector
-	result := cc.CollectorUseCase.GetCollector(c, &params)
+	result := cc.CollectorUseCase.GetCollector(c, &params, userId)
 	if result.Err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: result.Err.Error(),

@@ -29,7 +29,7 @@ type collectorUseCase struct {
 type CollectorUseCase interface {
 	CreateCollector(c context.Context, params *CollectorParams) *CollectorResult
 	DeleteCollector(c context.Context, params *CollectorParams) (bool, error)
-	GetCollector(c context.Context, params *CollectorParams) *CollectorsResult
+	GetCollector(c context.Context, params *CollectorParams, userId string) *CollectorsResult
 	EstimatePriceByCollector(c context.Context, collector *domain.Collector) (float64, error)
 	ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool
 }
@@ -110,7 +110,7 @@ func (cu *collectorUseCase) DeleteCollector(c context.Context, params *Collector
 }
 
 // GetCollector implements CollectorUseCase.
-func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorParams) *CollectorsResult {
+func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorParams, userId string) *CollectorsResult {
 	collector := params.Data
 	if collector.SurveyId == "" {
 		return &CollectorsResult{
@@ -118,6 +118,14 @@ func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorPar
 			Err:  fmt.Errorf("survey id required"),
 		}
 	}
+
+	if userId == "" {
+		return &CollectorsResult{
+			Data: nil,
+			Err:  fmt.Errorf("user id required"),
+		}
+	}
+
 	result, err := cu.repo.GetCollector(c, collector.SurveyId)
 	if err != nil {
 		return &CollectorsResult{
