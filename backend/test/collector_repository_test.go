@@ -39,8 +39,8 @@ func TestGetCollectorRepository(t *testing.T) {
 		if pr == nil {
 			t.Fatal("Failed to init CollectorRepository")
 		}
-		id := "6702b064d460015c11da5fb9"
-		r, err := pr.GetCollector(ctx, id)
+		surevyId := "672965669b126308f923c27b"
+		r, err := pr.GetCollector(ctx, "66ced91b015ced6ece935ed4", surevyId)
 		log.Println(err)
 		if err != nil {
 			t.Fatalf("Failed to Get collector: %v", err)

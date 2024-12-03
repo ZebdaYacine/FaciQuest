@@ -21,7 +21,7 @@ type CollectorRepository interface {
 	CreateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
 	DeleteCollector(c context.Context, collectorId string) (bool, error)
 	UpdateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error)
-	GetCollector(c context.Context, collectorId string) ([]*domain.Collector, error)
+	GetCollector(c context.Context, surveyId string, userId string) ([]*domain.Collector, error)
 	EstimatePriceByCollector(c context.Context, collector *domain.Collector) float64
 	ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool
 }
@@ -75,17 +75,26 @@ func (cr *collectorRepository) DeleteCollector(c context.Context, collectorId st
 
 // GetCollector implements CollectorRepository.
 // TODO: get list of collectors
-func (cr *collectorRepository) GetCollector(c context.Context, surveyID string) ([]*domain.Collector, error) {
+func (cr *collectorRepository) GetCollector(c context.Context, surveyID string, userId string) ([]*domain.Collector, error) {
 	collection := cr.database.Collection(core.COLLECTOR)
 	filter := bson.M{
 		"surveyId": surveyID,
 	}
+	sr := NewSurveyRepository(cr.database)
+	survey, err := sr.GetSurveyById(c, surveyID, userId)
+	if survey == nil || err != nil {
+		log.Printf("Failed to load survey: %v", err)
+		return nil, err
+	}
+
 	list, err := collection.Find(c, filter)
 	if err != nil {
 		log.Printf("Failed to load collectors: %v", err)
 		return nil, err
 	}
+
 	list_collectors := []*domain.Collector{}
+
 	for list.Next(c) {
 		new_collector := &domain.Collector{}
 		if err := list.Decode(new_collector); err != nil {

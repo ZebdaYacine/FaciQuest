@@ -125,8 +125,7 @@ func (cu *collectorUseCase) GetCollector(c context.Context, params *CollectorPar
 			Err:  fmt.Errorf("user id required"),
 		}
 	}
-
-	result, err := cu.repo.GetCollector(c, collector.SurveyId)
+	result, err := cu.repo.GetCollector(c, collector.SurveyId, userId)
 	if err != nil {
 		return &CollectorsResult{
 			Data: nil,

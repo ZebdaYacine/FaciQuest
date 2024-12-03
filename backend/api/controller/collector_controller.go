@@ -69,17 +69,21 @@ func (cc *CollectorController) GetCollectorBySurveyIdRequest(c *gin.Context) {
 	if !core.IsDataRequestSupported(&survey, c) {
 		return
 	}
+	log.Println(userId)
 	new_collector := domain.Collector{}
 	new_collector.SurveyId = survey.SurveyId
 	params := usecase.CollectorParams{}
 	params.Data = &new_collector
+
 	result := cc.CollectorUseCase.GetCollector(c, &params, userId)
+
 	if result.Err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: result.Err.Error(),
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "GET COLLECTOR BY SUREVY ID REQUEST DONE SUCCESSFULY",
 		Data:    result.Data,
