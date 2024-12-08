@@ -1,7 +1,8 @@
 class AppUrls {
-  static const useLocalhost = true;
-  static const baseUrl =
-      useLocalhost ? 'http://localhost:9000' : 'http://105.109.18.143:9000';
+  static const useLocalhost = false;
+  static const baseUrl = useLocalhost
+      ? 'http://localhost:9000'
+      : 'https://faciquest-2.onrender.com';
 
   /// Auth Urls
   static const authLoginUrl = '$baseUrl/login';
@@ -22,7 +23,7 @@ class AppUrls {
   static const getSurveyCollectors = '$baseUrl/profile/get-survey-collectors';
   static const getTargetingCriteria = '$baseUrl/profile/get-criterias';
   static const confirmPayment = '$baseUrl/profile/confirm-payment';
-  static const estimatePrice = '$baseUrl/profile/esstimate-price';
+  static const estimatePrice = '$baseUrl/profile/estimate-price';
   static const createCollector = '$baseUrl/profile/create-collector';
   static const deleteCollector = '$baseUrl/profile/delete-collector';
 }
