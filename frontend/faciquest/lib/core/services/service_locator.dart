@@ -1,4 +1,3 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:dio/dio.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
@@ -15,13 +14,7 @@ Future<void> setupDependencies() async {
   final flutterSecureStorage = FlutterSecureStorage(
     aOptions: getAndroidOptions(),
   );
-  final dio = Dio(
-    BaseOptions(
-      sendTimeout: 30.seconds,
-      connectTimeout: 30.seconds,
-      receiveTimeout: 30.seconds,
-    ),
-  );
+  final dio = Dio();
   getIt
     ..registerLazySingleton(
       () => sharedPreferences,
