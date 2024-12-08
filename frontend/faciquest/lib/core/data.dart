@@ -34,7 +34,7 @@ class Province extends Equatable {
       'id': id,
       'n': name,
       'ar': nameAr,
-      'c': cities.map((x) => x.toMap()).toList(),
+      // 'c': cities.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -43,11 +43,11 @@ class Province extends Equatable {
       id: map['id'] as String,
       name: map['n'] as String,
       nameAr: map['ar'] as String,
-      cities: List<City>.from(
-        (map['c'] as List).map<City>(
-          (x) => City.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      // cities: List<City>.from(
+      //   (map['c'] as List).map<City>(
+      //     (x) => City.fromMap(x as Map<String, dynamic>),
+      //   ),
+      // ),
     );
   }
 
