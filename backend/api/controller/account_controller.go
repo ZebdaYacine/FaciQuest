@@ -2,7 +2,6 @@ package controller
 
 import (
 	"back-end/api/controller/model"
-	"back-end/cache"
 	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/internal/usecase"
@@ -11,7 +10,6 @@ import (
 	util "back-end/util/token"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -205,15 +203,15 @@ func (ic *AccountController) LogoutRequest(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header is missing"})
 		return
 	}
-	expiration, _ := util.ExtractFieldFromToken(token, core.RootServer.SECRET_KEY, "exp")
-	str := expiration.(string)
-	timestamp, _ := strconv.ParseInt(str, 10, 64)
-	f := time.Unix(timestamp, 0)
-	now := time.Now()
-	duration := f.Sub(now)
-	seconds := duration.Seconds()
-	exp := time.Duration(seconds) * time.Second
-	cache.AddKey(ic.Rdb, token, token, exp)
+	// expiration, _ := util.ExtractFieldFromToken(token, core.RootServer.SECRET_KEY, "exp")
+	// str := expiration.(float64)
+	// timestamp, _ := strconv.ParseInt(str, 10, 64)
+	// f := time.Unix(timestamp, 0)
+	// now := time.Now()
+	// duration := f.Sub(now)
+	// seconds := duration.Seconds()
+	// exp := time.Duration(seconds) * time.Second
+	// cache.AddKey(ic.Rdb, token, token, exp)
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "LOGOUT USER SUCCESSFULY",
 		Data:    "",
