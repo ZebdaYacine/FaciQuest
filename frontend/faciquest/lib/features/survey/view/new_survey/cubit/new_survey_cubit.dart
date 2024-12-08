@@ -224,6 +224,14 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     }
     return null;
   }
+
+  Future<void> createCollector(CollectorEntity collector) async {
+    try {
+      await repository.createCollector(collector);
+    } catch (e) {
+      emit(state.copyWith(status: Status.failure, msg: e.toString()));
+    }
+  }
 }
 
 NewSurveyPages _pageFromAction(SurveyAction action) {
