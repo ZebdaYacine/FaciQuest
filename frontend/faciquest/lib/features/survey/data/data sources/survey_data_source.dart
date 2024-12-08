@@ -5,7 +5,7 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 
 abstract class SurveyDataSource {
-  Future<List<SurveyEntity>> getSurveys();
+  Stream<List<SurveyEntity>> getSurveys();
   Future<SurveyEntity?> getSurveyById(String surveyId);
   Future<SurveyEntity?> createSurvey(SurveyEntity survey);
   Future<SurveyEntity?> updateSurvey(SurveyEntity survey);
@@ -76,19 +76,41 @@ class SurveyDataSourceImpl implements SurveyDataSource {
   }
 
   @override
-  Future<List<SurveyEntity>> getSurveys() async {
+  Stream<List<SurveyEntity>> getSurveys() async* {
     logInfo('SurveyDataSourceImpl:getSurveys');
-    final response = await dioClient.get<Map<String, dynamic>>(
-      AppUrls.getSurveys,
-    );
-    if (response.statusCode == 200 &&
-        response.data?['date'] != null &&
-        response.data?['date'] is List) {
-      return (response.data!['date'] as List? ?? [])
-          .map((e) => SurveyEntity.fromMap(e))
-          .toList();
+
+    // Define the polling interval (e.g., every 5 minutes)
+    const interval = Duration(seconds: 5 * 60);
+    yield await _fetchSurveys();
+
+    // Use Stream.periodic to call the API at regular intervals
+    yield* Stream.periodic(interval).asyncMap((_) async {
+      return await _fetchSurveys();
+    });
+  }
+
+  Future<List<SurveyEntity>> _fetchSurveys() async {
+    try {
+      final response = await dioClient.get<Map<String, dynamic>>(
+        AppUrls.getSurveys,
+      );
+
+      // Check if the response is successful and contains a valid 'data' list
+      if (response.statusCode == 200 &&
+          response.data?['date'] != null &&
+          response.data?['date'] is List) {
+        return (response.data!['date'] as List)
+            .map((e) => SurveyEntity.fromMap(e))
+            .toList();
+      } else {
+        // If data is missing or the status code is not 200, return an empty list
+        return <SurveyEntity>[];
+      }
+    } catch (error) {
+      // Handle or log errors
+      logError('Error fetching surveys: $error');
+      return <SurveyEntity>[];
     }
-    return [];
   }
 
   @override
@@ -175,7 +197,7 @@ class SurveyDataSourceImpl implements SurveyDataSource {
     final response = await dioClient.get<Map<String, dynamic>>(
       AppUrls.getSurveyCollectors,
       data: {
-        'surveyId': surveyId,
+        'surveyID': surveyId,
       },
     );
     if (response.statusCode == 200 &&
@@ -191,28 +213,32 @@ class SurveyDataSourceImpl implements SurveyDataSource {
   @override
   Future<List<TargetingCriteria>> getTargetingCriteria() async {
     logInfo('SurveyDataSourceImpl:getTargetingCriteria ');
-    final response = await dioClient.get<Map<String, dynamic>>(
-      AppUrls.getTargetingCriteria,
-    );
-    if (response.statusCode == 200 &&
-        response.data?['date'] != null &&
-        response.data?['date'] is List) {
-      return (response.data!['date'] as List? ?? [])
-          .map((e) => TargetingCriteria.fromMap(e))
-          .toList();
-    }
-    return [];
+    return TargetingCriteria.dummy();
+    // final response = await dioClient.get<Map<String, dynamic>>(
+    //   AppUrls.getTargetingCriteria,
+    // );
+    // if (response.statusCode == 200 &&
+    //     response.data?['date'] != null &&
+    //     response.data?['date'] is List) {
+    //   return (response.data!['date'] as List? ?? [])
+    //       .map((e) => TargetingCriteria.fromMap(e))
+    //       .toList();
+    // }
+    // return [];
   }
 
   @override
   Future<double> estimatePrice(CollectorEntity collector) async {
     logInfo('SurveyDataSourceImpl:estimatePrice');
+    final map = collector.toMap();
+    logInfo('map: $map');
     final response = await dioClient.get<Map<String, dynamic>>(
       AppUrls.estimatePrice,
-      data: collector.toMap(),
+      data: map,
     );
-    if (response.statusCode == 200 && response.data?['date'] is double) {
-      return response.data!['date']['price'];
+
+    if (response.statusCode == 200) {
+      return (response.data!['date'] as num).toDouble();
     }
     return 0;
   }

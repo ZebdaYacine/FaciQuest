@@ -47,6 +47,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
   double population = 200;
   Future<double?> get price => cubit.estimatePrice(
         widget.collector.copyWith(
+          type: CollectorType.targetAudience,
           population: population,
           gender: gender,
           ageRange: range,
@@ -250,6 +251,18 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
               backgroundColor: context.colorScheme.primary,
             ),
             onPressed: () {
+              cubit.createCollector(
+                widget.collector.copyWith(
+                  type: CollectorType.targetAudience,
+                  population: population,
+                  gender: gender,
+                  ageRange: range,
+                  countries: countries.toList(),
+                  provinces: provinces.toList(),
+                  cities: cities.toList(),
+                  targetingCriteria: selectedCriteria.toList(),
+                ),
+              );
               showPaymentModal(context);
             },
             child: const Center(child: Text('Checkout')),

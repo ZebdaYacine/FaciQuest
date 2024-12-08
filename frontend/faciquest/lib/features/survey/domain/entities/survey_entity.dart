@@ -201,11 +201,13 @@ class SurveyEntity extends Equatable {
               .map((e) => QuestionEntity.fromMap(e as Map<String, dynamic>))
               .toList()
           : <QuestionEntity>[],
-      viewCount: map['views'] != null ? map['views'] as int : 0,
-      questionCount:
-          map['countQuestions'] != null ? map['countQuestions'] as int : 0,
-      responseCount:
-          map['countAnswers'] != null ? map['countAnswers'] as int : 0,
+      viewCount: map['views'] != null ? (map['views'] as num).toInt() : 0,
+      questionCount: map['countQuestions'] != null
+          ? (map['countQuestions'] as num).toInt()
+          : 0,
+      responseCount: map['countAnswers'] != null
+          ? (map['countAnswers'] as num).toInt()
+          : 0,
       createdAt: map['createdAt'] != null && map['createdAt'] is String
           ? DateTime.tryParse(map['createdAt'])
           : null,

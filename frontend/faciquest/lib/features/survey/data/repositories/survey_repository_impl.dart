@@ -23,7 +23,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }
 
   @override
-  Future<List<SurveyEntity>> getSurveys() {
+  Stream<List<SurveyEntity>> getSurveys() {
     return remoteDataSource.getSurveys();
   }
 

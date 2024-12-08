@@ -13,7 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
     await Future.delayed(
       const Duration(seconds: 1),
     );
-    repository.getSurveys().then(
+    repository.getSurveys().listen(
           (surveys) => emit(
             state.copyWith(
               surveys: surveys,

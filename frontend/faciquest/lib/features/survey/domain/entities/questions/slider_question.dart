@@ -34,9 +34,9 @@ class SliderQuestion extends QuestionEntity {
     return SliderQuestion(
       id: map['id'],
       title: map['title'],
-      order: map['order'],
-      min: map['min'],
-      max: map['max'],
+      order: (map['order'] as num).toInt(),
+      min: (map['min'] as num).toDouble(),
+      max: (map['max'] as num).toDouble(),
     );
   }
 
