@@ -21,7 +21,7 @@ class ProfileView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('${user.firstName} ${user.lastName}'),
-                    Text('+${user.phone}'),
+                    Text('+213${user.phone}'),
                   ],
                 ),
               AppSpacing.spacing_1.widthBox,
