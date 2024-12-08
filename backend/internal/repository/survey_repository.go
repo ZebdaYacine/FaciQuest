@@ -69,7 +69,7 @@ func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, use
 	}
 	err = collection.FindOne(c, filter).Decode(new_survey)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
+		if err == mongo.ErrNoDocuments {	
 			return nil, fmt.Errorf("survey not found")
 		}
 		return nil, err
