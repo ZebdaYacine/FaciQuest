@@ -1,1 +1,293 @@
-{}
+{
+  "profile": {
+    "wallet": "Wallet",
+    "My Account": "My Account",
+    "Change Password": "Change Password",
+    "Notification": "Notification",
+    "More Actions": "More Actions",
+    "How it works": "How it works",
+    "Language": "Language",
+    "Theme": "Theme",
+    "Logout": "Logout"
+  },
+  "Personal Info": {
+    "Username": "Username",
+    "First Name": "First Name",
+    "Last Name": "Last Name",
+    "Email": "Email",
+    "Phone": "Phone",
+    "Birth Date": "Birth Date",
+    "Save": "Save"
+  },
+  "Change Password": {
+    "Reset Password": "Reset Password",
+    "please enter your current password and new password": "please enter your current password and new password",
+    "Current Password": "Current Password",
+    "New Password": "New Password",
+    "Confirm Password": "Confirm Password"
+  },
+  "Language": {
+    "English": "English",
+    "Arabic": "Arabic",
+    "French": "French"
+  },
+  "Home": {
+    "welcome to FaciQuest": "welcome to FaciQuest",
+    "This is where you can view you surveys and create new ones": "This is where you can view you surveys and create new ones",
+    "Manage Surveys": "Manage Surveys",
+    "Create Survey": "Create Survey"
+  },
+  "Manage Surveys": {
+    "Create Survey": "Create Survey",
+    "Manage My Surveys": "Manage My Surveys",
+    "Search": "Search",
+    "Edit Survey": "Edit Survey",
+    "Delete Survey": "Delete Survey",
+    "Preview Survey": "Preview Survey",
+    "Analyze Results": "Analyze Results"
+  },
+  "Survey": {
+    "details": {
+      "Survey Details": "Survey Details",
+      "Create new Survey": "Create new Survey",
+      "Please enter details below": "please enter details below",
+      "Survey Title": "Survey Title",
+      "Survey Description": "Survey Description",
+      "Lakert Scale": {
+        "title": "Lakert Scale",
+        "2-point Likert scale": "2-point Likert scale",
+        "3-point Likert scale": "3-point Likert scale",
+        "5-point Likert scale": "5-point Likert scale",
+        "7-point Likert scale": "7-point Likert scale"
+      },
+      "Next": "Next",
+      "Cancel": "Cancel"
+    },
+    "questions": {
+      "Questions": "Questions",
+      "Questions Section": "Questions Section",
+      "please enter questions below": "please enter questions below",
+      "Add Question": "Add Question",
+      "Submit Survey": "submit Survey",
+      "Back": "Back"
+    },
+    "Summary": {
+      "Summary": "Summary",
+      "title": "title",
+      "description": "description",
+      "Total Questions": "{} Questions",
+      "Total Responses": "Total Responses",
+      "Status": "Status",
+      "Published": "Published",
+      "Draft": "Draft",
+      "Preview": "Preview",
+      "survey Actions": "survey Actions",
+      "Edit Survey": "Edit Survey",
+      "Delete Survey": "Delete Survey",
+      "Publish Survey": "Publish Survey",
+      "Analyze Results": "Analyze Results",
+      "created at": "created at {}"
+    },
+    "Analyze Results": {
+      "Analyze Results": "Analyze Results",
+      "Total Responses": "Total Responses",
+      "Back": "Back",
+      "Export Results": "Export Results"
+    },
+    "Collect Responses": {
+      "Collect Responses": "Collect Responses",
+      "Total Responses": "Total Responses",
+      "Back": "Back",
+      "please create a collection first": "please create a collection first",
+      "Add new collection": "Add new collection",
+      "Targeted Responses": "Targeted Responses",
+      "Find people who fit your criteria": "Find people who fit your criteria",
+      "Analyze Results": "Analyze Results",
+      "Targeted Responses Popup": {
+        "title": "Targeted Responses",
+        "description": "Find people who fit your criteria",
+        "How many responses do you want to collect": "How many responses do you want to collect?",
+        "who do you want to survey": "who do you want to survey?",
+        "Add targeting criteria": "Add targeting criteria",
+        "Country": "Country",
+        "Gender": "Gender",
+        "Age Range": "Age Range",
+        "Estimated cost": "Estimated cost",
+        "Checkout": "Checkout"
+      },
+      "Billing": {
+        "Billing": "Billing Details",
+        "Billing Email": "Billing Email",
+        "Billing Name": "Billing Name",
+        "Billing notified": "Send me renewal receipts by Email",
+        "Total Cost": "Total Cost",
+        "Payment Methods": "Payment Methods *",
+        "BaridiMob": "BaridiMob",
+        "RIP": "RIP",
+        "upload proof of payment": "upload proof of payment",
+        "CCP Transfer": "CCP Transfer",
+        "ccp": "ccp",
+        "key": "key",
+        "to": "to",
+        "Edahabia card": "Edahabia card",
+        "coming soon": "coming soon",
+        "Direct bank deposit or wire transfer note ": "Direct bank deposit or wire transfer (3-5 business days from when you send the transfer).",
+        "The collector will be activated once payment is confirmed": "The collector will be activated once payment is confirmed",
+        "Submit": "Submit"
+      }
+    },
+    "Question": {
+      "Question": "Question",
+      "Put Question title here": "Put Question title here",
+      "Question Type": "Question Type",
+      "Settings": "Settings :",
+      "please select question type": "please select question type",
+      "Move popup": {
+        "title": "Move this question to ...",
+        "After": "After",
+        "Before": "Before",
+        "action": "Move Question"
+      },
+      "Duplicate popup": {
+        "title": "Duplicate this question?",
+        "After": "After",
+        "Before": "Before",
+        "Action": "Duplicate Question"
+      },
+      "Delete popup": {
+        "title": "Delete this question?",
+        "Are you sure you want to delete this question": "Are you sure you want to delete this question?",
+        "Delete": "Delete",
+        "Cancel": "Cancel"
+      }
+    },
+    "Question Type": {
+      "Star Rating": {
+        "title": "Star Rating",
+        "settings": {
+          "Max Rating": "Max Rating",
+          "Shape": "Shape",
+          "Color": "Color"
+        }
+      },
+      "Multiple Choice": {
+        "title": "Multiple Choice",
+        "settings": {
+          "Options": "Options"
+        }
+      },
+      "Image Choice": {
+        "title": "Image Choice",
+        "settings": {
+          "Options": "Options",
+          "Image Caption": "Image Caption",
+          "Use Checkbox": "Use Checkbox"
+        }
+      },
+      "CheckBoxes": {
+        "title": "CheckBoxes",
+        "settings": {
+          "Options": "Options"
+        }
+      },
+      "Dropdown": {
+        "title": "Dropdown",
+        "settings": {
+          "Options": "Options"
+        }
+      },
+      "Matrix": {
+        "title": "Matrix",
+        "settings": {
+          "Rows": "Rows",
+          "Columns": "Columns",
+          "Allow multiple responses per row": "Allow multiple responses per row"
+        }
+      },
+      "File Upload": {
+        "title": "File Upload",
+        "settings": {
+          "File Type": "File Type",
+          "Instructions for respondents": "Instructions for respondents"
+        }
+      },
+      "Audio Record": {
+        "title": "Audio Record",
+        "settings": {
+          "Instructions for respondents": "Instructions for respondents"
+        }
+      },
+      "Short Answer": {
+        "title": "Short Answer",
+        "Max length": "Max length"
+      },
+      "Comment Box": {
+        "title": "Comment Box",
+        "settings": {
+          "Max length": "Max length",
+          "Max lines": "Max lines"
+        }
+      },
+      "Slider": {
+        "title": "Slider",
+        "settings": {
+          "Min": "Min",
+          "Max": "Max"
+        }
+      },
+      "Date Time": {
+        "title": "Date Time",
+        "settings": {
+          "Collect Date info": "Collect Date info",
+          "Collect Time info": "Collect Time info"
+        }
+      },
+      "Name": {
+        "title": "Name",
+        "settings": {
+          "show": "show",
+          "First Name": "First Name",
+          "Last Name": "Last Name",
+          "Middle Name": "Middle Name"
+        }
+      },
+      "Email": {
+        "title": "Email",
+        "settings": {
+          "show": "show",
+          "label": "label",
+          "placeholder": "placeholder"
+        }
+      },
+      "Phone": {
+        "title": "Phone",
+        "settings": {
+          "show": "show",
+          "label": "label",
+          "placeholder": "placeholder"
+        }
+      },
+      "Address": {
+        "title": "Address",
+        "settings": {
+          "show": "show",
+          "Street Address 1": "Street Address 1",
+          "Street Address 2": "Street Address 2",
+          "City": "City",
+          "State": "State",
+          "Zip Code": "Zip Code",
+          "Country": "Country",
+          "label": "label",
+          "placeholder": "placeholder"
+        }
+      },
+      "Text": {
+        "title": "Text",
+        "settings": {
+          "Entre your text here": "Entre your text here"
+        }
+      },
+      "Image": "Image"
+    }
+  }
+}
