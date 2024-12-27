@@ -98,7 +98,10 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
                       vertical: 12,
                     ),
                   ),
-                  icon: const Icon(Icons.arrow_outward_rounded),
+                  icon: Icon(
+                    Icons.arrow_outward_rounded,
+                    color: context.colorScheme.primary,
+                  ),
                   label: const Text('Cash Out'),
                 ),
               ),
