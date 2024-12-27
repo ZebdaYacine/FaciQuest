@@ -66,6 +66,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewConfirmPaymentRouter(db, userRouter)
 	//Submission API
 	private.NewSubmissionAnswerRouter(db, userRouter)
+	private.GetAnswersRouter(db, userRouter)
 
 	adminRouter := gin.Group("/admin")
 

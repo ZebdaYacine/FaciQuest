@@ -29,3 +29,8 @@ type Submission struct {
 	CollectorID string   `json:"collectorId" bson:"collectorId"`
 	Answers     []Answer `json:"answers" bson:"answers"`
 }
+
+type SurCol struct {
+	SurveyID    string `json:"surveyId" bson:"surveyId"`
+	CollectorID string `json:"collectorId" bson:"collectorId"`
+}

@@ -35,3 +35,26 @@ func (cc *SubmissionController) CreateSubmissionRequest(c *gin.Context) {
 		Data:    result.Data,
 	})
 }
+
+func (cc *SubmissionController) GetAnswersRequest(c *gin.Context) {
+	log.Println("__***__***___________ GET ANSWERS  REQUEST ___________***__***__")
+	var answer domain.SurCol
+	if !core.IsDataRequestSupported(&answer, c) {
+		return
+	}
+	params := usecase.AnswersParams{}
+	params.SurveyID = answer.SurveyID
+	params.CollectorID = answer.CollectorID
+	cc.SubmissionUseCase.GetAnswers(c, &params)
+	result := cc.SubmissionUseCase.GetAnswers(c, &params)
+	if result.Err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: result.Err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "GET ANSWERS  DONE SUCCESSFULY",
+		Data:    result.Data,
+	})
+}

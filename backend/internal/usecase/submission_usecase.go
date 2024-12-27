@@ -6,6 +6,16 @@ import (
 	"context"
 )
 
+type AnswersParams struct {
+	SurveyID    string
+	CollectorID string
+}
+
+type AnswersResulat struct {
+	Data *[]domain.Answer
+	Err  error
+}
+
 type SubmissionParams struct {
 	Data *domain.Submission
 }
@@ -22,6 +32,7 @@ type submissionUseCase struct {
 
 type SubmissionUseCase interface {
 	CreateNewSubmission(c context.Context, params *SubmissionParams) *SubmissionResulat
+	GetAnswers(c context.Context, params *AnswersParams) *AnswersResulat
 }
 
 func NewSubmissionUseCase(repo repository.SubmissionRepository, collection string) SubmissionUseCase {
@@ -37,4 +48,12 @@ func (sub *submissionUseCase) CreateNewSubmission(c context.Context, params *Sub
 		return &SubmissionResulat{Err: err}
 	}
 	return &SubmissionResulat{Data: result, Err: nil}
+}
+
+func (sub *submissionUseCase) GetAnswers(c context.Context, params *AnswersParams) *AnswersResulat {
+	result, err := sub.repo.GetAnswers(c, params.SurveyID, params.CollectorID)
+	if err != nil {
+		return &AnswersResulat{Err: err}
+	}
+	return &AnswersResulat{Data: result, Err: nil}
 }

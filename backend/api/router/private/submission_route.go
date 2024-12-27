@@ -18,3 +18,12 @@ func NewSubmissionAnswerRouter(db database.Database, group *gin.RouterGroup) {
 	}
 	group.POST("submit-answer", sc.CreateSubmissionRequest)
 }
+
+func GetAnswersRouter(db database.Database, group *gin.RouterGroup) {
+	sr := repository.NewSubmissionRepository(db)
+	su := usecase.NewSubmissionUseCase(sr, core.SUBMISSION)
+	sc := &controller.SubmissionController{
+		SubmissionUseCase: su,
+	}
+	group.GET("get-answers", sc.GetAnswersRequest)
+}
