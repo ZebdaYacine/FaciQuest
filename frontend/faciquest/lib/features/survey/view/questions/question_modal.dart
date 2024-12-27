@@ -91,7 +91,14 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
               DropdownButton(
                 value: widget.question?.type ?? questionType,
                 isExpanded: true,
-                items: QuestionType.values.map(
+                items: QuestionType.values
+                    .where(
+                  (type) =>
+                      type != QuestionType.audioRecord &&
+                      type != QuestionType.dateTime &&
+                      type != QuestionType.matrix,
+                )
+                    .map(
                   (e) {
                     return DropdownMenuItem(
                       value: e,
