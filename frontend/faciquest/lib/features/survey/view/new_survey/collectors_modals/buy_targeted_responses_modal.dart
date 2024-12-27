@@ -6,6 +6,7 @@ import 'package:faciquest/features/features.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:input_quantity/input_quantity.dart';
 
 Future<void> showBuyTargetedResponsesModal(BuildContext context) async {
   showModalBottomSheet<void>(
@@ -96,7 +97,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
                     AppSpacing.spacing_1.heightBox,
                     Slider(
                       value: population,
-                      min: 50,
+                      min: 0,
                       label: '${population.round()}',
                       max: 5000,
                       onChanged: (value) {
@@ -105,9 +106,27 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
                         });
                       },
                     ),
-                    Text(
-                      '${population.round()}',
-                      style: context.textTheme.titleLarge,
+                    InputQty(
+                      maxVal: 5000,
+                      initVal: population,
+                      steps: 10,
+                      minVal: 0,
+                      decoration: QtyDecorationProps(
+                        isBordered: false,
+                        minusBtn: Icon(
+                          Icons.remove_circle_outline,
+                          color: context.colorScheme.primary,
+                        ),
+                        plusBtn: Icon(
+                          Icons.add_circle_outline,
+                          color: context.colorScheme.primary,
+                        ),
+                      ),
+                      onQtyChanged: (value) {
+                        setState(() {
+                          population = value;
+                        });
+                      },
                     ),
                   ],
                 ),
