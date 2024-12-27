@@ -64,39 +64,55 @@ class SurveyView extends StatelessWidget {
                   title: Text(state.survey.name),
                   centerTitle: false,
                 ),
-                body: ListView.separated(
-                  separatorBuilder: (context, index) =>
-                      AppSpacing.spacing_1.heightBox,
-                  itemCount: state.survey.questions.length + 1,
-                  padding: AppSpacing.spacing_2.padding,
+                body: PageView.builder(
+                  itemCount: state.survey.questions.length,
                   itemBuilder: (context, index) {
-                    if (index >= state.survey.questions.length) {
-                      return BlocBuilder<SurveyCubit, SurveyState>(
-                        builder: (context, state) {
-                          return ElevatedButton(
-                            onPressed: state.submissionStatus.isLoading
-                                ? null
-                                : cubit.submit,
-                            child: Center(
-                              child: state.submissionStatus.isLoading
-                                  ? const CircularProgressIndicator()
-                                  : const Text('Submit'),
-                            ),
-                          );
-                        },
-                      );
-                    }
                     final question = state.survey.questions[index];
                     final answer = state.answers.firstWhereOrNull(
                       (element) => element.questionId == question.id,
                     );
-                    return QuestionPreview(
-                      key: ValueKey(question.id),
-                      question: question,
-                      isPreview: false,
-                      index: index + 1,
-                      answer: answer,
-                      onAnswerChanged: cubit.onAnswerChanged,
+                    return Padding(
+                      padding: AppSpacing.spacing_2.padding,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: QuestionPreview(
+                              key: ValueKey(question.id),
+                              question: question,
+                              isPreview: false,
+                              index: index + 1,
+                              answer: answer,
+                              onAnswerChanged: cubit.onAnswerChanged,
+                            ),
+                          ),
+                          if (index == state.survey.questions.length - 1)
+                            BlocBuilder<SurveyCubit, SurveyState>(
+                              builder: (context, state) {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Review your answers and submit',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    AppSpacing.spacing_2.heightBox,
+                                    ElevatedButton(
+                                      onPressed:
+                                          state.submissionStatus.isLoading
+                                              ? null
+                                              : cubit.submit,
+                                      child: Center(
+                                        child: state.submissionStatus.isLoading
+                                            ? const CircularProgressIndicator()
+                                            : const Text('Submit'),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                        ],
+                      ),
                     );
                   },
                 ),
