@@ -14,73 +14,118 @@ class HomeView extends StatelessWidget {
       create: (context) => HomeCubit(getIt<SurveyRepository>())..fetchSurveys(),
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
+          backgroundColor: context.colorScheme.surface,
           actions: [
-            InkWell(
-              onTap: () {
-                AppRoutes.profile.push(context);
-              },
-              child: const CircleAvatar(
-                child: Text('YG'),
+            Padding(
+              padding: AppSpacing.spacing_2.rightPadding,
+              child: InkWell(
+                onTap: () {
+                  AppRoutes.profile.push(context);
+                },
+                child: CircleAvatar(
+                  backgroundColor: context.colorScheme.primaryContainer,
+                  child: Text(
+                    'YG',
+                    style: TextStyle(
+                      color: context.colorScheme.onPrimaryContainer,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
             ),
-            8.widthBox,
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              8.heightBox,
-              Text(
-                'Welcome to FaciQuest',
-                style: context.textTheme.headlineMedium,
-              ),
-              8.heightBox,
-              const Text('This is where you can view your surveys'),
-              const Text('or create a new one'),
-              8.heightBox,
-              ElevatedButton(
-                onPressed: () {
-                  AppRoutes.manageMySurveys.push(context);
-                },
-                child: const Text('Manage Surveys'),
-              ),
-              Expanded(
-                child: BlocBuilder<HomeCubit, HomeState>(
-                  builder: (context, state) {
-                    if (state.status.isFailure) {
-                      return const _FailureState();
-                    }
-                    if (state.status.isSuccess && state.surveys.isEmpty) {
-                      return const _EmptyState();
-                    }
-                    return Skeletonizer(
-                      enabled: state.status.isLoading,
-                      child: ListView.builder(
-                        itemCount:
-                            state.surveys.isEmpty ? 10 : state.surveys.length,
-                        itemBuilder: (context, index) {
-                          SurveyEntity? surveyEntity;
-                          if (state.surveys.isEmpty) {
-                            surveyEntity = null;
-                          } else {
-                            surveyEntity = state.surveys[index];
-                          }
-
-                          return _SurveyCard(
-                            surveyEntity: surveyEntity,
-                          );
-                        },
-                      ),
-                    );
-                  },
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                context.colorScheme.surface,
+                context.colorScheme.surface.withOpacity(0.95),
+              ],
+            ),
+          ),
+          child: Padding(
+            padding: AppSpacing.spacing_3.padding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppSpacing.spacing_2.heightBox,
+                Text(
+                  'Welcome to FaciQuest',
+                  style: context.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.colorScheme.primary,
+                  ),
                 ),
-              )
-            ],
+                AppSpacing.spacing_1.heightBox,
+                Text(
+                  'Create and manage your surveys with ease',
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                AppSpacing.spacing_3.heightBox,
+                FilledButton.icon(
+                  onPressed: () {
+                    AppRoutes.manageMySurveys.push(context);
+                  },
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(200, 48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  icon: const Icon(Icons.edit_document),
+                  label: const Text('Manage Surveys'),
+                ),
+                AppSpacing.spacing_3.heightBox,
+                Text(
+                  'Available Surveys',
+                  style: context.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                AppSpacing.spacing_2.heightBox,
+                Expanded(
+                  child: BlocBuilder<HomeCubit, HomeState>(
+                    builder: (context, state) {
+                      if (state.status.isFailure) {
+                        return const _FailureState();
+                      }
+                      if (state.status.isSuccess && state.surveys.isEmpty) {
+                        return const _EmptyState();
+                      }
+                      return Skeletonizer(
+                        enabled: state.status.isLoading,
+                        child: ListView.builder(
+                          itemCount:
+                              state.surveys.isEmpty ? 10 : state.surveys.length,
+                          itemBuilder: (context, index) {
+                            SurveyEntity? surveyEntity;
+                            if (state.surveys.isEmpty) {
+                              surveyEntity = null;
+                            } else {
+                              surveyEntity = state.surveys[index];
+                            }
+
+                            return _SurveyCard(
+                              surveyEntity: surveyEntity,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             AppRoutes.newSurvey.push(
               context,
@@ -89,7 +134,8 @@ class HomeView extends StatelessWidget {
               },
             );
           },
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add),
+          label: const Text('New Survey'),
         ),
       ),
     );
@@ -101,7 +147,25 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('No surveys found');
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.search_off_rounded,
+            size: 64,
+            color: context.colorScheme.primary.withOpacity(0.5),
+          ),
+          AppSpacing.spacing_2.heightBox,
+          Text(
+            'No surveys found',
+            style: context.textTheme.titleLarge?.copyWith(
+              color: context.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -110,7 +174,25 @@ class _FailureState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Something went wrong');
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline_rounded,
+            size: 64,
+            color: context.colorScheme.error,
+          ),
+          AppSpacing.spacing_2.heightBox,
+          Text(
+            'Something went wrong',
+            style: context.textTheme.titleLarge?.copyWith(
+              color: context.colorScheme.error,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -124,8 +206,13 @@ class _SurveyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 2,
+      margin: AppSpacing.spacing_2.bottomPadding,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(16),
         onTap: () {
           AppRoutes.survey.push(
             context,
@@ -135,34 +222,57 @@ class _SurveyCard extends StatelessWidget {
           );
         },
         child: Padding(
-          padding: 8.padding,
+          padding: AppSpacing.spacing_3.padding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 surveyEntity?.name ?? 'Survey Title',
-                style: context.textTheme.headlineSmall,
+                style: context.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: context.colorScheme.primary,
+                ),
               ),
-              AppSpacing.spacing_0_5.heightBox,
+              AppSpacing.spacing_1.heightBox,
               Text(
                 surveyEntity?.description ?? 'Description of survey',
-                style: context.textTheme.bodyMedium,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colorScheme.onSurfaceVariant,
+                ),
                 maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
+              AppSpacing.spacing_2.heightBox,
               Row(
                 children: [
-                  const Spacer(),
-                  Text(
-                    surveyEntity?.price
-                            ?.toStringAsFixed(2)
-                            .replaceAll('.', ',') ??
-                        '10,00 DZD',
-                    style: context.textTheme.titleMedium?.copyWith(
-                      color: Colors.green,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
                     ),
-                  )
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      surveyEntity?.price
+                              ?.toStringAsFixed(2)
+                              .replaceAll('.', ',') ??
+                          '10,00 DZD',
+                      style: context.textTheme.titleMedium?.copyWith(
+                        color: context.colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: context.colorScheme.primary,
+                    size: 20,
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
