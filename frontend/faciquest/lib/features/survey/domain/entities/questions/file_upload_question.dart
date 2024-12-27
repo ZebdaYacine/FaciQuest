@@ -87,7 +87,11 @@ class FileUploadQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       instructions: map['instructions'],
-      allowedExtensions: FileUploadType.fromMap(map['allowedExtensions']),
+      allowedExtensions: FileUploadType.fromMap(
+        (map['allowedExtensions'] as List<dynamic>)
+            .map((e) => e.toString())
+            .toList(),
+      ),
     );
   }
 
