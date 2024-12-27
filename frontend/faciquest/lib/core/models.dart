@@ -6,21 +6,21 @@ enum Gender {
   String toMap() {
     switch (this) {
       case Gender.male:
-        return 'male';
+        return 'Male';
       case Gender.female:
-        return 'female';
+        return 'Female';
       case Gender.both:
-        return 'both';
+        return 'Both';
     }
   }
 
   static Gender? fromMap(String? value) {
     switch (value) {
-      case 'male':
+      case 'Male':
         return Gender.male;
-      case 'female':
+      case 'Female':
         return Gender.female;
-      case 'both':
+      case 'Both':
         return Gender.both;
       default:
         return Gender.both;

@@ -86,20 +86,20 @@ class CollectorEntity extends Equatable {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'type': type.toMap(),
+      'type': type.name,
       'surveyId': surveyId,
-      if (type == CollectorType.targetAudience) ...{
-        'targetAudience': {
-          'population': population?.toInt() ?? 0,
-          // 'gender': gender?.toMap(),
-          'ageRange': ageRange?.toMap(),
-          'countries': countries,
-          'provinces': provinces.map((x) => x.toMap()).toList(),
-          'cities': cities.map((x) => x.toMap()).toList(),
-          'targetingCriteria': targetingCriteria.map((x) => x.toMap()).toList(),
-        }
-      } else
-        'webUrl': webUrl,
+      'targetAudience': {
+        'population': population?.toInt() ?? 0,
+        'gender': gender?.name ?? Gender.both.name,
+        'ageRange': {
+          'start': ageRange?.start ?? 0,
+          'end': ageRange?.end ?? 120,
+        },
+        'country': countries.firstOrNull ?? '',
+        'state': provinces.map((x) => x.toMap()).toList(),
+        'city': cities.map((x) => x.toMap()).toList(),
+        'targetingCriteria': targetingCriteria.map((x) => x.toMap()).toList()
+      }
     };
   }
 
