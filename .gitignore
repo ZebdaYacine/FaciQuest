@@ -1,10 +1,39 @@
-
-.vscode/
-
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
 
-backend/.env
+# Output of the build process
+*.out
+*.a
+
+# Temporary files
+*.tmp
+
+# Dependency directories
+vendor/
+
+# Go specific
+*.log
+*.test
+*.cover
+# *.mod
+# *.sum
+
+# IDEs and editors
+### Goland ###
+.idea/
+### VSCode ###
+.vscode/
+### Sublime ###
+*.sublime-project
+*.sublime-workspace
+### Emacs ###
+*~
+\#*\#
+.\#*
+### Vim ###
+*.swp
+*.swo
+*.swn
