@@ -376,6 +376,18 @@ class ListSurveys extends StatelessWidget {
         return ListTile(
           trailing: SurveyActions(surveyId: survey.id),
           leading: SurveyBadge(status: survey.status),
+          onTap: () async {
+            await context.pushNamed(
+              AppRoutes.newSurvey.name,
+              extra: SurveyAction.edit,
+              pathParameters: {
+                'id': survey.id,
+              },
+            );
+            if (context.mounted) {
+              context.read<ManageMySurveysCubit>().fetchSurveys();
+            }
+          },
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
