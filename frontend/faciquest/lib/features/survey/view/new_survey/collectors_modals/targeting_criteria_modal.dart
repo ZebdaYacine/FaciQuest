@@ -41,7 +41,6 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
 
   String searchQuery = '';
   List<TargetingCriteria> list = [];
-
   Set<TargetingCriteria> selectedChoices = {};
 
   List<TargetingCriteria> get filteredList {
@@ -69,45 +68,131 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
       showHeaderContent: false,
       body: Column(
         children: [
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                searchQuery = value;
-              });
-            },
-            decoration: const InputDecoration(
-              labelText: 'Search',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
+          Padding(
+            padding: AppSpacing.spacing_1.padding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Targeting Criteria',
+                  style: context.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.colorScheme.primary,
+                  ),
+                ),
+                AppSpacing.spacing_2.heightBox,
+                TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      searchQuery = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Search criteria',
+                    hintText: 'Search by title, category or description',
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: context.colorScheme.primary,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: context.colorScheme.outline,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: context.colorScheme.outline,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: context.colorScheme.primary,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          AppSpacing.spacing_1.heightBox,
           Expanded(
             child: ListView.builder(
               itemCount: filteredList.length,
               itemBuilder: (context, index) {
                 final criteria = filteredList[index];
                 return Card(
+                  elevation: 2,
+                  margin: AppSpacing.spacing_2.bottomPadding,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: AppSpacing.spacing_3.padding,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          criteria.title,
-                          style: context.textTheme.titleMedium,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    criteria.title,
+                                    style:
+                                        context.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: context.colorScheme.primary,
+                                    ),
+                                  ),
+                                  if (criteria.category != null) ...[
+                                    AppSpacing.spacing_1.heightBox,
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: context
+                                            .colorScheme.primaryContainer
+                                            .withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        criteria.category!,
+                                        style: context.textTheme.labelSmall
+                                            ?.copyWith(
+                                          color: context.colorScheme.primary,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        AppSpacing.spacing_1.heightBox,
-                        Text(
-                          criteria.description ?? '',
-                          style: context.textTheme.bodySmall,
-                        ),
-                        AppSpacing.spacing_1.heightBox,
+                        if (criteria.description != null) ...[
+                          AppSpacing.spacing_2.heightBox,
+                          Text(
+                            criteria.description!,
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              color: context.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                        AppSpacing.spacing_3.heightBox,
                         MultiDropdown(
                           dropdownDecoration: const DropdownDecoration(
                             borderRadius: BorderRadius.all(
-                              Radius.circular(4),
+                              Radius.circular(12),
                             ),
+                            // border: Border.all(
+                            //   color: context.colorScheme.outline,
+                            // ),
                           ),
                           items: criteria.choices
                               .map(
@@ -116,9 +201,7 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
                               .toList(),
                           onSelectionChange: (selectedItems) {
                             selectedChoices.removeWhere(
-                              (element) {
-                                return element.id == criteria.id;
-                              },
+                              (element) => element.id == criteria.id,
                             );
                             selectedChoices
                                 .add(criteria.copyWith(choices: selectedItems));
@@ -133,26 +216,45 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
           ),
         ],
       ),
-      actions: Row(
-        children: [
-          Expanded(
-            child: OutlinedButton(
-              onPressed: () {
-                context.pop();
-              },
-              child: const Text('cancel'),
+      actions: Padding(
+        padding: AppSpacing.spacing_3.padding,
+        child: Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => context.pop(),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Cancel',
+                  style: context.textTheme.labelLarge,
+                ),
+              ),
             ),
-          ),
-          AppSpacing.spacing_1.widthBox,
-          Expanded(
-            child: FilledButton(
-              onPressed: () {
-                context.pop(result: selectedChoices);
-              },
-              child: const Text('Apply'),
+            AppSpacing.spacing_2.widthBox,
+            Expanded(
+              child: FilledButton(
+                onPressed: () => context.pop(result: selectedChoices),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Apply',
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: context.colorScheme.onPrimary,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

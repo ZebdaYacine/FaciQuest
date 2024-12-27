@@ -140,7 +140,10 @@ class _ActionButtons extends StatelessWidget {
           onPressed: () {
             context.read<NewSurveyCubit>().back();
           },
-          icon: const Icon(Icons.arrow_back_rounded),
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: context.colorScheme.error,
+          ),
           label: const Text('Back'),
           style: OutlinedButton.styleFrom(
             foregroundColor: context.colorScheme.error,

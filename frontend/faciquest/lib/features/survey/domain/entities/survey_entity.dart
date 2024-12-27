@@ -308,6 +308,48 @@ class SurveyEntity extends Equatable {
         languages: const ['en', 'ar'],
         topics: const ['test', 'test2'],
       ),
+      SurveyEntity(
+        id: ObjectId().hexString,
+        name: 'Unit Test Survey',
+        responseCount: Random().nextInt(50),
+        viewCount: 50 + Random().nextInt(10),
+        status: SurveyStatus.draft,
+        questions: QuestionEntity.dummyList()..shuffle(),
+        createdAt: DateTime.now().subtract(Duration(
+          days: Random().nextInt(30),
+        )),
+        description: 'Test Description',
+        languages: const ['en', 'ar'],
+        topics: const ['test', 'test2'],
+      ),
+      SurveyEntity(
+        id: ObjectId().hexString,
+        name: 'Unit Test Survey',
+        responseCount: Random().nextInt(50),
+        viewCount: 50 + Random().nextInt(10),
+        status: SurveyStatus.draft,
+        questions: QuestionEntity.dummyList()..shuffle(),
+        createdAt: DateTime.now().subtract(Duration(
+          days: Random().nextInt(30),
+        )),
+        description: 'Test Description',
+        languages: const ['en', 'ar'],
+        topics: const ['test', 'test2'],
+      ),
+      SurveyEntity(
+        id: ObjectId().hexString,
+        name: 'Unit Test Survey',
+        responseCount: Random().nextInt(50),
+        viewCount: 50 + Random().nextInt(10),
+        status: SurveyStatus.draft,
+        questions: QuestionEntity.dummyList()..shuffle(),
+        createdAt: DateTime.now().subtract(Duration(
+          days: Random().nextInt(30),
+        )),
+        description: 'Test Description',
+        languages: const ['en', 'ar'],
+        topics: const ['test', 'test2'],
+      ),
     ];
   }
 }

@@ -215,18 +215,18 @@ class SurveyDataSourceImpl implements SurveyDataSource {
   @override
   Future<List<TargetingCriteria>> getTargetingCriteria() async {
     logInfo('SurveyDataSourceImpl:getTargetingCriteria ');
-    return TargetingCriteria.dummy();
-    // final response = await dioClient.get<Map<String, dynamic>>(
-    //   AppUrls.getTargetingCriteria,
-    // );
-    // if (response.statusCode == 200 &&
-    //     response.data?['date'] != null &&
-    //     response.data?['date'] is List) {
-    //   return (response.data!['date'] as List? ?? [])
-    //       .map((e) => TargetingCriteria.fromMap(e))
-    //       .toList();
-    // }
-    // return [];
+    // return TargetingCriteria.dummy();
+    final response = await dioClient.get<Map<String, dynamic>>(
+      AppUrls.getTargetingCriteria,
+    );
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is List) {
+      return (response.data!['date'] as List? ?? [])
+          .map((e) => TargetingCriteria.fromMap(e))
+          .toList();
+    }
+    return [];
   }
 
   @override
