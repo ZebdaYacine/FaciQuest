@@ -1,5 +1,4 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
-
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -25,76 +24,99 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Expanded(child: CollectorsTable()),
-        const Divider(
-          thickness: 2,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              AppSpacing.spacing_2.heightBox,
-              Text(
-                'Add a new collector',
-                style: context.textTheme.titleLarge,
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, -5),
               ),
-              AppSpacing.spacing_2.heightBox,
-              Row(
-                children: [
-                  // Expanded(
-                  //   child: _CollectorWidget(
-                  //     icon: Icons.link,
-                  //     title: 'Web Link',
-                  //     onTap: () async {
-                  //       await showWebLinkModal(context);
-                  //       if (context.mounted) {
-                  //         context.read<NewSurveyCubit>().fetchCollectors();
-                  //       }
-                  //     },
-                  //     description:
-                  //         'Ideal for sharing via email, social media, etc.',
-                  //   ),
-                  // ),
-                  // AppSpacing.spacing_2.widthBox,
-                  Expanded(
-                    child: _CollectorWidget(
-                      icon: Icons.person_search_rounded,
-                      onTap: () async {
-                        await showBuyTargetedResponsesModal(context);
-                        if (context.mounted) {
-                          context.read<NewSurveyCubit>().fetchCollectors();
-                        }
-                      },
-                      title: 'Targeted Responses',
-                      description: 'Find people who fit your criteria',
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              OutlinedButton(
-                onPressed: () {
-                  context.read<NewSurveyCubit>().back();
-                },
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Theme.of(context).colorScheme.error,
-                  side: const BorderSide(color: Colors.red),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Add a new collector',
+                      style: context.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    AppSpacing.spacing_3.heightBox,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _CollectorWidget(
+                            icon: Icons.person_search_rounded,
+                            onTap: () async {
+                              await showBuyTargetedResponsesModal(context);
+                              if (context.mounted) {
+                                context
+                                    .read<NewSurveyCubit>()
+                                    .fetchCollectors();
+                              }
+                            },
+                            title: 'Targeted Responses',
+                            description: 'Find people who fit your criteria',
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
-                child: const Text('Back'),
               ),
-              8.widthBox,
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    context.read<NewSurveyCubit>().next();
-                  },
-                  icon: const Icon(Icons.bar_chart),
-                  label: const Text('Analyze Results'),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        context.read<NewSurveyCubit>().back();
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Theme.of(context).colorScheme.error,
+                        side: BorderSide(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                      ),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text('Back'),
+                    ),
+                    16.widthBox,
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          context.read<NewSurveyCubit>().next();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                        ),
+                        icon: const Icon(Icons.bar_chart),
+                        label: const Text('Analyze Results'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -121,30 +143,37 @@ class _CollectorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-      onPressed: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 40,
-            ),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-            ),
-            AppSpacing.spacing_1.heightBox,
-            Text(
-              description,
-              style: context.textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            )
-          ],
+    return Card(
+      elevation: 2,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 48,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              16.heightBox,
+              Text(
+                title,
+                style: context.textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
+              8.heightBox,
+              Text(
+                description,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                ),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -164,67 +193,227 @@ class CollectorsTable extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(16).copyWith(top: 0),
-              child: Text(
-                'Total Responses: ${state.survey.responseCount}',
-                style: context.textTheme.titleMedium,
-              ),
-            ),
-            if (state.survey.collectors.isEmpty) ...[
-              const Spacer(),
-              Center(
-                child: Text(
-                  'please create a collector',
-                  style: context.textTheme.titleLarge,
-                ),
-              ),
-              const Spacer(),
-            ] else
-              Table(
-                columnWidths: const {
-                  0: FlexColumnWidth(1),
-                  1: FlexColumnWidth(5),
-                  2: FlexColumnWidth(2),
-                  3: FlexColumnWidth(3),
-                  4: FlexColumnWidth(1),
-                },
+              padding: const EdgeInsets.all(24),
+              child: Row(
                 children: [
-                  TableRow(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                      ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        '',
-                        'Nickname',
-                        'Status',
-                        'Responses',
-                        '',
-                      ]
-                          .map((e) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 4,
-                                ),
-                                child: Center(child: Text(e)),
-                              ))
-                          .toList()),
-                  ...state.survey.collectors.map(
-                    (e) => TableRow(
-                      children: [
-                        Icon(
-                          e.type.icon,
-                        ),
-                        Text(e.name),
-                        Text(e.status.name),
-                        Text('${e.responsesCount}'),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.edit),
+                        const Icon(Icons.analytics_outlined),
+                        8.widthBox,
+                        Text(
+                          'Total Responses: ${state.survey.responseCount}',
+                          style: context.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ],
+              ),
+            ),
+            if (state.survey.collectors.isEmpty) ...[
+              const Spacer(),
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add_chart,
+                      size: 64,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    16.heightBox,
+                    Text(
+                      'No collectors yet',
+                      style: context.textTheme.headlineSmall,
+                    ),
+                    8.heightBox,
+                    Text(
+                      'Create a collector to start gathering responses',
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).textTheme.bodySmall?.color,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+            ] else
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  children: [
+                    Card(
+                      child: Table(
+                        columnWidths: const {
+                          0: FlexColumnWidth(1),
+                          1: FlexColumnWidth(5),
+                          2: FlexColumnWidth(2),
+                          3: FlexColumnWidth(3),
+                          4: FlexColumnWidth(1),
+                        },
+                        children: [
+                          TableRow(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest,
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(12),
+                              ),
+                            ),
+                            children: [
+                              '',
+                              'Nickname',
+                              'Status',
+                              'Responses',
+                              '',
+                            ]
+                                .map(
+                                  (e) => Center(
+                                    child: Text(
+                                      e,
+                                      style: context.textTheme.titleSmall
+                                          ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          ...state.survey.collectors.map(
+                            (e) => TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    e.type.icon,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    e.name,
+                                    style: context.textTheme.bodyLarge,
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Center(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: e.status == CollectorStatus.open
+                                            ? Colors.green.withOpacity(0.1)
+                                            : Colors.orange.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        e.status.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: context.textTheme.bodyMedium
+                                            ?.copyWith(
+                                          color:
+                                              e.status == CollectorStatus.open
+                                                  ? Colors.green
+                                                  : Colors.orange,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: Text(
+                                      '${e.responsesCount}',
+                                      style: context.textTheme.bodyLarge,
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuButton(
+                                  itemBuilder: (context) {
+                                    return [
+                                      const PopupMenuItem<String>(
+                                        value: 'edit',
+                                        child: Text('Edit Collector'),
+                                      ),
+                                      const PopupMenuItem(
+                                        value: 'delete',
+                                        child: Text('Delete'),
+                                      ),
+                                    ];
+                                  },
+                                  onSelected: (value) async {
+                                    if (value == 'delete') {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (ctx) {
+                                          return AlertDialog(
+                                            title:
+                                                const Text('Delete Collector'),
+                                            content: const Text(
+                                                'Are you sure you want to delete this collector?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                  context
+                                                      .read<NewSurveyCubit>()
+                                                      .deleteCollector(e.id);
+                                                },
+                                                child: const Text('Delete'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      await showBuyTargetedResponsesModal(
+                                        context,
+                                        collector: e,
+                                      );
+                                    }
+                                    if (context.mounted) {
+                                      context
+                                          .read<NewSurveyCubit>()
+                                          .fetchCollectors();
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
           ],
         );

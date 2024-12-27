@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:input_quantity/input_quantity.dart';
 
-Future<void> showBuyTargetedResponsesModal(BuildContext context) async {
+Future<void> showBuyTargetedResponsesModal(BuildContext context,
+    {CollectorEntity? collector}) async {
   showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -17,14 +18,15 @@ Future<void> showBuyTargetedResponsesModal(BuildContext context) async {
       return BlocProvider.value(
         value: context.read<NewSurveyCubit>(),
         child: BuyTargetedResponsesModal(
-          collector: CollectorEntity(
-            id: 'null',
-            surveyId: context.read<NewSurveyCubit>().state.survey.id,
-            name: '',
-            status: CollectorStatus.draft,
-            responsesCount: 0,
-            viewsCount: 0,
-          ),
+          collector: collector ??
+              CollectorEntity(
+                id: 'null',
+                surveyId: context.read<NewSurveyCubit>().state.survey.id,
+                name: '',
+                status: CollectorStatus.draft,
+                responsesCount: 0,
+                viewsCount: 0,
+              ),
         ),
       );
     },

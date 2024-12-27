@@ -232,6 +232,10 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
       emit(state.copyWith(status: Status.failure, msg: e.toString()));
     }
   }
+
+  void deleteCollector(String id) {
+    // todo implement delete collector
+  }
 }
 
 NewSurveyPages _pageFromAction(SurveyAction action) {

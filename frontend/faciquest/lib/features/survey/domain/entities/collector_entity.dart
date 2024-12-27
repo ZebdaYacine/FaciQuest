@@ -104,6 +104,9 @@ class CollectorEntity extends Equatable {
   }
 
   factory CollectorEntity.fromMap(Map<String, dynamic> map) {
+    final targetAudience = map['targetAudience'] as Map<String, dynamic>?;
+    final ageRange = targetAudience?['ageRange'] as Map<String, dynamic>?;
+
     return CollectorEntity(
       id: map['id'] as String,
       name: map['name'] as String,
@@ -115,43 +118,42 @@ class CollectorEntity extends Equatable {
       viewsCount: (map['viewsCount'] as num?)?.toInt() ?? 0,
       createdDate: map['createdDate'] != null
           ? DateTime.fromMillisecondsSinceEpoch(
-              (map['createdDate'] as num?)?.toInt() ?? 0)
+              (map['createdDate'] as num).toInt())
           : null,
       surveyId: map['surveyId'] as String,
-      webUrl: map['webUrl'] != null ? map['webUrl'] as String : null,
-      population: map['population'] != null
-          ? (map['population'] as num).toDouble()
+      webUrl: map['webUrl'] as String?,
+      population: targetAudience?['population'] != null
+          ? (targetAudience!['population'] as num).toDouble()
           : null,
-      gender: map['gender'] != null
-          ? Gender.fromMap(map['gender'] as String?) ?? Gender.both
+      gender: targetAudience?['gender'] != null
+          ? Gender.fromMap(targetAudience!['gender'] as String?) ?? Gender.both
           : null,
-      ageRange:
-          map['ageRange']['start'] is double && map['ageRange']['end'] is double
-              ? RangeValues(
-                  map['ageRange']['start'] as double,
-                  map['ageRange']['end'] as double,
-                )
-              : null,
-      countries: List<String>.from((map['countries'] as List<String>)),
-      provinces: map['provinces'] is List
+      ageRange: ageRange != null &&
+              ageRange['start'] is double &&
+              ageRange['end'] is double
+          ? RangeValues(ageRange['start'], ageRange['end'])
+          : null,
+      countries: targetAudience?['countries'] != null
+          ? List<String>.from(targetAudience!['countries'] as List)
+          : [],
+      provinces: targetAudience?['provinces'] != null
           ? List<Province>.from(
-              (map['provinces'] as List).map<Province>(
-                (x) => Province.fromMap(x as Map<String, dynamic>),
-              ),
+              (targetAudience!['provinces'] as List)
+                  .map((x) => Province.fromMap(x as Map<String, dynamic>)),
             )
           : [],
-      cities: map['cities'] is List
+      cities: targetAudience?['cities'] != null
           ? List<City>.from(
-              (map['cities'] as List).map<City>(
-                (x) => City.fromMap(x as Map<String, dynamic>),
-              ),
+              (targetAudience!['cities'] as List)
+                  .map((x) => City.fromMap(x as Map<String, dynamic>)),
             )
           : [],
-      targetingCriteria: List<TargetingCriteria>.from(
-        (map['targetingCriteria'] as List).map<TargetingCriteria>(
-          (x) => TargetingCriteria.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      targetingCriteria: targetAudience?['targetingCriteria'] != null
+          ? List<TargetingCriteria>.from(
+              (targetAudience!['targetingCriteria'] as List).map(
+                  (x) => TargetingCriteria.fromMap(x as Map<String, dynamic>)),
+            )
+          : [],
     );
   }
 

@@ -13,6 +13,7 @@ mixin BuildFormMixin<T extends StatefulWidget> on State<T> {
     bool? enabled,
     TextInputType? keyboardType,
     int? maxLines,
+    InputDecoration? decoration,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
@@ -24,32 +25,33 @@ mixin BuildFormMixin<T extends StatefulWidget> on State<T> {
         maxLines: _isObscure ? 1 : maxLines,
         obscureText: pass ? _isObscure : false,
         onChanged: onChange,
-        decoration: InputDecoration(
-            labelText: label,
-            labelStyle: const TextStyle(
-              color: kTextFieldColor,
-            ),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: kPrimaryColor),
-            ),
-            suffixIcon: pass
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isObscure = !_isObscure;
-                      });
-                    },
-                    icon: _isObscure
-                        ? const Icon(
-                            Icons.visibility_off,
-                            color: kTextFieldColor,
-                          )
-                        : const Icon(
-                            Icons.visibility,
-                            color: kPrimaryColor,
-                          ),
-                  )
-                : null),
+        decoration: decoration ??
+            InputDecoration(
+                labelText: label,
+                labelStyle: const TextStyle(
+                  color: kTextFieldColor,
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: kPrimaryColor),
+                ),
+                suffixIcon: pass
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
+                        icon: _isObscure
+                            ? const Icon(
+                                Icons.visibility_off,
+                                color: kTextFieldColor,
+                              )
+                            : const Icon(
+                                Icons.visibility,
+                                color: kPrimaryColor,
+                              ),
+                      )
+                    : null),
       ),
     );
   }
