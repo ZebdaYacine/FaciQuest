@@ -14,114 +14,200 @@ class ManageMySurveysView extends StatefulWidget {
 }
 
 class _ManageMySurveysViewState extends State<ManageMySurveysView> {
-  final cubit = ManageMySurveysCubit(getIt<SurveyRepository>());
+  final _cubit = ManageMySurveysCubit(getIt<SurveyRepository>());
+  var _viewStyle = ViewStyle.grid;
+
   @override
   void initState() {
     super.initState();
-    cubit.fetchSurveys();
+    _cubit.fetchSurveys();
   }
 
-  var viewStyle = ViewStyle.grid;
+  Future<void> _handleCreateSurvey(BuildContext context) async {
+    await context.pushNamed(
+      AppRoutes.newSurvey.name,
+      pathParameters: {'id': '-1'},
+    );
+    _cubit.fetchSurveys();
+  }
+
+  void _handleViewStyleChange(Set<ViewStyle> styles) {
+    if (styles.isNotEmpty) {
+      setState(() => _viewStyle = styles.first);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => cubit,
+      create: (context) => _cubit,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Manage My Surveys'),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            await context.pushNamed(
-              AppRoutes.newSurvey.name,
-              pathParameters: {
-                'id': '-1',
-              },
-            );
-            cubit.fetchSurveys();
-          },
-          label: const Text('Create Survey'), // Text on the button
-        ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onChanged: cubit.onSearchChanged,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 2,
-                        ),
-                        labelText: 'Search',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(50),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  AppSpacing.spacing_1.widthBox,
-                  SegmentedButton<ViewStyle>(
-                    segments: ViewStyle.values.map(
-                      (e) {
-                        return ButtonSegment(
-                          value: e,
-                          icon: Icon(e.icon),
-                        );
-                      },
-                    ).toList(),
-                    selected: {viewStyle},
-                    multiSelectionEnabled: false,
-                    onSelectionChanged: (p0) {
-                      viewStyle = p0.firstOrNull ?? viewStyle;
-                      setState(() {});
-                    },
-                  ),
-                ],
-              ),
+        appBar: _buildAppBar(context),
+        floatingActionButton: _buildFAB(context),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                context.colorScheme.surface,
+                context.colorScheme.surface.withOpacity(0.95),
+              ],
             ),
-            AppSpacing.spacing_1.heightBox,
-            BlocBuilder<ManageMySurveysCubit, ManageMySurveysState>(
-              builder: (context, state) {
-                if (state.status.isFailure) {
-                  return KErrorWidget(
-                    message: state.msg,
-                  );
-                }
-                if (viewStyle == ViewStyle.grid) {
-                  return Expanded(
-                    child: Skeletonizer(
-                      enabled: state.status.isLoading,
-                      child: GridSurveys(
-                        surveys: state.status.isLoading
-                            ? SurveyEntity.dummyList()
-                            : state.filteredSurveys,
-                      ),
-                    ),
-                  );
-                } else {
-                  return Expanded(
-                    child: Skeletonizer(
-                      enabled: state.status.isLoading,
-                      child: ListSurveys(
-                        surveys: state.status.isLoading
-                            ? SurveyEntity.dummyList()
-                            : state.filteredSurveys,
-                      ),
-                    ),
-                  );
-                }
-              },
-            )
-          ],
+          ),
+          child: Column(
+            children: [
+              _buildSearchBar(context),
+              AppSpacing.spacing_2.heightBox,
+              _buildSurveyList(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(
+        'Manage My Surveys',
+        style: context.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: context.colorScheme.primary,
+        ),
+      ),
+      elevation: 0,
+      backgroundColor: context.colorScheme.surface,
+    );
+  }
+
+  Widget _buildFAB(BuildContext context) {
+    return FloatingActionButton.extended(
+      onPressed: () => _handleCreateSurvey(context),
+      icon: const Icon(Icons.add_rounded),
+      label: const Text(
+        'Create Survey',
+        style: TextStyle(fontWeight: FontWeight.w600),
+      ),
+      backgroundColor: context.colorScheme.primary,
+      foregroundColor: context.colorScheme.onPrimary,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar(BuildContext context) {
+    return Container(
+      margin: AppSpacing.spacing_2.padding,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              onChanged: _cubit.onSearchChanged,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                hintText: 'Search surveys...',
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: context.colorScheme.primary,
+                ),
+                border: _buildTextFieldBorder(context),
+                enabledBorder: _buildTextFieldBorder(context),
+                focusedBorder: _buildTextFieldBorder(
+                  context,
+                  width: 2,
+                  color: context.colorScheme.primary,
+                ),
+              ),
+            ),
+          ),
+          AppSpacing.spacing_2.widthBox,
+          _buildViewStyleToggle(context),
+        ],
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildTextFieldBorder(
+    BuildContext context, {
+    double width = 1,
+    Color? color,
+  }) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: color ?? context.colorScheme.outline,
+        width: width,
+      ),
+    );
+  }
+
+  Widget _buildViewStyleToggle(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: context.colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: context.colorScheme.outline.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: ViewStyle.values.map((style) {
+          final isSelected = style == _viewStyle;
+          return InkWell(
+            onTap: () => _handleViewStyleChange({style}),
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              decoration: BoxDecoration(
+                color: isSelected ? context.colorScheme.primaryContainer : null,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                style.icon,
+                color: isSelected
+                    ? context.colorScheme.primary
+                    : context.colorScheme.onSurfaceVariant,
+                size: 20,
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildSurveyList() {
+    return BlocBuilder<ManageMySurveysCubit, ManageMySurveysState>(
+      builder: (context, state) {
+        if (state.status.isFailure) {
+          return KErrorWidget(message: state.msg);
+        }
+
+        final surveys = state.status.isLoading
+            ? SurveyEntity.dummyList()
+            : state.filteredSurveys;
+
+        return Expanded(
+          child: Skeletonizer(
+            enabled: state.status.isLoading,
+            child: _viewStyle == ViewStyle.grid
+                ? GridSurveys(surveys: surveys)
+                : ListSurveys(surveys: surveys),
+          ),
+        );
+      },
     );
   }
 }
@@ -133,9 +219,9 @@ enum ViewStyle {
   IconData get icon {
     switch (this) {
       case ViewStyle.grid:
-        return Icons.grid_view;
+        return Icons.grid_view_rounded;
       case ViewStyle.list:
-        return Icons.list;
+        return Icons.view_list_rounded;
     }
   }
 }
@@ -151,112 +237,181 @@ class GridSurveys extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (surveys.isEmpty) {
-      return const Center(
-        child: Text('No surveys found'),
-      );
+      return _buildEmptyState(context);
     }
+
     return GridView.builder(
+      padding: AppSpacing.spacing_2.padding,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: context.isPhone
-            ? 2
-            : context.isTablet
-                ? 3
-                : 4,
-        childAspectRatio: 0.8,
+        crossAxisCount: _getGridCrossAxisCount(context),
+        childAspectRatio: 0.7,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
       ),
       itemCount: surveys.length,
-      itemBuilder: (context, index) {
-        final survey = surveys[index];
-        return InkWell(
-          onTap: () async {
-            await context.pushNamed(
-              AppRoutes.newSurvey.name,
-              extra: SurveyAction.edit,
-              pathParameters: {
-                'id': survey.id,
-              },
-            );
-            if (context.mounted) {
-              context.read<ManageMySurveysCubit>().fetchSurveys();
-            }
-          },
-          child: Card(
-              child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SurveyBadge(
-                      status: survey.status,
-                    ),
-                    SurveyActions(
-                      surveyId: survey.id,
-                    ),
-                  ],
-                ),
-                AppSpacing.spacing_1.heightBox,
-                Text(
-                  '$index.${survey.name}',
-                  style: context.textTheme.titleLarge,
-                  maxLines: 2,
-                ),
-                AppSpacing.spacing_1.heightBox,
-                Row(
-                  children: [
-                    Icon(
-                      Icons.calendar_today_rounded,
-                      color: context.primaryColor,
-                      size: 16,
-                    ),
-                    AppSpacing.spacing_1.widthBox,
-                    FittedBox(
-                      child: Text(
-                        'Updated : ${survey.updatedAt.toString().substring(0, 10)}',
-                        style: context.textTheme.bodySmall,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Icon(
-                      Icons.bar_chart_rounded,
-                      color: context.primaryColor,
-                    ),
-                    AppSpacing.spacing_1.widthBox,
-                    Text(
-                      '${survey.responseCount} responses',
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                AppSpacing.spacing_1.heightBox,
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    side: BorderSide(
-                      color: context.primaryColor,
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: const Center(
-                    child: Text('Analyze results'),
-                  ),
-                )
-              ],
+      itemBuilder: (context, index) => _buildGridItem(context, surveys[index]),
+    );
+  }
+
+  int _getGridCrossAxisCount(BuildContext context) {
+    if (context.isPhone) return 2;
+    if (context.isTablet) return 3;
+    return 4;
+  }
+
+  Widget _buildGridItem(BuildContext context, SurveyEntity survey) {
+    return InkWell(
+      onTap: () => _handleSurveyTap(context, survey),
+      child: Container(
+        decoration: BoxDecoration(
+          color: context.colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: context.colorScheme.shadow.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-          )),
-        );
-      },
+          ],
+        ),
+        child: Padding(
+          padding: AppSpacing.spacing_2.padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(context, survey),
+              AppSpacing.spacing_1.heightBox,
+              _buildTitle(context, survey),
+              AppSpacing.spacing_1.heightBox,
+              _buildDate(context, survey),
+              const Spacer(),
+              _buildResponseCount(context, survey),
+              AppSpacing.spacing_1.heightBox,
+              _buildAnalyzeButton(context),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, SurveyEntity survey) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SurveyBadge(status: survey.status),
+        SurveyActions(surveyId: survey.id),
+      ],
+    );
+  }
+
+  Widget _buildTitle(BuildContext context, SurveyEntity survey) {
+    return Text(
+      survey.name,
+      style: context.textTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.bold,
+        color: context.colorScheme.onSurface,
+      ),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Widget _buildDate(BuildContext context, SurveyEntity survey) {
+    return Row(
+      children: [
+        Icon(
+          Icons.calendar_today_rounded,
+          color: context.colorScheme.primary,
+          size: 16,
+        ),
+        AppSpacing.spacing_1.widthBox,
+        Text(
+          survey.updatedAt.toString().substring(0, 10),
+          style: context.textTheme.bodySmall?.copyWith(
+            color: context.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildResponseCount(BuildContext context, SurveyEntity survey) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 8,
+      ),
+      decoration: BoxDecoration(
+        color: context.colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.bar_chart_rounded,
+            color: context.colorScheme.primary,
+            size: 20,
+          ),
+          AppSpacing.spacing_1.widthBox,
+          Text(
+            '${survey.responseCount} responses',
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: context.colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAnalyzeButton(BuildContext context) {
+    return FilledButton.icon(
+      style: FilledButton.styleFrom(
+        minimumSize: const Size(double.infinity, 40),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      onPressed: () {},
+      icon: const Icon(Icons.analytics_rounded),
+      label: const Text('Analyze Results'),
+    );
+  }
+
+  Future<void> _handleSurveyTap(
+      BuildContext context, SurveyEntity survey) async {
+    await context.pushNamed(
+      AppRoutes.newSurvey.name,
+      extra: SurveyAction.edit,
+      pathParameters: {'id': survey.id},
+    );
+    if (context.mounted) {
+      context.read<ManageMySurveysCubit>().fetchSurveys();
+    }
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.search_off_rounded,
+            size: 64,
+            color: context.colorScheme.primary,
+          ),
+          AppSpacing.spacing_2.heightBox,
+          Text(
+            'No surveys found',
+            style: context.textTheme.titleLarge?.copyWith(
+              color: context.colorScheme.primary,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -272,18 +427,39 @@ class SurveyBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Badge(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 6,
-        vertical: 2,
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: large ? 12 : 8,
+        vertical: large ? 6 : 4,
       ),
-      label: Text(
-        'Open',
-        style: large
-            ? context.textTheme.titleMedium
-            : context.textTheme.bodyMedium,
+      decoration: BoxDecoration(
+        color: Colors.green.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
       ),
-      backgroundColor: Colors.greenAccent,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: large ? 8 : 6,
+            height: large ? 8 : 6,
+            decoration: const BoxDecoration(
+              color: Colors.green,
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(width: large ? 8 : 4),
+          Text(
+            'Open',
+            style: (large
+                    ? context.textTheme.titleMedium
+                    : context.textTheme.bodyMedium)
+                ?.copyWith(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -298,67 +474,141 @@ class SurveyActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      itemBuilder: (context) {
-        return [
-          const PopupMenuItem<SurveyAction>(
-            value: SurveyAction.edit,
-            child: Text('Edit Survey'),
+      icon: Icon(
+        Icons.more_vert_rounded,
+        color: context.colorScheme.onSurfaceVariant,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      itemBuilder: _buildMenuItems,
+      onSelected: (value) => _handleActionSelected(context, value),
+    );
+  }
+
+  List<PopupMenuItem> _buildMenuItems(BuildContext context) {
+    return [
+      _buildMenuItem(
+        context,
+        SurveyAction.edit,
+        Icons.edit_rounded,
+        'Edit Survey',
+      ),
+      _buildMenuItem(
+        context,
+        SurveyAction.preview,
+        Icons.visibility_rounded,
+        'Preview Survey',
+      ),
+      _buildMenuItem(
+        context,
+        SurveyAction.analyze,
+        Icons.analytics_rounded,
+        'Analyze Results',
+      ),
+      _buildMenuItem(
+        context,
+        SurveyAction.delete,
+        Icons.delete_rounded,
+        'Delete',
+        isDestructive: true,
+      ),
+    ];
+  }
+
+  PopupMenuItem _buildMenuItem(
+    BuildContext context,
+    SurveyAction action,
+    IconData icon,
+    String text, {
+    bool isDestructive = false,
+  }) {
+    final color =
+        isDestructive ? context.colorScheme.error : context.colorScheme.primary;
+
+    return PopupMenuItem(
+      value: action,
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 20),
+          AppSpacing.spacing_2.widthBox,
+          Text(
+            text,
+            style: TextStyle(color: color),
           ),
-          const PopupMenuItem(
-            value: SurveyAction.preview,
-            child: Text('Preview Survey'),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleActionSelected(
+    BuildContext context,
+    SurveyAction action,
+  ) async {
+    if (action == SurveyAction.delete) {
+      await _showDeleteConfirmation(context);
+    } else {
+      await _handleNonDeleteAction(context, action);
+    }
+
+    if (context.mounted) {
+      context.read<ManageMySurveysCubit>().fetchSurveys();
+    }
+  }
+
+  Future<void> _showDeleteConfirmation(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.warning_rounded,
+              color: context.colorScheme.error,
+            ),
+            AppSpacing.spacing_2.widthBox,
+            const Text('Delete Survey'),
+          ],
+        ),
+        content: const Text(
+          'Are you sure you want to delete this survey? This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                color: context.colorScheme.onSurfaceVariant,
+              ),
+            ),
           ),
-          const PopupMenuItem(
-            value: SurveyAction.analyze,
-            child: Text('Analyze Results'),
-          ),
-          const PopupMenuItem(
-            value: SurveyAction.delete,
-            child: Text('Delete'),
-          ),
-        ];
-      },
-      onSelected: (value) async {
-        if (value == SurveyAction.delete) {
-          await showDialog(
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                  title: const Text('Delete Survey'),
-                  content: const Text(
-                      'Are you sure you want to delete this survey?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                        context
-                            .read<ManageMySurveysCubit>()
-                            .deleteSurvey(surveyId);
-                      },
-                      child: const Text('Delete'),
-                    ),
-                  ]);
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: context.colorScheme.error,
+            ),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              context.read<ManageMySurveysCubit>().deleteSurvey(surveyId);
             },
-          );
-        } else {
-          await context.pushNamed(
-            AppRoutes.newSurvey.name,
-            extra: value,
-            pathParameters: {
-              'id': surveyId,
-            },
-          );
-        }
-        if (context.mounted) {
-          context.read<ManageMySurveysCubit>().fetchSurveys();
-        }
-      },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleNonDeleteAction(
+    BuildContext context,
+    SurveyAction action,
+  ) async {
+    await context.pushNamed(
+      AppRoutes.newSurvey.name,
+      extra: action,
+      pathParameters: {'id': surveyId},
     );
   }
 }
@@ -369,62 +619,141 @@ class ListSurveys extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    if (surveys.isEmpty) {
+      return _buildEmptyState(context);
+    }
+
+    return ListView.separated(
+      padding: AppSpacing.spacing_2.padding,
       itemCount: surveys.length,
-      itemBuilder: (context, index) {
-        final survey = surveys[index];
-        return ListTile(
-          trailing: SurveyActions(surveyId: survey.id),
-          leading: SurveyBadge(status: survey.status),
-          onTap: () async {
-            await context.pushNamed(
-              AppRoutes.newSurvey.name,
-              extra: SurveyAction.edit,
-              pathParameters: {
-                'id': survey.id,
-              },
-            );
-            if (context.mounted) {
-              context.read<ManageMySurveysCubit>().fetchSurveys();
-            }
-          },
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    survey.name,
-                    style: context.textTheme.titleLarge,
-                    maxLines: 2,
-                  ),
-                  FittedBox(
-                    child: Text(
-                      'Updated : ${survey.updatedAt.toString().substring(0, 10)}',
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.bar_chart_rounded,
-                    color: context.primaryColor,
-                  ),
-                  AppSpacing.spacing_1.widthBox,
-                  Text(
-                    '${survey.responseCount}',
-                    style: context.textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
+      separatorBuilder: (_, __) => AppSpacing.spacing_2.heightBox,
+      itemBuilder: (context, index) => _buildListItem(context, surveys[index]),
     );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.search_off_rounded,
+            size: 64,
+            color: context.colorScheme.primary,
+          ),
+          AppSpacing.spacing_2.heightBox,
+          Text(
+            'No surveys found',
+            style: context.textTheme.titleLarge?.copyWith(
+              color: context.colorScheme.primary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListItem(BuildContext context, SurveyEntity survey) {
+    return Container(
+      decoration: BoxDecoration(
+        color: context.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: context.colorScheme.shadow.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ListTile(
+        contentPadding: AppSpacing.spacing_2.padding,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        trailing: SurveyActions(surveyId: survey.id),
+        leading: SurveyBadge(
+          status: survey.status,
+          large: true,
+        ),
+        onTap: () => _handleSurveyTap(context, survey),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              survey.name,
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: context.colorScheme.onSurface,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            AppSpacing.spacing_1.heightBox,
+            Row(
+              children: [
+                Icon(
+                  Icons.calendar_today_rounded,
+                  color: context.colorScheme.primary,
+                  size: 16,
+                ),
+                AppSpacing.spacing_1.widthBox,
+                Text(
+                  'Updated: ${survey.updatedAt.toString().substring(0, 10)}',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const Spacer(),
+                _buildResponseCount(context, survey),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResponseCount(BuildContext context, SurveyEntity survey) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 6,
+      ),
+      decoration: BoxDecoration(
+        color: context.colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.bar_chart_rounded,
+            color: context.colorScheme.primary,
+            size: 20,
+          ),
+          AppSpacing.spacing_1.widthBox,
+          Text(
+            '${survey.responseCount} responses',
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: context.colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleSurveyTap(
+      BuildContext context, SurveyEntity survey) async {
+    await context.pushNamed(
+      AppRoutes.newSurvey.name,
+      extra: SurveyAction.edit,
+      pathParameters: {'id': survey.id},
+    );
+    if (context.mounted) {
+      context.read<ManageMySurveysCubit>().fetchSurveys();
+    }
   }
 }
