@@ -18,54 +18,94 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: AppSpacing.spacing_2.padding,
-        padding: AppSpacing.spacing_2.padding,
-        height: 100,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: context.colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(10),
+      margin: AppSpacing.spacing_2.padding,
+      padding: AppSpacing.spacing_3.padding,
+      height: 196,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            context.colorScheme.primary,
+            context.colorScheme.primaryContainer,
+          ],
         ),
-        child: BlocBuilder<WalletCubit, WalletState>(
-          builder: (context, state) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        showBalance = !showBalance;
-                        setState(() {});
-                      },
-                      icon: const Icon(
-                        Icons.remove_red_eye_outlined,
-                      ),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: context.colorScheme.shadow.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: BlocBuilder<WalletCubit, WalletState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.account_balance_wallet_rounded,
+                    color: context.colorScheme.onPrimary,
+                    size: 28,
+                  ),
+                  AppSpacing.spacing_2.widthBox,
+                  Text(
+                    'Wallet Balance',
+                    style: context.textTheme.titleMedium?.copyWith(
+                      color: context.colorScheme.onPrimary,
+                      fontWeight: FontWeight.w500,
                     ),
-                    Center(
-                      child: Text(
-                        showBalance
-                            ? (state is WalletLoaded)
-                                ? '${state.walletBalance.toStringAsFixed(2).replaceAll('.', ',')} DA'
-                                : '.....'
-                            : '***********',
-                        style: context.textTheme.headlineSmall,
-                        textAlign: TextAlign.center,
-                      ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      showBalance = !showBalance;
+                      setState(() {});
+                    },
+                    icon: Icon(
+                      showBalance ? Icons.visibility_off : Icons.visibility,
+                      color: context.colorScheme.onPrimary,
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              AppSpacing.spacing_2.heightBox,
+              Text(
+                showBalance
+                    ? (state is WalletLoaded)
+                        ? '${state.walletBalance.toStringAsFixed(2).replaceAll('.', ',')} DA'
+                        : '.....'
+                    : '***********',
+                style: context.textTheme.headlineMedium?.copyWith(
+                  color: context.colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
                 ),
-                const Spacer(),
-                IconButton.filled(
-                  onPressed: () {
-                    cashOutModal(context);
-                  },
+              ),
+              const Spacer(),
+              Align(
+                alignment: Alignment.centerRight,
+                child: FilledButton.icon(
+                  onPressed: () => cashOutModal(context),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: context.colorScheme.onPrimary,
+                    foregroundColor: context.colorScheme.primary,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
                   icon: const Icon(Icons.arrow_outward_rounded),
+                  label: const Text('Cash Out'),
                 ),
-              ],
-            );
-          },
-        ));
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
