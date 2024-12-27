@@ -1,1 +1,501 @@
-{}
+{
+  "profile": {
+    "wallet": "Portefeuille",
+    "myAccount": "Mon Compte",
+    "changePassword": "Changer le mot de passe",
+    "notification": "Notification",
+    "moreActions": "Plus d'actions",
+    "howItWorks": "Comment ça marche",
+    "language": "Langue",
+    "theme": "Thème",
+    "logout": "Déconnexion"
+  },
+  "personalInfo": {
+    "username": "Nom d'utilisateur",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Téléphone", 
+    "birthDate": "Date de naissance",
+    "save": "Enregistrer"
+  },
+  "changePassword": {
+    "resetPassword": "Réinitialiser le mot de passe",
+    "pleaseEnterCurrentAndNewPassword": "veuillez entrer votre mot de passe actuel et le nouveau mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe"
+  },
+  "language": {
+    "english": "Anglais",
+    "arabic": "Arabe",
+    "french": "Français"
+  },
+  "home": {
+    "welcomeToFaciQuest": "bienvenue sur FaciQuest",
+    "viewAndCreateSurveysDescription": "C'est ici que vous pouvez voir vos sondages et en créer de nouveaux",
+    "manageSurveys": "Gérer les sondages",
+    "createSurvey": "Créer un sondage"
+  },
+  "manageSurveys": {
+    "createSurvey": "Créer un sondage",
+    "manageMySurveys": "Gérer mes sondages",
+    "search": "Rechercher",
+    "editSurvey": "Modifier le sondage",
+    "deleteSurvey": "Supprimer le sondage",
+    "previewSurvey": "Aperçu du sondage",
+    "analyzeResults": "Analyser les résultats"
+  },
+  "survey": {
+    "details": {
+      "surveyDetails": "Détails du sondage",
+      "createNewSurvey": "Créer un nouveau sondage",
+      "pleaseEnterDetails": "veuillez entrer les détails ci-dessous",
+      "surveyTitle": "Titre du sondage",
+      "surveyDescription": "Description du sondage",
+      "lakertScale": {
+        "title": "Échelle de Likert",
+        "twoPoint": "Échelle de Likert à 2 points",
+        "threePoint": "Échelle de Likert à 3 points", 
+        "fivePoint": "Échelle de Likert à 5 points",
+        "sevenPoint": "Échelle de Likert à 7 points"
+      },
+      "next": "Suivant",
+      "cancel": "Annuler"
+    },
+    "questions": {
+      "questions": "Questions",
+      "questionsSection": "Section des questions",
+      "pleaseEnterQuestions": "veuillez entrer les questions ci-dessous",
+      "addQuestion": "Ajouter une question",
+      "submitSurvey": "Soumettre le sondage",
+      "back": "Retour"
+    },
+    "summary": {
+      "summary": "Résumé",
+      "title": "titre",
+      "description": "description",
+      "totalQuestions": "{} Questions",
+      "totalResponses": "Total des réponses",
+      "status": "Statut",
+      "published": "Publié",
+      "draft": "Brouillon",
+      "preview": "Aperçu",
+      "surveyActions": "Actions du sondage",
+      "editSurvey": "Modifier le sondage",
+      "deleteSurvey": "Supprimer le sondage",
+      "publishSurvey": "Publier le sondage",
+      "analyzeResults": "Analyser les résultats",
+      "createdAt": "créé le {}"
+    },
+    "analyzeResults": {
+      "analyzeResults": "Analyser les résultats",
+      "totalResponses": "Total des réponses",
+      "back": "Retour",
+      "exportResults": "Exporter les résultats"
+    },
+    "collectResponses": {
+      "collectResponses": "Collecter les réponses",
+      "totalResponses": "Total des réponses",
+      "back": "Retour",
+      "pleaseCreateCollection": "veuillez d'abord créer une collection",
+      "addNewCollection": "Ajouter une nouvelle collection",
+      "targetedResponses": "Réponses ciblées",
+      "findPeopleCriteria": "Trouvez des personnes qui correspondent à vos critères",
+      "analyzeResults": "Analyser les résultats",
+      "targetedResponsesPopup": {
+        "title": "Réponses ciblées",
+        "description": "Trouvez des personnes qui correspondent à vos critères",
+        "howManyResponses": "Combien de réponses souhaitez-vous collecter ?",
+        "whoToSurvey": "qui voulez-vous sonder ?",
+        "addTargetingCriteria": "Ajouter des critères de ciblage",
+        "country": "Pays",
+        "gender": "Genre",
+        "ageRange": "Tranche d'âge",
+        "estimatedCost": "Coût estimé",
+        "checkout": "Paiement"
+      },
+      "billing": {
+        "billing": "Détails de facturation",
+        "billingEmail": "Email de facturation",
+        "billingName": "Nom de facturation",
+        "billingNotified": "M'envoyer les reçus de renouvellement par email",
+        "totalCost": "Coût total",
+        "paymentMethods": "Méthodes de paiement *",
+        "baridiMob": "BaridiMob",
+        "rip": "RIP",
+        "uploadProofPayment": "télécharger la preuve de paiement",
+        "ccpTransfer": "Transfert CCP",
+        "ccp": "ccp",
+        "key": "clé",
+        "to": "à",
+        "edahabiaCard": "Carte Edahabia",
+        "comingSoon": "bientôt disponible",
+        "directBankNote": "Dépôt direct en banque ou virement bancaire (3-5 jours ouvrables à partir de l'envoi du virement).",
+        "collectorActivationNote": "Le collecteur sera activé une fois le paiement confirmé",
+        "submit": "Soumettre"
+      }
+    },
+    "question": {
+      "question": "Question",
+      "putQuestionTitle": "Mettez le titre de la question ici",
+      "questionType": "Type de question",
+      "settings": "Paramètres :",
+      "pleaseSelectType": "veuillez sélectionner le type de question",
+      "movePopup": {
+        "title": "Déplacer cette question vers ...",
+        "after": "Après",
+        "before": "Avant",
+        "action": "Déplacer la question"
+      },
+      "duplicatePopup": {
+        "title": "Dupliquer cette question ?",
+        "after": "Après",
+        "before": "Avant",
+        "action": "Dupliquer la question"
+      },
+      "deletePopup": {
+        "title": "Supprimer cette question ?",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette question ?",
+        "delete": "Supprimer",
+        "cancel": "Annuler"
+      }
+    },
+    "questionType": {
+      "starRating": {
+        "title": "Notation par étoiles",
+        "settings": {
+          "maxRating": "Note maximale",
+          "shape": "Forme",
+          "color": "Couleur"
+        }
+      },
+      "multipleChoice": {
+        "title": "Choix multiple",
+        "settings": {
+          "options": "Options"
+        }
+      },
+      "imageChoice": {
+        "title": "Choix d'image",
+        "settings": {
+          "options": "Options",
+          "imageCaption": "Légende de l'image",
+          "useCheckbox": "Utiliser des cases à cocher"
+        }
+      },
+      "checkBoxes": {
+        "title": "Cases à cocher",
+        "settings": {
+          "options": "Options"
+        }
+      },
+      "dropdown": {
+        "title": "Liste déroulante",
+        "settings": {
+          "options": "Options"
+        }
+      },
+      "matrix": {
+        "title": "Matrice",
+        "settings": {
+          "rows": "Lignes",
+          "columns": "Colonnes",
+          "allowMultipleResponses": "Autoriser plusieurs réponses par ligne"
+        }
+      },
+      "fileUpload": {
+        "title": "Téléchargement de fichier",
+        "settings": {
+          "fileType": "Type de fichier",
+          "instructions": "Instructions pour les répondants"
+        }
+      },
+      "audioRecord": {
+        "title": "Enregistrement audio",
+        "settings": {
+          "instructions": "Instructions pour les répondants"
+        }
+      },
+      "shortAnswer": {
+        "title": "Réponse courte",
+        "maxLength": "Longueur maximale"
+      },
+      "commentBox": {
+        "title": "Zone de commentaire",
+        "settings": {
+          "maxLength": "Longueur maximale",
+          "maxLines": "Nombre maximum de lignes"
+        }
+      },
+      "slider": {
+        "title": "Curseur",
+        "settings": {
+          "min": "Min",
+          "max": "Max"
+        }
+      },
+      "dateTime": {
+        "title": "Date et heure",
+        "settings": {
+          "collectDateInfo": "Collecter les informations de date",
+          "collectTimeInfo": "Collecter les informations d'heure"
+        }
+      },
+      "name": {
+        "title": "Nom",
+        "settings": {
+          "show": "afficher",
+          "firstName": "Prénom",
+          "lastName": "Nom",
+          "middleName": "Deuxième prénom"
+        }
+      },
+      "email": {
+        "title": "Email",
+        "settings": {
+          "show": "afficher",
+          "label": "étiquette",
+          "placeholder": "placeholder"
+        }
+      },
+      "phone": {
+        "title": "Téléphone",
+        "settings": {
+          "show": "afficher",
+          "label": "étiquette",
+          "placeholder": "placeholder"
+        }
+      },
+      "address": {
+        "title": "Adresse",
+        "settings": {
+          "show": "afficher",
+          "streetAddress1": "Adresse 1",
+          "streetAddress2": "Adresse 2",
+          "city": "Ville",
+          "state": "État",
+          "zipCode": "Code postal",
+          "country": "Pays",
+          "label": "étiquette",
+          "placeholder": "placeholder"
+        }
+      },
+      "text": {
+        "title": "Texte",
+        "settings": {
+          "enterText": "Entrez votre texte ici"
+        }
+      },
+      "image": "Image"
+    },
+    "scaleOptions": {
+      "age18To24": "18-24",
+      "age25To34": "25-34",
+      "age35To44": "35-44",
+      "age45To54": "45-54",
+      "age55To64": "55-64",
+      "age65Plus": "65+",
+      "aFew": "Quelques-uns",
+      "aFewTimesMonth": "Quelques fois par mois",
+      "aFewTimesWeek": "Quelques fois par semaine",
+      "aGreatDeal": "Beaucoup",
+      "aLittle": "Un peu",
+      "aLot": "Beaucoup",
+      "moderateAmount": "Une quantité modérée",
+      "topPriorityNotMost": "Une priorité élevée, mais pas la plus importante",
+      "onceWeek": "Environ une fois par semaine",
+      "rightLength": "De la bonne longueur",
+      "rightTime": "Au bon moment",
+      "aboutSame": "À peu près pareil",
+      "aboveAverage": "Au-dessus de la moyenne",
+      "agree": "D'accord",
+      "all": "Tous",
+      "always": "Toujours",
+      "anotherRace": "Une autre race",
+      "approve": "Approuver",
+      "average": "Moyen",
+      "aware": "Conscient",
+      "belowAverage": "En dessous de la moyenne",
+      "better": "Mieux",
+      "black": "Noir",
+      "clear": "Clair",
+      "clearly": "Clairement",
+      "confident": "Confiant",
+      "december": "Décembre",
+      "definitelyWould": "Certainement",
+      "definitelyWouldNot": "Certainement pas",
+      "desirable": "Désirable",
+      "difficult": "Difficile",
+      "disapprove": "Désapprouver",
+      "early": "Tôt",
+      "easy": "Facile",
+      "effective": "Efficace",
+      "everyDay": "Tous les jours",
+      "exceededExpectations": "A dépassé les attentes",
+      "extremelyAttentive": "Extrêmement attentif",
+      "extremelyAware": "Extrêmement conscient",
+      "extremelyClear": "Extrêmement clair",
+      "extremelyConfident": "Extrêmement confiant",
+      "extremelyDesirable": "Extrêmement désirable",
+      "extremelyEffective": "Extrêmement efficace",
+      "extremelyFamiliar": "Extrêmement familier",
+      "extremelyFriendly": "Extrêmement amical",
+      "extremelyHelpful": "Extrêmement utile",
+      "extremelyImportant": "Extrêmement important",
+      "extremelyProfessional": "Extrêmement professionnel",
+      "extremelyResponsive": "Extrêmement réactif",
+      "extremelyUseful": "Extrêmement utile",
+      "extremelyValuable": "Extrêmement précieux",
+      "false": "Faux",
+      "farAboveAverage": "Bien au-dessus de la moyenne",
+      "farBelowAverage": "Bien en dessous de la moyenne",
+      "february": "Février",
+      "frequency": "Fréquence",
+      "friday": "Vendredi",
+      "friendly": "Amical",
+      "helpful": "Utile",
+      "highQuality": "Haute qualité",
+      "important": "Important",
+      "lastWeek": "La semaine dernière",
+      "january": "Janvier",
+      "july": "Juillet",
+      "june": "Juin",
+      "late": "Tard",
+      "likely": "Probable",
+      "lowQuality": "Basse qualité",
+      "march": "Mars",
+      "may": "Mai",
+      "metExpectations": "A répondu aux attentes",
+      "monday": "Lundi",
+      "monthly": "Mensuel",
+      "moreThanMonth": "Il y a plus d'un mois",
+      "moreThanWeekLessMonth": "Plus d'une semaine, moins d'un mois",
+      "most": "La plupart",
+      "muchBetter": "Beaucoup mieux",
+      "muchTooLong": "Beaucoup trop long",
+      "muchTooShort": "Beaucoup trop court",
+      "muchWorse": "Beaucoup pire",
+      "neitherAgreeDisagree": "Ni d'accord ni en désaccord",
+      "neitherEasyDifficult": "Ni facile ni difficile",
+      "neitherHighLowQuality": "Ni haute ni basse qualité",
+      "neitherLikelyUnlikely": "Ni probable ni improbable",
+      "neitherSatisfiedDissatisfied": "Ni satisfait ni insatisfait",
+      "never": "Jamais",
+      "none": "Aucun",
+      "noneAtAll": "Pas du tout",
+      "notPriority": "Pas une priorité",
+      "notAtAllAttentive": "Pas du tout attentif",
+      "notAtAllAware": "Pas du tout conscient",
+      "notAtAllClear": "Pas du tout clair",
+      "notAtAllConfident": "Pas du tout confiant",
+      "notAtAllDesirable": "Pas du tout désirable",
+      "notAtAllEffective": "Pas du tout efficace",
+      "notAtAllFriendly": "Pas du tout amical",
+      "notAtAllHelpful": "Pas du tout utile",
+      "notAtAllImportant": "Pas du tout important",
+      "notAtAllProfessional": "Pas du tout professionnel",
+      "notAtAllResponsive": "Pas du tout réactif",
+      "notAtAllUseful": "Pas du tout utile",
+      "notAtAllValuable": "Pas du tout précieux",
+      "notSoAttentive": "Pas très attentif",
+      "notSoAware": "Pas très conscient",
+      "notSoClear": "Pas très clair",
+      "notSoConfident": "Pas très confiant",
+      "notSoDesirable": "Pas très désirable",
+      "notSoEffective": "Pas très efficace",
+      "notSoFamiliar": "Pas très familier",
+      "notSoFriendly": "Pas très amical",
+      "notSoHelpful": "Pas très utile",
+      "notSoImportant": "Pas très important",
+      "notSoInterested": "Pas très intéressé",
+      "notSoProfessional": "Pas très professionnel",
+      "notSoResponsive": "Pas très réactif",
+      "notSoUseful": "Pas très utile",
+      "notSoValuable": "Pas très précieux",
+      "november": "Novembre",
+      "october": "Octobre",
+      "onceMonth": "Une fois par mois",
+      "positive": "Positif",
+      "preferNotSay": "Préfère ne pas dire",
+      "probablyWould": "Probablement",
+      "probablyWouldNot": "Probablement pas",
+      "professional": "Professionnel",
+      "quarterly": "Trimestriel",
+      "raceEthnicity": "Race/Ethnicité",
+      "rarely": "Rarement",
+      "recentExperience": "Expérience récente",
+      "responsive": "Réactif",
+      "saturday": "Samedi",
+      "satisfied": "Satisfait",
+      "september": "Septembre",
+      "some": "Quelques",
+      "somewhatAgree": "Plutôt d'accord",
+      "somewhatAttentive": "Plutôt attentif",
+      "somewhatAware": "Plutôt conscient",
+      "somewhatClear": "Plutôt clair",
+      "somewhatConfident": "Plutôt confiant",
+      "somewhatDesirable": "Plutôt désirable",
+      "somewhatDifficult": "Plutôt difficile",
+      "somewhatDisagree": "Plutôt en désaccord",
+      "somewhatEasy": "Plutôt facile",
+      "somewhatEffective": "Plutôt efficace",
+      "somewhatFriendly": "Plutôt amical",
+      "somewhatHelpful": "Plutôt utile",
+      "somewhatHighQuality": "Plutôt haute qualité",
+      "somewhatImportant": "Plutôt important",
+      "somewhatInterested": "Plutôt intéressé",
+      "somewhatLowQuality": "Plutôt basse qualité",
+      "somewhatNegative": "Plutôt négatif",
+      "somewhatPositive": "Plutôt positif",
+      "somewhatProfessional": "Plutôt professionnel",
+      "somewhatResponsive": "Plutôt réactif",
+      "somewhatUseful": "Plutôt utile",
+      "somewhatValuable": "Plutôt précieux",
+      "sometimes": "Parfois",
+      "stronglyAgree": "Tout à fait d'accord",
+      "stronglyDisagree": "Pas du tout d'accord",
+      "sunday": "Dimanche",
+      "mostImportantPriority": "La priorité la plus importante",
+      "thursday": "Jeudi",
+      "tooLong": "Trop long",
+      "tooShort": "Trop court",
+      "topPriority": "Priorité absolue",
+      "true": "Vrai",
+      "tuesday": "Mardi",
+      "twiceAnnually": "Deux fois par an",
+      "under18": "Moins de 18 ans",
+      "unlikely": "Peu probable",
+      "usually": "Habituellement",
+      "valuable": "Précieux",
+      "veryAttentive": "Très attentif",
+      "veryAware": "Très conscient",
+      "veryClear": "Très clair",
+      "veryConfident": "Très confiant",
+      "veryDesirable": "Très désirable",
+      "veryDifficult": "Très difficile",
+      "veryEasy": "Très facile",
+      "veryEffective": "Très efficace",
+      "veryFamiliar": "Très familier",
+      "veryFriendly": "Très amical",
+      "veryHelpful": "Très utile",
+      "veryHighQuality": "Très haute qualité",
+      "veryImportant": "Très important",
+      "veryInterested": "Très intéressé",
+      "veryLikely": "Très probable",
+      "veryLowQuality": "Très basse qualité",
+      "veryNegative": "Très négatif",
+      "veryPositive": "Très positif",
+      "veryProfessional": "Très professionnel",
+      "veryResponsive": "Très réactif",
+      "verySatisfied": "Très satisfait",
+      "veryUnlikely": "Très peu probable",
+      "veryUseful": "Très utile",
+      "veryValuable": "Très précieux",
+      "wednesday": "Mercredi",
+      "white": "Blanc",
+      "worse": "Pire",
+      "yearly": "Annuel"
+    }
+  }
+}

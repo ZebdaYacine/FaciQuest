@@ -1,257 +1,257 @@
 {
   "profile": {
     "wallet": "Wallet",
-    "My Account": "My Account",
-    "Change Password": "Change Password",
-    "Notification": "Notification",
-    "More Actions": "More Actions",
-    "How it works": "How it works",
-    "Language": "Language",
-    "Theme": "Theme",
-    "Logout": "Logout"
+    "myAccount": "My Account", 
+    "changePassword": "Change Password",
+    "notification": "Notification",
+    "moreActions": "More Actions",
+    "howItWorks": "How it works",
+    "language": "Language",
+    "theme": "Theme",
+    "logout": "Logout"
   },
-  "Personal Info": {
-    "Username": "Username",
-    "First Name": "First Name",
-    "Last Name": "Last Name",
-    "Email": "Email",
-    "Phone": "Phone",
-    "Birth Date": "Birth Date",
-    "Save": "Save"
+  "personalInfo": {
+    "username": "Username",
+    "firstName": "First Name", 
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "birthDate": "Birth Date",
+    "save": "Save"
   },
-  "Change Password": {
-    "Reset Password": "Reset Password",
-    "please enter your current password and new password": "please enter your current password and new password",
-    "Current Password": "Current Password",
-    "New Password": "New Password",
-    "Confirm Password": "Confirm Password"
+  "changePassword": {
+    "resetPassword": "Reset Password",
+    "pleaseEnterCurrentAndNewPassword": "please enter your current password and new password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password"
   },
-  "Language": {
-    "English": "English",
-    "Arabic": "Arabic",
-    "French": "French"
+  "language": {
+    "english": "English",
+    "arabic": "Arabic",
+    "french": "French"
   },
-  "Home": {
-    "welcome to FaciQuest": "welcome to FaciQuest",
-    "This is where you can view you surveys and create new ones": "This is where you can view you surveys and create new ones",
-    "Manage Surveys": "Manage Surveys",
-    "Create Survey": "Create Survey"
+  "home": {
+    "welcomeToFaciQuest": "welcome to FaciQuest",
+    "viewAndCreateSurveysDescription": "This is where you can view you surveys and create new ones",
+    "manageSurveys": "Manage Surveys",
+    "createSurvey": "Create Survey"
   },
-  "Manage Surveys": {
-    "Create Survey": "Create Survey",
-    "Manage My Surveys": "Manage My Surveys",
-    "Search": "Search",
-    "Edit Survey": "Edit Survey",
-    "Delete Survey": "Delete Survey",
-    "Preview Survey": "Preview Survey",
-    "Analyze Results": "Analyze Results"
+  "manageSurveys": {
+    "createSurvey": "Create Survey",
+    "manageMySurveys": "Manage My Surveys",
+    "search": "Search",
+    "editSurvey": "Edit Survey",
+    "deleteSurvey": "Delete Survey",
+    "previewSurvey": "Preview Survey",
+    "analyzeResults": "Analyze Results"
   },
-  "Survey": {
+  "survey": {
     "details": {
-      "Survey Details": "Survey Details",
-      "Create new Survey": "Create new Survey",
-      "Please enter details below": "please enter details below",
-      "Survey Title": "Survey Title",
-      "Survey Description": "Survey Description",
-      "Lakert Scale": {
+      "surveyDetails": "Survey Details",
+      "createNewSurvey": "Create new Survey",
+      "pleaseEnterDetails": "please enter details below",
+      "surveyTitle": "Survey Title",
+      "surveyDescription": "Survey Description",
+      "lakertScale": {
         "title": "Lakert Scale",
-        "2-point Likert scale": "2-point Likert scale",
-        "3-point Likert scale": "3-point Likert scale",
-        "5-point Likert scale": "5-point Likert scale",
-        "7-point Likert scale": "7-point Likert scale"
+        "twoPoint": "2-point Likert scale",
+        "threePoint": "3-point Likert scale",
+        "fivePoint": "5-point Likert scale",
+        "sevenPoint": "7-point Likert scale"
       },
-      "Next": "Next",
-      "Cancel": "Cancel"
+      "next": "Next",
+      "cancel": "Cancel"
     },
     "questions": {
-      "Questions": "Questions",
-      "Questions Section": "Questions Section",
-      "please enter questions below": "please enter questions below",
-      "Add Question": "Add Question",
-      "Submit Survey": "submit Survey",
-      "Back": "Back"
+      "questions": "Questions",
+      "questionsSection": "Questions Section",
+      "pleaseEnterQuestions": "please enter questions below",
+      "addQuestion": "Add Question",
+      "submitSurvey": "submit Survey",
+      "back": "Back"
     },
-    "Summary": {
-      "Summary": "Summary",
+    "summary": {
+      "summary": "Summary",
       "title": "title",
       "description": "description",
-      "Total Questions": "{} Questions",
-      "Total Responses": "Total Responses",
-      "Status": "Status",
-      "Published": "Published",
-      "Draft": "Draft",
-      "Preview": "Preview",
-      "survey Actions": "survey Actions",
-      "Edit Survey": "Edit Survey",
-      "Delete Survey": "Delete Survey",
-      "Publish Survey": "Publish Survey",
-      "Analyze Results": "Analyze Results",
-      "created at": "created at {}"
+      "totalQuestions": "{} Questions",
+      "totalResponses": "Total Responses",
+      "status": "Status",
+      "published": "Published",
+      "draft": "Draft",
+      "preview": "Preview",
+      "surveyActions": "survey Actions",
+      "editSurvey": "Edit Survey",
+      "deleteSurvey": "Delete Survey",
+      "publishSurvey": "Publish Survey",
+      "analyzeResults": "Analyze Results",
+      "createdAt": "created at {}"
     },
-    "Analyze Results": {
-      "Analyze Results": "Analyze Results",
-      "Total Responses": "Total Responses",
-      "Back": "Back",
-      "Export Results": "Export Results"
+    "analyzeResults": {
+      "analyzeResults": "Analyze Results",
+      "totalResponses": "Total Responses",
+      "back": "Back",
+      "exportResults": "Export Results"
     },
-    "Collect Responses": {
-      "Collect Responses": "Collect Responses",
-      "Total Responses": "Total Responses",
-      "Back": "Back",
-      "please create a collection first": "please create a collection first",
-      "Add new collection": "Add new collection",
-      "Targeted Responses": "Targeted Responses",
-      "Find people who fit your criteria": "Find people who fit your criteria",
-      "Analyze Results": "Analyze Results",
-      "Targeted Responses Popup": {
+    "collectResponses": {
+      "collectResponses": "Collect Responses",
+      "totalResponses": "Total Responses",
+      "back": "Back",
+      "pleaseCreateCollection": "please create a collection first",
+      "addNewCollection": "Add new collection",
+      "targetedResponses": "Targeted Responses",
+      "findPeopleCriteria": "Find people who fit your criteria",
+      "analyzeResults": "Analyze Results",
+      "targetedResponsesPopup": {
         "title": "Targeted Responses",
         "description": "Find people who fit your criteria",
-        "How many responses do you want to collect": "How many responses do you want to collect?",
-        "who do you want to survey": "who do you want to survey?",
-        "Add targeting criteria": "Add targeting criteria",
-        "Country": "Country",
-        "Gender": "Gender",
-        "Age Range": "Age Range",
-        "Estimated cost": "Estimated cost",
-        "Checkout": "Checkout"
+        "howManyResponses": "How many responses do you want to collect?",
+        "whoToSurvey": "who do you want to survey?",
+        "addTargetingCriteria": "Add targeting criteria",
+        "country": "Country",
+        "gender": "Gender",
+        "ageRange": "Age Range",
+        "estimatedCost": "Estimated cost",
+        "checkout": "Checkout"
       },
-      "Billing": {
-        "Billing": "Billing Details",
-        "Billing Email": "Billing Email",
-        "Billing Name": "Billing Name",
-        "Billing notified": "Send me renewal receipts by Email",
-        "Total Cost": "Total Cost",
-        "Payment Methods": "Payment Methods *",
-        "BaridiMob": "BaridiMob",
-        "RIP": "RIP",
-        "upload proof of payment": "upload proof of payment",
-        "CCP Transfer": "CCP Transfer",
+      "billing": {
+        "billing": "Billing Details",
+        "billingEmail": "Billing Email",
+        "billingName": "Billing Name",
+        "billingNotified": "Send me renewal receipts by Email",
+        "totalCost": "Total Cost",
+        "paymentMethods": "Payment Methods *",
+        "baridiMob": "BaridiMob",
+        "rip": "RIP",
+        "uploadProofPayment": "upload proof of payment",
+        "ccpTransfer": "CCP Transfer",
         "ccp": "ccp",
         "key": "key",
         "to": "to",
-        "Edahabia card": "Edahabia card",
-        "coming soon": "coming soon",
-        "Direct bank deposit or wire transfer note ": "Direct bank deposit or wire transfer (3-5 business days from when you send the transfer).",
-        "The collector will be activated once payment is confirmed": "The collector will be activated once payment is confirmed",
-        "Submit": "Submit"
+        "edahabiaCard": "Edahabia card",
+        "comingSoon": "coming soon",
+        "directBankNote": "Direct bank deposit or wire transfer (3-5 business days from when you send the transfer).",
+        "collectorActivationNote": "The collector will be activated once payment is confirmed",
+        "submit": "Submit"
       }
     },
-    "Question": {
-      "Question": "Question",
-      "Put Question title here": "Put Question title here",
-      "Question Type": "Question Type",
-      "Settings": "Settings :",
-      "please select question type": "please select question type",
-      "Move popup": {
+    "question": {
+      "question": "Question",
+      "putQuestionTitle": "Put Question title here",
+      "questionType": "Question Type",
+      "settings": "Settings :",
+      "pleaseSelectType": "please select question type",
+      "movePopup": {
         "title": "Move this question to ...",
-        "After": "After",
-        "Before": "Before",
+        "after": "After",
+        "before": "Before",
         "action": "Move Question"
       },
-      "Duplicate popup": {
+      "duplicatePopup": {
         "title": "Duplicate this question?",
-        "After": "After",
-        "Before": "Before",
-        "Action": "Duplicate Question"
+        "after": "After",
+        "before": "Before",
+        "action": "Duplicate Question"
       },
-      "Delete popup": {
+      "deletePopup": {
         "title": "Delete this question?",
-        "Are you sure you want to delete this question": "Are you sure you want to delete this question?",
-        "Delete": "Delete",
-        "Cancel": "Cancel"
+        "confirmDelete": "Are you sure you want to delete this question?",
+        "delete": "Delete",
+        "cancel": "Cancel"
       }
     },
-    "Question Type": {
-      "Star Rating": {
+    "questionType": {
+      "starRating": {
         "title": "Star Rating",
         "settings": {
-          "Max Rating": "Max Rating",
-          "Shape": "Shape",
-          "Color": "Color"
+          "maxRating": "Max Rating",
+          "shape": "Shape",
+          "color": "Color"
         }
       },
-      "Multiple Choice": {
+      "multipleChoice": {
         "title": "Multiple Choice",
         "settings": {
-          "Options": "Options"
+          "options": "Options"
         }
       },
-      "Image Choice": {
+      "imageChoice": {
         "title": "Image Choice",
         "settings": {
-          "Options": "Options",
-          "Image Caption": "Image Caption",
-          "Use Checkbox": "Use Checkbox"
+          "options": "Options",
+          "imageCaption": "Image Caption",
+          "useCheckbox": "Use Checkbox"
         }
       },
-      "CheckBoxes": {
+      "checkBoxes": {
         "title": "CheckBoxes",
         "settings": {
-          "Options": "Options"
+          "options": "Options"
         }
       },
-      "Dropdown": {
+      "dropdown": {
         "title": "Dropdown",
         "settings": {
-          "Options": "Options"
+          "options": "Options"
         }
       },
-      "Matrix": {
+      "matrix": {
         "title": "Matrix",
         "settings": {
-          "Rows": "Rows",
-          "Columns": "Columns",
-          "Allow multiple responses per row": "Allow multiple responses per row"
+          "rows": "Rows",
+          "columns": "Columns",
+          "allowMultipleResponses": "Allow multiple responses per row"
         }
       },
-      "File Upload": {
+      "fileUpload": {
         "title": "File Upload",
         "settings": {
-          "File Type": "File Type",
-          "Instructions for respondents": "Instructions for respondents"
+          "fileType": "File Type",
+          "instructions": "Instructions for respondents"
         }
       },
-      "Audio Record": {
+      "audioRecord": {
         "title": "Audio Record",
         "settings": {
-          "Instructions for respondents": "Instructions for respondents"
+          "instructions": "Instructions for respondents"
         }
       },
-      "Short Answer": {
+      "shortAnswer": {
         "title": "Short Answer",
-        "Max length": "Max length"
+        "maxLength": "Max length"
       },
-      "Comment Box": {
+      "commentBox": {
         "title": "Comment Box",
         "settings": {
-          "Max length": "Max length",
-          "Max lines": "Max lines"
+          "maxLength": "Max length",
+          "maxLines": "Max lines"
         }
       },
-      "Slider": {
+      "slider": {
         "title": "Slider",
         "settings": {
-          "Min": "Min",
-          "Max": "Max"
+          "min": "Min",
+          "max": "Max"
         }
       },
-      "Date Time": {
+      "dateTime": {
         "title": "Date Time",
         "settings": {
-          "Collect Date info": "Collect Date info",
-          "Collect Time info": "Collect Time info"
+          "collectDateInfo": "Collect Date info",
+          "collectTimeInfo": "Collect Time info"
         }
       },
-      "Name": {
+      "name": {
         "title": "Name",
         "settings": {
           "show": "show",
-          "First Name": "First Name",
-          "Last Name": "Last Name",
-          "Middle Name": "Middle Name"
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "middleName": "Middle Name"
         }
       },
-      "Email": {
+      "email": {
         "title": "Email",
         "settings": {
           "show": "show",
@@ -259,7 +259,7 @@
           "placeholder": "placeholder"
         }
       },
-      "Phone": {
+      "phone": {
         "title": "Phone",
         "settings": {
           "show": "show",
@@ -267,27 +267,235 @@
           "placeholder": "placeholder"
         }
       },
-      "Address": {
+      "address": {
         "title": "Address",
         "settings": {
           "show": "show",
-          "Street Address 1": "Street Address 1",
-          "Street Address 2": "Street Address 2",
-          "City": "City",
-          "State": "State",
-          "Zip Code": "Zip Code",
-          "Country": "Country",
+          "streetAddress1": "Street Address 1",
+          "streetAddress2": "Street Address 2",
+          "city": "City",
+          "state": "State",
+          "zipCode": "Zip Code",
+          "country": "Country",
           "label": "label",
           "placeholder": "placeholder"
         }
       },
-      "Text": {
+      "text": {
         "title": "Text",
         "settings": {
-          "Entre your text here": "Entre your text here"
+          "enterText": "Entre your text here"
         }
       },
-      "Image": "Image"
+      "image": "Image"
+    },
+    "scaleOptions": {
+      "age18To24": "18-24",
+      "age25To34": "25-34",
+      "age35To44": "35-44", 
+      "age45To54": "45-54",
+      "age55To64": "55-64",
+      "age65Plus": "65+",
+      "aFew": "A Few",
+      "aFewTimesMonth": "A few times a month",
+      "aFewTimesWeek": "A few times a week",
+      "aGreatDeal": "A great deal",
+      "aLittle": "A little",
+      "aLot": "A lot",
+      "moderateAmount": "A moderate amount",
+      "topPriorityNotMost": "A top priority, but not the most important",
+      "onceWeek": "About once a week",
+      "rightLength": "About the right length",
+      "rightTime": "About the right time",
+      "aboutSame": "About the same",
+      "aboveAverage": "Above average",
+      "agree": "Agree",
+      "all": "All",
+      "always": "Always",
+      "anotherRace": "Another race",
+      "approve": "Approve",
+      "average": "Average",
+      "aware": "Aware",
+      "belowAverage": "Below average",
+      "better": "Better",
+      "black": "Black",
+      "clear": "Clear",
+      "clearly": "Clearly",
+      "confident": "Confident",
+      "december": "December",
+      "definitelyWould": "Definitely would",
+      "definitelyWouldNot": "Definitely would not",
+      "desirable": "Desirable",
+      "difficult": "Difficult",
+      "disapprove": "Disapprove",
+      "early": "Early",
+      "easy": "Easy",
+      "effective": "Effective",
+      "everyDay": "Every day",
+      "exceededExpectations": "Exceeded expectations",
+      "extremelyAttentive": "Extremely attentive",
+      "extremelyAware": "Extremely aware",
+      "extremelyClear": "Extremely clear",
+      "extremelyConfident": "Extremely confident",
+      "extremelyDesirable": "Extremely desirable",
+      "extremelyEffective": "Extremely effective",
+      "extremelyFamiliar": "Extremely familiar",
+      "extremelyFriendly": "Extremely friendly",
+      "extremelyHelpful": "Extremely helpful",
+      "extremelyImportant": "Extremely important",
+      "extremelyProfessional": "Extremely professional",
+      "extremelyResponsive": "Extremely responsive",
+      "extremelyUseful": "Extremely useful",
+      "extremelyValuable": "Extremely valuable",
+      "false": "False",
+      "farAboveAverage": "Far above average",
+      "farBelowAverage": "Far below average",
+      "february": "February",
+      "frequency": "Frequency",
+      "friday": "Friday",
+      "friendly": "Friendly",
+      "helpful": "Helpful",
+      "highQuality": "High quality",
+      "important": "Important",
+      "lastWeek": "In the last week",
+      "january": "January",
+      "july": "July",
+      "june": "June",
+      "late": "Late",
+      "likely": "Likely",
+      "lowQuality": "Low quality",
+      "march": "March",
+      "may": "May",
+      "metExpectations": "Met expectations",
+      "monday": "Monday",
+      "monthly": "Monthly",
+      "moreThanMonth": "More than a month ago",
+      "moreThanWeekLessMonth": "More than a week, less than a month",
+      "most": "Most",
+      "muchBetter": "Much better",
+      "muchTooLong": "Much too long",
+      "muchTooShort": "Much too short",
+      "muchWorse": "Much worse",
+      "neitherAgreeDisagree": "Neither agree nor disagree",
+      "neitherEasyDifficult": "Neither easy nor difficult",
+      "neitherHighLowQuality": "Neither high nor low quality",
+      "neitherLikelyUnlikely": "Neither likely nor unlikely",
+      "neitherSatisfiedDissatisfied": "Neither satisfied nor dissatisfied",
+      "never": "Never",
+      "none": "None",
+      "noneAtAll": "None at all",
+      "notPriority": "Not a priority",
+      "notAtAllAttentive": "Not at all attentive",
+      "notAtAllAware": "Not at all aware",
+      "notAtAllClear": "Not at all clear",
+      "notAtAllConfident": "Not at all confident",
+      "notAtAllDesirable": "Not at all desirable",
+      "notAtAllEffective": "Not at all effective",
+      "notAtAllFriendly": "Not at all friendly",
+      "notAtAllHelpful": "Not at all helpful",
+      "notAtAllImportant": "Not at all important",
+      "notAtAllProfessional": "Not at all professional",
+      "notAtAllResponsive": "Not at all responsive",
+      "notAtAllUseful": "Not at all useful",
+      "notAtAllValuable": "Not at all valuable",
+      "notSoAttentive": "Not so attentive",
+      "notSoAware": "Not so aware",
+      "notSoClear": "Not so clear",
+      "notSoConfident": "Not so confident",
+      "notSoDesirable": "Not so desirable",
+      "notSoEffective": "Not so effective",
+      "notSoFamiliar": "Not so familiar",
+      "notSoFriendly": "Not so friendly",
+      "notSoHelpful": "Not so helpful",
+      "notSoImportant": "Not so important",
+      "notSoInterested": "Not so interested",
+      "notSoProfessional": "Not so professional",
+      "notSoResponsive": "Not so responsive",
+      "notSoUseful": "Not so useful",
+      "notSoValuable": "Not so valuable",
+      "november": "November",
+      "october": "October",
+      "onceMonth": "Once a month",
+      "positive": "Positive",
+      "preferNotSay": "Prefer not to say",
+      "probablyWould": "Probably would",
+      "probablyWouldNot": "Probably would not",
+      "professional": "Professional",
+      "quarterly": "Quarterly",
+      "raceEthnicity": "Race/Ethnicity",
+      "rarely": "Rarely",
+      "recentExperience": "Recent Experience",
+      "responsive": "Responsive",
+      "saturday": "Saturday",
+      "satisfied": "Satisfied",
+      "september": "September",
+      "some": "Some",
+      "somewhatAgree": "Somewhat agree",
+      "somewhatAttentive": "Somewhat attentive",
+      "somewhatAware": "Somewhat aware",
+      "somewhatClear": "Somewhat clear",
+      "somewhatConfident": "Somewhat confident",
+      "somewhatDesirable": "Somewhat desirable",
+      "somewhatDifficult": "Somewhat difficult",
+      "somewhatDisagree": "Somewhat disagree",
+      "somewhatEasy": "Somewhat easy",
+      "somewhatEffective": "Somewhat effective",
+      "somewhatFriendly": "Somewhat friendly",
+      "somewhatHelpful": "Somewhat helpful",
+      "somewhatHighQuality": "Somewhat high quality",
+      "somewhatImportant": "Somewhat important",
+      "somewhatInterested": "Somewhat interested",
+      "somewhatLowQuality": "Somewhat low quality",
+      "somewhatNegative": "Somewhat Negative",
+      "somewhatPositive": "Somewhat positive",
+      "somewhatProfessional": "Somewhat professional",
+      "somewhatResponsive": "Somewhat responsive",
+      "somewhatUseful": "Somewhat useful",
+      "somewhatValuable": "Somewhat valuable",
+      "sometimes": "Sometimes",
+      "stronglyAgree": "Strongly agree",
+      "stronglyDisagree": "Strongly disagree",
+      "sunday": "Sunday",
+      "mostImportantPriority": "The most important priority",
+      "thursday": "Thursday",
+      "tooLong": "Too long",
+      "tooShort": "Too short",
+      "topPriority": "Top priority",
+      "true": "True",
+      "tuesday": "Tuesday",
+      "twiceAnnually": "Twice annually",
+      "under18": "Under 18",
+      "unlikely": "Unlikely",
+      "usually": "Usually",
+      "valuable": "Valuable",
+      "veryAttentive": "Very attentive",
+      "veryAware": "Very aware",
+      "veryClear": "Very Clear",
+      "veryConfident": "Very confident",
+      "veryDesirable": "Very desirable",
+      "veryDifficult": "Very difficult",
+      "veryEasy": "Very easy",
+      "veryEffective": "Very effective",
+      "veryFamiliar": "Very familiar",
+      "veryFriendly": "Very friendly",
+      "veryHelpful": "Very helpful",
+      "veryHighQuality": "Very high quality",
+      "veryImportant": "Very important",
+      "veryInterested": "Very interested",
+      "veryLikely": "Very likely",
+      "veryLowQuality": "Very low quality",
+      "veryNegative": "Very negative",
+      "veryPositive": "Very positive",
+      "veryProfessional": "Very professional",
+      "veryResponsive": "Very responsive",
+      "verySatisfied": "Very satisfied",
+      "veryUnlikely": "Very unlikely",
+      "veryUseful": "Very useful",
+      "veryValuable": "Very valuable",
+      "wednesday": "Wednesday",
+      "white": "White",
+      "worse": "Worse",
+      "yearly": "Yearly"
     }
   }
 }

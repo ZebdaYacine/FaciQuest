@@ -1,1 +1,501 @@
-{}
+{
+  "profile": {
+    "wallet": "المحفظة",
+    "myAccount": "حسابي",
+    "changePassword": "تغيير كلمة المرور",
+    "notification": "الإشعارات",
+    "moreActions": "المزيد من الإجراءات",
+    "howItWorks": "كيف يعمل",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "logout": "تسجيل الخروج"
+  },
+  "personalInfo": {
+    "username": "اسم المستخدم",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة", 
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "birthDate": "تاريخ الميلاد",
+    "save": "حفظ"
+  },
+  "changePassword": {
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "pleaseEnterCurrentAndNewPassword": "الرجاء إدخال كلمة المرور الحالية والجديدة",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور"
+  },
+  "language": {
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "french": "الفرنسية"
+  },
+  "home": {
+    "welcomeToFaciQuest": "مرحباً بك في فاسي كويست",
+    "viewAndCreateSurveysDescription": "هنا يمكنك عرض استطلاعاتك وإنشاء استطلاعات جديدة",
+    "manageSurveys": "إدارة الاستطلاعات",
+    "createSurvey": "إنشاء استطلاع"
+  },
+  "manageSurveys": {
+    "createSurvey": "إنشاء استطلاع",
+    "manageMySurveys": "إدارة استطلاعاتي",
+    "search": "بحث",
+    "editSurvey": "تعديل الاستطلاع",
+    "deleteSurvey": "حذف الاستطلاع",
+    "previewSurvey": "معاينة الاستطلاع",
+    "analyzeResults": "تحليل النتائج"
+  },
+  "survey": {
+    "details": {
+      "surveyDetails": "تفاصيل الاستطلاع",
+      "createNewSurvey": "إنشاء استطلاع جديد",
+      "pleaseEnterDetails": "الرجاء إدخال التفاصيل أدناه",
+      "surveyTitle": "عنوان الاستطلاع",
+      "surveyDescription": "وصف الاستطلاع",
+      "lakertScale": {
+        "title": "مقياس ليكرت",
+        "twoPoint": "مقياس ليكرت ثنائي النقاط",
+        "threePoint": "مقياس ليكرت ثلاثي النقاط",
+        "fivePoint": "مقياس ليكرت خماسي النقاط",
+        "sevenPoint": "مقياس ليكرت سباعي النقاط"
+      },
+      "next": "التالي",
+      "cancel": "إلغاء"
+    },
+    "questions": {
+      "questions": "الأسئلة",
+      "questionsSection": "قسم الأسئلة",
+      "pleaseEnterQuestions": "الرجاء إدخال الأسئلة أدناه",
+      "addQuestion": "إضافة سؤال",
+      "submitSurvey": "تقديم الاستطلاع",
+      "back": "رجوع"
+    },
+    "summary": {
+      "summary": "الملخص",
+      "title": "العنوان",
+      "description": "الوصف",
+      "totalQuestions": "{} سؤال",
+      "totalResponses": "إجمالي الردود",
+      "status": "الحالة",
+      "published": "منشور",
+      "draft": "مسودة",
+      "preview": "معاينة",
+      "surveyActions": "إجراءات الاستطلاع",
+      "editSurvey": "تعديل الاستطلاع",
+      "deleteSurvey": "حذف الاستطلاع",
+      "publishSurvey": "نشر الاستطلاع",
+      "analyzeResults": "تحليل النتائج",
+      "createdAt": "تم الإنشاء في {}"
+    },
+    "analyzeResults": {
+      "analyzeResults": "تحليل النتائج",
+      "totalResponses": "إجمالي الردود",
+      "back": "رجوع",
+      "exportResults": "تصدير النتائج"
+    },
+    "collectResponses": {
+      "collectResponses": "جمع الردود",
+      "totalResponses": "إجمالي الردود",
+      "back": "رجوع",
+      "pleaseCreateCollection": "الرجاء إنشاء مجموعة أولاً",
+      "addNewCollection": "إضافة مجموعة جديدة",
+      "targetedResponses": "الردود المستهدفة",
+      "findPeopleCriteria": "ابحث عن أشخاص يناسبون معاييرك",
+      "analyzeResults": "تحليل النتائج",
+      "targetedResponsesPopup": {
+        "title": "الردود المستهدفة",
+        "description": "ابحث عن أشخاص يناسبون معاييرك",
+        "howManyResponses": "كم عدد الردود التي تريد جمعها؟",
+        "whoToSurvey": "من تريد أن تستطلع؟",
+        "addTargetingCriteria": "إضافة معايير الاستهداف",
+        "country": "البلد",
+        "gender": "الجنس",
+        "ageRange": "الفئة العمرية",
+        "estimatedCost": "التكلفة المقدرة",
+        "checkout": "الدفع"
+      },
+      "billing": {
+        "billing": "تفاصيل الفوترة",
+        "billingEmail": "البريد الإلكتروني للفوترة",
+        "billingName": "اسم الفوترة",
+        "billingNotified": "أرسل لي إيصالات التجديد عبر البريد الإلكتروني",
+        "totalCost": "التكلفة الإجمالية",
+        "paymentMethods": "طرق الدفع *",
+        "baridiMob": "بريدي موب",
+        "rip": "الدفع عند الاستلام",
+        "uploadProofPayment": "تحميل إثبات الدفع",
+        "ccpTransfer": "تحويل CCP",
+        "ccp": "CCP",
+        "key": "المفتاح",
+        "to": "إلى",
+        "edahabiaCard": "بطاقة الذهبية",
+        "comingSoon": "قريباً",
+        "directBankNote": "إيداع مباشر في البنك أو تحويل بنكي (3-5 أيام عمل من وقت إرسال التحويل).",
+        "collectorActivationNote": "سيتم تفعيل جامع الردود بمجرد تأكيد الدفع",
+        "submit": "تقديم"
+      }
+    },
+    "question": {
+      "question": "سؤال",
+      "putQuestionTitle": "ضع عنوان السؤال هنا",
+      "questionType": "نوع السؤال",
+      "settings": "الإعدادات :",
+      "pleaseSelectType": "الرجاء اختيار نوع السؤال",
+      "movePopup": {
+        "title": "نقل هذا السؤال إلى ...",
+        "after": "بعد",
+        "before": "قبل",
+        "action": "نقل السؤال"
+      },
+      "duplicatePopup": {
+        "title": "نسخ هذا السؤال؟",
+        "after": "بعد",
+        "before": "قبل",
+        "action": "نسخ السؤال"
+      },
+      "deletePopup": {
+        "title": "حذف هذا السؤال؟",
+        "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا السؤال؟",
+        "delete": "حذف",
+        "cancel": "إلغاء"
+      }
+    },
+    "questionType": {
+      "starRating": {
+        "title": "تقييم النجوم",
+        "settings": {
+          "maxRating": "أقصى تقييم",
+          "shape": "الشكل",
+          "color": "اللون"
+        }
+      },
+      "multipleChoice": {
+        "title": "اختيار متعدد",
+        "settings": {
+          "options": "الخيارات"
+        }
+      },
+      "imageChoice": {
+        "title": "اختيار الصورة",
+        "settings": {
+          "options": "الخيارات",
+          "imageCaption": "تعليق الصورة",
+          "useCheckbox": "استخدام مربع الاختيار"
+        }
+      },
+      "checkBoxes": {
+        "title": "مربعات اختيار",
+        "settings": {
+          "options": "الخيارات"
+        }
+      },
+      "dropdown": {
+        "title": "قائمة منسدلة",
+        "settings": {
+          "options": "الخيارات"
+        }
+      },
+      "matrix": {
+        "title": "مصفوفة",
+        "settings": {
+          "rows": "الصفوف",
+          "columns": "الأعمدة",
+          "allowMultipleResponses": "السماح بردود متعددة لكل صف"
+        }
+      },
+      "fileUpload": {
+        "title": "تحميل ملف",
+        "settings": {
+          "fileType": "نوع الملف",
+          "instructions": "تعليمات للمستجيبين"
+        }
+      },
+      "audioRecord": {
+        "title": "تسجيل صوتي",
+        "settings": {
+          "instructions": "تعليمات للمستجيبين"
+        }
+      },
+      "shortAnswer": {
+        "title": "إجابة قصيرة",
+        "maxLength": "أقصى طول"
+      },
+      "commentBox": {
+        "title": "مربع تعليق",
+        "settings": {
+          "maxLength": "أقصى طول",
+          "maxLines": "أقصى عدد الأسطر"
+        }
+      },
+      "slider": {
+        "title": "شريط التمرير",
+        "settings": {
+          "min": "الحد الأدنى",
+          "max": "الحد الأقصى"
+        }
+      },
+      "dateTime": {
+        "title": "التاريخ والوقت",
+        "settings": {
+          "collectDateInfo": "جمع معلومات التاريخ",
+          "collectTimeInfo": "جمع معلومات الوقت"
+        }
+      },
+      "name": {
+        "title": "الاسم",
+        "settings": {
+          "show": "عرض",
+          "firstName": "الاسم الأول",
+          "lastName": "اسم العائلة",
+          "middleName": "الاسم الأوسط"
+        }
+      },
+      "email": {
+        "title": "البريد الإلكتروني",
+        "settings": {
+          "show": "عرض",
+          "label": "التسمية",
+          "placeholder": "النص التوضيحي"
+        }
+      },
+      "phone": {
+        "title": "الهاتف",
+        "settings": {
+          "show": "عرض",
+          "label": "التسمية",
+          "placeholder": "النص التوضيحي"
+        }
+      },
+      "address": {
+        "title": "العنوان",
+        "settings": {
+          "show": "عرض",
+          "streetAddress1": "عنوان الشارع 1",
+          "streetAddress2": "عنوان الشارع 2",
+          "city": "المدينة",
+          "state": "الولاية",
+          "zipCode": "الرمز البريدي",
+          "country": "البلد",
+          "label": "التسمية",
+          "placeholder": "النص التوضيحي"
+        }
+      },
+      "text": {
+        "title": "نص",
+        "settings": {
+          "enterText": "أدخل النص هنا"
+        }
+      },
+      "image": "صورة"
+    },
+    "scaleOptions": {
+      "age18To24": "18-24",
+      "age25To34": "25-34",
+      "age35To44": "35-44",
+      "age45To54": "45-54",
+      "age55To64": "55-64",
+      "age65Plus": "65+",
+      "aFew": "قليل",
+      "aFewTimesMonth": "بضع مرات في الشهر",
+      "aFewTimesWeek": "بضع مرات في الأسبوع",
+      "aGreatDeal": "كثير جداً",
+      "aLittle": "قليلاً",
+      "aLot": "كثيراً",
+      "moderateAmount": "مقدار متوسط",
+      "topPriorityNotMost": "أولوية عليا، ولكن ليست الأهم",
+      "onceWeek": "مرة في الأسبوع",
+      "rightLength": "الطول المناسب",
+      "rightTime": "الوقت المناسب",
+      "aboutSame": "تقريباً نفس الشيء",
+      "aboveAverage": "فوق المتوسط",
+      "agree": "موافق",
+      "all": "الكل",
+      "always": "دائماً",
+      "anotherRace": "عرق آخر",
+      "approve": "موافقة",
+      "average": "متوسط",
+      "aware": "مدرك",
+      "belowAverage": "تحت المتوسط",
+      "better": "أفضل",
+      "black": "أسود",
+      "clear": "واضح",
+      "clearly": "بوضوح",
+      "confident": "واثق",
+      "december": "ديسمبر",
+      "definitelyWould": "بالتأكيد سأفعل",
+      "definitelyWouldNot": "بالتأكيد لن أفعل",
+      "desirable": "مرغوب",
+      "difficult": "صعب",
+      "disapprove": "غير موافق",
+      "early": "مبكر",
+      "easy": "سهل",
+      "effective": "فعال",
+      "everyDay": "كل يوم",
+      "exceededExpectations": "تجاوز التوقعات",
+      "extremelyAttentive": "منتبه للغاية",
+      "extremelyAware": "مدرك للغاية",
+      "extremelyClear": "واضح للغاية",
+      "extremelyConfident": "واثق للغاية",
+      "extremelyDesirable": "مرغوب للغاية",
+      "extremelyEffective": "فعال للغاية",
+      "extremelyFamiliar": "مألوف للغاية",
+      "extremelyFriendly": "ودود للغاية",
+      "extremelyHelpful": "مفيد للغاية",
+      "extremelyImportant": "مهم للغاية",
+      "extremelyProfessional": "محترف للغاية",
+      "extremelyResponsive": "متجاوب للغاية",
+      "extremelyUseful": "مفيد للغاية",
+      "extremelyValuable": "قيم للغاية",
+      "false": "خطأ",
+      "farAboveAverage": "أعلى بكثير من المتوسط",
+      "farBelowAverage": "أقل بكثير من المتوسط",
+      "february": "فبراير",
+      "frequency": "التكرار",
+      "friday": "الجمعة",
+      "friendly": "ودود",
+      "helpful": "مفيد",
+      "highQuality": "جودة عالية",
+      "important": "مهم",
+      "lastWeek": "الأسبوع الماضي",
+      "january": "يناير",
+      "july": "يوليو",
+      "june": "يونيو",
+      "late": "متأخر",
+      "likely": "محتمل",
+      "lowQuality": "جودة منخفضة",
+      "march": "مارس",
+      "may": "مايو",
+      "metExpectations": "حقق التوقعات",
+      "monday": "الاثنين",
+      "monthly": "شهرياً",
+      "moreThanMonth": "أكثر من شهر مضى",
+      "moreThanWeekLessMonth": "أكثر من أسبوع، أقل من شهر",
+      "most": "معظم",
+      "muchBetter": "أفضل بكثير",
+      "muchTooLong": "طويل جداً",
+      "muchTooShort": "قصير جداً",
+      "muchWorse": "أسوأ بكثير",
+      "neitherAgreeDisagree": "لا أوافق ولا أرفض",
+      "neitherEasyDifficult": "لا سهل ولا صعب",
+      "neitherHighLowQuality": "لا عالي ولا منخفض الجودة",
+      "neitherLikelyUnlikely": "لا محتمل ولا غير محتمل",
+      "neitherSatisfiedDissatisfied": "لا راضٍ ولا غير راضٍ",
+      "never": "أبداً",
+      "none": "لا شيء",
+      "noneAtAll": "لا شيء على الإطلاق",
+      "notPriority": "ليس أولوية",
+      "notAtAllAttentive": "غير منتبه على الإطلاق",
+      "notAtAllAware": "غير مدرك على الإطلاق",
+      "notAtAllClear": "غير واضح على الإطلاق",
+      "notAtAllConfident": "غير واثق على الإطلاق",
+      "notAtAllDesirable": "غير مرغوب على الإطلاق",
+      "notAtAllEffective": "غير فعال على الإطلاق",
+      "notAtAllFriendly": "غير ودود على الإطلاق",
+      "notAtAllHelpful": "غير مفيد على الإطلاق",
+      "notAtAllImportant": "غير مهم على الإطلاق",
+      "notAtAllProfessional": "غير محترف على الإطلاق",
+      "notAtAllResponsive": "غير متجاوب على الإطلاق",
+      "notAtAllUseful": "غير مفيد على الإطلاق",
+      "notAtAllValuable": "غير قيم على الإطلاق",
+      "notSoAttentive": "غير منتبه كثيراً",
+      "notSoAware": "غير مدرك كثيراً",
+      "notSoClear": "غير واضح كثيراً",
+      "notSoConfident": "غير واثق كثيراً",
+      "notSoDesirable": "غير مرغوب كثيراً",
+      "notSoEffective": "غير فعال كثيراً",
+      "notSoFamiliar": "غير مألوف كثيراً",
+      "notSoFriendly": "غير ودود كثيراً",
+      "notSoHelpful": "غير مفيد كثيراً",
+      "notSoImportant": "غير مهم كثيراً",
+      "notSoInterested": "غير مهتم كثيراً",
+      "notSoProfessional": "غير محترف كثيراً",
+      "notSoResponsive": "غير متجاوب كثيراً",
+      "notSoUseful": "غير مفيد كثيراً",
+      "notSoValuable": "غير قيم كثيراً",
+      "november": "نوفمبر",
+      "october": "أكتوبر",
+      "onceMonth": "مرة في الشهر",
+      "positive": "إيجابي",
+      "preferNotSay": "أفضل عدم القول",
+      "probablyWould": "ربما سأفعل",
+      "probablyWouldNot": "ربما لن أفعل",
+      "professional": "محترف",
+      "quarterly": "ربع سنوي",
+      "raceEthnicity": "العرق/الأصل العرقي",
+      "rarely": "نادراً",
+      "recentExperience": "تجربة حديثة",
+      "responsive": "متجاوب",
+      "saturday": "السبت",
+      "satisfied": "راضٍ",
+      "september": "سبتمبر",
+      "some": "بعض",
+      "somewhatAgree": "موافق إلى حد ما",
+      "somewhatAttentive": "منتبه إلى حد ما",
+      "somewhatAware": "مدرك إلى حد ما",
+      "somewhatClear": "واضح إلى حد ما",
+      "somewhatConfident": "واثق إلى حد ما",
+      "somewhatDesirable": "مرغوب إلى حد ما",
+      "somewhatDifficult": "صعب إلى حد ما",
+      "somewhatDisagree": "غير موافق إلى حد ما",
+      "somewhatEasy": "سهل إلى حد ما",
+      "somewhatEffective": "فعال إلى حد ما",
+      "somewhatFriendly": "ودود إلى حد ما",
+      "somewhatHelpful": "مفيد إلى حد ما",
+      "somewhatHighQuality": "جودة عالية إلى حد ما",
+      "somewhatImportant": "مهم إلى حد ما",
+      "somewhatInterested": "مهتم إلى حد ما",
+      "somewhatLowQuality": "جودة منخفضة إلى حد ما",
+      "somewhatNegative": "سلبي إلى حد ما",
+      "somewhatPositive": "إيجابي إلى حد ما",
+      "somewhatProfessional": "محترف إلى حد ما",
+      "somewhatResponsive": "متجاوب إلى حد ما",
+      "somewhatUseful": "مفيد إلى حد ما",
+      "somewhatValuable": "قيم إلى حد ما",
+      "sometimes": "أحياناً",
+      "stronglyAgree": "موافق بشدة",
+      "stronglyDisagree": "غير موافق بشدة",
+      "sunday": "الأحد",
+      "mostImportantPriority": "الأولوية الأكثر أهمية",
+      "thursday": "الخميس",
+      "tooLong": "طويل جداً",
+      "tooShort": "قصير جداً",
+      "topPriority": "أولوية قصوى",
+      "true": "صحيح",
+      "tuesday": "الثلاثاء",
+      "twiceAnnually": "مرتين سنوياً",
+      "under18": "تحت 18",
+      "unlikely": "غير محتمل",
+      "usually": "عادةً",
+      "valuable": "قيم",
+      "veryAttentive": "منتبه جداً",
+      "veryAware": "مدرك جداً",
+      "veryClear": "واضح جداً",
+      "veryConfident": "واثق جداً",
+      "veryDesirable": "مرغوب جداً",
+      "veryDifficult": "صعب جداً",
+      "veryEasy": "سهل جداً",
+      "veryEffective": "فعال جداً",
+      "veryFamiliar": "مألوف جداً",
+      "veryFriendly": "ودود جداً",
+      "veryHelpful": "مفيد جداً",
+      "veryHighQuality": "جودة عالية جداً",
+      "veryImportant": "مهم جداً",
+      "veryInterested": "مهتم جداً",
+      "veryLikely": "محتمل جداً",
+      "veryLowQuality": "جودة منخفضة جداً",
+      "veryNegative": "سلبي جداً",
+      "veryPositive": "إيجابي جداً",
+      "veryProfessional": "محترف جداً",
+      "veryResponsive": "متجاوب جداً",
+      "verySatisfied": "راضٍ جداً",
+      "veryUnlikely": "غير محتمل جداً",
+      "veryUseful": "مفيد جداً",
+      "veryValuable": "قيم جداً",
+      "wednesday": "الأربعاء",
+      "white": "أبيض",
+      "worse": "أسوأ",
+      "yearly": "سنوياً"
+    }
+  }
+}
