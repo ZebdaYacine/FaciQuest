@@ -91,6 +91,7 @@ class SurveyView extends StatelessWidget {
                       (element) => element.questionId == question.id,
                     );
                     return QuestionPreview(
+                      key: ValueKey(question.id),
                       question: question,
                       isPreview: false,
                       index: index + 1,
