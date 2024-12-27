@@ -97,7 +97,10 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
                           vertical: 12,
                         ),
                       ),
-                      icon: const Icon(Icons.arrow_back),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                       label: const Text('Back'),
                     ),
                     16.widthBox,

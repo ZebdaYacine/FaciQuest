@@ -174,9 +174,11 @@ class SurveyDataSourceImpl implements SurveyDataSource {
   @override
   Future<void> createCollector(CollectorEntity collector) async {
     logInfo('SurveyDataSourceImpl:createCollector');
+    final map = collector.toMap();
+    logSuccess(map);
     await dioClient.post(
       AppUrls.createCollector,
-      data: collector.toMap(),
+      data: map,
     );
   }
 
@@ -231,7 +233,7 @@ class SurveyDataSourceImpl implements SurveyDataSource {
   Future<double> estimatePrice(CollectorEntity collector) async {
     logInfo('SurveyDataSourceImpl:estimatePrice');
     final map = collector.toMap();
-    logInfo('map: $map');
+    logSuccess('map: $map');
     final response = await dioClient.get<Map<String, dynamic>>(
       AppUrls.estimatePrice,
       data: map,

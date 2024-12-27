@@ -90,10 +90,10 @@ class CollectorEntity extends Equatable {
       'surveyId': surveyId,
       'targetAudience': {
         'population': population?.toInt() ?? 0,
-        'gender': gender?.name ?? Gender.both.name,
+        'gender': gender?.toMap() ?? Gender.male.toMap(),
         'ageRange': {
-          'start': ageRange?.start ?? 0,
-          'end': ageRange?.end ?? 120,
+          'start': ageRange?.start.toInt() ?? 0,
+          'end': ageRange?.end.toInt() ?? 120,
         },
         'country': countries.firstOrNull ?? '',
         'state': provinces.map((x) => x.toMap()).toList(),

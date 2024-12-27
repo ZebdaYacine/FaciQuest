@@ -521,15 +521,17 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       }
     } catch (e) {
       debugPrint('Error selecting age: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error selecting age: $e')),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error selecting age: $e')),
+        );
+      }
     }
   }
 
-  void _handleCheckout() {
+  void _handleCheckout() async {
     try {
-      _cubit.createCollector(
+      await _cubit.createCollector(
         widget.collector.copyWith(
           name: _nameController.text,
           type: CollectorType.targetAudience,
@@ -542,7 +544,9 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
           targetingCriteria: _selectedCriteria.toList(),
         ),
       );
-      showPaymentModal(context);
+      if (context.mounted) {
+        await showPaymentModal(context);
+      }
     } catch (e) {
       debugPrint('Error during checkout: $e');
       ScaffoldMessenger.of(context).showSnackBar(

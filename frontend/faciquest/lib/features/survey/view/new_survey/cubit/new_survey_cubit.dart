@@ -226,16 +226,14 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
   }
 
   Future<void> createCollector(CollectorEntity collector) async {
-    try {
-      await repository.createCollector(collector);
-    } catch (e) {
-      emit(state.copyWith(status: Status.failure, msg: e.toString()));
-    }
+    await repository.createCollector(collector);
   }
 
   void deleteCollector(String id) {
     // todo implement delete collector
   }
+
+  fetchSubmissionPage({required int page, required pageSize}) {}
 }
 
 NewSurveyPages _pageFromAction(SurveyAction action) {
