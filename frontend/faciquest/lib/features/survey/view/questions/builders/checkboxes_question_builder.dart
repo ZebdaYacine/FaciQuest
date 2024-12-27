@@ -1,5 +1,4 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:collection/collection.dart';
 import 'package:faciquest/core/core.dart';
 
 import 'package:faciquest/features/survey/survey.dart';
@@ -21,41 +20,50 @@ class CheckboxesQuestionBuilder extends QuestionBuilder {
 
 class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
   String? selectedType;
-  List<TextEditingController> controllers = [];
+  late var question = widget.question as CheckboxesQuestion;
+  late List<TextEditingController> controllers;
 
   @override
   void initState() {
     super.initState();
-    controllers = (widget.question as CheckboxesQuestion)
-        .choices
-        .mapIndexed((index, choice) => TextEditingController(text: choice))
-        .toList();
+    controllers = List.generate(
+      question.choices.length,
+      (index) => TextEditingController(text: question.choices[index]),
+    );
   }
 
   @override
   void didUpdateWidget(covariant CheckboxesQuestionBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    controllers = (widget.question as CheckboxesQuestion)
-        .choices
-        .mapIndexed((index, choice) => TextEditingController(text: choice))
-        .toList();
+    question = widget.question as CheckboxesQuestion;
+    if (controllers.length != question.choices.length) {
+      for (var controller in controllers) {
+        controller.dispose();
+      }
+      controllers = List.generate(
+        question.choices.length,
+        (index) => TextEditingController(text: question.choices[index]),
+      );
+    } else {
+      for (var i = 0; i < controllers.length; i++) {
+        controllers[i].text = question.choices[i];
+      }
+    }
   }
 
   @override
   void dispose() {
-    // Dispose all controllers to prevent memory leaks
     for (var controller in controllers) {
       controller.dispose();
     }
     super.dispose();
   }
 
-  // Synchronize choices with TextEditingControllers
   onChange({
     List<String>? choices,
   }) {
     widget.onChanged?.call(
-      (widget.question as CheckboxesQuestion).copyWith(
+      question.copyWith(
         choices: [...choices ?? []],
       ),
     );
@@ -71,18 +79,12 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
       children: [
         Row(
           children: [
-            if (optionSizes.isNotEmpty &&
-                optionSizes.contains((widget.question as CheckboxesQuestion)
-                    .choices
-                    .length)) ...[
+            if (optionSizes.isNotEmpty) ...[
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
-                  value: optionSizes.contains(
-                          (widget.question as CheckboxesQuestion)
-                              .choices
-                              .length)
-                      ? (widget.question as CheckboxesQuestion).choices.length
+                  value: optionSizes.contains(question.choices.length)
+                      ? question.choices.length
                       : null,
                   items: [
                     const DropdownMenuItem(
@@ -96,6 +98,14 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
                             ))
                   ],
                   onChanged: (e) {
+                    if (e == null) {
+                      onChange(
+                        choices: getScaleOptions(
+                          selectedType,
+                          widget.likertScale?.getScale(),
+                        ),
+                      );
+                    }
                     onChange(choices: getScaleOptions(selectedType, e));
                   },
                 ),
@@ -124,10 +134,11 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
                 onChanged: (e) {
                   selectedType = e ?? '';
                   onChange(
-                      choices: getScaleOptions(
-                    selectedType,
-                    widget.likertScale?.getScale(),
-                  ));
+                    choices: getScaleOptions(
+                      selectedType,
+                      widget.likertScale?.getScale(),
+                    ),
+                  );
                 },
               ),
             )
@@ -136,12 +147,13 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
-          itemCount: controllers.length,
+          itemCount: question.choices.length,
           itemBuilder: (context, index) {
+            final item = question.choices[index];
             return Row(
               children: [
                 Radio(
-                  value: controllers[index].text,
+                  value: item,
                   groupValue: null,
                   onChanged: null,
                 ),
@@ -149,8 +161,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
                   child: TextFormField(
                     controller: controllers[index],
                     onChanged: (value) {
-                      var temp = List<String>.from(
-                          (widget.question as CheckboxesQuestion).choices);
+                      var temp = List<String>.from(question.choices);
                       temp[index] = value;
                       onChange(choices: temp);
                     },
@@ -159,24 +170,18 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
                 IconButton(
                   onPressed: () {
                     setState(() {
-                      controllers.insert(
-                          index + 1, TextEditingController(text: ''));
-                      var temp = List<String>.from(
-                          (widget.question as CheckboxesQuestion).choices);
+                      var temp = List<String>.from(question.choices);
                       temp.insert(index + 1, '');
                       onChange(choices: temp);
                     });
                   },
                   icon: const Icon(Icons.add),
                 ),
-                if (controllers.length > 1)
+                if (question.choices.length > 1)
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        controllers.removeAt(index);
-                        var temp = List<String>.from(
-                            (widget.question as CheckboxesQuestion)
-                                .choices);
+                        var temp = List<String>.from(question.choices);
                         temp.removeAt(index);
                         onChange(choices: temp);
                       });

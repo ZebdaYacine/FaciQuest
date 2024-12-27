@@ -22,11 +22,49 @@ class _MultipleChoiceQuestionBuilderState
     extends State<MultipleChoiceQuestionBuilder> {
   String? selectedType;
   late var question = widget.question as MultipleChoiceQuestion;
+  // Add controllers list
+  late List<TextEditingController> controllers;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controllers
+    controllers = List.generate(
+      question.choices.length,
+      (index) => TextEditingController(text: question.choices[index]),
+    );
+  }
 
   @override
   void didUpdateWidget(MultipleChoiceQuestionBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
     question = widget.question as MultipleChoiceQuestion;
+    // Update controllers when question changes
+    if (controllers.length != question.choices.length) {
+      // Dispose old controllers
+      for (var controller in controllers) {
+        controller.dispose();
+      }
+      // Create new controllers
+      controllers = List.generate(
+        question.choices.length,
+        (index) => TextEditingController(text: question.choices[index]),
+      );
+    } else {
+      // Update existing controllers
+      for (var i = 0; i < controllers.length; i++) {
+        controllers[i].text = question.choices[i];
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers
+    for (var controller in controllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   // Synchronize choices with TextEditingControllers
@@ -130,8 +168,7 @@ class _MultipleChoiceQuestionBuilderState
                 ),
                 Expanded(
                   child: TextFormField(
-                    // controller: controllers[index],
-                    initialValue: item,
+                    controller: controllers[index],
                     onChanged: (value) {
                       var temp = List<String>.from(question.choices);
                       temp[index] = value;
@@ -142,7 +179,6 @@ class _MultipleChoiceQuestionBuilderState
                 IconButton(
                   onPressed: () {
                     setState(() {
-                      // question.choices.insert(index + 1, '');
                       var temp = List<String>.from(question.choices);
                       temp.insert(index + 1, '');
                       onChange(choices: temp);
@@ -154,7 +190,6 @@ class _MultipleChoiceQuestionBuilderState
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        // question.choices.removeAt(index);
                         var temp = List<String>.from(question.choices);
                         temp.removeAt(index);
                         onChange(choices: temp);

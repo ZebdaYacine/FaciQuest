@@ -22,42 +22,50 @@ class DropdownQuestionBuilder extends QuestionBuilder {
 class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
     with BuildFormMixin {
   String? selectedType;
-
-  List<TextEditingController> controllers = [];
+  late var question = widget.question as DropdownQuestion;
+  late List<TextEditingController> controllers;
 
   @override
   void initState() {
     super.initState();
-    controllers = (widget.question as DropdownQuestion)
-        .choices
-        .mapIndexed((index, choice) => TextEditingController(text: choice))
-        .toList();
+    controllers = List.generate(
+      question.choices.length,
+      (index) => TextEditingController(text: question.choices[index]),
+    );
   }
 
   @override
   void didUpdateWidget(covariant DropdownQuestionBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    controllers = (widget.question as DropdownQuestion)
-        .choices
-        .mapIndexed((index, choice) => TextEditingController(text: choice))
-        .toList();
+    question = widget.question as DropdownQuestion;
+    if (controllers.length != question.choices.length) {
+      for (var controller in controllers) {
+        controller.dispose();
+      }
+      controllers = List.generate(
+        question.choices.length,
+        (index) => TextEditingController(text: question.choices[index]),
+      );
+    } else {
+      for (var i = 0; i < controllers.length; i++) {
+        controllers[i].text = question.choices[i];
+      }
+    }
   }
 
   @override
   void dispose() {
-    // Dispose all controllers to prevent memory leaks
     for (var controller in controllers) {
       controller.dispose();
     }
     super.dispose();
   }
 
-  // Synchronize choices with TextEditingControllers
   onChange({
     List<String>? choices,
   }) {
     widget.onChanged?.call(
-      (widget.question as DropdownQuestion).copyWith(
+      question.copyWith(
         choices: [...choices ?? []],
       ),
     );
@@ -73,15 +81,12 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
       children: [
         Row(
           children: [
-            if (optionSizes.isNotEmpty &&
-                optionSizes.contains(
-                    (widget.question as DropdownQuestion).choices.length)) ...[
+            if (optionSizes.isNotEmpty) ...[
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
-                  value: optionSizes.contains(
-                          (widget.question as DropdownQuestion).choices.length)
-                      ? (widget.question as DropdownQuestion).choices.length
+                  value: optionSizes.contains(question.choices.length)
+                      ? question.choices.length
                       : null,
                   items: [
                     const DropdownMenuItem(
@@ -95,6 +100,14 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
                             ))
                   ],
                   onChanged: (e) {
+                    if (e == null) {
+                      onChange(
+                        choices: getScaleOptions(
+                          selectedType,
+                          widget.likertScale?.getScale(),
+                        ),
+                      );
+                    }
                     onChange(choices: getScaleOptions(selectedType, e));
                   },
                 ),
@@ -123,10 +136,11 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
                 onChanged: (e) {
                   selectedType = e ?? '';
                   onChange(
-                      choices: getScaleOptions(
-                    selectedType,
-                    widget.likertScale?.getScale(),
-                  ));
+                    choices: getScaleOptions(
+                      selectedType,
+                      widget.likertScale?.getScale(),
+                    ),
+                  );
                 },
               ),
             )
@@ -135,12 +149,13 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
-          itemCount: controllers.length,
+          itemCount: question.choices.length,
           itemBuilder: (context, index) {
+            final item = question.choices[index];
             return Row(
               children: [
                 Radio(
-                  value: controllers[index].text,
+                  value: item,
                   groupValue: null,
                   onChanged: null,
                 ),
@@ -148,8 +163,7 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
                   child: TextFormField(
                     controller: controllers[index],
                     onChanged: (value) {
-                      var temp = List<String>.from(
-                          (widget.question as DropdownQuestion).choices);
+                      var temp = List<String>.from(question.choices);
                       temp[index] = value;
                       onChange(choices: temp);
                     },
@@ -158,23 +172,18 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
                 IconButton(
                   onPressed: () {
                     setState(() {
-                      controllers.insert(
-                          index + 1, TextEditingController(text: ''));
-                      var temp = List<String>.from(
-                          (widget.question as DropdownQuestion).choices);
+                      var temp = List<String>.from(question.choices);
                       temp.insert(index + 1, '');
                       onChange(choices: temp);
                     });
                   },
                   icon: const Icon(Icons.add),
                 ),
-                if (controllers.length > 1)
+                if (question.choices.length > 1)
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        controllers.removeAt(index);
-                        var temp = List<String>.from(
-                            (widget.question as DropdownQuestion).choices);
+                        var temp = List<String>.from(question.choices);
                         temp.removeAt(index);
                         onChange(choices: temp);
                       });
