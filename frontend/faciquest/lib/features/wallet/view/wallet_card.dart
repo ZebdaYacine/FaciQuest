@@ -1,6 +1,8 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
+import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WalletCardWidget extends StatefulWidget {
   const WalletCardWidget({
@@ -24,16 +26,11 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
           color: context.colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: BlocBuilder<WalletCubit, WalletState>(
+          builder: (context, state) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'wallet',
-                  style: context.textTheme.bodyMedium,
-                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -48,24 +45,27 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
                     ),
                     Center(
                       child: Text(
-                        showBalance ? '  12.000,00 DZD' : '***********',
+                        showBalance
+                            ? (state is WalletLoaded)
+                                ? '${state.walletBalance.toStringAsFixed(2).replaceAll('.', ',')} DA'
+                                : '.....'
+                            : '***********',
                         style: context.textTheme.headlineSmall,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],
                 ),
+                const Spacer(),
+                IconButton.filled(
+                  onPressed: () {
+                    cashOutModal(context);
+                  },
+                  icon: const Icon(Icons.arrow_outward_rounded),
+                ),
               ],
-            ),
-            const Spacer(),
-            IconButton.filled(
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_outward_rounded),
-            ),
-            IconButton.filled(
-              onPressed: () {},
-              icon: const Icon(Icons.add),
-            ),
-          ],
+            );
+          },
         ));
   }
 }

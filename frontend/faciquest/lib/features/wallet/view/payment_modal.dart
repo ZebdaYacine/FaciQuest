@@ -1,6 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
-import 'package:faciquest/core/widgets/backdrop.dart';
 import 'package:flutter/material.dart';
 
 showPaymentModal(BuildContext context) {

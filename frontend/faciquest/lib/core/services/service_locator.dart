@@ -38,4 +38,5 @@ Future<void> setupDependencies() async {
 
   registerAuth(getIt);
   registerSurvey(getIt);
+  registerWallet(getIt);
 }

@@ -31,6 +31,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
           ),
           BlocProvider(create: (_) => getIt<AuthBloc>()),
           BlocProvider(create: (_) => getIt<ThemeBloc>()),
+          BlocProvider(create: (_) => getIt<WalletCubit>()..getWallet()),
         ],
         child: await builder(),
       ),
