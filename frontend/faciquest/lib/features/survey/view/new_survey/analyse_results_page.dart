@@ -5,60 +5,164 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class AnalyseResultsPage extends StatefulWidget {
+class AnalyseResultsPage extends StatelessWidget {
   const AnalyseResultsPage({super.key});
 
-  @override
-  State<AnalyseResultsPage> createState() => _AnalyseResultsPageState();
-}
-
-class _AnalyseResultsPageState extends State<AnalyseResultsPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Expanded(child: _AnswersGrid()),
-        Padding(
-          padding: const EdgeInsets.all(16),
+        AppSpacing.spacing_2.heightBox,
+        const _ResultsTable(),
+        const _BottomActions(),
+      ],
+    );
+  }
+}
+
+class _ResultsTable extends StatelessWidget {
+  const _ResultsTable();
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: AppSpacing.spacing_2.horizontalPadding,
+        child: Card(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    'Total Responses:',
-                    style: context.titleMedium,
+              Padding(
+                padding: AppSpacing.spacing_2.padding,
+                child: Text(
+                  'Survey Results Analysis',
+                  style: context.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
-                  const Spacer(),
-                  Text(
-                    '10',
-                    style: context.titleMedium,
-                  ),
-                ],
+                ),
               ),
-              AppSpacing.spacing_1.heightBox,
-              Row(
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      context.read<NewSurveyCubit>().back();
-                    },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Theme.of(context).colorScheme.error,
-                      side: const BorderSide(color: Colors.red),
-                    ),
-                    child: const Text('Back'),
-                  ),
-                  8.widthBox,
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.download_rounded),
-                      label: const Text('Export'),
-                    ),
-                  ),
-                ],
-              ),
+              const Divider(),
+              const Expanded(child: _AnswersGrid()),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomActions extends StatelessWidget {
+  const _BottomActions();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: AppSpacing.spacing_3.padding,
+      child: Column(
+        children: [
+          const _ResponsesCard(),
+          AppSpacing.spacing_2.heightBox,
+          const _ActionButtons(),
+        ],
+      ),
+    );
+  }
+}
+
+class _ResponsesCard extends StatelessWidget {
+  const _ResponsesCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final survey = context.watch<NewSurveyCubit>().state.survey;
+    final responsesCount = survey.submissions.length;
+
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: AppSpacing.spacing_2.padding,
+        child: Row(
+          children: [
+            Icon(
+              Icons.analytics_rounded,
+              color: context.colorScheme.primary,
+            ),
+            AppSpacing.spacing_2.widthBox,
+            Text(
+              'Total Responses:',
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const Spacer(),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 6,
+              ),
+              decoration: BoxDecoration(
+                color: context.colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                responsesCount.toString(),
+                style: context.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: context.colorScheme.primary,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ActionButtons extends StatelessWidget {
+  const _ActionButtons();
+
+  @override
+  Widget build(BuildContext context) {
+    final survey = context.watch<NewSurveyCubit>().state.survey;
+    final hasResponses = survey.submissions.isNotEmpty;
+
+    return Row(
+      children: [
+        OutlinedButton.icon(
+          onPressed: () {
+            context.read<NewSurveyCubit>().back();
+          },
+          icon: const Icon(Icons.arrow_back_rounded),
+          label: const Text('Back'),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: context.colorScheme.error,
+            side: BorderSide(color: context.colorScheme.error),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 12,
+            ),
+          ),
+        ),
+        AppSpacing.spacing_2.widthBox,
+        Expanded(
+          child: FilledButton.icon(
+            onPressed: hasResponses ? () {} : null,
+            icon: const Icon(Icons.download_rounded),
+            label: const Text('Export Results'),
+            style: FilledButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 12,
+              ),
+            ),
           ),
         ),
       ],
@@ -78,29 +182,18 @@ class _AnswersGrid extends StatefulWidget {
 class _AnswersGridState extends State<_AnswersGrid> {
   PlutoGridStateManager? stateManager;
   late final survey = context.read<NewSurveyCubit>().state.survey;
+
   Future<PlutoLazyPaginationResponse> fetch(
     PlutoLazyPaginationRequest request,
   ) async {
-    await Future.delayed(const Duration(seconds: 3));
-    return PlutoLazyPaginationResponse(
-      rows: [],
-      totalPage: 1,
-    );
-  }
+    try {
+      final cubit = context.read<NewSurveyCubit>();
+      final result = await cubit.fetchSubmissionPage(
+        page: request.page,
+        pageSize: 10,
+      );
 
-  @override
-  Widget build(BuildContext context) {
-    return PlutoGrid(
-      key: const ValueKey('PlutoGrid'),
-      columns: survey.questions.map((question) {
-        return PlutoColumn(
-          title: question.title,
-          field: question.id,
-          type: PlutoColumnType.text(),
-        );
-      }).toList(),
-      configuration: const PlutoGridConfiguration(),
-      rows: survey.submissions
+      final paginatedRows = result.submissions
           .map(
             (submission) => PlutoRow(
               cells: {
@@ -109,35 +202,120 @@ class _AnswersGridState extends State<_AnswersGrid> {
               },
             ),
           )
-          .toList(),
+          .toList();
+
+      return PlutoLazyPaginationResponse(
+        rows: paginatedRows,
+        totalPage: result.totalPages,
+      );
+    } catch (e) {
+      debugPrint('Error fetching data: $e');
+      return PlutoLazyPaginationResponse(
+        rows: [],
+        totalPage: 1,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (survey.questions.isEmpty) {
+      return Center(
+        child: Text(
+          'No questions available',
+          style: context.textTheme.titleMedium,
+        ),
+      );
+    }
+
+    if (survey.submissions.isEmpty) {
+      return Center(
+        child: Text(
+          'No responses yet',
+          style: context.textTheme.titleMedium,
+        ),
+      );
+    }
+
+    return PlutoGrid(
+      key: const ValueKey('PlutoGrid'),
+      columns: _buildColumns(),
+      configuration: _buildConfiguration(context),
+      rows: _buildRows(),
       createFooter: (stateManager) {
         return PlutoLazyPagination(
-          // Determine the first page.
-          // Default is 1.
           initialPage: 1,
-
-          // First call the fetch function to determine whether to load the page.
-          // Default is true.
           initialFetch: true,
-
-          // Decide whether sorting will be handled by the server.
-          // If false, handle sorting on the client side.
-          // Default is true.
           fetchWithSorting: true,
-
-          // Decide whether filtering is handled by the server.
-          // If false, handle filtering on the client side.
-          // Default is true.
           fetchWithFiltering: true,
-
-          // Determines the page size to move to the previous and next page buttons.
-          // Default value is null. In this case,
-          // it moves as many as the number of page buttons visible on the screen.
           pageSizeToMove: null,
           fetch: fetch,
           stateManager: stateManager,
         );
       },
+      onLoaded: (event) {
+        stateManager = event.stateManager;
+      },
     );
+  }
+
+  List<PlutoColumn> _buildColumns() {
+    return survey.questions.map((question) {
+      return PlutoColumn(
+        title: question.title,
+        field: question.id,
+        type: PlutoColumnType.text(),
+        titleTextAlign: PlutoColumnTextAlign.center,
+        textAlign: PlutoColumnTextAlign.center,
+        backgroundColor:
+            context.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+        titleSpan: TextSpan(
+          text: question.title,
+          style: context.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        frozen: PlutoColumnFrozen.none,
+        width: 200,
+        minWidth: 150,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        enableAutoEditing: false,
+        enableEditingMode: false,
+      );
+    }).toList();
+  }
+
+  PlutoGridConfiguration _buildConfiguration(BuildContext context) {
+    return PlutoGridConfiguration(
+      style: PlutoGridStyleConfig(
+        borderColor: context.colorScheme.outlineVariant,
+        gridBackgroundColor: context.colorScheme.surface,
+        rowColor: context.colorScheme.surface,
+        columnTextStyle: context.textTheme.bodyMedium!,
+        cellTextStyle: context.textTheme.bodyMedium!,
+        iconColor: context.colorScheme.primary,
+        activatedColor: context.colorScheme.primaryContainer,
+      ),
+      scrollbar: const PlutoGridScrollbarConfig(
+        isAlwaysShown: true,
+      ),
+      columnSize: const PlutoGridColumnSizeConfig(
+        autoSizeMode: PlutoAutoSizeMode.scale,
+      ),
+    );
+  }
+
+  List<PlutoRow> _buildRows() {
+    return survey.submissions
+        .map(
+          (submission) => PlutoRow(
+            cells: {
+              for (final answer in submission.answers)
+                answer.questionId: answer.plutoCell,
+            },
+          ),
+        )
+        .toList();
   }
 }
