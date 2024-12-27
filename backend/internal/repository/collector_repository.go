@@ -34,6 +34,7 @@ func NewCollectorRepository(db database.Database) CollectorRepository {
 
 // CreateCriteria implements CollectorRepository.
 func (cu *collectorRepository) CreateCollector(c context.Context, collector *domain.Collector) (*domain.Collector, error) {
+	log.Println(collector)
 	collection := cu.database.Collection(core.COLLECTOR)
 	result, err := collection.InsertOne(c, &collector)
 	if err != nil {

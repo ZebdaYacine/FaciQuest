@@ -96,6 +96,7 @@ func (cc *CollectorController) EsstimatePriceRequest(c *gin.Context) {
 	if !core.IsDataRequestSupported(&new_collector, c) {
 		return
 	}
+	log.Println(new_collector)
 	params := &usecase.CollectorParams{}
 	params.Data = &new_collector
 	result, err := cc.CollectorUseCase.EstimatePriceByCollector(c, params.Data)
