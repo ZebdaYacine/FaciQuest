@@ -20,7 +20,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   runApp(
     EasyLocalization(
       path: languageManager.path,
-      startLocale: languageManager.startLocale,
+      // startLocale: languageManager.startLocale,
       supportedLocales: languageManager.supportedLocales,
       saveLocale: languageManager.saveLocale,
       useOnlyLangCode: languageManager.useOnlyLangCode,

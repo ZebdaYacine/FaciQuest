@@ -1,501 +1,310 @@
+
 {
   "profile": {
-    "wallet": "Portefeuille",
-    "myAccount": "Mon Compte",
-    "changePassword": "Changer le mot de passe",
-    "notification": "Notification",
-    "moreActions": "Plus d'actions",
-    "howItWorks": "Comment ça marche",
     "language": "Langue",
-    "theme": "Thème",
-    "logout": "Déconnexion"
-  },
-  "personalInfo": {
-    "username": "Nom d'utilisateur",
-    "firstName": "Prénom",
-    "lastName": "Nom",
-    "email": "Email",
-    "phone": "Téléphone", 
-    "birthDate": "Date de naissance",
-    "save": "Enregistrer"
-  },
-  "changePassword": {
-    "resetPassword": "Réinitialiser le mot de passe",
-    "pleaseEnterCurrentAndNewPassword": "veuillez entrer votre mot de passe actuel et le nouveau mot de passe",
-    "currentPassword": "Mot de passe actuel",
-    "newPassword": "Nouveau mot de passe",
-    "confirmPassword": "Confirmer le mot de passe"
+    "my_account": "Mon Compte",
+    "more_actions": "Plus d'Actions",
+    "menu": {
+      "profile": "Profil",
+      "change_password": "Changer le Mot de Passe",
+      "how_it_works": "Comment ça marche",
+      "theme": "Thème",
+      "logout": "Déconnexion"
+    }
   },
   "language": {
-    "english": "Anglais",
-    "arabic": "Arabe",
-    "french": "Français"
+    "ar": "العربية",
+    "fr": "Français",
+    "en": "English"
   },
-  "home": {
-    "welcomeToFaciQuest": "bienvenue sur FaciQuest",
-    "viewAndCreateSurveysDescription": "C'est ici que vous pouvez voir vos sondages et en créer de nouveaux",
-    "manageSurveys": "Gérer les sondages",
-    "createSurvey": "Créer un sondage"
-  },
-  "manageSurveys": {
-    "createSurvey": "Créer un sondage",
-    "manageMySurveys": "Gérer mes sondages",
-    "search": "Rechercher",
-    "editSurvey": "Modifier le sondage",
-    "deleteSurvey": "Supprimer le sondage",
-    "previewSurvey": "Aperçu du sondage",
-    "analyzeResults": "Analyser les résultats"
+  "auth": {
+    "verifyOtp": {
+      "title": "Vérifier OTP",
+      "description": "Veuillez saisir l'OTP envoyé à votre email",
+      "submit": "Vérifier"
+    },
+    "signUp": {
+      "title": "Créer un Compte",
+      "alreadyMember": "Déjà membre ?",
+      "login": "Se Connecter",
+      "agreeToThe": "J'accepte les",
+      "termsAndConditions": "Conditions Générales",
+      "submit": "S'inscrire",
+      "username": "Nom d'utilisateur",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe"
+    },
+    "signIn": {
+      "title": "Bienvenue",
+      "newToApp": "Nouveau sur l'application ?",
+      "signUp": "S'inscrire",
+      "forgotPassword": "Mot de passe oublié ?",
+      "submit": "Se connecter",
+      "email": "Email",
+      "password": "Mot de passe"
+    },
+    "forgotPassword": {
+      "title": "Réinitialiser le Mot de Passe",
+      "description": "Veuillez saisir votre adresse email pour réinitialiser votre mot de passe",
+      "submit": "Réinitialiser",
+      "email": "Email"
+    },
+    "setNewPassword": {
+      "title": "Réinitialiser le Mot de Passe",
+      "description": "Veuillez saisir votre nouveau mot de passe",
+      "submit": "Réinitialiser",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe"
+    }
   },
   "survey": {
-    "details": {
-      "surveyDetails": "Détails du sondage",
-      "createNewSurvey": "Créer un nouveau sondage",
-      "pleaseEnterDetails": "veuillez entrer les détails ci-dessous",
-      "surveyTitle": "Titre du sondage",
-      "surveyDescription": "Description du sondage",
-      "lakertScale": {
-        "title": "Échelle de Likert",
-        "twoPoint": "Échelle de Likert à 2 points",
-        "threePoint": "Échelle de Likert à 3 points", 
-        "fivePoint": "Échelle de Likert à 5 points",
-        "sevenPoint": "Échelle de Likert à 7 points"
-      },
-      "next": "Suivant",
-      "cancel": "Annuler"
-    },
-    "questions": {
-      "questions": "Questions",
-      "questionsSection": "Section des questions",
-      "pleaseEnterQuestions": "veuillez entrer les questions ci-dessous",
-      "addQuestion": "Ajouter une question",
-      "submitSurvey": "Soumettre le sondage",
-      "back": "Retour"
-    },
-    "summary": {
-      "summary": "Résumé",
-      "title": "titre",
-      "description": "description",
-      "totalQuestions": "{} Questions",
-      "totalResponses": "Total des réponses",
-      "status": "Statut",
-      "published": "Publié",
-      "draft": "Brouillon",
-      "preview": "Aperçu",
-      "surveyActions": "Actions du sondage",
-      "editSurvey": "Modifier le sondage",
-      "deleteSurvey": "Supprimer le sondage",
-      "publishSurvey": "Publier le sondage",
-      "analyzeResults": "Analyser les résultats",
-      "createdAt": "créé le {}"
-    },
-    "analyzeResults": {
-      "analyzeResults": "Analyser les résultats",
-      "totalResponses": "Total des réponses",
-      "back": "Retour",
-      "exportResults": "Exporter les résultats"
-    },
-    "collectResponses": {
-      "collectResponses": "Collecter les réponses",
-      "totalResponses": "Total des réponses",
-      "back": "Retour",
-      "pleaseCreateCollection": "veuillez d'abord créer une collection",
-      "addNewCollection": "Ajouter une nouvelle collection",
-      "targetedResponses": "Réponses ciblées",
-      "findPeopleCriteria": "Trouvez des personnes qui correspondent à vos critères",
-      "analyzeResults": "Analyser les résultats",
-      "targetedResponsesPopup": {
-        "title": "Réponses ciblées",
-        "description": "Trouvez des personnes qui correspondent à vos critères",
-        "howManyResponses": "Combien de réponses souhaitez-vous collecter ?",
-        "whoToSurvey": "qui voulez-vous sonder ?",
-        "addTargetingCriteria": "Ajouter des critères de ciblage",
-        "country": "Pays",
-        "gender": "Genre",
-        "ageRange": "Tranche d'âge",
-        "estimatedCost": "Coût estimé",
-        "checkout": "Paiement"
-      },
-      "billing": {
-        "billing": "Détails de facturation",
-        "billingEmail": "Email de facturation",
-        "billingName": "Nom de facturation",
-        "billingNotified": "M'envoyer les reçus de renouvellement par email",
-        "totalCost": "Coût total",
-        "paymentMethods": "Méthodes de paiement *",
-        "baridiMob": "BaridiMob",
-        "rip": "RIP",
-        "uploadProofPayment": "télécharger la preuve de paiement",
-        "ccpTransfer": "Transfert CCP",
-        "ccp": "ccp",
-        "key": "clé",
-        "to": "à",
-        "edahabiaCard": "Carte Edahabia",
-        "comingSoon": "bientôt disponible",
-        "directBankNote": "Dépôt direct en banque ou virement bancaire (3-5 jours ouvrables à partir de l'envoi du virement).",
-        "collectorActivationNote": "Le collecteur sera activé une fois le paiement confirmé",
-        "submit": "Soumettre"
-      }
-    },
+    "loading": "Chargement du sondage...",
+    "empty": "Sondage non trouvé",
+    "error": "Une erreur est survenue",
     "question": {
-      "question": "Question",
-      "putQuestionTitle": "Mettez le titre de la question ici",
-      "questionType": "Type de question",
-      "settings": "Paramètres :",
-      "pleaseSelectType": "veuillez sélectionner le type de question",
-      "movePopup": {
-        "title": "Déplacer cette question vers ...",
-        "after": "Après",
-        "before": "Avant",
-        "action": "Déplacer la question"
+      "progress": "Question {0} sur {1}",
+      "checkboxes": {
+        "select_scale": "sélectionner une échelle",
+        "select_type": "sélectionner un type"
       },
-      "duplicatePopup": {
-        "title": "Dupliquer cette question ?",
-        "after": "Après",
-        "before": "Avant",
-        "action": "Dupliquer la question"
+      "comment_box": {
+        "max_length": "Longueur maximale :",
+        "max_lines": "Nombre de lignes maximum :"
       },
-      "deletePopup": {
-        "title": "Supprimer cette question ?",
-        "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette question ?",
-        "delete": "Supprimer",
-        "cancel": "Annuler"
-      }
-    },
-    "questionType": {
-      "starRating": {
-        "title": "Notation par étoiles",
-        "settings": {
-          "maxRating": "Note maximale",
-          "shape": "Forme",
-          "color": "Couleur"
-        }
-      },
-      "multipleChoice": {
-        "title": "Choix multiple",
-        "settings": {
-          "options": "Options"
-        }
-      },
-      "imageChoice": {
-        "title": "Choix d'image",
-        "settings": {
-          "options": "Options",
-          "imageCaption": "Légende de l'image",
-          "useCheckbox": "Utiliser des cases à cocher"
-        }
-      },
-      "checkBoxes": {
-        "title": "Cases à cocher",
-        "settings": {
-          "options": "Options"
-        }
-      },
-      "dropdown": {
-        "title": "Liste déroulante",
-        "settings": {
-          "options": "Options"
-        }
-      },
-      "matrix": {
-        "title": "Matrice",
-        "settings": {
-          "rows": "Lignes",
-          "columns": "Colonnes",
-          "allowMultipleResponses": "Autoriser plusieurs réponses par ligne"
-        }
-      },
-      "fileUpload": {
-        "title": "Téléchargement de fichier",
-        "settings": {
-          "fileType": "Type de fichier",
-          "instructions": "Instructions pour les répondants"
-        }
-      },
-      "audioRecord": {
-        "title": "Enregistrement audio",
-        "settings": {
-          "instructions": "Instructions pour les répondants"
-        }
-      },
-      "shortAnswer": {
-        "title": "Réponse courte",
-        "maxLength": "Longueur maximale"
-      },
-      "commentBox": {
-        "title": "Zone de commentaire",
-        "settings": {
-          "maxLength": "Longueur maximale",
-          "maxLines": "Nombre maximum de lignes"
-        }
-      },
-      "slider": {
-        "title": "Curseur",
-        "settings": {
-          "min": "Min",
-          "max": "Max"
-        }
-      },
-      "dateTime": {
-        "title": "Date et heure",
-        "settings": {
-          "collectDateInfo": "Collecter les informations de date",
-          "collectTimeInfo": "Collecter les informations d'heure"
-        }
-      },
-      "name": {
-        "title": "Nom",
-        "settings": {
-          "show": "afficher",
-          "firstName": "Prénom",
-          "lastName": "Nom",
-          "middleName": "Deuxième prénom"
-        }
+      "date_time": {
+        "collect_date": "Collecter la date",
+        "collect_time": "Collecter l'heure"
       },
       "email": {
-        "title": "Email",
-        "settings": {
-          "show": "afficher",
-          "label": "étiquette",
-          "placeholder": "placeholder"
-        }
+        "title": "Adresse Email",
+        "show": "Afficher",
+        "label": "Libellé :",
+        "placeholder": "Texte indicatif :"
+      },
+      "file_upload": {
+        "instructions": "Instructions pour les répondants :",
+        "enter_instructions": "Saisir les instructions pour les répondants (optionnel)",
+        "allowed_types": "Types de fichiers autorisés :"
+      },
+      "image_choice": {
+        "use_checkbox": "Utiliser des cases à cocher",
+        "image_caption": "Légende de l'image"
+      },
+      "matrix": {
+        "select_scale": "sélectionner une échelle",
+        "select_type": "sélectionner un type",
+        "rows": "Lignes :",
+        "columns": "Colonnes :",
+        "use_checkboxes": "Autoriser plusieurs réponses par ligne (utiliser des cases à cocher)"
+      },
+      "multiple_choice": {
+        "select_scale": "sélectionner une échelle",
+        "select_type": "sélectionner un type"
+      },
+      "name": {
+        "first_name": "Prénom",
+        "last_name": "Nom",
+        "middle_name": "Deuxième prénom",
+        "show": "Afficher",
+        "label": "Libellé :",
+        "placeholder": "Texte indicatif :"
       },
       "phone": {
         "title": "Téléphone",
-        "settings": {
-          "show": "afficher",
-          "label": "étiquette",
-          "placeholder": "placeholder"
-        }
+        "show": "Afficher",
+        "label": "Libellé :",
+        "placeholder": "Texte indicatif :"
       },
-      "address": {
-        "title": "Adresse",
-        "settings": {
-          "show": "afficher",
-          "streetAddress1": "Adresse 1",
-          "streetAddress2": "Adresse 2",
-          "city": "Ville",
-          "state": "État",
-          "zipCode": "Code postal",
-          "country": "Pays",
-          "label": "étiquette",
-          "placeholder": "placeholder"
-        }
+      "short_answer": {
+        "max_length": "Longueur maximale :"
+      },
+      "slider": {
+        "min": "Min :",
+        "max": "Max :"
+      },
+      "star_rating": {
+        "max_rating": "Note maximale :",
+        "color": "Couleur :",
+        "shape": "Forme :"
       },
       "text": {
-        "title": "Texte",
-        "settings": {
-          "enterText": "Entrez votre texte ici"
-        }
-      },
-      "image": "Image"
+        "enter_text": "Saisissez votre texte"
+      }
     },
-    "scaleOptions": {
-      "age18To24": "18-24",
-      "age25To34": "25-34",
-      "age35To44": "35-44",
-      "age45To54": "45-54",
-      "age55To64": "55-64",
-      "age65Plus": "65+",
-      "aFew": "Quelques-uns",
-      "aFewTimesMonth": "Quelques fois par mois",
-      "aFewTimesWeek": "Quelques fois par semaine",
-      "aGreatDeal": "Beaucoup",
-      "aLittle": "Un peu",
-      "aLot": "Beaucoup",
-      "moderateAmount": "Une quantité modérée",
-      "topPriorityNotMost": "Une priorité élevée, mais pas la plus importante",
-      "onceWeek": "Environ une fois par semaine",
-      "rightLength": "De la bonne longueur",
-      "rightTime": "Au bon moment",
-      "aboutSame": "À peu près pareil",
-      "aboveAverage": "Au-dessus de la moyenne",
-      "agree": "D'accord",
-      "all": "Tous",
-      "always": "Toujours",
-      "anotherRace": "Une autre race",
-      "approve": "Approuver",
-      "average": "Moyen",
-      "aware": "Conscient",
-      "belowAverage": "En dessous de la moyenne",
-      "better": "Mieux",
-      "black": "Noir",
-      "clear": "Clair",
-      "clearly": "Clairement",
-      "confident": "Confiant",
-      "december": "Décembre",
-      "definitelyWould": "Certainement",
-      "definitelyWouldNot": "Certainement pas",
-      "desirable": "Désirable",
-      "difficult": "Difficile",
-      "disapprove": "Désapprouver",
-      "early": "Tôt",
-      "easy": "Facile",
-      "effective": "Efficace",
-      "everyDay": "Tous les jours",
-      "exceededExpectations": "A dépassé les attentes",
-      "extremelyAttentive": "Extrêmement attentif",
-      "extremelyAware": "Extrêmement conscient",
-      "extremelyClear": "Extrêmement clair",
-      "extremelyConfident": "Extrêmement confiant",
-      "extremelyDesirable": "Extrêmement désirable",
-      "extremelyEffective": "Extrêmement efficace",
-      "extremelyFamiliar": "Extrêmement familier",
-      "extremelyFriendly": "Extrêmement amical",
-      "extremelyHelpful": "Extrêmement utile",
-      "extremelyImportant": "Extrêmement important",
-      "extremelyProfessional": "Extrêmement professionnel",
-      "extremelyResponsive": "Extrêmement réactif",
-      "extremelyUseful": "Extrêmement utile",
-      "extremelyValuable": "Extrêmement précieux",
-      "false": "Faux",
-      "farAboveAverage": "Bien au-dessus de la moyenne",
-      "farBelowAverage": "Bien en dessous de la moyenne",
-      "february": "Février",
-      "frequency": "Fréquence",
-      "friday": "Vendredi",
-      "friendly": "Amical",
-      "helpful": "Utile",
-      "highQuality": "Haute qualité",
-      "important": "Important",
-      "lastWeek": "La semaine dernière",
-      "january": "Janvier",
-      "july": "Juillet",
-      "june": "Juin",
-      "late": "Tard",
-      "likely": "Probable",
-      "lowQuality": "Basse qualité",
-      "march": "Mars",
-      "may": "Mai",
-      "metExpectations": "A répondu aux attentes",
-      "monday": "Lundi",
-      "monthly": "Mensuel",
-      "moreThanMonth": "Il y a plus d'un mois",
-      "moreThanWeekLessMonth": "Plus d'une semaine, moins d'un mois",
-      "most": "La plupart",
-      "muchBetter": "Beaucoup mieux",
-      "muchTooLong": "Beaucoup trop long",
-      "muchTooShort": "Beaucoup trop court",
-      "muchWorse": "Beaucoup pire",
-      "neitherAgreeDisagree": "Ni d'accord ni en désaccord",
-      "neitherEasyDifficult": "Ni facile ni difficile",
-      "neitherHighLowQuality": "Ni haute ni basse qualité",
-      "neitherLikelyUnlikely": "Ni probable ni improbable",
-      "neitherSatisfiedDissatisfied": "Ni satisfait ni insatisfait",
-      "never": "Jamais",
-      "none": "Aucun",
-      "noneAtAll": "Pas du tout",
-      "notPriority": "Pas une priorité",
-      "notAtAllAttentive": "Pas du tout attentif",
-      "notAtAllAware": "Pas du tout conscient",
-      "notAtAllClear": "Pas du tout clair",
-      "notAtAllConfident": "Pas du tout confiant",
-      "notAtAllDesirable": "Pas du tout désirable",
-      "notAtAllEffective": "Pas du tout efficace",
-      "notAtAllFriendly": "Pas du tout amical",
-      "notAtAllHelpful": "Pas du tout utile",
-      "notAtAllImportant": "Pas du tout important",
-      "notAtAllProfessional": "Pas du tout professionnel",
-      "notAtAllResponsive": "Pas du tout réactif",
-      "notAtAllUseful": "Pas du tout utile",
-      "notAtAllValuable": "Pas du tout précieux",
-      "notSoAttentive": "Pas très attentif",
-      "notSoAware": "Pas très conscient",
-      "notSoClear": "Pas très clair",
-      "notSoConfident": "Pas très confiant",
-      "notSoDesirable": "Pas très désirable",
-      "notSoEffective": "Pas très efficace",
-      "notSoFamiliar": "Pas très familier",
-      "notSoFriendly": "Pas très amical",
-      "notSoHelpful": "Pas très utile",
-      "notSoImportant": "Pas très important",
-      "notSoInterested": "Pas très intéressé",
-      "notSoProfessional": "Pas très professionnel",
-      "notSoResponsive": "Pas très réactif",
-      "notSoUseful": "Pas très utile",
-      "notSoValuable": "Pas très précieux",
-      "november": "Novembre",
-      "october": "Octobre",
-      "onceMonth": "Une fois par mois",
-      "positive": "Positif",
-      "preferNotSay": "Préfère ne pas dire",
-      "probablyWould": "Probablement",
-      "probablyWouldNot": "Probablement pas",
-      "professional": "Professionnel",
-      "quarterly": "Trimestriel",
-      "raceEthnicity": "Race/Ethnicité",
-      "rarely": "Rarement",
-      "recentExperience": "Expérience récente",
-      "responsive": "Réactif",
-      "saturday": "Samedi",
-      "satisfied": "Satisfait",
-      "september": "Septembre",
-      "some": "Quelques",
-      "somewhatAgree": "Plutôt d'accord",
-      "somewhatAttentive": "Plutôt attentif",
-      "somewhatAware": "Plutôt conscient",
-      "somewhatClear": "Plutôt clair",
-      "somewhatConfident": "Plutôt confiant",
-      "somewhatDesirable": "Plutôt désirable",
-      "somewhatDifficult": "Plutôt difficile",
-      "somewhatDisagree": "Plutôt en désaccord",
-      "somewhatEasy": "Plutôt facile",
-      "somewhatEffective": "Plutôt efficace",
-      "somewhatFriendly": "Plutôt amical",
-      "somewhatHelpful": "Plutôt utile",
-      "somewhatHighQuality": "Plutôt haute qualité",
-      "somewhatImportant": "Plutôt important",
-      "somewhatInterested": "Plutôt intéressé",
-      "somewhatLowQuality": "Plutôt basse qualité",
-      "somewhatNegative": "Plutôt négatif",
-      "somewhatPositive": "Plutôt positif",
-      "somewhatProfessional": "Plutôt professionnel",
-      "somewhatResponsive": "Plutôt réactif",
-      "somewhatUseful": "Plutôt utile",
-      "somewhatValuable": "Plutôt précieux",
-      "sometimes": "Parfois",
-      "stronglyAgree": "Tout à fait d'accord",
-      "stronglyDisagree": "Pas du tout d'accord",
-      "sunday": "Dimanche",
-      "mostImportantPriority": "La priorité la plus importante",
-      "thursday": "Jeudi",
-      "tooLong": "Trop long",
-      "tooShort": "Trop court",
-      "topPriority": "Priorité absolue",
-      "true": "Vrai",
-      "tuesday": "Mardi",
-      "twiceAnnually": "Deux fois par an",
-      "under18": "Moins de 18 ans",
-      "unlikely": "Peu probable",
-      "usually": "Habituellement",
-      "valuable": "Précieux",
-      "veryAttentive": "Très attentif",
-      "veryAware": "Très conscient",
-      "veryClear": "Très clair",
-      "veryConfident": "Très confiant",
-      "veryDesirable": "Très désirable",
-      "veryDifficult": "Très difficile",
-      "veryEasy": "Très facile",
-      "veryEffective": "Très efficace",
-      "veryFamiliar": "Très familier",
-      "veryFriendly": "Très amical",
-      "veryHelpful": "Très utile",
-      "veryHighQuality": "Très haute qualité",
-      "veryImportant": "Très important",
-      "veryInterested": "Très intéressé",
-      "veryLikely": "Très probable",
-      "veryLowQuality": "Très basse qualité",
-      "veryNegative": "Très négatif",
-      "veryPositive": "Très positif",
-      "veryProfessional": "Très professionnel",
-      "veryResponsive": "Très réactif",
-      "verySatisfied": "Très satisfait",
-      "veryUnlikely": "Très peu probable",
-      "veryUseful": "Très utile",
-      "veryValuable": "Très précieux",
-      "wednesday": "Mercredi",
-      "white": "Blanc",
-      "worse": "Pire",
-      "yearly": "Annuel"
+    "submit": {
+      "button": {
+        "loading": "Envoi en cours...",
+        "default": "Envoyer le sondage"
+      },
+      "ready": {
+        "title": "Prêt à envoyer ?",
+        "message": "Veuillez vérifier vos réponses avant l'envoi"
+      },
+      "success": {
+        "title": "Réponse envoyée avec succès !",
+        "message": "Merci d'avoir complété le sondage"
+      }
+    },
+    "address": {
+      "street_address1": "Adresse 1",
+      "street_address2": "Adresse 2",
+      "city": "Ville",
+      "state": "État/Province",
+      "postal_code": "Code postal",
+      "country": "Pays",
+      "country_label": "Libellé :"
+    },
+    "audio_record": {
+      "coming_soon": "Bientôt disponible"
+    }
+  },
+  "manage": {
+    "manage_my_surveys_title": "Gérer Mes Sondages",
+    "create_survey_button": "Créer un Sondage",
+    "search_surveys_hint": "Rechercher des sondages...",
+    "no_surveys_found": "Aucun sondage trouvé"
+  },
+  "status": {
+    "open_status": "Ouvert"
+  },
+  "actions": {
+    "edit_survey": "Modifier le Sondage",
+    "preview_survey": "Aperçu du Sondage",
+    "analyze_results": "Analyser les Résultats",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "delete_button": "Supprimer",
+    "send_survey": "Envoyer le Sondage",
+    "add_new": "Ajouter Nouveau",
+    "add_new_question": "Ajouter une Question",
+    "back": "Retour",
+    "submit_survey": "Envoyer le Sondage",
+    "copy": "Copier",
+    "move": "Déplacer",
+    "copy_question": "Copier la Question",
+    "move_question": "Déplacer la Question",
+    "copy_question_to": "Copier cette question vers...",
+    "move_question_to": "Déplacer cette question vers...",
+    "next": "Suivant",
+    "export_results": "Exporter les Résultats",
+    "save": "Enregistrer"
+  },
+  "delete_dialog": {
+    "delete_survey_title": "Supprimer le Sondage",
+    "delete_survey_confirmation": "Êtes-vous sûr de vouloir supprimer ce sondage ? Cette action est irréversible.",
+    "delete_question_title": "Supprimer la Question",
+    "delete_question_confirmation": "Êtes-vous sûr de vouloir supprimer cette question ?",
+    "delete_collector": "Supprimer le Collecteur",
+    "delete_collector_confirmation": "Êtes-vous sûr de vouloir supprimer ce collecteur ?"
+  },
+  "survey_details": {
+    "updated_label": "Mis à jour : ",
+    "response_count_singular": "réponse",
+    "response_count_plural": "réponses",
+    "create_new": "Créer un Nouveau Sondage",
+    "name": "Nom du Sondage *",
+    "enter_name": "Saisir le nom du sondage",
+    "description": "Description du Sondage",
+    "enter_description": "Saisir la description du sondage",
+    "likert_scale": "Échelle de Likert *"
+  },
+  "stats": {
+    "total_responses": "Total des Réponses : {count}",
+    "status": "Statut"
+  },
+  "sections": {
+    "survey_actions": "Actions du Sondage",
+    "collectors": "Collecteurs",
+    "questions_overview": "Aperçu des Questions",
+    "questions_section": "Section des Questions",
+    "enter_details": "Veuillez saisir les détails ci-dessous"
+  },
+  "position": {
+    "after": "Après",
+    "before": "Avant"
+  },
+  "error": {
+    "generic": "Une erreur est survenue"
+  },
+  "collectors": {
+    "add_new": "Ajouter un nouveau collecteur",
+    "targeted_responses": "Réponses Ciblées",
+    "targeted_description": "Trouvez des personnes qui correspondent à vos critères",
+    "no_collectors": "Aucun collecteur pour le moment",
+    "create_collector": "Créez un collecteur pour commencer à recueillir des réponses",
+    "nickname": "Surnom",
+    "status": "Statut",
+    "responses": "Réponses",
+    "web_link": "Lien Web",
+    "enter_nickname": "Saisir le surnom du collecteur",
+    "generate_link": "Générer un Lien",
+    "targeting": {
+      "title": "Critères de Ciblage",
+      "search_label": "Rechercher des critères",
+      "search_hint": "Rechercher par titre, catégorie ou description",
+      "income_range": "Tranche de Revenus",
+      "min": "Min : {0}",
+      "max": "Max : {0}",
+      "gender": {
+        "title": "Genre",
+        "both": "Les deux",
+        "male": "Homme",
+        "female": "Femme"
+      },
+      "location": {
+        "country": "Pays",
+        "region_targeting": "Ciblage par région",
+        "city_targeting": "Ciblage par ville",
+        "select_wilaya": "sélectionner une wilaya",
+        "select_city": "sélectionner une ville"
+      },
+      "age_range": "Tranche d'Âge"
+    },
+    "buy_targeted": {
+      "title": "Acheter des réponses ciblées",
+      "collector_name": "Nom du Collecteur",
+      "enter_name": "Saisir un nom pour ce collecteur",
+      "responses_needed": "Combien de réponses vous faut-il ?",
+      "who_to_survey": "Qui souhaitez-vous interroger ?",
+      "add_criteria": "Ajouter des critères de ciblage",
+      "estimated_cost": "Coût estimé",
+      "proceed_checkout": "Procéder au Paiement"
+    }
+  },
+  "analysis": {
+    "survey_results": "Analyse des Résultats du Sondage",
+    "total_responses": "Total des Réponses :",
+    "no_questions": "Aucune question disponible",
+    "no_responses": "Aucune réponse pour le moment"
+  },
+  "personal_info": {
+    "title": "Informations Personnelles",
+    "save_changes": "Enregistrer les Modifications",
+    "fields": {
+      "username": "Nom d'utilisateur",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "birth_date": "Date de Naissance",
+      "tap_to_select_date": "Appuyez pour sélectionner une date"
+    }
+  },
+  "home": {
+    "welcome_title": "Bienvenue sur FaciQuest",
+    "welcome_subtitle": "Créez et gérez vos sondages facilement",
+    "manage_surveys": "Gérer les Sondages",
+    "available_surveys": "Sondages Disponibles", 
+    "new_survey": "Nouveau Sondage",
+    "empty_state": {
+      "no_surveys": "Aucun sondage trouvé"
+    },
+    "error_state": {
+      "error_message": "Une erreur est survenue"
     }
   }
 }
