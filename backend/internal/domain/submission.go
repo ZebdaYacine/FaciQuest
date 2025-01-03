@@ -31,6 +31,5 @@ type Submission struct {
 }
 
 type SurCol struct {
-	SurveyID    string `json:"surveyId" bson:"surveyId"`
-	CollectorID string `json:"collectorId" bson:"collectorId"`
+	SurveyID string `json:"surveyId" bson:"surveyId"`
 }

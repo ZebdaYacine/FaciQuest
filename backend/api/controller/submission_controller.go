@@ -44,7 +44,6 @@ func (cc *SubmissionController) GetAnswersRequest(c *gin.Context) {
 	}
 	params := usecase.AnswersParams{}
 	params.SurveyID = answer.SurveyID
-	params.CollectorID = answer.CollectorID
 	cc.SubmissionUseCase.GetAnswers(c, &params)
 	result := cc.SubmissionUseCase.GetAnswers(c, &params)
 	if result.Err != nil {

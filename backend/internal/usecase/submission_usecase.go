@@ -51,7 +51,7 @@ func (sub *submissionUseCase) CreateNewSubmission(c context.Context, params *Sub
 }
 
 func (sub *submissionUseCase) GetAnswers(c context.Context, params *AnswersParams) *AnswersResulat {
-	result, err := sub.repo.GetAnswers(c, params.SurveyID, params.CollectorID)
+	result, err := sub.repo.GetAnswers(c, params.SurveyID)
 	if err != nil {
 		return &AnswersResulat{Err: err}
 	}
