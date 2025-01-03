@@ -9,7 +9,7 @@ Future<void> showLanguageModal(BuildContext context) async {
     builder: (context) {
       return AppBackDrop(
         headerActions: BackdropHeaderActions.none,
-        titleText: 'Language',
+        titleText: 'profile.language'.tr(),
         body: Column(
           spacing: 8,
           mainAxisSize: MainAxisSize.min,

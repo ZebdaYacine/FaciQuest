@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _Body extends StatelessWidget {
                 children: [
                   const SizedBox(height: 60),
                   Text(
-                    'Welcome Back',
+                    'auth.signIn.title'.tr(),
                     style: context.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.primary,
@@ -58,7 +59,7 @@ class _Body extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'New to this app?',
+                        'auth.signIn.newToApp'.tr(),
                         style: context.textTheme.bodyLarge?.copyWith(
                           color: context.colorScheme.onSurface.withOpacity(0.7),
                         ),
@@ -69,7 +70,7 @@ class _Body extends StatelessWidget {
                           AppRoutes.signUp.push(context);
                         },
                         child: Text(
-                          'Sign Up',
+                          'auth.signIn.signUp'.tr(),
                           style: TextStyle(
                             color: context.colorScheme.primary,
                             fontWeight: FontWeight.w600,
@@ -90,7 +91,7 @@ class _Body extends StatelessWidget {
                         AppRoutes.forgotPassword.push(context);
                       },
                       child: Text(
-                        'Forgot password?',
+                        'auth.signIn.forgotPassword'.tr(),
                         style: TextStyle(
                           color: context.colorScheme.primary,
                           fontSize: 14,
@@ -116,7 +117,7 @@ class _Body extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Login',
+                            'auth.signIn.submit'.tr(),
                             style: context.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: context.colorScheme.onPrimary,
@@ -164,7 +165,7 @@ class _LogInFormState extends State<_LogInForm> {
         children: [
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Email',
+              labelText: 'auth.signIn.email'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -178,7 +179,7 @@ class _LogInFormState extends State<_LogInForm> {
           AppSpacing.spacing_2.heightBox,
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Password',
+              labelText: 'auth.signIn.password'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

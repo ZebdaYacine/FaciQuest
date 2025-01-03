@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
 
@@ -39,10 +40,7 @@ class LanguageManager {
 
   ///
   static String localeTitle(Locale locale) {
-    if (locale.languageCode == 'ar') return 'العربية';
-    if (locale.languageCode == 'fr') return 'Français';
-    if (locale.languageCode == 'en') return 'English';
-    return '';
+    return 'language.${locale.languageCode}'.tr();
   }
 
   static String localeAssets(Locale locale) {

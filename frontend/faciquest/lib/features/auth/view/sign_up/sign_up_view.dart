@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class _Body extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Create Account',
+                    'auth.signUp.title'.tr(),
                     style: context.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.primary,
@@ -73,7 +74,7 @@ class _Body extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Already a member?',
+                        'auth.signUp.alreadyMember'.tr(),
                         style: context.textTheme.bodyLarge?.copyWith(
                           color: context.colorScheme.onSurface.withOpacity(0.7),
                         ),
@@ -84,7 +85,7 @@ class _Body extends StatelessWidget {
                           context.pop();
                         },
                         child: Text(
-                          'Log In',
+                          'auth.signUp.login'.tr(),
                           style: TextStyle(
                             color: context.colorScheme.primary,
                             decoration: TextDecoration.underline,
@@ -109,12 +110,12 @@ class _Body extends StatelessWidget {
                           );
                         },
                       ),
-                      const Text('I agree to the'),
+                      Text('auth.signUp.agreeToThe'.tr()),
                       AppSpacing.spacing_1.widthBox,
                       GestureDetector(
                         onTap: () {},
                         child: Text(
-                          'Terms & Conditions',
+                          'auth.signUp.termsAndConditions'.tr(),
                           style: TextStyle(
                             color: context.colorScheme.primary,
                             decoration: TextDecoration.underline,
@@ -139,7 +140,7 @@ class _Body extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Sign Up',
+                            'auth.signUp.submit'.tr(),
                             style: context.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: context.colorScheme.onPrimary,
@@ -187,7 +188,7 @@ class _SignUpFormState extends State<_SignUpForm> {
         children: [
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Username',
+              labelText: 'auth.signUp.username'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -201,7 +202,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           AppSpacing.spacing_2.heightBox,
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'First Name',
+              labelText: 'auth.signUp.firstName'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -215,7 +216,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           AppSpacing.spacing_2.heightBox,
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Last Name',
+              labelText: 'auth.signUp.lastName'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -229,7 +230,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           AppSpacing.spacing_2.heightBox,
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Email',
+              labelText: 'auth.signUp.email'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -243,7 +244,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           AppSpacing.spacing_2.heightBox,
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Phone',
+              labelText: 'auth.signUp.phone'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -257,7 +258,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           AppSpacing.spacing_2.heightBox,
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Password',
+              labelText: 'auth.signUp.password'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -278,7 +279,7 @@ class _SignUpFormState extends State<_SignUpForm> {
           AppSpacing.spacing_2.heightBox,
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Confirm Password',
+              labelText: 'auth.signUp.confirmPassword'.tr(),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

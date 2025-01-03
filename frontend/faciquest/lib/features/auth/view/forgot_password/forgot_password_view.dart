@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class _Body extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Reset Password',
+                    'auth.forgotPassword.title'.tr(),
                     style: context.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.primary,
@@ -64,7 +65,7 @@ class _Body extends StatelessWidget {
                   ),
                   AppSpacing.spacing_1.heightBox,
                   Text(
-                    'Please enter your email address to reset your password',
+                    'auth.forgotPassword.description'.tr(),
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: context.colorScheme.onSurface.withOpacity(0.7),
                     ),
@@ -86,7 +87,7 @@ class _Body extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Reset Password',
+                            'auth.forgotPassword.submit'.tr(),
                             style: context.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: context.colorScheme.onPrimary,
@@ -127,7 +128,7 @@ class _ResetForm extends StatelessWidget {
       ),
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: 'Email',
+          labelText: 'auth.forgotPassword.email'.tr(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),

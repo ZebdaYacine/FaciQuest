@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _Body extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Reset Password',
+                    'auth.setNewPassword.title'.tr(),
                     style: context.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.primary,
@@ -51,7 +52,7 @@ class _Body extends StatelessWidget {
                   ),
                   AppSpacing.spacing_1.heightBox,
                   Text(
-                    'Please enter your new password',
+                    'auth.setNewPassword.description'.tr(),
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: context.colorScheme.onSurface.withOpacity(0.7),
                     ),
@@ -87,7 +88,7 @@ class _Body extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Reset Password',
+                            'auth.setNewPassword.submit'.tr(),
                             style: context.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: context.colorScheme.onPrimary,
@@ -125,7 +126,7 @@ class __ResetFormState extends State<_ResetForm> {
       children: [
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Password',
+            labelText: 'auth.setNewPassword.password'.tr(),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -147,7 +148,7 @@ class __ResetFormState extends State<_ResetForm> {
         AppSpacing.spacing_2.heightBox,
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Confirm Password',
+            labelText: 'auth.setNewPassword.confirmPassword'.tr(),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),

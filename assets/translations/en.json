@@ -1,0 +1,54 @@
+ {
+    
+        "language": "Language",
+        "languages": {
+          "ar": "العربية",
+          "fr": "Français", 
+          "en": "English"
+        }
+      ,
+    "auth": {
+    "verifyOtp": {
+      "title": "Verify OTP",
+      "description": "Please enter your OTP sent to your email",
+      "submit": "Verify"
+    },
+    "signUp": {
+      "title": "Create Account",
+      "alreadyMember": "Already a member?",
+      "login": "Log In",
+      "agreeToThe": "I agree to the",
+      "termsAndConditions": "Terms & Conditions",
+      "submit": "Sign Up",
+      "username": "Username",
+      "firstName": "First Name", 
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "signIn": {
+      "title": "Welcome Back",
+      "newToApp": "New to this app?",
+      "signUp": "Sign Up",
+      "forgotPassword": "Forgot password?",
+      "submit": "Login",
+      "email": "Email",
+      "password": "Password"
+    },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "description": "Please enter your email address to reset your password",
+      "submit": "Reset Password",
+      "email": "Email"
+    },
+    "setNewPassword": {
+      "title": "Reset Password",
+      "description": "Please enter your new password",
+      "submit": "Reset Password",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    }
+  }
+ }

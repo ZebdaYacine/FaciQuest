@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,7 @@ class _Body extends StatelessWidget {
                 children: [
                   const SizedBox(height: 40),
                   Text(
-                    'Verify OTP',
+                    'auth.verifyOtp.title'.tr(),
                     style: context.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.primary,
@@ -101,7 +102,7 @@ class _Body extends StatelessWidget {
                   ),
                   AppSpacing.spacing_1.heightBox,
                   Text(
-                    'Please enter your OTP sent to your email',
+                    'auth.verifyOtp.description'.tr(),
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: context.colorScheme.onSurface.withOpacity(0.7),
                     ),
@@ -123,7 +124,7 @@ class _Body extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Verify',
+                            'auth.verifyOtp.submit'.tr(),
                             style: context.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: context.colorScheme.onPrimary,
