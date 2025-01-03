@@ -1,5 +1,6 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class _SurveyContent extends StatelessWidget {
             ),
             AppSpacing.spacing_3.heightBox,
             Text(
-              'Answer Submitted Successfully!',
+              'survey.submit.success.title'.tr(),
               style: context.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: context.colorScheme.primary,
@@ -81,7 +82,7 @@ class _SurveyContent extends StatelessWidget {
             ),
             AppSpacing.spacing_2.heightBox,
             Text(
-              'Thank you for completing the survey',
+              'survey.submit.success.message'.tr(),
               style: context.textTheme.bodyLarge?.copyWith(
                 color: context.colorScheme.onSurfaceVariant,
               ),
@@ -146,7 +147,10 @@ class _SurveyQuestions extends StatelessWidget {
                   ),
                   AppSpacing.spacing_2.heightBox,
                   Text(
-                    'Question ${index + 1} of ${state.survey.questions.length}',
+                    'survey.question.progress'.tr(args: [
+                      '${index + 1}',
+                      '${state.survey.questions.length}'
+                    ]),
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                     ),
@@ -201,7 +205,7 @@ class _SubmitSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Ready to Submit?',
+                'survey.submit.ready.title'.tr(),
                 style: context.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.primary,
@@ -209,7 +213,7 @@ class _SubmitSection extends StatelessWidget {
               ),
               AppSpacing.spacing_2.heightBox,
               Text(
-                'Please review your answers before submitting',
+                'survey.submit.ready.message'.tr(),
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                 ),
@@ -237,8 +241,8 @@ class _SubmitSection extends StatelessWidget {
                     : const Icon(Icons.check_circle_outline_rounded),
                 label: Text(
                   state.submissionStatus.isLoading
-                      ? 'Submitting...'
-                      : 'Submit Survey',
+                      ? 'survey.submit.button.loading'.tr()
+                      : 'survey.submit.button.default'.tr(),
                   style: context.textTheme.titleMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -272,7 +276,7 @@ class _LoadingState extends StatelessWidget {
             ),
             AppSpacing.spacing_3.heightBox,
             Text(
-              'Loading Survey...',
+              'survey.loading'.tr(),
               style: context.textTheme.titleMedium?.copyWith(
                 color: context.colorScheme.onSurfaceVariant,
               ),
@@ -305,7 +309,7 @@ class _EmptyState extends StatelessWidget {
             ),
             AppSpacing.spacing_3.heightBox,
             Text(
-              'Survey Not Found',
+              'survey.empty'.tr(),
               style: context.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: context.colorScheme.primary,
@@ -339,7 +343,7 @@ class _FailureState extends StatelessWidget {
             ),
             AppSpacing.spacing_3.heightBox,
             Text(
-              'Something Went Wrong',
+              'survey.error'.tr(),
               style: context.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: context.colorScheme.error,
