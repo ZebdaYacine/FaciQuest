@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:faciquest/features/features.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 part 'answers/address_answer.dart';
@@ -36,9 +37,6 @@ abstract class AnswerEntity extends Equatable {
       'questionId': questionId,
     };
   }
-
-  AnswerEntity.fromMap(Map<String, dynamic> map)
-      : questionId = map['questionId'];
 }
 
 class SubmissionEntity {
@@ -60,13 +58,60 @@ class SubmissionEntity {
     };
   }
 
-  SubmissionEntity.fromMap(Map<String, dynamic> map)
-      : answers = [],
-        // List<AnswerEntity>.from(
-        //     map['answers'].map(
-        //       (answer) => AnswerEntity.fromMap(answer),
-        //     ),
-        //   ),
-        surveyId = map['surveyId'],
-        collectorId = map['collectorId'];
+  factory SubmissionEntity.fromMap(Map<String, dynamic> map) {
+    return SubmissionEntity(
+      answers: List<AnswerEntity>.from(
+        map['answers']?.map((answer) {
+              return switch (getType(answer['type'])) {
+                QuestionType.shortAnswer => ShortAnswerAnswer.fromMap(answer),
+                QuestionType.commentBox => CommentBoxAnswer.fromMap(answer),
+                QuestionType.slider => SliderAnswer.fromMap(answer),
+                QuestionType.dateTime => DateTimeAnswer.fromMap(answer),
+                QuestionType.matrix => MatrixAnswer.fromMap(answer),
+                QuestionType.imageChoice => ImageChoiceAnswer.fromMap(answer),
+                QuestionType.nameType => NameAnswer.fromMap(answer),
+                QuestionType.emailAddress => EmailAddressAnswer.fromMap(answer),
+                QuestionType.phoneNumber => PhoneAnswer.fromMap(answer),
+                QuestionType.text => TextAnswer.fromMap(answer),
+                QuestionType.image => ImageAnswer.fromMap(answer),
+                QuestionType.starRating => StarRatingAnswer.fromMap(answer),
+                QuestionType.multipleChoice =>
+                  MultipleChoiceAnswer.fromMap(answer),
+                QuestionType.checkboxes => CheckboxesAnswer.fromMap(answer),
+                QuestionType.dropdown => DropdownAnswer.fromMap(answer),
+                QuestionType.fileUpload => FileUploadAnswer.fromMap(answer),
+                QuestionType.audioRecord => AudioRecordAnswer.fromMap(answer),
+                QuestionType.address => AddressAnswer.fromMap(answer),
+              };
+            }) ??
+            [],
+      ),
+      surveyId: map['surveyId'] ?? '',
+      collectorId: map['collectorId'] ?? '',
+    );
+  }
+}
+
+QuestionType getType(String type) {
+  return switch (type) {
+    'shortAnswer' => QuestionType.shortAnswer,
+    'commentBox' => QuestionType.commentBox,
+    'slider' => QuestionType.slider,
+    'dateTime' => QuestionType.dateTime,
+    'matrix' => QuestionType.matrix,
+    'imageChoice' => QuestionType.imageChoice,
+    'nameType' => QuestionType.nameType,
+    'emailAddress' => QuestionType.emailAddress,
+    'phoneNumber' => QuestionType.phoneNumber,
+    'text' => QuestionType.text,
+    'image' => QuestionType.image,
+    'starRating' => QuestionType.starRating,
+    'multipleChoice' => QuestionType.multipleChoice,
+    'checkboxes' => QuestionType.checkboxes,
+    'dropdown' => QuestionType.dropdown,
+    'fileUpload' => QuestionType.fileUpload,
+    'audioRecord' => QuestionType.audioRecord,
+    'address' => QuestionType.address,
+    _ => throw Exception('Unknown question type: $type')
+  };
 }

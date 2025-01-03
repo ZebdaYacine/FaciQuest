@@ -23,4 +23,12 @@ class SliderAnswer extends AnswerEntity {
   PlutoCell get plutoCell => PlutoCell(
         value: value.toString(),
       );
+
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return SliderAnswer(
+      questionId: map['questionId'],
+      value: double.parse(map['value']),
+    );
+  }
 }

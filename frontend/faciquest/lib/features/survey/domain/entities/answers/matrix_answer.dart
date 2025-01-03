@@ -65,6 +65,15 @@ class MatrixAnswer extends AnswerEntity {
 
   @override
   PlutoCell get plutoCell => PlutoCell(
-    value: values,
-  );
+        value: values,
+      );
+
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return MatrixAnswer(
+      questionId: map['questionId'],
+      values: Map<String, Map<String, bool>>.from(map['values']),
+      multipleSelect: map['multipleSelect'],
+    );
+  }
 }

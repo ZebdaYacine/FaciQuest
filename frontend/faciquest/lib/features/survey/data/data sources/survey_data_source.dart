@@ -24,6 +24,12 @@ abstract class SurveyDataSource {
     // TODO add payment method
   );
   Future<double> estimatePrice(CollectorEntity collector);
+
+  Future<List<SubmissionEntity>> getSubmissions({
+    required String surveyId,
+    int page = 1,
+    int pageSize = 10,
+  });
 }
 
 class SurveyDataSourceImpl implements SurveyDataSource {
@@ -243,5 +249,30 @@ class SurveyDataSourceImpl implements SurveyDataSource {
       return (response.data!['date'] as num).toDouble();
     }
     return 0;
+  }
+
+  @override
+  Future<List<SubmissionEntity>> getSubmissions({
+    required String surveyId,
+    int page = 1,
+    int pageSize = 10,
+  }) async {
+    logInfo('SurveyDataSourceImpl:getSubmissions');
+    final response = await dioClient.get<Map<String, dynamic>>(
+      AppUrls.getSubmissions,
+      data: {
+        'surveyId': surveyId,
+        // 'page': page,
+        // 'pageSize': pageSize,
+      },
+    );
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is List) {
+      return (response.data!['date'] as List? ?? [])
+          .map((e) => SubmissionEntity.fromMap(e))
+          .toList();
+    }
+    return [];
   }
 }

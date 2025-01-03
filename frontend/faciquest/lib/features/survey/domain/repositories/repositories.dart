@@ -11,6 +11,11 @@ abstract class SurveyRepository {
   Future<void> deleteSurvey(String surveyId);
 
   Future<void> submitAnswers(SubmissionEntity submission);
+  Future<List<SubmissionEntity>> getSubmissions({
+    required String surveyId,
+    int page = 1,
+    int pageSize = 10,
+  });
 
   Future<List<SurveyEntity>> fetchMySurveys();
 

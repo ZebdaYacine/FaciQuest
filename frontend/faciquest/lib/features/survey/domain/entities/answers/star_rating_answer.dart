@@ -18,4 +18,11 @@ class StarRatingAnswer extends AnswerEntity {
 
   @override
   PlutoCell get plutoCell => PlutoCell(value: rating);
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return StarRatingAnswer(
+      questionId: map['questionId'],
+      rating: double.parse(map['rating']),
+    );
+  }
 }

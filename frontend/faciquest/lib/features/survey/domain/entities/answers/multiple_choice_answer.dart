@@ -27,4 +27,11 @@ class MultipleChoiceAnswer extends AnswerEntity {
   PlutoCell get plutoCell => PlutoCell(
         value: selectedChoice,
       );
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return MultipleChoiceAnswer(
+      questionId: map['questionId'],
+      selectedChoice: map['selectedChoice'],
+    );
+  }
 }

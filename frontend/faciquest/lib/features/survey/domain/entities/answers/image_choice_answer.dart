@@ -52,4 +52,13 @@ class ImageChoiceAnswer extends AnswerEntity {
 
   @override
   PlutoCell get plutoCell => PlutoCell();
+
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return ImageChoiceAnswer(
+      questionId: map['questionId'],
+      selectedChoices: Set<String>.from(map['selectedChoices']),
+      multipleSelect: map['multipleSelect'],
+    );
+  }
 }

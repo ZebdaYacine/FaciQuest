@@ -42,4 +42,13 @@ class NameAnswer extends AnswerEntity {
   PlutoCell get plutoCell => PlutoCell(
         value: '${firstName ?? ''} ${middleName ?? ''} ${lastName ?? ''}',
       );
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return NameAnswer(
+      questionId: map['questionId'],
+      firstName: map['firstName'],
+      lastName: map['lastName'],
+      middleName: map['middleName'],
+    );
+  }
 }

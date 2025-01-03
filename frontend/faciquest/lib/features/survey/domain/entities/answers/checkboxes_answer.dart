@@ -25,4 +25,12 @@ class CheckboxesAnswer extends AnswerEntity {
   PlutoCell get plutoCell => PlutoCell(
         value: selectedChoices.toList().join(', '),
       );
+
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return CheckboxesAnswer(
+      questionId: map['questionId'],
+      selectedChoices: Set<String>.from(map['selectedOptions']),
+    );
+  }
 }

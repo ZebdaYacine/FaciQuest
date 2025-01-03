@@ -233,7 +233,17 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     // todo implement delete collector
   }
 
-  fetchSubmissionPage({required int page, required pageSize}) {}
+  fetchSubmissionPage({required int page, required pageSize}) async {
+    final submissions = await repository.getSubmissions(
+      surveyId: state.survey.id,
+      page: page,
+      pageSize: pageSize,
+    );
+    emit(state.copyWith(
+        survey: state.survey.copyWith(
+      submissions: submissions,
+    )));
+  }
 }
 
 NewSurveyPages _pageFromAction(SurveyAction action) {

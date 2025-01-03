@@ -5,4 +5,10 @@ class ImageAnswer extends AnswerEntity {
 
   @override
   PlutoCell get plutoCell => PlutoCell(value: null);
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return ImageAnswer(
+      questionId: map['questionId'],
+    );
+  }
 }

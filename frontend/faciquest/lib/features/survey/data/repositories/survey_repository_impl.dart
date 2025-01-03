@@ -71,4 +71,17 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<List<TargetingCriteria>> getTargetingCriteria() {
     return remoteDataSource.getTargetingCriteria();
   }
+
+  @override
+  Future<List<SubmissionEntity>> getSubmissions({
+    required String surveyId,
+    int page = 1,
+    int pageSize = 10,
+  }) {
+    return remoteDataSource.getSubmissions(
+      surveyId: surveyId,
+      page: page,
+      pageSize: pageSize,
+    );
+  }
 }

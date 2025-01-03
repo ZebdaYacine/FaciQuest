@@ -26,4 +26,5 @@ class AppUrls {
   static const estimatePrice = '$baseUrl/profile/estimate-price';
   static const createCollector = '$baseUrl/profile/create-collector';
   static const deleteCollector = '$baseUrl/profile/delete-collector';
+  static const getSubmissions = '$baseUrl/profile/get-answers';
 }

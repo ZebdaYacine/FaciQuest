@@ -23,4 +23,12 @@ class EmailAddressAnswer extends AnswerEntity {
   PlutoCell get plutoCell => PlutoCell(
         value: value,
       );
+
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return EmailAddressAnswer(
+      questionId: map['questionId'],
+      value: map['value'],
+    );
+  }
 }

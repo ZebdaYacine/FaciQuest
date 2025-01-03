@@ -65,4 +65,16 @@ class AddressAnswer extends AnswerEntity {
         value:
             '${streetAddress1 ?? ''} ${streetAddress2 ?? ''} ${city ?? ''} ${state ?? ''} ${postalCode ?? ''} ${country ?? ''}',
       );
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return AddressAnswer(
+      questionId: map['questionId'],
+      streetAddress1: map['streetAddress1'],
+      streetAddress2: map['streetAddress2'],
+      city: map['city'],
+      state: map['state'],
+      postalCode: map['postalCode'],
+      country: map['country'],
+    );
+  }
 }
