@@ -1,14 +1,12 @@
 {
-  
-    "profile": {
-      "language": "Langue"
-    },
-    "language": {
-      "ar": "العربية",
-      "fr": "Français", 
-      "en": "English"
-    }
-  ,
+  "profile": {
+    "language": "Langue"
+  },
+  "language": {
+    "ar": "العربية",
+    "fr": "Français",
+    "en": "English"
+  },
   "auth": {
     "verifyOtp": {
       "title": "Verify OTP",
@@ -23,7 +21,7 @@
       "termsAndConditions": "Terms & Conditions",
       "submit": "Sign Up",
       "username": "Username",
-      "firstName": "First Name", 
+      "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
       "phone": "Phone",
@@ -74,5 +72,31 @@
         "message": "Thank you for completing the survey"
       }
     }
+  },
+  "manage": {
+    "manage_my_surveys_title": "Manage My Surveys",
+    "create_survey_button": "Create Survey",
+    "search_surveys_hint": "Search surveys...",
+    "no_surveys_found": "No surveys found"
+  },
+  "status": {
+    "open_status": "Open"
+  },
+  "actions": {
+    "edit_survey": "Edit Survey",
+    "preview_survey": "Preview Survey",
+    "analyze_results": "Analyze Results",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "delete_button": "Delete"
+  },
+  "delete_dialog": {
+    "delete_survey_title": "Delete Survey",
+    "delete_survey_confirmation": "Are you sure you want to delete this survey? This action cannot be undone."
+  },
+  "survey_details": {
+    "updated_label": "Updated: ",
+    "response_count_singular": "response",
+    "response_count_plural": "responses"
   }
 }

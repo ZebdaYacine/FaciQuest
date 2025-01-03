@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart' hide NavigatorExt;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       title: Text(
-        'Manage My Surveys',
+        'manage.manage_my_surveys_title'.tr(),
         style: context.textTheme.headlineSmall?.copyWith(
           fontWeight: FontWeight.bold,
           color: context.colorScheme.primary,
@@ -85,8 +86,8 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> {
     return FloatingActionButton.extended(
       onPressed: () => _handleCreateSurvey(context),
       icon: const Icon(Icons.add_rounded),
-      label: const Text(
-        'Create Survey',
+      label: Text(
+        'manage.create_survey_button'.tr(),
         style: TextStyle(fontWeight: FontWeight.w600),
       ),
       backgroundColor: context.colorScheme.primary,
@@ -111,7 +112,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> {
                   horizontal: 16,
                   vertical: 12,
                 ),
-                hintText: 'Search surveys...',
+                hintText: 'manage.search_surveys_hint'.tr(),
                 prefixIcon: Icon(
                   Icons.search,
                   color: context.colorScheme.primary,
@@ -356,7 +357,7 @@ class GridSurveys extends StatelessWidget {
           ),
           AppSpacing.spacing_1.widthBox,
           Text(
-            '${survey.responseCount} responses',
+            '${survey.responseCount} ${survey.responseCount == 1 ? 'survey_details.response_count_singular'.tr() : 'survey_details.response_count_plural'.tr()}',
             style: context.textTheme.bodyMedium?.copyWith(
               color: context.colorScheme.primary,
               fontWeight: FontWeight.bold,
@@ -377,7 +378,7 @@ class GridSurveys extends StatelessWidget {
       ),
       onPressed: () {},
       icon: const Icon(Icons.analytics_rounded),
-      label: const Text('Analyze Results'),
+      label: Text('actions.analyze_results'.tr()),
     );
   }
 
@@ -405,7 +406,7 @@ class GridSurveys extends StatelessWidget {
           ),
           AppSpacing.spacing_2.heightBox,
           Text(
-            'No surveys found',
+            'manage.no_surveys_found'.tr(),
             style: context.textTheme.titleLarge?.copyWith(
               color: context.colorScheme.primary,
             ),
@@ -449,7 +450,7 @@ class SurveyBadge extends StatelessWidget {
           ),
           SizedBox(width: large ? 8 : 4),
           Text(
-            'Open',
+            'status.open_status'.tr(),
             style: (large
                     ? context.textTheme.titleMedium
                     : context.textTheme.bodyMedium)
@@ -492,25 +493,25 @@ class SurveyActions extends StatelessWidget {
         context,
         SurveyAction.edit,
         Icons.edit_rounded,
-        'Edit Survey',
+        'actions.edit_survey'.tr(),
       ),
       _buildMenuItem(
         context,
         SurveyAction.preview,
         Icons.visibility_rounded,
-        'Preview Survey',
+        'actions.preview_survey'.tr(),
       ),
       _buildMenuItem(
         context,
         SurveyAction.analyze,
         Icons.analytics_rounded,
-        'Analyze Results',
+        'actions.analyze_results'.tr(),
       ),
       _buildMenuItem(
         context,
         SurveyAction.delete,
         Icons.delete_rounded,
-        'Delete',
+        'actions.delete'.tr(),
         isDestructive: true,
       ),
     ];
@@ -570,17 +571,17 @@ class SurveyActions extends StatelessWidget {
               color: context.colorScheme.error,
             ),
             AppSpacing.spacing_2.widthBox,
-            const Text('Delete Survey'),
+            Text('delete_dialog.delete_survey_title'.tr()),
           ],
         ),
-        content: const Text(
-          'Are you sure you want to delete this survey? This action cannot be undone.',
+        content: Text(
+          'delete_dialog.delete_survey_confirmation'.tr(),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
             child: Text(
-              'Cancel',
+              'actions.cancel'.tr(),
               style: TextStyle(
                 color: context.colorScheme.onSurfaceVariant,
               ),
@@ -594,7 +595,7 @@ class SurveyActions extends StatelessWidget {
               Navigator.of(ctx).pop();
               context.read<ManageMySurveysCubit>().deleteSurvey(surveyId);
             },
-            child: const Text('Delete'),
+            child: Text('actions.delete_button'.tr()),
           ),
         ],
       ),
@@ -643,7 +644,7 @@ class ListSurveys extends StatelessWidget {
           ),
           AppSpacing.spacing_2.heightBox,
           Text(
-            'No surveys found',
+            'manage.no_surveys_found'.tr(),
             style: context.textTheme.titleLarge?.copyWith(
               color: context.colorScheme.primary,
             ),
@@ -699,7 +700,8 @@ class ListSurveys extends StatelessWidget {
                 ),
                 AppSpacing.spacing_1.widthBox,
                 Text(
-                  'Updated: ${survey.updatedAt.toString().substring(0, 10)}',
+                  'survey_details.updated_label'.tr() +
+                      '${survey.updatedAt.toString().substring(0, 10)}',
                   style: context.textTheme.bodySmall?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -734,7 +736,7 @@ class ListSurveys extends StatelessWidget {
           ),
           AppSpacing.spacing_1.widthBox,
           Text(
-            '${survey.responseCount} responses',
+            '${survey.responseCount} ${survey.responseCount == 1 ? 'survey_details.response_count_singular'.tr() : 'survey_details.response_count_plural'.tr()}',
             style: context.textTheme.bodyMedium?.copyWith(
               color: context.colorScheme.primary,
               fontWeight: FontWeight.bold,
