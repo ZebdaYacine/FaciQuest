@@ -465,12 +465,13 @@ class TargetingCriteria extends Equatable {
   factory TargetingCriteria.fromMap(Map<String, dynamic> map) {
     return TargetingCriteria(
       id: map['id'] as String,
-      category: map['category'] != null ? map['category'] as String : null,
+      category:
+          map['category'] != null ? map['category']['Name'] as String : null,
       title: map['title'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,
       choices: List<CriteriaChoices>.from(
-        (map['choices'] as List<int>).map<CriteriaChoices>(
+        (map['choices'] as List).map<CriteriaChoices>(
           (x) => CriteriaChoices.fromMap(x as Map<String, dynamic>),
         ),
       ),

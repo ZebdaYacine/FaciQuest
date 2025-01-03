@@ -177,6 +177,7 @@
     "delete": "حذف",
     "cancel": "إلغاء",
     "delete_button": "حذف",
+    "apply": "تطبيق",
     "send_survey": "إرسال الاستبيان",
     "add_new": "إضافة جديد",
     "add_new_question": "إضافة سؤال جديد",
@@ -212,7 +213,7 @@
     "likert_scale": "مقياس ليكرت *"
   },
   "stats": {
-    "total_responses": "إجمالي الإجابات: {count}",
+    "total_responses": "إجمالي الإجابات:",
     "status": "الحالة"
   },
   "sections": {
@@ -280,12 +281,12 @@
     "no_questions": "لا توجد أسئلة متاحة",
     "no_responses": "لا توجد إجابات حتى الآن"
   },
-"personal_info": {
+  "personal_info": {
     "title": "المعلومات الشخصية",
     "save_changes": "حفظ التغييرات",
     "fields": {
       "username": "اسم المستخدم",
-      "first_name": "الاسم الأول", 
+      "first_name": "الاسم الأول",
       "last_name": "اسم العائلة",
       "email": "البريد الإلكتروني",
       "phone": "الهاتف",

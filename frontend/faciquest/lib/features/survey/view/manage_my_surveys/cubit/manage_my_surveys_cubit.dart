@@ -5,7 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'manage_my_surveys_state.dart';
 
 class ManageMySurveysCubit extends Cubit<ManageMySurveysState> {
-  ManageMySurveysCubit(this.repository) : super(ManageMySurveysState());
+  ManageMySurveysCubit(this.repository)
+      : super(ManageMySurveysState(
+          status: Status.showLoading,
+        ));
   final SurveyRepository repository;
 
   void onSearchChanged(String value) {
@@ -14,7 +17,6 @@ class ManageMySurveysCubit extends Cubit<ManageMySurveysState> {
 
   Future<void> fetchSurveys() async {
     try {
-      emit(state.copyWith(status: Status.showLoading));
       final surveys = await repository.fetchMySurveys();
       emit(state.copyWith(status: Status.success, surveys: surveys));
     } catch (e) {

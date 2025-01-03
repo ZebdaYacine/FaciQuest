@@ -177,6 +177,7 @@
     "delete": "Delete",
     "cancel": "Cancel",
     "delete_button": "Delete",
+    "apply": "Apply",
     "send_survey": "Send Survey",
     "add_new": "Add New",
     "add_new_question": "Add New Question",
@@ -212,7 +213,7 @@
     "likert_scale": "Likert Scale *"
   },
   "stats": {
-    "total_responses": "Total Responses: {count}",
+    "total_responses": "Total Responses:",
     "status": "Status"
   },
   "sections": {
