@@ -16,32 +16,66 @@ void statusHandler(
   switch (status) {
     case Status.initial:
     case Status.success:
-      if (handleSuccess) {
-        if (msg != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              content: const SizedBox(),
-              duration: duration,
+      if (handleSuccess && msg != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor:
+                context.colorScheme.primaryContainer.withOpacity(0.95),
+            elevation: 2,
+            behavior: SnackBarBehavior.floating,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            margin: const EdgeInsets.all(8),
+            content: Row(
+              children: [
+                Icon(Icons.check_circle,
+                    color: context.colorScheme.onPrimaryContainer),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    msg,
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: context.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          );
-        }
+            duration: duration,
+          ),
+        );
       }
     case Status.showLoading:
       if (handleLoading) {
         showDialog<void>(
-          barrierColor: const Color(0x01000000),
+          barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
-            return const AlertDialog(
-              backgroundColor: Colors.transparent,
-              surfaceTintColor: Colors.transparent,
-              actions: [
-                Center(
-                  child: CircularProgressIndicator(),
+            return Center(
+              child: Card(
+                color: context.colorScheme.surface.withOpacity(0.9),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16)),
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircularProgressIndicator(
+                          color: context.colorScheme.primary),
+                      if (msg != null) ...[
+                        const SizedBox(height: 16),
+                        Text(
+                          msg,
+                          style: context.textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
-              ],
+              ),
             );
           },
         );
@@ -51,40 +85,64 @@ void statusHandler(
         Navigator.pop(context);
       }
     case Status.info:
-      if (handleInfo) {
-        if (msg != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: context.colorScheme.surfaceContainer,
-              elevation: 0,
-              content: Text(
-                msg,
-                style: context.textTheme.bodyLarge?.copyWith(
-                  color: context.colorScheme.onSurface,
+      if (handleInfo && msg != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor:
+                context.colorScheme.secondaryContainer.withOpacity(0.95),
+            elevation: 2,
+            behavior: SnackBarBehavior.floating,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            margin: const EdgeInsets.all(8),
+            content: Row(
+              children: [
+                Icon(Icons.info_outline,
+                    color: context.colorScheme.onSecondaryContainer),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    msg,
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: context.colorScheme.onSecondaryContainer,
+                    ),
+                  ),
                 ),
-              ),
-              duration: duration,
+              ],
             ),
-          );
-        }
+            duration: duration,
+          ),
+        );
       }
     case Status.failure:
-      if (handleFailure) {
-        if (msg != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: context.colorScheme.errorContainer,
-              elevation: 0,
-              content: Text(
-                msg,
-                style: context.textTheme.bodyLarge?.copyWith(
-                  color: context.colorScheme.onErrorContainer,
+      if (handleFailure && msg != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor:
+                context.colorScheme.errorContainer.withOpacity(0.95),
+            elevation: 2,
+            behavior: SnackBarBehavior.floating,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            margin: const EdgeInsets.all(8),
+            content: Row(
+              children: [
+                Icon(Icons.error_outline,
+                    color: context.colorScheme.onErrorContainer),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    msg,
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      color: context.colorScheme.onErrorContainer,
+                    ),
+                  ),
                 ),
-              ),
-              duration: duration,
+              ],
             ),
-          );
-        }
+            duration: duration,
+          ),
+        );
       }
   }
 }

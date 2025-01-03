@@ -28,82 +28,107 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<SignInCubit>();
     return Scaffold(
-      body: Padding(
-        padding: AppSpacing.spacing_2.padding,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 120,
-              ),
-              Text(
-                'Welcome Back',
-                style: context.textTheme.headlineLarge,
-              ),
-              AppSpacing.spacing_1.heightBox,
-
-              Row(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              context.colorScheme.surface,
+              context.colorScheme.surface.withOpacity(0.95),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: AppSpacing.spacing_3.padding,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 60),
                   Text(
-                    'New to this app?',
-                    style: context.textTheme.bodyLarge,
+                    'Welcome Back',
+                    style: context.textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.colorScheme.primary,
+                    ),
                   ),
-                  AppSpacing.spacing_1.widthBox,
-                  GestureDetector(
-                    onTap: () {
-                      AppRoutes.signUp.push(context);
-                    },
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 1,
+                  AppSpacing.spacing_1.heightBox,
+                  Row(
+                    children: [
+                      Text(
+                        'New to this app?',
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          color: context.colorScheme.onSurface.withOpacity(0.7),
+                        ),
+                      ),
+                      AppSpacing.spacing_1.widthBox,
+                      GestureDetector(
+                        onTap: () {
+                          AppRoutes.signUp.push(context);
+                        },
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: context.colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
+                            decorationThickness: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  AppSpacing.spacing_4.heightBox,
+                  const _LogInForm(),
+                  AppSpacing.spacing_3.heightBox,
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        AppRoutes.forgotPassword.push(context);
+                      },
+                      child: Text(
+                        'Forgot password?',
+                        style: TextStyle(
+                          color: context.colorScheme.primary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline,
+                          decorationThickness: 1.5,
+                        ),
                       ),
                     ),
                   ),
+                  AppSpacing.spacing_4.heightBox,
+                  BlocBuilder<SignInCubit, SignInState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: state.isValid ? cubit.submit : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: context.colorScheme.primary,
+                          foregroundColor: context.colorScheme.onPrimary,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Login',
+                            style: context.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: context.colorScheme.onPrimary,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
-              AppSpacing.spacing_2.heightBox,
-
-              const _LogInForm(),
-              AppSpacing.spacing_2.heightBox,
-              GestureDetector(
-                onTap: () {
-                  AppRoutes.forgotPassword.push(context);
-                },
-                child: const Text(
-                  'Forgot password?',
-                  style: TextStyle(
-                    color: kZambeziColor,
-                    fontSize: 14,
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 1,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              BlocBuilder<SignInCubit, SignInState>(
-                builder: (context, state) {
-                  return ElevatedButton(
-                    onPressed: state.isValid ? cubit.submit : null,
-                    child: const Center(child: Text('Login')),
-                  );
-                },
-              ),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // const Text(
-              //   'Or log in with:',
-              // ),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // LoginOption(),
-            ],
+            ),
           ),
         ),
       ),
@@ -118,22 +143,61 @@ class _LogInForm extends StatefulWidget {
   _LogInFormState createState() => _LogInFormState();
 }
 
-class _LogInFormState extends State<_LogInForm> with BuildFormMixin {
+class _LogInFormState extends State<_LogInForm> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SignInCubit>();
-    return Column(
-      children: [
-        buildInputForm(
-          'Email',
-          onChange: (value) => cubit.onEmailChanged(value),
-        ),
-        buildInputForm(
-          'Password',
-          pass: true,
-          onChange: (value) => cubit.onPasswordChanged(value),
-        ),
-      ],
+    return Container(
+      padding: AppSpacing.spacing_3.padding,
+      decoration: BoxDecoration(
+        color: context.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: context.colorScheme.shadow.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Email',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+            ),
+            onChanged: (value) => cubit.onEmailChanged(value),
+          ),
+          AppSpacing.spacing_2.heightBox,
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Password',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.visibility_off),
+                onPressed: () {
+                  // Toggle password visibility
+                },
+              ),
+            ),
+            obscureText: true,
+            onChanged: (value) => cubit.onPasswordChanged(value),
+          ),
+        ],
+      ),
     );
   }
 }
