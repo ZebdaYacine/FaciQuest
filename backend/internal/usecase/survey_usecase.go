@@ -116,20 +116,20 @@ func crudServey(repo repository.SurveyRepository, c context.Context, params *Sur
 				Err:  nil,
 			}
 		}
-	case "getAll":
-		{
-			result, err := repo.GetAllSurveys(c)
-			if err != nil {
-				return &SurveysResulat{
-					List: nil,
-					Err:  fmt.Errorf("error in  %v survey: %v", action, err),
-				}
-			}
-			return &SurveysResulat{
-				List: result,
-				Err:  nil,
-			}
-		}
+	// case "getAll":
+	// 	{
+	// 		result, err := repo.GetAllSurveys(c)
+	// 		if err != nil {
+	// 			return &SurveysResulat{
+	// 				List: nil,
+	// 				Err:  fmt.Errorf("error in  %v survey: %v", action, err),
+	// 			}
+	// 		}
+	// 		return &SurveysResulat{
+	// 			List: result,
+	// 			Err:  nil,
+	// 		}
+	// 	}
 	default:
 		{
 			result, err = nil, nil
@@ -155,7 +155,18 @@ func NewSurveyUseCase(repo repository.SurveyRepository, collection string) Surve
 
 // GetAllSurveys implements SurveyUseCase.
 func (su *surveyUseCase) GetAllSurveys(c context.Context) *SurveysResulat {
-	return crudServey(su.repo, c, nil, "getAll").(*SurveysResulat)
+	//return crudServey(su.repo, c, nil, "getAll").(*SurveysResulat)
+	result, err := su.repo.GetAllSurveys(c)
+	if err != nil {
+		return &SurveysResulat{
+			List: nil,
+			Err:  fmt.Errorf("error in  %v survey: %v", "get all", err),
+		}
+	}
+	return &SurveysResulat{
+		List: result,
+		Err:  nil,
+	}
 }
 
 // GetMySurveys implements SurveyUseCase.
@@ -185,4 +196,5 @@ func (su *surveyUseCase) UpdateSurvey(c context.Context, params *SurveyParams) *
 // CreateSurvey implements SurveyRepository.
 func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *SurveyResulat {
 	return crudServey(su.repo, c, params, "add").(*SurveyResulat)
+
 }

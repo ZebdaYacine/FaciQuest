@@ -61,5 +61,5 @@ func NewGetAllSurveysRouter(db database.Database, group *gin.RouterGroup) {
 	sc := &controller.SurveyController{
 		SurveyUseCase: su, // usecase for insured operations
 	}
-	group.GET("get-all-surveys", sc.GetMySurveysRequest)
+	group.GET("get-all-surveys", sc.GetAllSurveysRequest)
 }
