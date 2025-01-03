@@ -19,8 +19,8 @@ class SurveyCubit extends Cubit<SurveyState> {
       await repository.submitAnswers(
         SubmissionEntity(
           collectorId: state.survey.collectorId ?? state.survey.id,
-          answers: state.answers.toList(),
           surveyId: surveyId,
+          answers: state.answers.values.toList(),
         ),
       );
 
@@ -51,14 +51,12 @@ class SurveyCubit extends Cubit<SurveyState> {
   }
 
   void onAnswerChanged(AnswerEntity value) {
-    final answers = Set<AnswerEntity>.from(state.answers);
-    answers.removeWhere((element) => element.questionId == value.questionId);
-    answers.add(value);
-    emit(
-      state.copyWith(
-        answers: answers,
-      ),
-    );
+    emit(state.copyWith(
+      answers: {
+        ...state.answers,
+        value.questionId: value,
+      },
+    ));
   }
 
   void fetchCollectors() {}

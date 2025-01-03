@@ -5,7 +5,7 @@ class SurveyState extends Equatable {
   final Status submissionStatus;
   final SurveyEntity survey;
 
-  final Set<AnswerEntity> answers;
+  final Map<String, AnswerEntity> answers;
 
   SurveyState({
     this.status = Status.initial,
@@ -18,7 +18,7 @@ class SurveyState extends Equatable {
     Status? status,
     Status? submissionStatus,
     SurveyEntity? survey,
-    Set<AnswerEntity>? answers,
+    Map<String, AnswerEntity>? answers,
   }) {
     return SurveyState(
       submissionStatus: submissionStatus ?? this.submissionStatus,

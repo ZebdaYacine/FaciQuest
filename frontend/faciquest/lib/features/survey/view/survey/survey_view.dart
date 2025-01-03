@@ -40,7 +40,7 @@ class _SurveyContent extends StatelessWidget {
         }
       },
       child: BlocBuilder<SurveyCubit, SurveyState>(
-        buildWhen: (previous, current) => previous.survey != current.survey,
+        // buildWhen: (previous, current) => previous.survey != current.survey,
         builder: (context, state) {
           if (state.status.isLoading) return const _LoadingState();
           if (state.status.isFailure) return const _FailureState();
@@ -131,9 +131,8 @@ class _SurveyQuestions extends StatelessWidget {
           itemCount: state.survey.questions.length,
           itemBuilder: (context, index) {
             final question = state.survey.questions[index];
-            final answer = state.answers.firstWhereOrNull(
-              (element) => element.questionId == question.id,
-            );
+            final answer =
+                context.read<SurveyCubit>().state.answers[question.id];
 
             return SingleChildScrollView(
               padding: AppSpacing.spacing_3.padding,
