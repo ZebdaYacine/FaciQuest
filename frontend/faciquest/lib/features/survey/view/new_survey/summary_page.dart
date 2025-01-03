@@ -106,7 +106,7 @@ class SummaryPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Description',
+                'survey_details.description'.tr(),
                 style: context.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.primary,
@@ -136,7 +136,7 @@ class SummaryPage extends StatelessWidget {
           Expanded(
             child: _StatCard(
               icon: Icons.bar_chart_rounded,
-              title: 'Total responses',
+              title: 'stats.total_responses'.tr(),
               value: '${survey.responseCount}',
               color: context.colorScheme.primary,
             ),
@@ -145,7 +145,7 @@ class SummaryPage extends StatelessWidget {
           Expanded(
             child: _StatCard(
               icon: Icons.radio_button_checked,
-              title: 'Status',
+              title: 'stats.status'.tr(),
               value: survey.status.name.capitalizeFirst,
               color: survey.status.color,
               backgroundColor: survey.status.color.withOpacity(0.15),
@@ -161,7 +161,7 @@ class SummaryPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Survey Actions',
+          'sections.survey_actions'.tr(),
           style: context.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -180,24 +180,24 @@ class SummaryPage extends StatelessWidget {
               children: [
                 _ActionButton(
                   icon: Icons.edit_rounded,
-                  label: 'Edit Survey'.tr(),
+                  label: 'actions.edit_survey'.tr(),
                   onPressed: cubit.editSurvey,
                   primary: true,
                 ),
                 _ActionButton(
                   icon: Icons.send_rounded,
-                  label: 'Send Survey'.tr(),
+                  label: 'actions.send_survey'.tr(),
                   onPressed: cubit.sendSurvey,
                   primary: true,
                 ),
                 _ActionButton(
                   icon: Icons.analytics_rounded,
-                  label: 'Analyze Results'.tr(),
+                  label: 'actions.analyze_results'.tr(),
                   onPressed: cubit.analyzeSurvey,
                 ),
                 _ActionButton(
                   icon: Icons.delete_rounded,
-                  label: 'Delete'.tr(),
+                  label: 'actions.delete'.tr(),
                   onPressed: cubit.deleteSurvey,
                   isDestructive: true,
                 ),
@@ -218,7 +218,7 @@ class SummaryPage extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Collectors',
+              'sections.collectors'.tr(),
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -227,7 +227,7 @@ class SummaryPage extends StatelessWidget {
             TextButton.icon(
               onPressed: () {},
               icon: const Icon(Icons.add),
-              label: const Text('Add New'),
+              label: Text('actions.add_new'.tr()),
             ),
           ],
         ),
@@ -282,7 +282,7 @@ class SummaryPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Questions Overview',
+          'sections.questions_overview'.tr(),
           style: context.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),

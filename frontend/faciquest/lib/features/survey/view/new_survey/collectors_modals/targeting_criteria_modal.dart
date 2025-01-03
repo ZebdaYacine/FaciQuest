@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Targeting Criteria',
+                  'collectors.targeting.title'.tr(),
                   style: context.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: context.colorScheme.primary,
@@ -88,8 +89,8 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
                     });
                   },
                   decoration: InputDecoration(
-                    labelText: 'Search criteria',
-                    hintText: 'Search by title, category or description',
+                    labelText: 'collectors.targeting.search_label'.tr(),
+                    hintText: 'collectors.targeting.search_hint'.tr(),
                     prefixIcon: Icon(
                       Icons.search,
                       color: context.colorScheme.primary,
@@ -230,7 +231,7 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
                   ),
                 ),
                 child: Text(
-                  'Cancel',
+                  'actions.cancel'.tr(),
                   style: context.textTheme.labelLarge,
                 ),
               ),
@@ -246,7 +247,7 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
                   ),
                 ),
                 child: Text(
-                  'Apply',
+                  'actions.apply'.tr(),
                   style: context.textTheme.labelLarge?.copyWith(
                     color: context.colorScheme.onPrimary,
                   ),

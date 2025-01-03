@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class NewSurveyView extends StatelessWidget {
                           ),
                           AppSpacing.spacing_2.heightBox,
                           Text(
-                            state.msg ?? 'Error Occurred',
+                            'error.generic'.tr(),
                             style: context.textTheme.titleMedium?.copyWith(
                               color: context.colorScheme.error,
                             ),
@@ -108,14 +109,14 @@ class _SurveyDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Create New Survey',
+                    'survey_details.create_new'.tr(),
                     style: context.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.primary,
                     ),
                   ),
                   Text(
-                    'Please enter details below',
+                    'sections.enter_details'.tr(),
                     style: context.textTheme.titleMedium?.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                     ),
@@ -147,7 +148,7 @@ class _SurveyDetails extends StatelessWidget {
                 ),
                 onPressed: () => context.read<NewSurveyCubit>().next(),
                 icon: const Icon(Icons.arrow_forward_rounded),
-                label: const Text('Next'),
+                label: Text('actions.next'.tr()),
               ),
               AppSpacing.spacing_1.heightBox,
               OutlinedButton.icon(
@@ -166,7 +167,7 @@ class _SurveyDetails extends StatelessWidget {
                   }
                 },
                 icon: const Icon(Icons.close_rounded),
-                label: const Text('Cancel'),
+                label: Text('actions.cancel'.tr()),
               ),
             ],
           ),
@@ -197,14 +198,14 @@ class __NewSurveyFormState extends State<_NewSurveyForm> with BuildFormMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Survey Name *',
+            'survey_details.name'.tr(),
             style: context.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           AppSpacing.spacing_1.heightBox,
           buildInputForm(
-            'Enter survey name',
+            'survey_details.enter_name'.tr(),
             initialValue: cubit.state.survey.name,
             onChange: cubit.onSurveyNameChanged,
             decoration: InputDecoration(
@@ -219,14 +220,14 @@ class __NewSurveyFormState extends State<_NewSurveyForm> with BuildFormMixin {
           ),
           AppSpacing.spacing_3.heightBox,
           Text(
-            'Survey Description',
+            'survey_details.description'.tr(),
             style: context.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           AppSpacing.spacing_1.heightBox,
           buildInputForm(
-            'Enter survey description',
+            'survey_details.enter_description'.tr(),
             initialValue: cubit.state.survey.description,
             maxLines: 3,
             onChange: cubit.onSurveyDescriptionChanged,
@@ -242,7 +243,7 @@ class __NewSurveyFormState extends State<_NewSurveyForm> with BuildFormMixin {
           ),
           AppSpacing.spacing_3.heightBox,
           Text(
-            'Likert Scale *',
+            'survey_details.likert_scale'.tr(),
             style: context.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),

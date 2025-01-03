@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _ResultsTable extends StatelessWidget {
               Padding(
                 padding: AppSpacing.spacing_2.padding,
                 child: Text(
-                  'Survey Results Analysis',
+                  'analysis.survey_results'.tr(),
                   style: context.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -96,7 +97,7 @@ class _ResponsesCard extends StatelessWidget {
             ),
             AppSpacing.spacing_2.widthBox,
             Text(
-              'Total Responses:',
+              'analysis.total_responses'.tr(),
               style: context.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
@@ -144,7 +145,7 @@ class _ActionButtons extends StatelessWidget {
             Icons.arrow_back_rounded,
             color: context.colorScheme.error,
           ),
-          label: const Text('Back'),
+          label: Text('actions.back'.tr()),
           style: OutlinedButton.styleFrom(
             foregroundColor: context.colorScheme.error,
             side: BorderSide(color: context.colorScheme.error),
@@ -159,7 +160,7 @@ class _ActionButtons extends StatelessWidget {
           child: FilledButton.icon(
             onPressed: hasResponses ? () {} : null,
             icon: const Icon(Icons.download_rounded),
-            label: const Text('Export Results'),
+            label: Text('actions.export_results'.tr()),
             style: FilledButton.styleFrom(
               padding: const EdgeInsets.symmetric(
                 horizontal: 24,
@@ -225,7 +226,7 @@ class _AnswersGridState extends State<_AnswersGrid> {
     if (survey.questions.isEmpty) {
       return Center(
         child: Text(
-          'No questions available',
+          'analysis.no_questions'.tr(),
           style: context.textTheme.titleMedium,
         ),
       );
@@ -234,7 +235,7 @@ class _AnswersGridState extends State<_AnswersGrid> {
     if (survey.submissions.isEmpty) {
       return Center(
         child: Text(
-          'No responses yet',
+          'analysis.no_responses'.tr(),
           style: context.textTheme.titleMedium,
         ),
       );

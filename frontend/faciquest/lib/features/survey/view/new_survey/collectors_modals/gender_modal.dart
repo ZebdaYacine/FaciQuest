@@ -1,7 +1,7 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
-
 
 class GenderModal extends StatefulWidget {
   const GenderModal({super.key});
@@ -22,14 +22,14 @@ class _GenderModalState extends State<GenderModal> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Gender',
+            'collectors.targeting.gender.title'.tr(),
             style: context.textTheme.titleLarge,
           ),
           AppSpacing.spacing_2.heightBox,
           RadioListTile<Gender>(
             value: Gender.both,
             groupValue: selectedGender,
-            title: const Text('Both'),
+            title: Text('collectors.targeting.gender.both'.tr()),
             onChanged: (value) {
               setState(() {
                 selectedGender = value;
@@ -39,7 +39,7 @@ class _GenderModalState extends State<GenderModal> {
           RadioListTile<Gender>(
             value: Gender.male,
             groupValue: selectedGender,
-            title: const Text('Male'),
+            title: Text('collectors.targeting.gender.male'.tr()),
             onChanged: (value) {
               setState(() {
                 selectedGender = value;
@@ -49,7 +49,7 @@ class _GenderModalState extends State<GenderModal> {
           RadioListTile<Gender>(
             value: Gender.female,
             groupValue: selectedGender,
-            title: const Text('Female'),
+            title: Text('collectors.targeting.gender.female'.tr()),
             onChanged: (value) {
               setState(() {
                 selectedGender = value;
@@ -66,9 +66,7 @@ class _GenderModalState extends State<GenderModal> {
         onPressed: () {
           context.pop(result: selectedGender);
         },
-        child: const Center(
-          child: Text('save'),
-        ),
+        child: Text('actions.save'.tr()),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Add a new collector',
+                      'collectors.add_new'.tr(),
                       style: context.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -63,8 +64,8 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
                                     .fetchCollectors();
                               }
                             },
-                            title: 'Targeted Responses',
-                            description: 'Find people who fit your criteria',
+                            title: 'collectors.targeted_responses'.tr(),
+                            description: 'collectors.targeted_description'.tr(),
                           ),
                         ),
                       ],
@@ -101,7 +102,7 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
                         Icons.arrow_back,
                         color: Theme.of(context).colorScheme.error,
                       ),
-                      label: const Text('Back'),
+                      label: Text('actions.back'.tr()),
                     ),
                     16.widthBox,
                     Expanded(
@@ -116,7 +117,7 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
                           ),
                         ),
                         icon: const Icon(Icons.bar_chart),
-                        label: const Text('Analyze Results'),
+                        label: Text('actions.analyze_results'.tr()),
                       ),
                     ),
                   ],
@@ -214,7 +215,7 @@ class CollectorsTable extends StatelessWidget {
                         const Icon(Icons.analytics_outlined),
                         8.widthBox,
                         Text(
-                          'Total Responses: ${state.survey.responseCount}',
+                          'stats.total_responses'.tr(),
                           style: context.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -238,12 +239,12 @@ class CollectorsTable extends StatelessWidget {
                     ),
                     16.heightBox,
                     Text(
-                      'No collectors yet',
+                      'collectors.no_collectors'.tr(),
                       style: context.textTheme.headlineSmall,
                     ),
                     8.heightBox,
                     Text(
-                      'Create a collector to start gathering responses',
+                      'collectors.create_collector'.tr(),
                       style: context.textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).textTheme.bodySmall?.color,
                       ),
@@ -278,9 +279,9 @@ class CollectorsTable extends StatelessWidget {
                             ),
                             children: [
                               '',
-                              'Nickname',
-                              'Status',
-                              'Responses',
+                              'collectors.nickname'.tr(),
+                              'collectors.status'.tr(),
+                              'collectors.responses'.tr(),
                               '',
                             ]
                                 .map(
@@ -372,16 +373,19 @@ class CollectorsTable extends StatelessWidget {
                                         context: context,
                                         builder: (ctx) {
                                           return AlertDialog(
-                                            title:
-                                                const Text('Delete Collector'),
-                                            content: const Text(
-                                                'Are you sure you want to delete this collector?'),
+                                            title: Text(
+                                                'delete_dialog.delete_collector'
+                                                    .tr()),
+                                            content: Text(
+                                                'delete_dialog.delete_collector_confirmation'
+                                                    .tr()),
                                             actions: [
                                               TextButton(
                                                 onPressed: () {
                                                   Navigator.of(ctx).pop();
                                                 },
-                                                child: const Text('Cancel'),
+                                                child:
+                                                    Text('actions.cancel'.tr()),
                                               ),
                                               TextButton(
                                                 onPressed: () {
@@ -390,7 +394,8 @@ class CollectorsTable extends StatelessWidget {
                                                       .read<NewSurveyCubit>()
                                                       .deleteCollector(e.id);
                                                 },
-                                                child: const Text('Delete'),
+                                                child:
+                                                    Text('actions.delete'.tr()),
                                               ),
                                             ],
                                           );

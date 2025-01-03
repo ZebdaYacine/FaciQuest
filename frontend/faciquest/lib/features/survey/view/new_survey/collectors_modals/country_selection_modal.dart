@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class _CountryModalState extends State<CountryModal> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Country',
+              'collectors.targeting.location.country'.tr(),
               style: context.textTheme.titleLarge,
             ),
             AppSpacing.spacing_2.heightBox,
@@ -64,7 +65,7 @@ class _CountryModalState extends State<CountryModal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Region targeting :',
+                  'collectors.targeting.location.region_targeting'.tr(),
                   style: context.textTheme.titleLarge,
                 ),
                 Switch(
@@ -83,9 +84,10 @@ class _CountryModalState extends State<CountryModal> {
               DropdownButton<Province>(
                 isExpanded: true,
                 items: [
-                  const DropdownMenuItem(
+                  DropdownMenuItem(
                     value: null,
-                    child: Text('select a wilaya'),
+                    child: Text(
+                        'collectors.targeting.location.select_wilaya'.tr()),
                   ),
                   ...getIt<Data>().provinces.map(
                     (e) {
@@ -132,7 +134,7 @@ class _CountryModalState extends State<CountryModal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'City targeting :',
+                  'collectors.targeting.location.city_targeting'.tr(),
                   style: context.textTheme.titleLarge,
                 ),
                 Switch(
@@ -151,9 +153,10 @@ class _CountryModalState extends State<CountryModal> {
               DropdownButton<City>(
                 isExpanded: true,
                 items: [
-                  const DropdownMenuItem(
+                  DropdownMenuItem(
                     value: null,
-                    child: Text('select a city'),
+                    child:
+                        Text('collectors.targeting.location.select_city'.tr()),
                   ),
                   ...getIt<Data>()
                       .provinces[int.parse(provinces.first.id) - 1]
@@ -213,9 +216,7 @@ class _CountryModalState extends State<CountryModal> {
             'cities': cities,
           });
         },
-        child: const Center(
-          child: Text('save'),
-        ),
+        child: Text('actions.save'.tr()),
       ),
     );
   }

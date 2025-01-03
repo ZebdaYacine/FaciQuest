@@ -1,5 +1,6 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -32,14 +33,14 @@ class _QuestionsContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Questions Section',
+            'sections.questions_section'.tr(),
             style: context.textTheme.headlineLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: context.colorScheme.primary,
             ),
           ),
           Text(
-            'Please enter details below',
+            'sections.enter_details'.tr(),
             style: context.textTheme.titleMedium?.copyWith(
               color: context.colorScheme.onSurfaceVariant,
             ),
@@ -105,7 +106,7 @@ class _AddQuestionButton extends StatelessWidget {
           },
         ),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add New Question'),
+        label: Text('actions.add_new_question'.tr()),
       ),
     );
   }
@@ -285,18 +286,18 @@ class _DeleteButton extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            'Delete Question',
+            'delete_dialog.delete_question_title'.tr(),
             style: context.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
-            'Are you sure you want to delete this question?',
+          content: Text(
+            'delete_dialog.delete_question_confirmation'.tr(),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text('actions.cancel'.tr()),
             ),
             FilledButton(
               style: FilledButton.styleFrom(
@@ -306,7 +307,7 @@ class _DeleteButton extends StatelessWidget {
                 context.read<NewSurveyCubit>().removeQuestion(index);
                 Navigator.pop(context);
               },
-              child: const Text('Delete'),
+              child: Text('actions.delete'.tr()),
             ),
           ],
         );
@@ -342,7 +343,7 @@ class _BottomActions extends StatelessWidget {
             ),
             onPressed: () => context.read<NewSurveyCubit>().back(),
             icon: const Icon(Icons.arrow_back_rounded),
-            label: const Text('Back'),
+            label: Text('actions.back'.tr()),
           ),
           AppSpacing.spacing_2.widthBox,
           const Expanded(
@@ -380,7 +381,7 @@ class _SubmitButton extends StatelessWidget {
                   ),
                 )
               : const Icon(Icons.check_rounded),
-          label: const Text('Submit Survey'),
+          label: Text('actions.submit_survey'.tr()),
         );
       },
     );
@@ -449,7 +450,8 @@ Future<List<QuestionEntity>?> showMoveBottomSheet(
               context.pop(result: temp);
             },
             icon: Icon(copy ? Icons.copy_rounded : Icons.move_up_rounded),
-            label: Text('${copy ? 'Copy' : 'Move'} Question'),
+            label:
+                Text('${copy ? 'actions.copy' : 'actions.move'}_question'.tr()),
           ),
         );
       });
@@ -482,7 +484,7 @@ class MoveQuestionBottomSheetBody extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          '${copy ? 'Copy' : 'Move'} this question to...',
+          '${copy ? 'actions.copy' : 'actions.move'}_question_to'.tr(),
           style: context.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -500,14 +502,14 @@ class MoveQuestionBottomSheetBody extends StatelessWidget {
                 isExpanded: false,
                 value: action,
                 underline: const SizedBox(),
-                items: const [
+                items: [
                   DropdownMenuItem(
                     value: MoveQuestionAction.after,
-                    child: Text('After'),
+                    child: Text('position.after'.tr()),
                   ),
                   DropdownMenuItem(
                     value: MoveQuestionAction.before,
-                    child: Text('Before'),
+                    child: Text('position.before'.tr()),
                   ),
                 ],
                 onChanged: onActionChanged,

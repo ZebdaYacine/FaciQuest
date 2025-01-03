@@ -22,7 +22,7 @@ class _IncomeModalState extends State<IncomeModal> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Income Range'.tr(),
+            'collectors.targeting.income_range'.tr(),
             style: context.textTheme.titleLarge,
           ),
           AppSpacing.spacing_2.heightBox,
@@ -30,7 +30,12 @@ class _IncomeModalState extends State<IncomeModal> {
             values: values,
             min: 0,
             max: 1000000,
-            labels: RangeLabels(values.start.toString(), values.end.toString()),
+            labels: RangeLabels(
+              'collectors.targeting.min'
+                  .tr(args: [values.start.toStringAsFixed(0)]),
+              'collectors.targeting.max'
+                  .tr(args: [values.end.toStringAsFixed(0)]),
+            ),
             divisions: 120,
             onChanged: (value) {
               setState(() {
@@ -43,8 +48,10 @@ class _IncomeModalState extends State<IncomeModal> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Min: ${values.start.toStringAsFixed(0)}'),
-                Text('Max: ${values.end.toStringAsFixed(0)}'),
+                Text('collectors.targeting.min'
+                    .tr(args: [values.start.toStringAsFixed(0)])),
+                Text('collectors.targeting.max'
+                    .tr(args: [values.end.toStringAsFixed(0)])),
               ],
             ),
           )
@@ -58,9 +65,7 @@ class _IncomeModalState extends State<IncomeModal> {
         onPressed: () {
           context.pop(result: values);
         },
-        child: const Center(
-          child: Text('save'),
-        ),
+        child: Text('actions.save'.tr()),
       ),
     );
   }

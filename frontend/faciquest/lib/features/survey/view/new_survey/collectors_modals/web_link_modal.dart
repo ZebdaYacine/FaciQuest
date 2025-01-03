@@ -35,7 +35,7 @@ class _WebLinkModalState extends State<WebLinkModal> {
   Widget build(BuildContext context) {
     return AppBackDrop(
       headerActions: BackdropHeaderActions.none,
-      titleText: 'Web Link'.tr(),
+      titleText: 'collectors.web_link'.tr(),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +44,7 @@ class _WebLinkModalState extends State<WebLinkModal> {
             initialValue: link,
             onChanged: (value) => link = value,
             decoration: InputDecoration(
-              hintText: 'Enter collector nickname'.tr(),
+              hintText: 'collectors.enter_nickname'.tr(),
             ),
           )
         ],
@@ -55,8 +55,8 @@ class _WebLinkModalState extends State<WebLinkModal> {
           backgroundColor: context.colorScheme.primary,
         ),
         onPressed: () {},
-        child: const Center(
-          child: Text('Generate Link'),
+        child: Center(
+          child: Text('collectors.generate_link'.tr()),
         ),
       ),
     );

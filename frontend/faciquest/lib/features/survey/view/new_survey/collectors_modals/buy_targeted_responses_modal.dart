@@ -155,11 +155,11 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
     return AppBackDrop(
       headerActions: BackdropHeaderActions.none,
       title: Text(
-        'Buy targeted responses',
+        'collectors.buy_targeted.title'.tr(),
         style: context.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.bold,
         ),
-      ).tr(),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -181,8 +181,8 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       child: TextField(
         controller: _nameController,
         decoration: InputDecoration(
-          labelText: 'Collector Name',
-          hintText: 'Enter a name for this collector',
+          labelText: 'collectors.buy_targeted.collector_name'.tr(),
+          hintText: 'collectors.buy_targeted.enter_name'.tr(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -204,7 +204,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
             _buildPopulationIcon(),
             AppSpacing.spacing_2.heightBox,
             Text(
-              'How many responses do you need?',
+              'collectors.buy_targeted.responses_needed'.tr(),
               style: context.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -284,7 +284,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
         children: [
           AppSpacing.spacing_3.heightBox,
           Text(
-            'Who do you want to survey?',
+            'collectors.buy_targeted.who_to_survey'.tr(),
             style: context.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -305,7 +305,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       child: FilledButton.icon(
         onPressed: _handleAddCriteria,
         icon: const Icon(Icons.add),
-        label: const Text('Add targeting criteria'),
+        label: Text('collectors.buy_targeted.add_criteria'.tr()),
       ),
     );
   }
@@ -371,7 +371,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Estimated cost',
+          'collectors.buy_targeted.estimated_cost'.tr(),
           style: context.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w500,
           ),
@@ -410,7 +410,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
         ),
       ),
       onPressed: _handleCheckout,
-      child: const Text('Proceed to Checkout'),
+      child: Text('collectors.buy_targeted.proceed_checkout'.tr()),
     );
   }
 
