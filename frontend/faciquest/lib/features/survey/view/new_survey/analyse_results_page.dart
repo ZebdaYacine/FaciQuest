@@ -232,14 +232,14 @@ class _AnswersGridState extends State<_AnswersGrid> {
       );
     }
 
-    if (survey.submissions.isEmpty) {
-      return Center(
-        child: Text(
-          'analysis.no_responses'.tr(),
-          style: context.textTheme.titleMedium,
-        ),
-      );
-    }
+    // if (survey.submissions.isEmpty) {
+    //   return Center(
+    //     child: Text(
+    //       'analysis.no_responses'.tr(),
+    //       style: context.textTheme.titleMedium,
+    //     ),
+    //   );
+    // }
 
     return PlutoGrid(
       key: const ValueKey('PlutoGrid'),

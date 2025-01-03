@@ -269,7 +269,7 @@ class SurveyDataSourceImpl implements SurveyDataSource {
     if (response.statusCode == 200 &&
         response.data?['date'] != null &&
         response.data?['date'] is List) {
-      return (response.data!['date'] as List? ?? [])
+      return (response.data!['date'] as List)
           .map((e) => SubmissionEntity.fromMap(e))
           .toList();
     }

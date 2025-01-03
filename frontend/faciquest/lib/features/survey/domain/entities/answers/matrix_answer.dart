@@ -25,6 +25,16 @@ class MatrixAnswer extends AnswerEntity {
     );
   }
 
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      ...super.toMap(),
+      'type': 'matrix',
+      'values': values,
+      'multipleSelect': multipleSelect,
+    };
+  }
+
   MatrixAnswer copyWith({Map<String, Map<String, bool>>? values}) {
     return MatrixAnswer(
       questionId: questionId,
@@ -67,7 +77,6 @@ class MatrixAnswer extends AnswerEntity {
   PlutoCell get plutoCell => PlutoCell(
         value: values,
       );
-
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return MatrixAnswer(

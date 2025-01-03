@@ -12,6 +12,7 @@ class DateTimeAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
+      'type': 'dateTime',
       'value': value,
     };
   }

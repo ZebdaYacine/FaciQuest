@@ -16,6 +16,7 @@ class NameAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       ...super.toMap(),
+      'type': 'nameType',
       'firstName': firstName,
       'lastName': lastName,
       'middleName': middleName,

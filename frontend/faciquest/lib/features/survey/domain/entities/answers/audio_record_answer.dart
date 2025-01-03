@@ -7,7 +7,13 @@ class AudioRecordAnswer extends AnswerEntity {
   PlutoCell get plutoCell => PlutoCell(
         value: null,
       );
-
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'questionId': questionId,
+      'type': 'audioRecord',
+    };
+  }
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return AudioRecordAnswer(

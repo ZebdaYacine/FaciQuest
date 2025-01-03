@@ -15,6 +15,7 @@ class EmailAddressAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
+      'type': 'emailAddress',
       'value': value,
     };
   }

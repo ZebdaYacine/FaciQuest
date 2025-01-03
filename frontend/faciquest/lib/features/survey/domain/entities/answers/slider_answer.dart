@@ -12,6 +12,7 @@ class SliderAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
+      'type': 'slider',
       'value': value,
     };
   }

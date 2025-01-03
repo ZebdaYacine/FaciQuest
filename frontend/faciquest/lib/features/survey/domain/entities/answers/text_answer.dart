@@ -6,7 +6,6 @@ class TextAnswer extends AnswerEntity {
   @override
   PlutoCell get plutoCell => PlutoCell();
 
-
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return TextAnswer(
       questionId: map['questionId'],

@@ -12,6 +12,7 @@ class CommentBoxAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
+      'type': 'commentBox',
       'value': value,
     };
   }

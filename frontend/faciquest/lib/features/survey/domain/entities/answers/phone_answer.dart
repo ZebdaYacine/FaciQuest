@@ -15,6 +15,7 @@ class PhoneAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
+      'type': 'phoneType',
       'value': value,
     };
   }

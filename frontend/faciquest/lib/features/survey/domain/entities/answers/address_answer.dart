@@ -21,6 +21,7 @@ class AddressAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
+      'type': 'address',
       'streetAddress1': streetAddress1,
       'streetAddress2': streetAddress2,
       'city': city,
