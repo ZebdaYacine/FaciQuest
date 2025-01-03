@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class HomeView extends StatelessWidget {
               children: [
                 AppSpacing.spacing_2.heightBox,
                 Text(
-                  'Welcome to FaciQuest',
+                  'home.welcome_title'.tr(),
                   style: context.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: context.colorScheme.primary,
@@ -63,7 +64,7 @@ class HomeView extends StatelessWidget {
                 ),
                 AppSpacing.spacing_1.heightBox,
                 Text(
-                  'Create and manage your surveys with ease',
+                  'home.welcome_subtitle'.tr(),
                   style: context.textTheme.bodyLarge?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -80,11 +81,11 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                   icon: const Icon(Icons.edit_document),
-                  label: const Text('Manage Surveys'),
+                  label: Text('home.manage_surveys'.tr()),
                 ),
                 AppSpacing.spacing_3.heightBox,
                 Text(
-                  'Available Surveys',
+                  'home.available_surveys'.tr(),
                   style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -135,7 +136,7 @@ class HomeView extends StatelessWidget {
             );
           },
           icon: const Icon(Icons.add),
-          label: const Text('New Survey'),
+          label: Text('home.new_survey'.tr()),
         ),
       ),
     );
@@ -158,7 +159,7 @@ class _EmptyState extends StatelessWidget {
           ),
           AppSpacing.spacing_2.heightBox,
           Text(
-            'No surveys found',
+            'home.empty_state.no_surveys'.tr(),
             style: context.textTheme.titleLarge?.copyWith(
               color: context.colorScheme.onSurfaceVariant,
             ),
@@ -185,7 +186,7 @@ class _FailureState extends StatelessWidget {
           ),
           AppSpacing.spacing_2.heightBox,
           Text(
-            'Something went wrong',
+            'home.error_state.error_message'.tr(),
             style: context.textTheme.titleLarge?.copyWith(
               color: context.colorScheme.error,
             ),

@@ -1,6 +1,15 @@
 {
   "profile": {
-    "language": "Langue"
+    "language": "Language",
+    "my_account": "My Account",
+    "more_actions": "More Actions",
+    "menu": {
+      "profile": "Profile",
+      "change_password": "Change Password",
+      "how_it_works": "How it works",
+      "theme": "Theme",
+      "logout": "Logout"
+    }
   },
   "language": {
     "ar": "العربية",
@@ -270,5 +279,31 @@
     "total_responses": "Total Responses:",
     "no_questions": "No questions available",
     "no_responses": "No responses yet"
+  },
+  "personal_info": {
+    "title": "Personal Info",
+    "save_changes": "Save Changes",
+    "fields": {
+      "username": "Username",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "birth_date": "Date of Birth",
+      "tap_to_select_date": "Tap to select date"
+    }
+  },
+  "home": {
+    "welcome_title": "Welcome to FaciQuest",
+    "welcome_subtitle": "Create and manage your surveys with ease",
+    "manage_surveys": "Manage Surveys",
+    "available_surveys": "Available Surveys",
+    "new_survey": "New Survey",
+    "empty_state": {
+      "no_surveys": "No surveys found"
+    },
+    "error_state": {
+      "error_message": "Something went wrong"
+    }
   }
 }

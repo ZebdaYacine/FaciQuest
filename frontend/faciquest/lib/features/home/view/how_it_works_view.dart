@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class HowItWorksView extends StatelessWidget {
@@ -7,7 +8,7 @@ class HowItWorksView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('How it works'),
+        title: Text('profile.menu.how_it_works'.tr()),
       ),
     );
   }

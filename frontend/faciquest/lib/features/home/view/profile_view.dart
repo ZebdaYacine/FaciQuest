@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,7 @@ class ProfileView extends StatelessWidget {
               Padding(
                 padding: AppSpacing.spacing_3.padding,
                 child: Text(
-                  'My Account',
+                  'profile.my_account'.tr(),
                   style: context.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: context.colorScheme.primary,
@@ -89,13 +90,13 @@ class ProfileView extends StatelessWidget {
               ),
               _buildListTile(
                 context,
-                title: 'Profile',
+                title: 'profile.menu.profile'.tr(),
                 icon: Icons.person_outline_rounded,
                 onTap: () => AppRoutes.personalInfo.push(context),
               ),
               _buildListTile(
                 context,
-                title: 'Change Password',
+                title: 'profile.menu.change_password'.tr(),
                 icon: Icons.lock_outline_rounded,
                 onTap: () => AppRoutes.setNewPassword.push(context),
               ),
@@ -112,7 +113,7 @@ class ProfileView extends StatelessWidget {
               Padding(
                 padding: AppSpacing.spacing_3.padding,
                 child: Text(
-                  'More Actions',
+                  'profile.more_actions'.tr(),
                   style: context.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: context.colorScheme.primary,
@@ -121,13 +122,13 @@ class ProfileView extends StatelessWidget {
               ),
               _buildListTile(
                 context,
-                title: 'How it works',
+                title: 'profile.menu.how_it_works'.tr(),
                 icon: Icons.info_outline_rounded,
                 onTap: () => AppRoutes.howItWorks.push(context),
               ),
               _buildListTile(
                 context,
-                title: 'Language',
+                title: 'profile.language'.tr(),
                 icon: Icons.language_rounded,
                 onTap: () => showLanguageModal(context),
                 showTrailing: false,
@@ -136,7 +137,7 @@ class ProfileView extends StatelessWidget {
                 builder: (context, state) {
                   return _buildListTile(
                     context,
-                    title: 'Theme',
+                    title: 'profile.menu.theme'.tr(),
                     icon: state.themeMode == ThemeMode.light
                         ? Icons.dark_mode_outlined
                         : Icons.light_mode_outlined,
@@ -151,7 +152,7 @@ class ProfileView extends StatelessWidget {
               ),
               _buildListTile(
                 context,
-                title: 'Logout',
+                title: 'profile.menu.logout'.tr(),
                 icon: Icons.logout_rounded,
                 onTap: () => getIt<AuthBloc>().add(SignOutRequested()),
                 showTrailing: false,
