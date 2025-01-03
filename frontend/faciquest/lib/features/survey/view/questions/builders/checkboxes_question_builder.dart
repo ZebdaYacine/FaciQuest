@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 
 import 'package:faciquest/features/survey/survey.dart';
@@ -87,9 +88,10 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
                       ? question.choices.length
                       : null,
                   items: [
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                       value: null,
-                      child: Text('select a scale'),
+                      child:
+                          Text('survey.question.checkboxes.select_scale'.tr()),
                     ),
                     ...getScaleOptionsSize(selectedType)
                         .map((e) => DropdownMenuItem(
@@ -118,9 +120,9 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
                 isExpanded: true,
                 value: selectedType,
                 items: [
-                  const DropdownMenuItem(
+                  DropdownMenuItem(
                     value: null,
-                    child: Text('select a type'),
+                    child: Text('survey.question.checkboxes.select_type'.tr()),
                   ),
                   ...scaleOptions.keys.map(
                     (e) {

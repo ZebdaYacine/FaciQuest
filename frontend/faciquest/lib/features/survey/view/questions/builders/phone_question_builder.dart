@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +38,11 @@ class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
         Row(
           children: [
             Text(
-              'Phone',
+              'survey.question.phone.title'.tr(),
               style: context.textTheme.bodyLarge,
             ),
             const Spacer(),
-            const Text('Show'),
+            Text('survey.question.phone.show'.tr()),
             Checkbox(
               value: (widget.question as PhoneQuestion).showPhone,
               onChanged: null,
@@ -52,7 +53,7 @@ class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
           ],
         ),
         buildInputForm(
-          'Label :',
+          'survey.question.phone.label'.tr(),
           key: UniqueKey(),
           initialValue: (widget.question as PhoneQuestion).phoneLabel,
           onChange: (value) {
@@ -60,7 +61,7 @@ class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
           },
         ),
         buildInputForm(
-          'Placeholder :',
+          'survey.question.phone.placeholder'.tr(),
           key: UniqueKey(),
           initialValue: (widget.question as PhoneQuestion).phoneHint,
           onChange: (value) {

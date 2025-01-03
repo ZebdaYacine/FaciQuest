@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFieldBuilder(
-          label: 'Street Address 1',
+          label: 'survey.address.street_address1'.tr(),
           show: (widget.question as AddressQuestion).showStreetAddress1,
           labelInitialValue:
               (widget.question as AddressQuestion).streetAddress1Label,
@@ -91,7 +92,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         ),
         AppSpacing.spacing_1.heightBox,
         TextFieldBuilder(
-          label: 'Street Address 2',
+          label: 'survey.address.street_address2'.tr(),
           show: (widget.question as AddressQuestion).showStreetAddress2,
           labelInitialValue:
               (widget.question as AddressQuestion).streetAddress2Label,
@@ -109,7 +110,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         ),
         AppSpacing.spacing_1.heightBox,
         TextFieldBuilder(
-          label: 'City/Town',
+          label: 'survey.address.city'.tr(),
           show: (widget.question as AddressQuestion).showCity,
           labelInitialValue: (widget.question as AddressQuestion).cityLabel,
           placeholderInitialValue:
@@ -126,7 +127,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         ),
         AppSpacing.spacing_1.heightBox,
         TextFieldBuilder(
-          label: 'State/Province',
+          label: 'survey.address.state'.tr(),
           show: (widget.question as AddressQuestion).showState,
           labelInitialValue: (widget.question as AddressQuestion).stateLabel,
           placeholderInitialValue:
@@ -143,7 +144,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         ),
         AppSpacing.spacing_1.heightBox,
         TextFieldBuilder(
-          label: 'ZIP/Postal code',
+          label: 'survey.address.postal_code'.tr(),
           show: (widget.question as AddressQuestion).showPostalCode,
           labelInitialValue:
               (widget.question as AddressQuestion).postalCodeLabel,
@@ -163,7 +164,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
         Row(
           children: [
             Text(
-              'Country :',
+              'survey.address.country'.tr(),
               style: context.textTheme.bodyLarge,
             ),
             const Spacer(),
@@ -175,7 +176,7 @@ class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
           ],
         ),
         buildInputForm(
-          'Label :',
+          'survey.address.country_label'.tr(),
           initialValue: (widget.question as AddressQuestion).countryLabel,
           onChange: (value) => onChange(countryLabel: value),
         ),

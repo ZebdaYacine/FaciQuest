@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -38,11 +39,11 @@ class _EmailAddressQuestionBuilderState
         Row(
           children: [
             Text(
-              'Email Address ',
+              'survey.question.email.title'.tr(),
               style: context.textTheme.bodyLarge,
             ),
             const Spacer(),
-            const Text('Show'),
+            Text('survey.question.email.show'.tr()),
             Checkbox(
               value: (widget.question as EmailAddressQuestion).showEmailAddress,
               onChanged: null,
@@ -53,7 +54,7 @@ class _EmailAddressQuestionBuilderState
           ],
         ),
         buildInputForm(
-          'Label :',
+          'survey.question.email.label'.tr(),
           key: UniqueKey(),
           initialValue:
               (widget.question as EmailAddressQuestion).emailAddressLabel,
@@ -62,7 +63,7 @@ class _EmailAddressQuestionBuilderState
           },
         ),
         buildInputForm(
-          'Placeholder :',
+          'survey.question.email.placeholder'.tr(),
           key: UniqueKey(),
           initialValue:
               (widget.question as EmailAddressQuestion).emailAddressHint,

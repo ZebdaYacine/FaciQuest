@@ -56,7 +56,74 @@
     "empty": "Survey Not Found",
     "error": "Something Went Wrong",
     "question": {
-      "progress": "Question {0} of {1}"
+      "progress": "Question {0} of {1}",
+      "checkboxes": {
+        "select_scale": "select a scale",
+        "select_type": "select a type"
+      },
+      "comment_box": {
+        "max_length": "Max length :",
+        "max_lines": "Max lines :"
+      },
+      "date_time": {
+        "collect_date": "Collect Date Info",
+        "collect_time": "Collect Time Info"
+      },
+      "email": {
+        "title": "Email Address",
+        "show": "Show",
+        "label": "Label :",
+        "placeholder": "Placeholder :"
+      },
+      "file_upload": {
+        "instructions": "Instructions for respondents :",
+        "enter_instructions": "Enter Instructions for the respondents (optional)",
+        "allowed_types": "Allowable file types :"
+      },
+      "image_choice": {
+        "use_checkbox": "Use Checkbox",
+        "image_caption": "Image Caption"
+      },
+      "matrix": {
+        "select_scale": "select a scale",
+        "select_type": "select a type",
+        "rows": "Rows :",
+        "columns": "Columns :",
+        "use_checkboxes": "Allow multiple responses per row (use checkboxes)"
+      },
+      "multiple_choice": {
+        "select_scale": "select a scale",
+        "select_type": "select a type"
+      },
+      "name": {
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "middle_name": "Middle Name",
+        "show": "Show",
+        "label": "Label :",
+        "placeholder": "Placeholder :"
+      },
+      "phone": {
+        "title": "Phone",
+        "show": "Show",
+        "label": "Label :",
+        "placeholder": "Placeholder :"
+      },
+      "short_answer": {
+        "max_length": "Max length :"
+      },
+      "slider": {
+        "min": "Min :",
+        "max": "Max :"
+      },
+      "star_rating": {
+        "max_rating": "Max Rating :",
+        "color": "Color :",
+        "shape": "Shape :"
+      },
+      "text": {
+        "enter_text": "Enter your text "
+      }
     },
     "submit": {
       "button": {
@@ -71,6 +138,18 @@
         "title": "Answer Submitted Successfully!",
         "message": "Thank you for completing the survey"
       }
+    },
+    "address": {
+      "street_address1": "Street Address 1",
+      "street_address2": "Street Address 2",
+      "city": "City/Town",
+      "state": "State/Province",
+      "postal_code": "ZIP/Postal code",
+      "country": "Country",
+      "country_label": "Label :"
+    },
+    "audio_record": {
+      "coming_soon": "Coming soon"
     }
   },
   "manage": {

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _AudioRecordQuestionBuilderState extends State<TextQuestionBuilder>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildInputForm(
-          'Enter your text ',
+          'survey.question.text.enter_text'.tr(),
           initialValue: (widget.question as TextQuestion).title,
           onChange: (value) {
             onChange(

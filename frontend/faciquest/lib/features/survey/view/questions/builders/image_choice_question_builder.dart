@@ -1,5 +1,6 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 
 import 'package:faciquest/features/survey/survey.dart';
@@ -45,7 +46,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
           onChanged: (e) {
             onChange(useCheckbox: e);
           },
-          title: const Text('Use Checkbox'),
+          title: Text('survey.question.image_choice.use_checkbox'.tr()),
         ),
         ...(widget.question as ImageChoiceQuestion)
             .choices
@@ -70,7 +71,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                       child: Column(
                         children: [
                           buildInputForm(
-                            'Image Caption',
+                            'survey.question.image_choice.image_caption'.tr(),
                             initialValue: item.caption,
                             onChange: (value) {
                               var choices = [

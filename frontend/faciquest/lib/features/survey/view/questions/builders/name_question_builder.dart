@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -50,11 +51,11 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         Row(
           children: [
             Text(
-              'First Name ',
+              'survey.question.name.first_name'.tr(),
               style: context.textTheme.bodyLarge,
             ),
             const Spacer(),
-            const Text('Show'),
+            Text('survey.question.name.show'.tr()),
             Checkbox(
               value: (widget.question as NameQuestion).showFirstName,
               onChanged: (value) {
@@ -64,7 +65,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
           ],
         ),
         buildInputForm(
-          'Label :',
+          'survey.question.name.label'.tr(),
           key: UniqueKey(),
           initialValue: (widget.question as NameQuestion).firstNameLabel,
           onChange: (value) {
@@ -72,7 +73,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
           },
         ),
         buildInputForm(
-          'Placeholder :',
+          'survey.question.name.placeholder'.tr(),
           key: UniqueKey(),
           initialValue: (widget.question as NameQuestion).firstNameHint,
           onChange: (value) {
@@ -83,11 +84,11 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         Row(
           children: [
             Text(
-              'Last Name ',
+              'survey.question.name.last_name'.tr(),
               style: context.textTheme.bodyLarge,
             ),
             const Spacer(),
-            const Text('Show'),
+            Text('survey.question.name.show'.tr()),
             Checkbox(
               value: (widget.question as NameQuestion).showLastName,
               onChanged: (value) {
@@ -97,7 +98,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
           ],
         ),
         buildInputForm(
-          'Label :',
+          'survey.question.name.label'.tr(),
           key: UniqueKey(),
           initialValue: (widget.question as NameQuestion).lastNameLabel,
           onChange: (value) {
@@ -105,7 +106,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
           },
         ),
         buildInputForm(
-          'Placeholder :',
+          'survey.question.name.placeholder'.tr(),
           key: UniqueKey(),
           initialValue: (widget.question as NameQuestion).lastNameHint,
           onChange: (value) {
@@ -116,11 +117,11 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
         Row(
           children: [
             Text(
-              'Middle Name ',
+              'survey.question.name.middle_name'.tr(),
               style: context.textTheme.bodyLarge,
             ),
             const Spacer(),
-            const Text('Show'),
+            Text('survey.question.name.show'.tr()),
             Checkbox(
               value: (widget.question as NameQuestion).showMiddleName,
               onChanged: (value) {
@@ -130,7 +131,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
           ],
         ),
         buildInputForm(
-          'Label :',
+          'survey.question.name.label'.tr(),
           key: UniqueKey(),
           initialValue: (widget.question as NameQuestion).middleNameLabel,
           onChange: (value) {
@@ -138,7 +139,7 @@ class _NameQuestionBuilderState extends State<NameQuestionBuilder>
           },
         ),
         buildInputForm(
-          'Placeholder :',
+          'survey.question.name.placeholder'.tr(),
           key: UniqueKey(),
           initialValue: (widget.question as NameQuestion).middleNameHint,
           onChange: (value) {

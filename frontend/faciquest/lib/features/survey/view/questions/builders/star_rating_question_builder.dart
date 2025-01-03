@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
       children: [
         Row(
           children: [
-            const Text('Max Rating :'),
+            Text('survey.question.star_rating.max_rating'.tr()),
             AppSpacing.spacing_0_5.widthBox,
             Expanded(
               child: DropdownButton<int>(
@@ -58,7 +59,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
         AppSpacing.spacing_1.heightBox,
         Row(
           children: [
-            const Text('Color :'),
+            Text('survey.question.star_rating.color'.tr()),
             AppSpacing.spacing_0_5.widthBox,
             ...StarRatingColors.values.map(
               (e) {
@@ -87,7 +88,7 @@ class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
         AppSpacing.spacing_1.heightBox,
         Row(
           children: [
-            const Text('Shape :'),
+            Text('survey.question.star_rating.shape'.tr()),
             AppSpacing.spacing_0_5.widthBox,
             Flexible(
               child: DropdownButton<StarRatingShape>(

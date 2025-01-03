@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _DateTimeQuestionBuilderState extends State<DateTimeQuestionBuilder>
       children: [
         CheckboxListTile(
           value: (widget.question as DateTimeQuestion).collectDateInfo,
-          title: const Text('Collect Date Info'),
+          title: Text('survey.question.date_time.collect_date'.tr()),
           onChanged: (value) {
             onChange(
               collectDateInfo: value,
@@ -43,7 +44,7 @@ class _DateTimeQuestionBuilderState extends State<DateTimeQuestionBuilder>
         ),
         CheckboxListTile(
           value: (widget.question as DateTimeQuestion).collectTimeInfo,
-          title: const Text('Collect Time Info'),
+          title: Text('survey.question.date_time.collect_time'.tr()),
           onChanged: (value) {
             onChange(
               collectTimeInfo: value,

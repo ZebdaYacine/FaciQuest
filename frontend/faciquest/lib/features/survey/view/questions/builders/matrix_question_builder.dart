@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 
 import 'package:faciquest/features/survey/survey.dart';
@@ -112,9 +113,9 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
                       ? question.cols.length
                       : null,
                   items: [
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                       value: null,
-                      child: Text('select a scale'),
+                      child: Text('survey.question.matrix.select_scale'.tr()),
                     ),
                     ...getScaleOptionsSize(selectedType)
                         .map((e) => DropdownMenuItem(
@@ -143,9 +144,9 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
                 isExpanded: true,
                 value: selectedType,
                 items: [
-                  const DropdownMenuItem(
+                  DropdownMenuItem(
                     value: null,
-                    child: Text('select a type'),
+                    child: Text('survey.question.matrix.select_type'.tr()),
                   ),
                   ...scaleOptions.keys.map(
                     (e) {
@@ -170,7 +171,8 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
           ],
         ),
         AppSpacing.spacing_1.heightBox,
-        Text('Rows :', style: context.textTheme.headlineSmall),
+        Text('survey.question.matrix.rows'.tr(),
+            style: context.textTheme.headlineSmall),
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
@@ -214,12 +216,13 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
         CheckboxListTile(
           value: question.useCheckbox,
           controlAffinity: ListTileControlAffinity.leading,
-          title: const Text('Allow multiple responses per row (use checkboxes)'),
+          title: Text('survey.question.matrix.use_checkboxes'.tr()),
           onChanged: (value) {
             onChange(useCheckbox: value);
           },
         ),
-        Text('Columns :', style: context.textTheme.headlineSmall),
+        Text('survey.question.matrix.columns'.tr(),
+            style: context.textTheme.headlineSmall),
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,

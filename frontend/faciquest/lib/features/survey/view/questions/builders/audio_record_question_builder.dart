@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,10 @@ class _AudioRecordQuestionBuilderState extends State<AudioRecordQuestionBuilder>
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Coming soon'),
+        Text('survey.audio_record.coming_soon'.tr()),
       ],
     );
   }

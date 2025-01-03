@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _ShortAnswerQuestionBuilderState extends State<ShortAnswerQuestionBuilder>
       children: [
         Row(
           children: [
-            const Text('Max length :'),
+            Text('survey.question.short_answer.max_length'.tr()),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(

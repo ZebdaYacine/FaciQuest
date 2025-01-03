@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
       children: [
         Row(
           children: [
-            const Text('Min :'),
+            Text('survey.question.slider.min'.tr()),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.double(
@@ -50,7 +51,7 @@ class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
         AppSpacing.spacing_1.heightBox,
         Row(
           children: [
-            const Text('Max :'),
+            Text('survey.question.slider.max'.tr()),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.double(

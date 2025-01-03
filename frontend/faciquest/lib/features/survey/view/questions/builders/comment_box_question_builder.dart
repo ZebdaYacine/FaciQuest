@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
       children: [
         Row(
           children: [
-            const Text('Max length :'),
+            Text('survey.question.comment_box.max_length'.tr()),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(
@@ -51,7 +52,7 @@ class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
         AppSpacing.spacing_1.heightBox,
         Row(
           children: [
-            const Text('Max lines :'),
+            Text('survey.question.comment_box.max_lines'.tr()),
             AppSpacing.spacing_1.widthBox,
             Flexible(
               child: InputQty.int(
