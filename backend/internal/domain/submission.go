@@ -4,6 +4,7 @@ type Answer struct {
 	QuestionID string `json:"questionId" bson:"questionId"`
 
 	Value string `json:"value,omitempty" bson:"value,omitempty"`
+	Type  string `json:"type,omitempty" bson:"type,omitempty"`
 
 	//Rating float64 `json:"rating,omitempty" bson:"rating,omitempty"`
 

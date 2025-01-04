@@ -6,16 +6,21 @@ import (
 )
 
 type Criteria struct {
-	ID          string   `json:"id" bson:"id"`
-	Title       string   `json:"title" bson:"title"`
-	Description string   `json:"description" bson:"description"`
-	Choices     []string `json:"choices" bson:"choices"`
-	Category    Category `json:"category" bson:"category"`
+	ID          string    `json:"id" bson:"id"`
+	Title       string    `json:"title" bson:"title"`
+	Description string    `json:"description" bson:"description"`
+	Choices     []Choices `json:"choices" bson:"choices"`
+	Category    Category  `json:"category" bson:"category"`
 }
 
 type Category struct {
 	ID   string `json:"id" bson:"id"`
 	Name string `json:"Name" bson:"Name"`
+}
+
+type Choices struct {
+	ID    string `json:"id" bson:"id"`
+	Title string `json:"title" bson:"title"`
 }
 
 func (c *Criteria) Validate() error {
