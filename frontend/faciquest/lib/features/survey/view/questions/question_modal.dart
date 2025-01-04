@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ Future<void> showQuestionModal(
           ],
         ),
         child: AppBackDrop(
-          titleText: 'Add Question',
+          titleText: 'questionModal.Add Question'.tr(),
           showHeaderContent: false,
           showDivider: false,
           headerActions: BackdropHeaderActions.none,
@@ -55,7 +56,7 @@ Future<void> showQuestionModal(
                   }
                 : null,
             icon: const Icon(Icons.check_rounded),
-            label: const Text('Submit Question'),
+            label: const Text('questionModal.Submit Question').tr(),
           ),
         ),
       );
@@ -98,7 +99,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
               if ((widget.question.runtimeType != TextQuestion &&
                   widget.question.runtimeType != ImageQuestion)) ...[
                 Text(
-                  'Question Title',
+                  'questionModal.Question Title'.tr(),
                   style: context.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: context.colorScheme.primary,
@@ -108,7 +109,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 TextFormField(
                   initialValue: widget.question?.title,
                   decoration: InputDecoration(
-                    hintText: 'Enter your question here',
+                    hintText: 'questionModal.Enter your question here'.tr(),
                     filled: true,
                     fillColor: context.colorScheme.surfaceContainerHighest
                         .withOpacity(0.3),
@@ -129,7 +130,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
               ],
               AppSpacing.spacing_3.heightBox,
               Text(
-                'Question Type',
+                'questionModal.Question Type'.tr(),
                 style: context.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.primary,
@@ -166,7 +167,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                             ),
                             AppSpacing.spacing_2.widthBox,
                             Text(
-                              e.name,
+                              e.name.tr(),
                               style: context.textTheme.bodyLarge,
                             ),
                           ],
@@ -193,7 +194,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
               ),
               AppSpacing.spacing_4.heightBox,
               Text(
-                'Question Settings',
+                'questionModal.Question Settings'.tr(),
                 style: context.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.primary,
@@ -216,7 +217,8 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                       AppSpacing.spacing_2.widthBox,
                       Expanded(
                         child: Text(
-                          'Please select a question type to configure settings',
+                          'questionModal.Please select a question type to configure settings'
+                              .tr(),
                           style: context.textTheme.bodyMedium?.copyWith(
                             color: context.colorScheme.error,
                           ),
