@@ -65,7 +65,7 @@ func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, use
 	}
 	filter := bson.M{
 		"_id":                id,
-		"surveybadge.userId": userId,
+		//"surveybadge.userId": userId,
 	}
 	err = collection.FindOne(c, filter).Decode(new_survey)
 	if err != nil {
