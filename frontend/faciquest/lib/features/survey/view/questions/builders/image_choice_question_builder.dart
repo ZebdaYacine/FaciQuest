@@ -85,14 +85,15 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                           SizedBox(
                             height: 100,
                             child: ImagePickerWidget(
-                              image: item.image,
+                              imageBytes: item.image,
+                              useImageBytes: true,
                               imageUrl: item.url,
-                              onImageSelected: (value) {
+                              onImageSelected: (value) async{
                                 var choices = [
                                   ...(widget.question as ImageChoiceQuestion)
                                       .choices
                                 ];
-                                choices[index] = item.copyWith(image: value);
+                                choices[index] = item.copyWith(image:( await value?.readAsBytes()));
                                 onChange(
                                   choices: choices,
                                 );

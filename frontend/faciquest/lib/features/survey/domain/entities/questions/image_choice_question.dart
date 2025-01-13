@@ -42,8 +42,7 @@ class ImageChoiceQuestion extends QuestionEntity {
       id: map['_id'] ?? '',
       title: map['title'],
       order: map['order'],
-      choices: List<ImageChoice>.from(
-          map['choices'].map((e) => ImageChoice.fromMap(e))),
+      choices: List<ImageChoice>.from(map['choices'].map((e) => ImageChoice.fromMap(e))),
       multipleSelect: map['useCheckbox'],
     );
   }
@@ -72,7 +71,7 @@ class ImageChoice with EquatableMixin {
   final String id;
   final String? caption;
   final String? altText;
-  final File? image;
+  final Uint8List? image;
   final String? url;
 
   const ImageChoice({
@@ -89,7 +88,7 @@ class ImageChoice with EquatableMixin {
     String? id,
     String? caption,
     String? altText,
-    File? image,
+    Uint8List? image,
     String? url,
   }) {
     return ImageChoice(
@@ -103,7 +102,7 @@ class ImageChoice with EquatableMixin {
 
   static ImageChoice fromMap(Map<String, dynamic> map) {
     return ImageChoice(
-      id: map['_id']??'',
+      id: map['_id'] ?? '',
       caption: map['caption'],
       altText: map['altText'],
       url: map['url'],
@@ -116,8 +115,7 @@ class ImageChoice with EquatableMixin {
       'caption': caption,
       'altText': altText,
       'url': url,
-      // Todo: add image
-      // 'image': await image?.readAsBytes()
+      if (image != null) 'image': base64Encode(image!)
     };
   }
 

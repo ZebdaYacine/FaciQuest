@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +20,8 @@ class ImageQuestionPreview extends StatelessWidget {
         ),
       );
     } else if (question.image.image != null) {
-      return Image.file(
-        question.image.image!,
+      return Image.memory(
+        Uint8List.fromList(question.image.image!),
       );
     } else {
       return Text(

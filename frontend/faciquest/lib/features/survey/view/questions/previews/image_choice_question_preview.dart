@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +59,7 @@ class ImageChoiceQuestionPreview extends StatelessWidget {
                             fit: BoxFit.cover,
                           )
                         : (image.image != null)
-                            ? Image.file(
+                            ? Image.memory(
                                 image.image!,
                                 fit: BoxFit.cover,
                               )

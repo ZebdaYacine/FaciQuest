@@ -19,11 +19,11 @@ class _ImageQuestionBuilderState extends State<ImageQuestionBuilder>
     with BuildFormMixin {
   onChange({
     File? image,
-  }) {
+  }) async{
     widget.onChanged?.call((widget.question as ImageQuestion).copyWith(
       image: ImageChoice(
         id: (widget.question as ImageQuestion).image.id,
-        image: image,
+        image: await image?.readAsBytes(),
       ),
     ));
     setState(() {});
@@ -40,7 +40,8 @@ class _ImageQuestionBuilderState extends State<ImageQuestionBuilder>
             height: 100,
             width: double.infinity,
             child: ImagePickerWidget(
-              image: (widget.question as ImageQuestion).image.image,
+              imageBytes: (widget.question as ImageQuestion).image.image,
+              useImageBytes: true,
               imageUrl: (widget.question as ImageQuestion).image.url,
               onImageSelected: (value) {
                 onChange(
