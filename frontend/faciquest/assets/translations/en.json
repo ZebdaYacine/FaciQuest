@@ -65,7 +65,7 @@
     "empty": "Survey Not Found",
     "error": "Something Went Wrong",
     "question": {
-      "progress": "Question {0} of {1}",
+      "progress": "Question {} of {}",
       "checkboxes": {
         "select_scale": "select a scale",
         "select_type": "select a type"
@@ -247,8 +247,8 @@
       "search_label": "Search criteria",
       "search_hint": "Search by title, category or description",
       "income_range": "Income Range",
-      "min": "Min: {0}",
-      "max": "Max: {0}",
+      "min": "Min: {}",
+      "max": "Max: {}",
       "gender": {
         "title": "Gender",
         "both": "Both",

@@ -65,7 +65,7 @@
     "empty": "Sondage non trouvé",
     "error": "Une erreur est survenue",
     "question": {
-      "progress": "Question {0} sur {1}",
+      "progress": "Question {} sur {}",
       "checkboxes": {
         "select_scale": "sélectionner une échelle",
         "select_type": "sélectionner un type"
@@ -247,8 +247,8 @@
       "search_label": "Rechercher des critères",
       "search_hint": "Rechercher par titre, catégorie ou description",
       "income_range": "Tranche de Revenus",
-      "min": "Min : {0}",
-      "max": "Max : {0}",
+      "min": "Min : {}",
+      "max": "Max : {}",
       "gender": {
         "title": "Genre",
         "both": "Les deux",

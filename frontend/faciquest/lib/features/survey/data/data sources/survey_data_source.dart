@@ -205,7 +205,7 @@ class SurveyDataSourceImpl implements SurveyDataSource {
     final response = await dioClient.get<Map<String, dynamic>>(
       AppUrls.getSurveyCollectors,
       data: {
-        'surveyID': surveyId,
+        'surveyId': surveyId,
       },
     );
     if (response.statusCode == 200 &&
