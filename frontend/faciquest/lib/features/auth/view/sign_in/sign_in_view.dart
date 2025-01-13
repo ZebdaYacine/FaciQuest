@@ -47,6 +47,38 @@ class _Body extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: _LanguageSelector(),
+                  ),
+                  const SizedBox(height: 20),
+                  // Logo section
+                  Center(
+                    child: Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: context.colorScheme.shadow.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          child: Image(
+                            image: AssetImage('assets/images/logo.jpeg'),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 60),
                   Text(
                     'auth.signIn.title'.tr(),
@@ -199,6 +231,32 @@ class _LogInFormState extends State<_LogInForm> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _LanguageSelector extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.language),
+      onSelected: (String locale) {
+        context.setLocale(Locale(locale));
+      },
+      itemBuilder: (BuildContext context) => [
+        const PopupMenuItem<String>(
+          value: 'en',
+          child: Text('English'),
+        ),
+        const PopupMenuItem<String>(
+          value: 'ar',
+          child: Text('العربية'),
+        ),
+        const PopupMenuItem<String>(
+          value: 'fr',
+          child: Text('Français'),
+        ),
+      ],
     );
   }
 }
