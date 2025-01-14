@@ -39,7 +39,7 @@ class ImageChoiceQuestion extends QuestionEntity {
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
     return ImageChoiceQuestion(
-      id: map['_id'] ?? '',
+      id: map['_id'] ?? ObjectId().hexString,
       title: map['title'],
       order: map['order'],
       choices: List<ImageChoice>.from(map['choices'].map((e) => ImageChoice.fromMap(e))),
@@ -106,6 +106,7 @@ class ImageChoice with EquatableMixin {
       caption: map['caption'],
       altText: map['altText'],
       url: map['url'],
+      image: map['url'] != null ? base64Decode(map['url']) : null,
     );
   }
 

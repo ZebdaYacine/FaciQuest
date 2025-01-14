@@ -1,8 +1,6 @@
 class AppUrls {
   static const useLocalhost = false;
-  static const baseUrl = useLocalhost
-      ? 'http://localhost:9000'
-      : 'https://faciquest-2.onrender.com';
+  static const baseUrl = useLocalhost ? 'http://localhost:9000' : 'https://up-0tti.onrender.com';
 
   /// Auth Urls
   static const authLoginUrl = '$baseUrl/login';

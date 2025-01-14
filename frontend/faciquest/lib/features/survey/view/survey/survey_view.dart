@@ -32,11 +32,16 @@ class _SurveyContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<SurveyCubit, SurveyState>(
-      listenWhen: (previous, current) =>
-          previous.submissionStatus != current.submissionStatus,
+      listenWhen: (previous, current) => previous.submissionStatus != current.submissionStatus,
       listener: (context, state) {
         if (state.submissionStatus.isSuccess) {
           _showSuccessDialog(context);
+          Future.delayed(2.seconds, () {
+            if (context.mounted) {
+              context.pop();
+              context.pop();
+            }
+          });
         }
       },
       child: BlocBuilder<SurveyCubit, SurveyState>(
@@ -131,8 +136,7 @@ class _SurveyQuestions extends StatelessWidget {
           itemCount: state.survey.questions.length,
           itemBuilder: (context, index) {
             final question = state.survey.questions[index];
-            final answer =
-                context.read<SurveyCubit>().state.answers[question.id];
+            final answer = context.read<SurveyCubit>().state.answers[question.id];
 
             return SingleChildScrollView(
               padding: AppSpacing.spacing_3.padding,
@@ -140,16 +144,12 @@ class _SurveyQuestions extends StatelessWidget {
                 children: [
                   LinearProgressIndicator(
                     value: (index + 1) / state.survey.questions.length,
-                    backgroundColor:
-                        context.colorScheme.surfaceContainerHighest,
+                    backgroundColor: context.colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   AppSpacing.spacing_2.heightBox,
                   Text(
-                    'survey.question.progress'.tr(args: [
-                      '${index + 1}',
-                      '${state.survey.questions.length}'
-                    ]),
+                    'survey.question.progress'.tr(args: ['${index + 1}', '${state.survey.questions.length}']),
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                     ),
@@ -164,8 +164,7 @@ class _SurveyQuestions extends StatelessWidget {
                     onAnswerChanged: cubit.onAnswerChanged,
                   ),
                   AppSpacing.spacing_4.heightBox,
-                  if (index == state.survey.questions.length - 1)
-                    _SubmitSection(cubit: cubit),
+                  if (index == state.survey.questions.length - 1) _SubmitSection(cubit: cubit),
                 ],
               ),
             );
@@ -184,8 +183,7 @@ class _SubmitSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SurveyCubit, SurveyState>(
-      buildWhen: (previous, current) =>
-          previous.submissionStatus != current.submissionStatus,
+      buildWhen: (previous, current) => previous.submissionStatus != current.submissionStatus,
       builder: (context, state) {
         return Container(
           padding: AppSpacing.spacing_3.padding,
@@ -220,8 +218,7 @@ class _SubmitSection extends StatelessWidget {
               ),
               AppSpacing.spacing_3.heightBox,
               FilledButton.icon(
-                onPressed:
-                    state.submissionStatus.isLoading ? null : cubit.submit,
+                onPressed: state.submissionStatus.isLoading ? null : cubit.submit,
                 style: FilledButton.styleFrom(
                   minimumSize: const Size.fromHeight(56),
                   shape: RoundedRectangleBorder(

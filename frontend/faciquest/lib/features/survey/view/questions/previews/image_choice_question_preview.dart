@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
@@ -44,21 +44,22 @@ class ImageChoiceQuestionPreview extends StatelessWidget {
                   padding: 2.padding,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: answer?.getSelectedChoice(image.id) == image.id
-                          ? Colors.green
-                          : context.colorScheme.primary,
+                      color:
+                          answer?.getSelectedChoice(image.id) == image.id ? Colors.green : context.colorScheme.primary,
                       width: 4,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: AspectRatio(
                     aspectRatio: 4 / 3,
-                    child: (image.url != null)
-                        ? Image.network(
-                            image.url!,
-                            fit: BoxFit.cover,
-                          )
-                        : (image.image != null)
+                    child:
+                        // (image.url != null)
+                        //     ? Image.memory(
+                        //         base64Decode(image.url!),
+                        //         fit: BoxFit.cover,
+                        //       )
+                        //     :
+                        (image.image != null)
                             ? Image.memory(
                                 image.image!,
                                 fit: BoxFit.cover,

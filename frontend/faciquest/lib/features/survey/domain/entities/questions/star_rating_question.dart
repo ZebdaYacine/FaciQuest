@@ -16,14 +16,14 @@ class StarRatingQuestion extends QuestionEntity {
   });
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {
+    final color = int.tryParse(map['color']);
     return StarRatingQuestion(
       id: map['id'] ?? '',
       title: map['title'],
       order: map['order'],
       maxRating: map['maxRating'],
-      shape: StarRatingShape.values
-          .firstWhere((element) => element.name == map['shape']),
-      color: Color(int.parse(map['color'])),
+      shape: StarRatingShape.values.firstWhere((element) => element.name == map['shape']),
+      color: color != null ? Color(color) : Colors.amber,
     );
   }
 

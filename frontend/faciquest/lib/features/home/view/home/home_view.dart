@@ -12,7 +12,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(getIt<SurveyRepository>())..fetchSurveys(),
+      create: (context) => HomeCubit(getIt<SurveyRepository>()),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -103,8 +103,7 @@ class HomeView extends StatelessWidget {
                       return Skeletonizer(
                         enabled: state.status.isLoading,
                         child: ListView.builder(
-                          itemCount:
-                              state.surveys.isEmpty ? 10 : state.surveys.length,
+                          itemCount: state.surveys.isEmpty ? 10 : state.surveys.length,
                           itemBuilder: (context, index) {
                             SurveyEntity? surveyEntity;
                             if (state.surveys.isEmpty) {
@@ -256,10 +255,7 @@ class _SurveyCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      surveyEntity?.price
-                              ?.toStringAsFixed(2)
-                              .replaceAll('.', ',') ??
-                          '10,00 DZD',
+                      surveyEntity?.price?.toStringAsFixed(2).replaceAll('.', ',') ?? '10,00 DZD',
                       style: context.textTheme.titleMedium?.copyWith(
                         color: context.colorScheme.onPrimaryContainer,
                         fontWeight: FontWeight.bold,

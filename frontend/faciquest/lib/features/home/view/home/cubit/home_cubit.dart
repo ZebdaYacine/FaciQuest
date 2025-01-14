@@ -11,15 +11,14 @@ class HomeCubit extends Cubit<HomeState> {
       : super(const HomeState(
           status: Status.showLoading,
         )) {
-    subscription = Stream.periodic(const Duration(seconds: 30)).listen((event) {
-      fetchSurveys();
-    });
+    fetchSurveys();
   }
 
   StreamSubscription? subscription;
 
   @override
   Future<void> close() {
+    logInfo('HomeCubit:close');
     subscription?.cancel();
     return super.close();
   }
@@ -27,7 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
   final SurveyRepository repository;
 
   void fetchSurveys() async {
-    repository.getSurveys().listen(
+    subscription = repository.getSurveys().listen(
           (surveys) => emit(
             state.copyWith(
               surveys: surveys,
@@ -39,6 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
               status: Status.failure,
             ),
           ),
+          cancelOnError: false,
         );
   }
 }
