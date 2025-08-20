@@ -152,3 +152,14 @@ func (sc *SurveyController) GetAllSurveysRequest(c *gin.Context) {
 		Data:    result.List,
 	})
 }
+
+// GetSurveysByStatusRequest handles listing surveys filtered by status
+func (sc *SurveyController) GetSurveysByStatusRequest(c *gin.Context) {
+	status := c.Query("status")
+	result := sc.SurveyUseCase.GetSurveysByStatus(c, status)
+	if err := result.Err; err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{Message: "GET SURVEYS BY STATUS REQUEST DONE SUCCESSFULY", Data: result.List})
+}

@@ -55,6 +55,7 @@ type SurveyUseCase interface {
 	GetSurveyById(c context.Context, survey *SurveyParams) *SurveyResulat
 	GetMySurveys(c context.Context, survey *SurveyParams) *SurveysResulat
 	GetAllSurveys(c context.Context) *SurveysResulat
+	GetSurveysByStatus(c context.Context, status string) *SurveysResulat
 }
 
 type surveyUseCase struct {
@@ -167,6 +168,27 @@ func (su *surveyUseCase) GetAllSurveys(c context.Context) *SurveysResulat {
 		List: result,
 		Err:  nil,
 	}
+}
+
+// GetSurveysByStatus implements SurveyUseCase.
+func (su *surveyUseCase) GetSurveysByStatus(c context.Context, status string) *SurveysResulat {
+
+	allowed := map[string]bool{"published": true, "pending": true, "rejected": true, "": true}
+	if !allowed[status] {
+		return &SurveysResulat{
+			List: nil,
+			Err:  fmt.Errorf("invalid status"),
+		}
+	}
+
+	result, err := su.repo.GetSurveysByStatus(c, status)
+	if err != nil {
+		return &SurveysResulat{
+			List: nil,
+			Err:  fmt.Errorf("error getting surveys by status: %v", err),
+		}
+	}
+	return &SurveysResulat{List: result, Err: nil}
 }
 
 // GetMySurveys implements SurveyUseCase.

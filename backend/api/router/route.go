@@ -77,5 +77,6 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewUpdatePaymentStatusRouter(db, adminRouter)
 	private.NewCreateCriteriaRouter(db, adminRouter)
 	private.NewGetUserListRouter(db, adminRouter)
+	private.NewGetSurveysByStatusRouter(db, adminRouter)
 
 }

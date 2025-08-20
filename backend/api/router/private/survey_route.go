@@ -63,3 +63,10 @@ func NewGetAllSurveysRouter(db database.Database, group *gin.RouterGroup) {
 	}
 	group.GET("get-all-surveys", sc.GetAllSurveysRequest)
 }
+
+func NewGetSurveysByStatusRouter(db database.Database, group *gin.RouterGroup) {
+	sr := repository.NewSurveyRepository(db)
+	su := usecase.NewSurveyUseCase(sr, core.SURVEY)
+	sc := &controller.SurveyController{SurveyUseCase: su}
+	group.GET("get-surveys-by-status", sc.GetSurveysByStatusRequest)
+}

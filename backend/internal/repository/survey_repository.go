@@ -24,6 +24,7 @@ type SurveyRepository interface {
 	GetMySurveys(c context.Context, userId string) (*[]domain.SurveyBadge, error)
 	GetSurveyById(c context.Context, surveyId string, userId string) (*domain.Survey, error)
 	GetAllSurveys(c context.Context) (*[]domain.SurveyBadge, error)
+	GetSurveysByStatus(c context.Context, status string) (*[]domain.SurveyBadge, error)
 }
 
 func NewSurveyRepository(db database.Database) SurveyRepository {
@@ -64,12 +65,12 @@ func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, use
 		log.Fatal(err)
 	}
 	filter := bson.M{
-		"_id":                id,
+		"_id": id,
 		//"surveybadge.userId": userId,
 	}
 	err = collection.FindOne(c, filter).Decode(new_survey)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {	
+		if err == mongo.ErrNoDocuments {
 			return nil, fmt.Errorf("survey not found")
 		}
 		return nil, err
@@ -171,4 +172,31 @@ func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain
 		return nil, err
 	}
 	return new_survey, nil
+}
+
+// GetSurveysByStatus implements SurveyRepository.
+func (s *surveyRepository) GetSurveysByStatus(c context.Context, status string) (*[]domain.SurveyBadge, error) {
+	collection := s.database.Collection("survey")
+	filter := bson.M{}
+	if status != "" {
+		filter = bson.M{
+			"surveybadge.status": status,
+		}
+	}
+	list, err := collection.Find(c, filter)
+	if err != nil {
+		log.Printf("Failed to load surveys by status: %v", err)
+		return nil, err
+	}
+	list_surveys := []domain.SurveyBadge{}
+	for list.Next(c) {
+		new_survey := domain.Survey{}
+		if err := list.Decode(&new_survey); err != nil {
+			log.Fatal(err)
+		}
+		survey_badge := domain.SurveyBadge{}
+		survey_badge = new_survey.SurveyBadge
+		list_surveys = append(list_surveys, survey_badge)
+	}
+	return &list_surveys, nil
 }
