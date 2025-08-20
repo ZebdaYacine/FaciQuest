@@ -28,6 +28,7 @@ type Answer struct {
 type Submission struct {
 	SurveyID    string   `json:"surveyId" bson:"surveyId"`
 	CollectorID string   `json:"collectorId" bson:"collectorId"`
+	UserId      string   `json:"userId" bson:"userId"`
 	Answers     []Answer `json:"answers" bson:"answers"`
 }
 

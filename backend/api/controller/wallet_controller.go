@@ -16,7 +16,7 @@ import (
 type WalletController struct {
 	WalletUseCase  usecase.WalletUseCase
 	PaymentUseCase usecase.PaymentUseCase
-	UserUsecase    usecase.UserUsecase
+	UserUsecase    usecase.DashboardUsecase
 }
 
 func (wc *PaymentController) UpdateWalletRequest(c *gin.Context) {

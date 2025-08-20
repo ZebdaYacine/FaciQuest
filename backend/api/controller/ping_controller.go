@@ -10,7 +10,7 @@ import (
 )
 
 type TestController struct {
-	UserUsecase usecase.UserUsecase
+	UserUsecase usecase.DashboardUsecase
 }
 
 func (ic *TestController) PingRequest(c *gin.Context) {

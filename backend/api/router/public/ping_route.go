@@ -10,8 +10,8 @@ import (
 )
 
 func NewPingRouter(db database.Database, group *gin.RouterGroup) {
-	ir := repository.NewUserRepository(db)
-	uc := usecase.NewUserUsecase(ir, "")
+	ir := repository.NewDashboardRepository(db)
+	uc := usecase.NewDashBoardUsecase(ir, "")
 	ic := &controller.TestController{
 		UserUsecase: uc, // usecase for insured operations
 	}

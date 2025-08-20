@@ -23,6 +23,7 @@ type Collection interface {
 	DeleteOne(context.Context, interface{}) (*mongo.DeleteResult, error)
 	FindOne(context.Context, interface{}) SingleResult
 	Find(context.Context, interface{}) (*mongo.Cursor, error)
+	CountDocuments(context.Context, interface{}) (int64, error)
 	UpdateOne(context.Context, interface{}, interface{}, ...*options.UpdateOptions) (*mongo.UpdateResult, error)
 }
 
@@ -86,6 +87,10 @@ func (md *mongoDatabase) Collection(colName string) Collection {
 func (md *mongoDatabase) Client() Client {
 	client := md.db.Client()
 	return &mongoClient{cl: client}
+}
+
+func (mc *mongoCollection) CountDocuments(ctx context.Context, filter interface{}) (int64, error) {
+	return mc.coll.CountDocuments(ctx, filter)
 }
 
 func (mc *mongoCollection) InsertOne(ctx context.Context, document interface{}) (interface{}, error) {
