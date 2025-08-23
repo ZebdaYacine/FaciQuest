@@ -22,6 +22,11 @@ type PaymentResulat struct {
 	Err  error
 }
 
+type PaymentListResulat struct {
+	Data []domain.PaymentWithUserInfo
+	Err  error
+}
+
 var (
 	walletResulat = &WalletResulat{}
 )

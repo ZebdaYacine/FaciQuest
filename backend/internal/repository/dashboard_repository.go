@@ -4,7 +4,9 @@ import (
 	"back-end/internal/domain"
 	"back-end/pkg/database"
 	"context"
+	"fmt"
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -13,6 +15,7 @@ import (
 type DashBoardRepository interface {
 	GetUserList(c context.Context, filter *domain.UserFilter) (*domain.UserListResponse, error)
 	GetDashboardStats(c context.Context) (*domain.DashboardStats, error)
+	GetAllPayments(c context.Context) ([]domain.PaymentWithUserInfo, error)
 }
 
 type dashboardRepository struct {
@@ -197,4 +200,101 @@ func getInt64Value(data bson.M, key string) int64 {
 		return value
 	}
 	return 0
+}
+
+// GetAllPayments implements DashBoardRepository.
+func (d *dashboardRepository) GetAllPayments(c context.Context) ([]domain.PaymentWithUserInfo, error) {
+	collection := d.database.Collection("payment")
+	usersCollection := d.database.Collection("users")
+
+	cursor, err := collection.Find(c, bson.M{})
+	if err != nil {
+		log.Printf("Failed to find payments: %v", err)
+		return nil, fmt.Errorf("failed to retrieve payments: %v", err)
+	}
+	defer cursor.Close(c)
+
+	var payments []domain.PaymentWithUserInfo
+	for cursor.Next(c) {
+		var payment bson.M
+		if err := cursor.Decode(&payment); err != nil {
+			log.Printf("Failed to decode payment: %v", err)
+			continue
+		}
+
+		// Get user information
+		var userFirstName, userLastName, userPhone, userEmail string
+		if walletData, exists := payment["wallet"]; exists {
+			if walletMap, ok := walletData.(bson.M); ok {
+				if userID, exists := walletMap["userid"]; exists {
+					// Fetch user data
+					userObjectID, err := primitive.ObjectIDFromHex(userID.(string))
+					if err == nil {
+						var user bson.M
+						userFilter := bson.D{{Key: "_id", Value: userObjectID}}
+						err := usersCollection.FindOne(c, userFilter).Decode(&user)
+						if err == nil {
+							userFirstName = getStringValue(user, "firstname")
+							userLastName = getStringValue(user, "lastname")
+							userPhone = getStringValue(user, "phone")
+							userEmail = getStringValue(user, "email")
+						}
+					}
+				}
+			}
+		}
+
+		// Format dates
+		requestDate := formatDate(payment["payment_request_date"].(int64))
+		paymentDate := ""
+		if paymentDateUnix, exists := payment["payment_date"]; exists && paymentDateUnix != nil {
+			paymentDate = formatDate(paymentDateUnix.(int64))
+		}
+
+		// Convert bson.M to domain.PaymentWithUserInfo
+		paymentDoc := domain.PaymentWithUserInfo{
+			ID:                 payment["_id"].(primitive.ObjectID).Hex(),
+			Amount:             payment["amount"].(float64),
+			Status:             payment["status"].(string),
+			PaymentRequestDate: requestDate,
+			PaymentDate:        paymentDate,
+			UserFirstName:      userFirstName,
+			UserLastName:       userLastName,
+			UserPhone:          userPhone,
+			UserEmail:          userEmail,
+		}
+		// paymentDoc.Wallet = domain.Wallet{}
+
+		// Handle wallet data
+		if walletData, exists := payment["wallet"]; exists {
+			if walletMap, ok := walletData.(bson.M); ok {
+				paymentDoc.Wallet = domain.Wallet{
+					UserID:        walletMap["userid"].(string),
+					Amount:        walletMap["amount"].(float64),
+					TempAmount:    walletMap["temp_amount"].(float64),
+					CCP:           walletMap["ccp"].(string),
+					RIP:           walletMap["rip"].(string),
+					PaymentMethod: walletMap["payment_method"].(string),
+				}
+			}
+		}
+
+		payments = append(payments, paymentDoc)
+	}
+
+	if err := cursor.Err(); err != nil {
+		log.Printf("Cursor error: %v", err)
+		return nil, fmt.Errorf("cursor error: %v", err)
+	}
+
+	return payments, nil
+}
+
+// formatDate converts Unix timestamp to "1-1-2025" format
+func formatDate(unixTimestamp int64) string {
+	if unixTimestamp == 0 {
+		return ""
+	}
+	t := time.Unix(unixTimestamp, 0)
+	return fmt.Sprintf("%d-%d-%d", t.Day(), t.Month(), t.Year())
 }

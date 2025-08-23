@@ -84,3 +84,23 @@ func (dc *DashBoardController) GetUserNumberRequest(c *gin.Context) {
 		},
 	})
 }
+
+// GetAllPaymentsRequest handles the payment listing request
+func (dc *DashBoardController) GetAllPaymentsRequest(c *gin.Context) {
+	log.Println("__________________________RECEIVING GET ALL PAYMENTS REQUEST__________________________")
+
+	result := dc.DashboardUsecase.GetAllPayments(c)
+
+	if result.Err != nil {
+		log.Printf("Error getting all payments: %v", result.Err)
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{
+			Message: "Failed to retrieve payments",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "Payments retrieved successfully",
+		Data:    result.Data,
+	})
+}

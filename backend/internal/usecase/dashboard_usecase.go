@@ -30,6 +30,7 @@ var (
 type DashboardUsecase interface {
 	GetListOfUsers(c context.Context, data *DashboardParams) *DashboardResulat
 	GetDashboardStats(c context.Context) *DashboardStatsResulat
+	GetAllPayments(c context.Context) *PaymentListResulat
 }
 
 type dashboardUsecase struct {
@@ -124,4 +125,23 @@ func validateUserFilter(filter *domain.UserFilter) error {
 	}
 
 	return nil
+}
+
+// GetAllPayments implements DashboardUsecase.
+func (d *dashboardUsecase) GetAllPayments(c context.Context) *PaymentListResulat {
+	log.Println("LAUNCHING GET ALL PAYMENTS USE CASE")
+
+	payments, err := d.repo.GetAllPayments(c)
+	if err != nil {
+		log.Printf("Failed to get all payments: %v", err)
+		return &PaymentListResulat{
+			Data: nil,
+			Err:  fmt.Errorf("failed to retrieve payments: %v", err),
+		}
+	}
+
+	return &PaymentListResulat{
+		Data: payments,
+		Err:  nil,
+	}
 }

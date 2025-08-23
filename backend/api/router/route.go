@@ -75,6 +75,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 		pkg.GET_ROOT_SERVER_SEETING().SECRET_KEY,
 		"Admin"))
 	private.NewUpdatePaymentStatusRouter(db, adminRouter)
+	private.NewGetAllPaymentsRouter(db, adminRouter)
 	private.NewCreateCriteriaRouter(db, adminRouter)
 	private.NewGetUserListRouter(db, adminRouter)
 	private.NewGetSurveysByStatusRouter(db, adminRouter)

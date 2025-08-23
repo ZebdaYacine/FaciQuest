@@ -19,3 +19,12 @@ func NewUpdatePaymentStatusRouter(db database.Database, group *gin.RouterGroup) 
 	}
 	group.POST("update-payment-status", pc.UpdatePaymentStatusRequest)
 }
+
+func NewGetAllPaymentsRouter(db database.Database, group *gin.RouterGroup) {
+	dr := repository.NewDashboardRepository(db)
+	du := usecase.NewDashBoardUsecase(dr, core.SURVEY)
+	dc := &controller.DashBoardController{
+		DashboardUsecase: du,
+	}
+	group.GET("get-all-payments", dc.GetAllPaymentsRequest)
+}
