@@ -239,7 +239,7 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
             AppSpacing.spacing_2.widthBox,
             Expanded(
               child: FilledButton(
-                onPressed: () => context.pop(result: selectedChoices),
+                onPressed: () => context.pop(selectedChoices),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(

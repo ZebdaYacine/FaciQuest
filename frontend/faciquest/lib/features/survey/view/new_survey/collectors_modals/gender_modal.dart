@@ -64,7 +64,7 @@ class _GenderModalState extends State<GenderModal> {
           backgroundColor: context.colorScheme.primary,
         ),
         onPressed: () {
-          context.pop(result: selectedGender);
+          context.pop(selectedGender);
         },
         child: Text('actions.save'.tr()),
       ),

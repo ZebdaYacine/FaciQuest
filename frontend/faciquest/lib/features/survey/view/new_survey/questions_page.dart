@@ -447,11 +447,10 @@ Future<List<QuestionEntity>?> showMoveBottomSheet(
 
               newIndex = newIndex!.clamp(0, temp.length);
               temp.insert(newIndex!, item);
-              context.pop(result: temp);
+              context.pop(temp);
             },
             icon: Icon(copy ? Icons.copy_rounded : Icons.move_up_rounded),
-            label:
-                Text('${copy ? 'actions.copy' : 'actions.move'}_question'.tr()),
+            label: Text('${copy ? 'actions.copy' : 'actions.move'}_question'.tr()),
           ),
         );
       });

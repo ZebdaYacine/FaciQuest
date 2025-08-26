@@ -63,7 +63,7 @@ class _IncomeModalState extends State<IncomeModal> {
           backgroundColor: context.colorScheme.primary,
         ),
         onPressed: () {
-          context.pop(result: values);
+          context.pop(values);
         },
         child: Text('actions.save'.tr()),
       ),

@@ -210,7 +210,7 @@ class _CountryModalState extends State<CountryModal> {
           backgroundColor: context.colorScheme.primary,
         ),
         onPressed: () {
-          context.pop(result: {
+          context.pop({
             'countries': countries,
             'provinces': provinces,
             'cities': cities,

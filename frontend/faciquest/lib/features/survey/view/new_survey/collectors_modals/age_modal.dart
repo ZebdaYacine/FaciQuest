@@ -1,7 +1,8 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:awesome_extensions/awesome_extensions.dart' hide NavigatorExt;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AgeModal extends StatefulWidget {
   const AgeModal({super.key});
@@ -31,10 +32,8 @@ class _AgeModalState extends State<AgeModal> {
             min: 0,
             max: 120,
             labels: RangeLabels(
-              'collectors.targeting.min'
-                  .tr(args: [values.start.toStringAsFixed(0)]),
-              'collectors.targeting.max'
-                  .tr(args: [values.end.toStringAsFixed(0)]),
+              'collectors.targeting.min'.tr(args: [values.start.toStringAsFixed(0)]),
+              'collectors.targeting.max'.tr(args: [values.end.toStringAsFixed(0)]),
             ),
             divisions: 120,
             onChanged: (value) {
@@ -48,10 +47,8 @@ class _AgeModalState extends State<AgeModal> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('collectors.targeting.min'
-                    .tr(args: [values.start.toStringAsFixed(0)])),
-                Text('collectors.targeting.max'
-                    .tr(args: [values.end.toStringAsFixed(0)])),
+                Text('collectors.targeting.min'.tr(args: [values.start.toStringAsFixed(0)])),
+                Text('collectors.targeting.max'.tr(args: [values.end.toStringAsFixed(0)])),
               ],
             ),
           )
@@ -63,7 +60,7 @@ class _AgeModalState extends State<AgeModal> {
           backgroundColor: context.colorScheme.primary,
         ),
         onPressed: () {
-          context.pop(result: values);
+          context.pop(values);
         },
         child: Text('actions.save'.tr()),
       ),
