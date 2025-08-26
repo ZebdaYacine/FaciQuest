@@ -1,44 +1,32 @@
 import 'dart:convert';
+import 'package:dashboard/models/models.dart';
 import 'package:http/http.dart' as http;
-import '../models/user_model.dart';
-import '../models/survey_model.dart';
-import '../models/cashout_model.dart';
-import '../models/analytics_model.dart';
 
 class ApiService {
   static const String baseUrl = 'http://localhost:8080/api'; // Update with your backend URL
-  
+
   // Auth token (should be managed by auth service)
   static String? _authToken;
-  
+
   static void setAuthToken(String token) {
     _authToken = token;
   }
-  
+
   static Map<String, String> get _headers {
-    final headers = {
-      'Content-Type': 'application/json',
-    };
-    
+    final headers = {'Content-Type': 'application/json'};
+
     if (_authToken != null) {
       headers['Authorization'] = 'Bearer $_authToken';
     }
-    
+
     return headers;
   }
 
   // Users API
-  static Future<List<UserModel>> getUsers({
-    UserFilters? filters,
-    int page = 1,
-    int limit = 10,
-  }) async {
+  static Future<List<UserModel>> getUsers({UserFilters? filters, int page = 1, int limit = 10}) async {
     try {
-      final queryParams = <String, String>{
-        'page': page.toString(),
-        'limit': limit.toString(),
-      };
-      
+      final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
+
       if (filters != null) {
         if (filters.isActive != null) {
           queryParams['is_active'] = filters.isActive.toString();
@@ -59,10 +47,10 @@ class ApiService {
           queryParams['max_participations'] = filters.maxParticipations.toString();
         }
       }
-      
+
       final uri = Uri.parse('$baseUrl/admin/users').replace(queryParameters: queryParams);
       final response = await http.get(uri, headers: _headers);
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List<dynamic> usersJson = data['users'] ?? [];
@@ -77,11 +65,8 @@ class ApiService {
 
   static Future<UserModel?> getUserById(String userId) async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/admin/users/$userId'),
-        headers: _headers,
-      );
-      
+      final response = await http.get(Uri.parse('$baseUrl/admin/users/$userId'), headers: _headers);
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         return UserModel.fromJson(data);
@@ -100,7 +85,7 @@ class ApiService {
         headers: _headers,
         body: json.encode({'is_active': isActive}),
       );
-      
+
       return response.statusCode == 200;
     } catch (e) {
       throw Exception('Error updating user status: $e');
@@ -108,20 +93,13 @@ class ApiService {
   }
 
   // Surveys API
-  static Future<List<SurveyModel>> getSurveys({
-    SurveyFilters? filters,
-    int page = 1,
-    int limit = 10,
-  }) async {
+  static Future<List<SurveyEntity>> getSurveys({SurveyFilters? filters, int page = 1, int limit = 10}) async {
     try {
-      final queryParams = <String, String>{
-        'page': page.toString(),
-        'limit': limit.toString(),
-      };
-      
+      final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
+
       if (filters != null) {
-        if (filters.status != SurveyStatus.all) {
-          queryParams['status'] = filters.status.value;
+        if (filters.status != SurveyStatus.active) {
+          queryParams['status'] = filters.status.name;
         }
         if (filters.startDate != null) {
           queryParams['start_date'] = filters.startDate!.toIso8601String();
@@ -136,14 +114,14 @@ class ApiService {
           queryParams['max_reward'] = filters.maxReward.toString();
         }
       }
-      
+
       final uri = Uri.parse('$baseUrl/admin/surveys').replace(queryParameters: queryParams);
       final response = await http.get(uri, headers: _headers);
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List<dynamic> surveysJson = data['surveys'] ?? [];
-        return surveysJson.map((json) => SurveyModel.fromJson(json)).toList();
+        return surveysJson.map((json) => SurveyEntity.fromJson(json)).toList();
       } else {
         throw Exception('Failed to fetch surveys: ${response.statusCode}');
       }
@@ -152,14 +130,29 @@ class ApiService {
     }
   }
 
+  static Future<SurveyEntity?> getSurveyById(String surveyId) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/admin/surveys/$surveyId'), headers: _headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return SurveyEntity.fromMap(data);
+      } else {
+        throw Exception('Failed to fetch survey: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching survey: $e');
+    }
+  }
+
   static Future<bool> updateSurveyStatus(String surveyId, SurveyStatus status) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/admin/surveys/$surveyId/status'),
         headers: _headers,
-        body: json.encode({'status': status.value}),
+        body: json.encode({'status': status.name}),
       );
-      
+
       return response.statusCode == 200;
     } catch (e) {
       throw Exception('Error updating survey status: $e');
@@ -173,11 +166,8 @@ class ApiService {
     int limit = 10,
   }) async {
     try {
-      final queryParams = <String, String>{
-        'page': page.toString(),
-        'limit': limit.toString(),
-      };
-      
+      final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
+
       if (filters != null) {
         if (filters.status != CashoutStatus.all) {
           queryParams['status'] = filters.status.value;
@@ -195,10 +185,10 @@ class ApiService {
           queryParams['max_amount'] = filters.maxAmount.toString();
         }
       }
-      
+
       final uri = Uri.parse('$baseUrl/admin/cashouts').replace(queryParameters: queryParams);
       final response = await http.get(uri, headers: _headers);
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List<dynamic> cashoutsJson = data['cashouts'] ?? [];
@@ -217,13 +207,13 @@ class ApiService {
       if (rejectionReason != null) {
         body['rejection_reason'] = rejectionReason;
       }
-      
+
       final response = await http.put(
         Uri.parse('$baseUrl/admin/cashouts/$cashoutId/status'),
         headers: _headers,
         body: json.encode(body),
       );
-      
+
       return response.statusCode == 200;
     } catch (e) {
       throw Exception('Error updating cashout status: $e');
@@ -238,10 +228,10 @@ class ApiService {
         'start_date': period.getStartDate().toIso8601String(),
         'end_date': period.getEndDate().toIso8601String(),
       };
-      
+
       final uri = Uri.parse('$baseUrl/admin/analytics').replace(queryParameters: queryParams);
       final response = await http.get(uri, headers: _headers);
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         return AnalyticsModel.fromJson(data);
@@ -256,11 +246,8 @@ class ApiService {
   // Dashboard Stats
   static Future<Map<String, dynamic>> getDashboardStats() async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/admin/dashboard/stats'),
-        headers: _headers,
-      );
-      
+      final response = await http.get(Uri.parse('$baseUrl/admin/dashboard/stats'), headers: _headers);
+
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {

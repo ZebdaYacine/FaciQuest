@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/user_model.dart';
-import '../models/survey_model.dart';
-import '../models/cashout_model.dart';
+import '../models/models.dart';
 
 class UserFiltersWidget extends StatefulWidget {
   final UserFilters filters;
@@ -321,7 +319,7 @@ class _SurveyFiltersWidgetState extends State<SurveyFiltersWidget> {
                           contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         ),
                         items: SurveyStatus.values.map((status) {
-                          return DropdownMenuItem(value: status, child: Text(status.displayName));
+                          return DropdownMenuItem(value: status, child: Text(status.name));
                         }).toList(),
                         onChanged: (value) {
                           if (value != null) {

@@ -1,0 +1,29 @@
+part of '../answer_entity.dart';
+
+class StarRatingAnswer extends AnswerEntity {
+  const StarRatingAnswer({
+    required super.questionId,
+    required this.rating,
+  });
+
+  final double rating;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      ...super.toMap(),
+      'type': 'starRating',
+      'rating': rating.toString(),
+    };
+  }
+
+  @override
+  TrinaCell get plutoCell => TrinaCell(value: rating);
+
+  static AnswerEntity fromMap(Map<String, dynamic> map) {
+    return StarRatingAnswer(
+      questionId: map['questionId'],
+      rating: double.parse(map['rating']),
+    );
+  }
+}

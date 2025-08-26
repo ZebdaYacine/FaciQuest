@@ -52,6 +52,8 @@ dependencies:
   
   # Responsive layout
   responsive_framework: ^1.1.1
+  trina_grid: ^1.6.10
+  objectid: ^4.0.1
 
 dev_dependencies:
   flutter_test:

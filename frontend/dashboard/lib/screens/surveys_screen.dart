@@ -3,8 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:intl/intl.dart';
 import '../providers/dashboard_provider.dart';
-import '../models/survey_model.dart';
 import '../widgets/filter_widgets.dart';
+import 'survey_preview_screen.dart';
+import '../models/models.dart';
 
 class SurveysScreen extends StatefulWidget {
   const SurveysScreen({super.key});
@@ -115,7 +116,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
                   _buildStatCard(
                     context,
                     'Pending',
-                    provider.surveys.where((s) => s.status == SurveyStatus.pending).length.toString(),
+                    provider.surveys.where((s) => s.status == SurveyStatus.draft).length.toString(),
                     Icons.hourglass_empty,
                     Colors.orange,
                   ),
@@ -123,7 +124,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
                   _buildStatCard(
                     context,
                     'Rejected',
-                    provider.surveys.where((s) => s.status == SurveyStatus.rejected).length.toString(),
+                    provider.surveys.where((s) => s.status == SurveyStatus.deleted).length.toString(),
                     Icons.block,
                     Colors.red,
                   ),
@@ -217,7 +218,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
     );
   }
 
-  DataRow _buildSurveyRow(BuildContext context, SurveyModel survey, DashboardProvider provider) {
+  DataRow _buildSurveyRow(BuildContext context, SurveyEntity survey, DashboardProvider provider) {
     return DataRow(
       cells: [
         DataCell(
@@ -226,14 +227,14 @@ class _SurveysScreenState extends State<SurveysScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                survey.title,
+                survey.name,
                 style: const TextStyle(fontWeight: FontWeight.w500),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              if (survey.description.isNotEmpty)
+              if (survey.description != null)
                 Text(
-                  survey.description,
+                  survey.description!,
                   style: Theme.of(
                     context,
                   ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
@@ -243,7 +244,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
             ],
           ),
         ),
-        DataCell(Text(survey.createdBy)),
+        DataCell(Text(survey.collectorId ?? '')),
         DataCell(
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -252,7 +253,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
-              survey.status.displayName,
+              survey.status.name,
               style: TextStyle(color: _getStatusColor(survey.status), fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ),
@@ -262,7 +263,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(color: Colors.blue.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
             child: Text(
-              survey.participantCount.toString(),
+              survey.responseCount.toString(),
               style: const TextStyle(color: Colors.blue, fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ),
@@ -272,13 +273,13 @@ class _SurveysScreenState extends State<SurveysScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(color: Colors.purple.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
             child: Text(
-              survey.questionCount.toString(),
+              survey.questions.length.toString(),
               style: const TextStyle(color: Colors.purple, fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ),
         ),
         DataCell(
-          Text('\$${survey.rewardAmount.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.w500)),
+          Text('\$${survey.price?.toStringAsFixed(2) ?? '0.00'}', style: const TextStyle(fontWeight: FontWeight.w500)),
         ),
         DataCell(
           Column(
@@ -286,9 +287,9 @@ class _SurveysScreenState extends State<SurveysScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(DateFormat('MMM dd, yyyy').format(survey.createdAt), style: Theme.of(context).textTheme.bodySmall),
-              if (survey.publishedAt != null)
+              if (survey.updatedAt != null)
                 Text(
-                  'Published: ${DateFormat('MMM dd').format(survey.publishedAt!)}',
+                  'Published: ${DateFormat('MMM dd').format(survey.updatedAt!)}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
                 ),
             ],
@@ -305,7 +306,14 @@ class _SurveysScreenState extends State<SurveysScreen> {
                 icon: const Icon(Icons.visibility, size: 18),
                 tooltip: 'View details',
               ),
-              if (survey.status == SurveyStatus.pending) ...[
+              IconButton(
+                onPressed: () {
+                  _showSurveyPreview(context, survey);
+                },
+                icon: const Icon(Icons.preview, size: 18),
+                tooltip: 'Preview survey',
+              ),
+              if (survey.status == SurveyStatus.draft) ...[
                 IconButton(
                   onPressed: () {
                     _showStatusChangeDialog(context, survey, provider, SurveyStatus.published);
@@ -315,7 +323,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
                 ),
                 IconButton(
                   onPressed: () {
-                    _showStatusChangeDialog(context, survey, provider, SurveyStatus.rejected);
+                    _showStatusChangeDialog(context, survey, provider, SurveyStatus.deleted);
                   },
                   icon: const Icon(Icons.close, size: 18, color: Colors.red),
                   tooltip: 'Reject',
@@ -328,7 +336,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
                 },
                 itemBuilder: (context) => [
                   const PopupMenuItem(
-                    value: SurveyStatus.published,
+                    value: SurveyStatus.active,
                     child: Row(
                       children: [
                         Icon(Icons.publish, size: 16, color: Colors.green),
@@ -338,7 +346,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
                     ),
                   ),
                   const PopupMenuItem(
-                    value: SurveyStatus.pending,
+                    value: SurveyStatus.draft,
                     child: Row(
                       children: [
                         Icon(Icons.hourglass_empty, size: 16, color: Colors.orange),
@@ -348,7 +356,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
                     ),
                   ),
                   const PopupMenuItem(
-                    value: SurveyStatus.rejected,
+                    value: SurveyStatus.deleted,
                     child: Row(
                       children: [
                         Icon(Icons.block, size: 16, color: Colors.red),
@@ -370,9 +378,9 @@ class _SurveysScreenState extends State<SurveysScreen> {
     switch (status) {
       case SurveyStatus.published:
         return Colors.green;
-      case SurveyStatus.pending:
+      case SurveyStatus.draft:
         return Colors.orange;
-      case SurveyStatus.rejected:
+      case SurveyStatus.deleted:
         return Colors.red;
       case SurveyStatus.draft:
         return Colors.grey;
@@ -381,27 +389,27 @@ class _SurveysScreenState extends State<SurveysScreen> {
     }
   }
 
-  void _showSurveyDetails(BuildContext context, SurveyModel survey) {
+  void _showSurveyDetails(BuildContext context, SurveyEntity survey) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Survey Details: ${survey.title}'),
+        title: Text('Survey Details: ${survey.name}'),
         content: SizedBox(
           width: 400,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('Title', survey.title),
-              _buildDetailRow('Description', survey.description),
-              _buildDetailRow('Created By', survey.createdBy),
-              _buildDetailRow('Status', survey.status.displayName),
-              _buildDetailRow('Participants', survey.participantCount.toString()),
-              _buildDetailRow('Questions', survey.questionCount.toString()),
-              _buildDetailRow('Reward Amount', '\$${survey.rewardAmount.toStringAsFixed(2)}'),
+              _buildDetailRow('Title', survey.name),
+              _buildDetailRow('Description', survey.description ?? ''),
+              _buildDetailRow('Created By', survey.collectorId ?? ''),
+              _buildDetailRow('Status', survey.status.name),
+              _buildDetailRow('Participants', survey.responseCount.toString()),
+              _buildDetailRow('Questions', survey.questions.length.toString()),
+              _buildDetailRow('Reward Amount', '\$${survey.price?.toStringAsFixed(2) ?? '0.00'}'),
               _buildDetailRow('Created', DateFormat('MMM dd, yyyy HH:mm').format(survey.createdAt)),
-              if (survey.publishedAt != null)
-                _buildDetailRow('Published', DateFormat('MMM dd, yyyy HH:mm').format(survey.publishedAt!)),
+              if (survey.updatedAt != null)
+                _buildDetailRow('Published', DateFormat('MMM dd, yyyy HH:mm').format(survey.updatedAt!)),
             ],
           ),
         ),
@@ -410,9 +418,13 @@ class _SurveysScreenState extends State<SurveysScreen> {
     );
   }
 
+  void _showSurveyPreview(BuildContext context, SurveyEntity survey) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SurveyPreviewScreen(surveyId: survey.id)));
+  }
+
   void _showStatusChangeDialog(
     BuildContext context,
-    SurveyModel survey,
+    SurveyEntity survey,
     DashboardProvider provider,
     SurveyStatus newStatus,
   ) {
@@ -420,7 +432,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Change Survey Status'),
-        content: Text('Are you sure you want to change the status of "${survey.title}" to ${newStatus.displayName}?'),
+        content: Text('Are you sure you want to change the status of "${survey.name}" to ${newStatus.name}?'),
         actions: [
           TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
           ElevatedButton(
@@ -429,7 +441,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(
                 context,
-              ).showSnackBar(SnackBar(content: Text('Survey status updated to ${newStatus.displayName}')));
+              ).showSnackBar(SnackBar(content: Text('Survey status updated to ${newStatus.name}')));
             },
             child: const Text('Confirm'),
           ),

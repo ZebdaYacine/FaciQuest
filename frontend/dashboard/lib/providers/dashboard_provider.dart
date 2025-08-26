@@ -1,8 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../models/user_model.dart';
-import '../models/survey_model.dart';
-import '../models/cashout_model.dart';
-import '../models/analytics_model.dart';
+import '../models/models.dart';
 import '../services/api_service.dart';
 
 class DashboardProvider with ChangeNotifier {
@@ -14,7 +11,7 @@ class DashboardProvider with ChangeNotifier {
 
   // Data
   List<UserModel> _users = [];
-  List<SurveyModel> _surveys = [];
+  List<SurveyEntity> _surveys = [];
   List<CashoutRequestModel> _cashouts = [];
   AnalyticsModel? _analytics;
 
@@ -37,7 +34,7 @@ class DashboardProvider with ChangeNotifier {
   bool get isLoadingAnalytics => _isLoadingAnalytics;
 
   List<UserModel> get users => _users;
-  List<SurveyModel> get surveys => _surveys;
+  List<SurveyEntity> get surveys => _surveys;
   List<CashoutRequestModel> get cashouts => _cashouts;
   AnalyticsModel? get analytics => _analytics;
 
@@ -57,11 +54,7 @@ class DashboardProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final newUsers = await ApiService.getUsers(
-        filters: _userFilters,
-        page: _usersPage,
-        limit: _itemsPerPage,
-      );
+      final newUsers = await ApiService.getUsers(filters: _userFilters, page: _usersPage, limit: _itemsPerPage);
 
       if (refresh) {
         _users = newUsers;
@@ -119,11 +112,7 @@ class DashboardProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final newSurveys = await ApiService.getSurveys(
-        filters: _surveyFilters,
-        page: _surveysPage,
-        limit: _itemsPerPage,
-      );
+      final newSurveys = await ApiService.getSurveys(filters: _surveyFilters, page: _surveysPage, limit: _itemsPerPage);
 
       if (refresh) {
         _surveys = newSurveys;
@@ -151,18 +140,7 @@ class DashboardProvider with ChangeNotifier {
       if (success) {
         final surveyIndex = _surveys.indexWhere((survey) => survey.id == surveyId);
         if (surveyIndex != -1) {
-          _surveys[surveyIndex] = SurveyModel(
-            id: _surveys[surveyIndex].id,
-            title: _surveys[surveyIndex].title,
-            description: _surveys[surveyIndex].description,
-            status: status,
-            createdBy: _surveys[surveyIndex].createdBy,
-            createdAt: _surveys[surveyIndex].createdAt,
-            publishedAt: status == SurveyStatus.published ? DateTime.now() : _surveys[surveyIndex].publishedAt,
-            participantCount: _surveys[surveyIndex].participantCount,
-            rewardAmount: _surveys[surveyIndex].rewardAmount,
-            questionCount: _surveys[surveyIndex].questionCount,
-          );
+          _surveys[surveyIndex] = _surveys[surveyIndex].copyWith(status: status);
           notifyListeners();
         }
       }
