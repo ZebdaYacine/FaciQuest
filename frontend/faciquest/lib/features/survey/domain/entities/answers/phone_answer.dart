@@ -21,8 +21,7 @@ class PhoneAnswer extends AnswerEntity {
   }
 
   @override
-  PlutoCell get plutoCell => PlutoCell(value: value);
-
+  TrinaCell get plutoCell => TrinaCell(value: value);
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return PhoneAnswer(

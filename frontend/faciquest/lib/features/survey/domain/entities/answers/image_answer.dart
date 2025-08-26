@@ -4,7 +4,7 @@ class ImageAnswer extends AnswerEntity {
   const ImageAnswer({required super.questionId});
 
   @override
-  PlutoCell get plutoCell => PlutoCell(value: null);
+  TrinaCell get plutoCell => TrinaCell(value: null);
 
   @override
   Map<String, dynamic> toMap() {

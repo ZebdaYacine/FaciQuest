@@ -21,10 +21,9 @@ class SliderAnswer extends AnswerEntity {
   List<Object?> get props => [super.props, value];
 
   @override
-  PlutoCell get plutoCell => PlutoCell(
+  TrinaCell get plutoCell => TrinaCell(
         value: value.toString(),
       );
-
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return SliderAnswer(

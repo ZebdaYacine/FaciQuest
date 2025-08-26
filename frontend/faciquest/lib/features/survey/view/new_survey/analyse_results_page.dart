@@ -4,7 +4,7 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:trina_grid/trina_grid.dart';
 
 class AnalyseResultsPage extends StatelessWidget {
   const AnalyseResultsPage({super.key});
@@ -184,11 +184,11 @@ class _AnswersGrid extends StatefulWidget {
 }
 
 class _AnswersGridState extends State<_AnswersGrid> {
-  PlutoGridStateManager? stateManager;
+  TrinaGridStateManager? stateManager;
   late final survey = context.read<NewSurveyCubit>().state.survey;
 
-  Future<PlutoLazyPaginationResponse> fetch(
-    PlutoLazyPaginationRequest request,
+  Future<TrinaLazyPaginationResponse> fetch(
+    TrinaLazyPaginationRequest request,
   ) async {
     try {
       final cubit = context.read<NewSurveyCubit>();
@@ -199,7 +199,7 @@ class _AnswersGridState extends State<_AnswersGrid> {
 
       final paginatedRows = result.submissions
           .map(
-            (submission) => PlutoRow(
+            (submission) => TrinaRow(
               cells: {
                 for (final answer in submission.answers)
                   answer.questionId: answer.plutoCell,
@@ -208,13 +208,13 @@ class _AnswersGridState extends State<_AnswersGrid> {
           )
           .toList();
 
-      return PlutoLazyPaginationResponse(
+      return TrinaLazyPaginationResponse(
         rows: paginatedRows,
         totalPage: result.totalPages,
       );
     } catch (e) {
       debugPrint('Error fetching data: $e');
-      return PlutoLazyPaginationResponse(
+      return TrinaLazyPaginationResponse(
         rows: [],
         totalPage: 1,
       );
@@ -241,13 +241,13 @@ class _AnswersGridState extends State<_AnswersGrid> {
     //   );
     // }
 
-    return PlutoGrid(
-      key: const ValueKey('PlutoGrid'),
+    return TrinaGrid(
+      key: const ValueKey('TrinaGrid'),
       columns: _buildColumns(),
       configuration: _buildConfiguration(context),
       rows: _buildRows(),
       createFooter: (stateManager) {
-        return PlutoLazyPagination(
+        return TrinaLazyPagination(
           initialPage: 1,
           initialFetch: true,
           fetchWithSorting: true,
@@ -263,14 +263,14 @@ class _AnswersGridState extends State<_AnswersGrid> {
     );
   }
 
-  List<PlutoColumn> _buildColumns() {
+  List<TrinaColumn> _buildColumns() {
     return survey.questions.map((question) {
-      return PlutoColumn(
+      return TrinaColumn(
         title: question.title,
         field: question.id,
-        type: PlutoColumnType.text(),
-        titleTextAlign: PlutoColumnTextAlign.center,
-        textAlign: PlutoColumnTextAlign.center,
+        type: TrinaColumnType.text(),
+        titleTextAlign: TrinaColumnTextAlign.center,
+        textAlign: TrinaColumnTextAlign.center,
         backgroundColor:
             context.colorScheme.surfaceContainerHighest.withOpacity(0.5),
         titleSpan: TextSpan(
@@ -279,7 +279,7 @@ class _AnswersGridState extends State<_AnswersGrid> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        frozen: PlutoColumnFrozen.none,
+        frozen: TrinaColumnFrozen.none,
         width: 200,
         minWidth: 150,
         enableContextMenu: false,
@@ -290,9 +290,9 @@ class _AnswersGridState extends State<_AnswersGrid> {
     }).toList();
   }
 
-  PlutoGridConfiguration _buildConfiguration(BuildContext context) {
-    return PlutoGridConfiguration(
-      style: PlutoGridStyleConfig(
+  TrinaGridConfiguration _buildConfiguration(BuildContext context) {
+    return TrinaGridConfiguration(
+      style: TrinaGridStyleConfig(
         borderColor: context.colorScheme.outlineVariant,
         gridBackgroundColor: context.colorScheme.surface,
         rowColor: context.colorScheme.surface,
@@ -301,19 +301,19 @@ class _AnswersGridState extends State<_AnswersGrid> {
         iconColor: context.colorScheme.primary,
         activatedColor: context.colorScheme.primaryContainer,
       ),
-      scrollbar: const PlutoGridScrollbarConfig(
+      scrollbar: const TrinaGridScrollbarConfig(
         isAlwaysShown: true,
       ),
-      columnSize: const PlutoGridColumnSizeConfig(
-        autoSizeMode: PlutoAutoSizeMode.scale,
+      columnSize: const TrinaGridColumnSizeConfig(
+        autoSizeMode: TrinaAutoSizeMode.scale,
       ),
     );
   }
 
-  List<PlutoRow> _buildRows() {
+  List<TrinaRow> _buildRows() {
     return survey.submissions
         .map(
-          (submission) => PlutoRow(
+          (submission) => TrinaRow(
             cells: {
               for (final answer in submission.answers)
                 answer.questionId: answer.plutoCell,

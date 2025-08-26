@@ -1,7 +1,6 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 part 'personal_info_state.dart';
 
 class PersonalInfoCubit extends Cubit<PersonalInfoState> {

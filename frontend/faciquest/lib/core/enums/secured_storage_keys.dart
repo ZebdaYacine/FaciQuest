@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:faciquest/core/core.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
 enum SecuredStorageKeys {
   token(StoredType.stringType),
   syncToken(StoredType.stringType),

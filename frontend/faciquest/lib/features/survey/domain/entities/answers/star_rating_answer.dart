@@ -18,7 +18,7 @@ class StarRatingAnswer extends AnswerEntity {
   }
 
   @override
-  PlutoCell get plutoCell => PlutoCell(value: rating);
+  TrinaCell get plutoCell => TrinaCell(value: rating);
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return StarRatingAnswer(

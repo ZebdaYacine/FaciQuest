@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:faciquest/features/features.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:trina_grid/trina_grid.dart';
 
 part 'answers/address_answer.dart';
 part 'answers/star_rating_answer.dart';
@@ -25,7 +25,7 @@ part 'answers/image_answer.dart';
 abstract class AnswerEntity extends Equatable {
   final String questionId;
 
-  PlutoCell get plutoCell;
+  TrinaCell get plutoCell;
 
   const AnswerEntity({required this.questionId});
 

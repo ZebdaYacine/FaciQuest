@@ -4,7 +4,7 @@ class AudioRecordAnswer extends AnswerEntity {
   const AudioRecordAnswer({required super.questionId});
 
   @override
-  PlutoCell get plutoCell => PlutoCell(
+  TrinaCell get plutoCell => TrinaCell(
         value: null,
       );
   @override

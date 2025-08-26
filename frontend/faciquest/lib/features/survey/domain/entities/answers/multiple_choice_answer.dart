@@ -25,7 +25,7 @@ class MultipleChoiceAnswer extends AnswerEntity {
   }
 
   @override
-  PlutoCell get plutoCell => PlutoCell(
+  TrinaCell get plutoCell => TrinaCell(
         value: selectedChoice,
       );
 

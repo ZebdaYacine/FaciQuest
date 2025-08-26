@@ -23,10 +23,9 @@ class CheckboxesAnswer extends AnswerEntity {
   List<Object?> get props => [super.props, selectedChoices];
 
   @override
-  PlutoCell get plutoCell => PlutoCell(
+  TrinaCell get plutoCell => TrinaCell(
         value: selectedChoices.toList().join(', '),
       );
-
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return CheckboxesAnswer(

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:faciquest/core/core.dart';
 
-
 class RequestLoggerInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {

@@ -4,7 +4,7 @@ class TextAnswer extends AnswerEntity {
   const TextAnswer({required super.questionId});
 
   @override
-  PlutoCell get plutoCell => PlutoCell();
+  TrinaCell get plutoCell => TrinaCell();
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return TextAnswer(

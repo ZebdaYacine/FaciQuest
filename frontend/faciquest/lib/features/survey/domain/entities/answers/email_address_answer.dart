@@ -21,10 +21,9 @@ class EmailAddressAnswer extends AnswerEntity {
   }
 
   @override
-  PlutoCell get plutoCell => PlutoCell(
+  TrinaCell get plutoCell => TrinaCell(
         value: value,
       );
-
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return EmailAddressAnswer(

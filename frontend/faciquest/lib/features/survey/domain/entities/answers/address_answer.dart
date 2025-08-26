@@ -62,7 +62,7 @@ class AddressAnswer extends AnswerEntity {
   }
 
   @override
-  PlutoCell get plutoCell => PlutoCell(
+  TrinaCell get plutoCell => TrinaCell(
         value:
             '${streetAddress1 ?? ''} ${streetAddress2 ?? ''} ${city ?? ''} ${state ?? ''} ${postalCode ?? ''} ${country ?? ''}',
       );

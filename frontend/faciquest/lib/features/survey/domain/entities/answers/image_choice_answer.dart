@@ -52,8 +52,7 @@ class ImageChoiceAnswer extends AnswerEntity {
   }
 
   @override
-  PlutoCell get plutoCell => PlutoCell();
-
+  TrinaCell get plutoCell => TrinaCell();
 
   static AnswerEntity fromMap(Map<String, dynamic> map) {
     return ImageChoiceAnswer(
