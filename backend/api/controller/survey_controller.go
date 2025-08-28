@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -162,4 +164,93 @@ func (sc *SurveyController) GetSurveysByStatusRequest(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, model.SuccessResponse{Message: "GET SURVEYS BY STATUS REQUEST DONE SUCCESSFULY", Data: result.List})
+}
+
+// UpdateSurveyStatusRequest handles updating a survey status by admin
+func (sc *SurveyController) UpdateSurveyStatusRequest(c *gin.Context) {
+	surveyID := c.Param("surveyId")
+	if surveyID == "" {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "surveyId is required"})
+		return
+	}
+	var body struct {
+		Status string `json:"status"`
+	}
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "invalid body"})
+		return
+	}
+	ok := sc.SurveyUseCase.UpdateSurveyStatus(c, surveyID, body.Status)
+	if ok.Err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: ok.Err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{Message: "UPDATE SURVEY STATUS REQUEST DONE SUCCESSFULY", Data: ok.Value})
+}
+
+// GetAdminSurveysRequest handles admin surveys listing with filters
+func (sc *SurveyController) GetAdminSurveysRequest(c *gin.Context) {
+	q := c.Request.URL.Query()
+
+	var (
+		limitPtr  *int
+		offsetPtr *int
+		status    string
+		startAt   *time.Time
+		endAt     *time.Time
+	)
+
+	if lv := q.Get("limit"); lv != "" {
+		if v, err := strconv.Atoi(lv); err == nil {
+			limitPtr = &v
+		} else {
+			c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "invalid limit"})
+			return
+		}
+	}
+	if pv := q.Get("page"); pv != "" {
+		page, err := strconv.Atoi(pv)
+		if err != nil || page <= 0 {
+			c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "invalid page"})
+			return
+		}
+		l := 50
+		if limitPtr != nil {
+			l = *limitPtr
+		}
+		off := (page - 1) * l
+		offsetPtr = &off
+		if limitPtr == nil {
+			limitPtr = &l
+		}
+	}
+	status = q.Get("status")
+	if status != "" && status != "draft" && status != "active" && status != "closed" {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "invalid status"})
+		return
+	}
+	if s := q.Get("start_date"); s != "" {
+		t, err := time.Parse(time.RFC3339, s)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "invalid start_date"})
+			return
+		}
+		startAt = &t
+	}
+	if s := q.Get("end_date"); s != "" {
+		t, err := time.Parse(time.RFC3339, s)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "invalid end_date"})
+			return
+		}
+		endAt = &t
+	}
+
+	params := usecase.AdminSurveyListParams{Status: status, Limit: limitPtr, Offset: offsetPtr, StartAt: startAt, EndAt: endAt}
+	result := sc.SurveyUseCase.GetAdminSurveys(c, params)
+	if err := result.Err; err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, model.SuccessResponse{Message: "GET ADMIN SURVEYS REQUEST DONE SUCCESSFULY", Data: result.List})
 }

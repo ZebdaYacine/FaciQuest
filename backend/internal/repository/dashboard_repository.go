@@ -16,6 +16,8 @@ type DashBoardRepository interface {
 	GetUserList(c context.Context, filter *domain.UserFilter) (*domain.UserListResponse, error)
 	GetDashboardStats(c context.Context) (*domain.DashboardStats, error)
 	GetAllPayments(c context.Context) ([]domain.PaymentWithUserInfo, error)
+	GetUserByID(c context.Context, userID string) (*domain.UserStats, error)
+	GetAnalytics(c context.Context, period string, startAt *time.Time, endAt *time.Time) (*domain.AnalyticsModel, error)
 }
 
 type dashboardRepository struct {
@@ -95,9 +97,24 @@ func (d *dashboardRepository) GetUserList(c context.Context, filter *domain.User
 			Country:            getStringValue(user, "country"),
 			Education:          getStringValue(user, "education"),
 			Gender:             getStringValue(user, "gender"),
+			IsActive:           getBoolValue(user, "isActive"),
 			SurveyCount:        int(surveyCount),
 			ParticipationCount: int(participationCount),
 			LastActivity:       getInt64Value(user, "lastActivity"), // Check if last activity was within the last 30 days
+		}
+
+		// Apply min/max filters in-memory
+		if filter.MinSurveys != nil && int64(*filter.MinSurveys) > int64(userStats.SurveyCount) {
+			continue
+		}
+		if filter.MaxSurveys != nil && int64(*filter.MaxSurveys) < int64(userStats.SurveyCount) {
+			continue
+		}
+		if filter.MinParticipations != nil && int64(*filter.MinParticipations) > int64(userStats.ParticipationCount) {
+			continue
+		}
+		if filter.MaxParticipations != nil && int64(*filter.MaxParticipations) < int64(userStats.ParticipationCount) {
+			continue
 		}
 
 		users = append(users, userStats)
@@ -202,6 +219,13 @@ func getInt64Value(data bson.M, key string) int64 {
 	return 0
 }
 
+func getBoolValue(data bson.M, key string) bool {
+	if value, ok := data[key].(bool); ok {
+		return value
+	}
+	return false
+}
+
 // GetAllPayments implements DashBoardRepository.
 func (d *dashboardRepository) GetAllPayments(c context.Context) ([]domain.PaymentWithUserInfo, error) {
 	collection := d.database.Collection("payment")
@@ -290,6 +314,52 @@ func (d *dashboardRepository) GetAllPayments(c context.Context) ([]domain.Paymen
 	return payments, nil
 }
 
+// GetUserByID fetches a single user and computes stats
+func (d *dashboardRepository) GetUserByID(c context.Context, userID string) (*domain.UserStats, error) {
+	usersCollection := d.database.Collection("users")
+	surveysCollection := d.database.Collection("survey")
+	submissionsCollection := d.database.Collection("submission")
+
+	objID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid userId")
+	}
+
+	var user bson.M
+	if err := usersCollection.FindOne(c, bson.M{"_id": objID}).Decode(&user); err != nil {
+		return nil, err
+	}
+
+	// Compute counts
+	surveyCount, err := surveysCollection.CountDocuments(c, bson.M{"surveybadge.userId": userID})
+	if err != nil {
+		surveyCount = 0
+	}
+	participationCount, err := submissionsCollection.CountDocuments(c, bson.M{"userId": userID})
+	if err != nil {
+		participationCount = 0
+	}
+
+	stats := &domain.UserStats{
+		ID:                 userID,
+		Username:           getStringValue(user, "username"),
+		FirstName:          getStringValue(user, "firstname"),
+		LastName:           getStringValue(user, "lastname"),
+		Email:              getStringValue(user, "email"),
+		Phone:              getStringValue(user, "phone"),
+		Age:                getInt64Value(user, "age"),
+		Country:            getStringValue(user, "country"),
+		Education:          getStringValue(user, "education"),
+		IsActive:           getBoolValue(user, "isActive"),
+		Gender:             getStringValue(user, "gender"),
+		SurveyCount:        int(surveyCount),
+		ParticipationCount: int(participationCount),
+		LastActivity:       getInt64Value(user, "lastActivity"),
+	}
+
+	return stats, nil
+}
+
 // formatDate converts Unix timestamp to "1-1-2025" format
 func formatDate(unixTimestamp int64) string {
 	if unixTimestamp == 0 {
@@ -297,4 +367,70 @@ func formatDate(unixTimestamp int64) string {
 	}
 	t := time.Unix(unixTimestamp, 0)
 	return fmt.Sprintf("%d-%d-%d", t.Day(), t.Month(), t.Year())
+}
+
+func (d *dashboardRepository) GetAnalytics(c context.Context, period string, startAt *time.Time, endAt *time.Time) (*domain.AnalyticsModel, error) {
+	usersCollection := d.database.Collection("users")
+	surveysCollection := d.database.Collection("survey")
+	paymentsCollection := d.database.Collection("payment")
+
+	// Base date filter for createdAt fields if present
+	dateFilter := func(field string) bson.M {
+		and := []bson.M{}
+		if startAt != nil {
+			and = append(and, bson.M{field: bson.M{"$gte": *startAt}})
+		}
+		if endAt != nil {
+			and = append(and, bson.M{field: bson.M{"$lte": *endAt}})
+		}
+		if len(and) == 0 {
+			return bson.M{}
+		}
+		return bson.M{"$and": and}
+	}
+
+	// Totals
+	totalUsers, _ := usersCollection.CountDocuments(c, bson.M{})
+	totalSurveys, _ := surveysCollection.CountDocuments(c, dateFilter("surveybadge.createdAt"))
+
+	// Active users heuristic: lastActivity within 30 days
+	thirtyDaysAgo := time.Now().AddDate(0, 0, -30).Unix()
+	activeUsers, _ := usersCollection.CountDocuments(c, bson.M{"lastActivity": bson.M{"$gte": thirtyDaysAgo}})
+	activePct := 0.0
+	if totalUsers > 0 {
+		activePct = float64(activeUsers) / float64(totalUsers) * 100.0
+	}
+
+	// Cashout requests/amount: payments
+
+	cashoutCount, _ := paymentsCollection.CountDocuments(c, bson.M{})
+	var totalAmount float64
+	cur, err := paymentsCollection.Find(c, bson.M{})
+	if err == nil {
+		for cur.Next(c) {
+			var p bson.M
+			_ = cur.Decode(&p)
+			if amt, ok := p["amount"].(float64); ok {
+				totalAmount += amt
+			}
+		}
+		_ = cur.Close(c)
+	}
+
+	result := &domain.AnalyticsModel{
+		TotalUsers:           int(totalUsers),
+		ActiveUsers:          int(activeUsers),
+		ActiveUserPercentage: activePct,
+		TotalSurveys:         int(totalSurveys),
+		TotalCashoutRequests: int(cashoutCount),
+		TotalCashoutAmount:   totalAmount,
+	}
+
+	if startAt != nil {
+		result.PeriodStart = *startAt
+	}
+	if endAt != nil {
+		result.PeriodEnd = *endAt
+	}
+	return result, nil
 }

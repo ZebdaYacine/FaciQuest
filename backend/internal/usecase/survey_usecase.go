@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 )
 
 func ValidateSurvey(survey *domain.Survey) error {
@@ -48,6 +49,19 @@ type SurveysResulat struct {
 	Err  error
 }
 
+type AdminSurveyListParams struct {
+	Status  string
+	Limit   *int
+	Offset  *int
+	StartAt *time.Time
+	EndAt   *time.Time
+}
+
+type AdminSurveysResult struct {
+	List *[]domain.SurveyBadge
+	Err  error
+}
+
 type SurveyUseCase interface {
 	CreateSurvey(c context.Context, survey *SurveyParams) *SurveyResulat
 	UpdateSurvey(c context.Context, survey *SurveyParams) *SurveyResulat
@@ -56,6 +70,11 @@ type SurveyUseCase interface {
 	GetMySurveys(c context.Context, survey *SurveyParams) *SurveysResulat
 	GetAllSurveys(c context.Context) *SurveysResulat
 	GetSurveysByStatus(c context.Context, status string) *SurveysResulat
+	GetAdminSurveys(c context.Context, params AdminSurveyListParams) *AdminSurveysResult
+	UpdateSurveyStatus(c context.Context, surveyID string, status string) *struct {
+		Value bool
+		Err   error
+	}
 }
 
 type surveyUseCase struct {
@@ -191,6 +210,21 @@ func (su *surveyUseCase) GetSurveysByStatus(c context.Context, status string) *S
 	return &SurveysResulat{List: result, Err: nil}
 }
 
+// GetAdminSurveys implements admin listing with filters
+func (su *surveyUseCase) GetAdminSurveys(c context.Context, params AdminSurveyListParams) *AdminSurveysResult {
+	if params.Status != "" {
+		allowed := map[string]bool{"draft": true, "active": true, "closed": true}
+		if !allowed[params.Status] {
+			return &AdminSurveysResult{List: nil, Err: fmt.Errorf("invalid status")}
+		}
+	}
+	result, err := su.repo.GetAdminSurveys(c, params.Status, params.Limit, params.Offset, params.StartAt, params.EndAt)
+	if err != nil {
+		return &AdminSurveysResult{List: nil, Err: fmt.Errorf("error getting admin surveys: %v", err)}
+	}
+	return &AdminSurveysResult{List: result, Err: nil}
+}
+
 // GetMySurveys implements SurveyUseCase.
 func (su *surveyUseCase) GetMySurveys(c context.Context, params *SurveyParams) *SurveysResulat {
 	return crudServey(su.repo, c, params, "getMySurveys").(*SurveysResulat)
@@ -219,4 +253,29 @@ func (su *surveyUseCase) UpdateSurvey(c context.Context, params *SurveyParams) *
 func (su *surveyUseCase) CreateSurvey(c context.Context, params *SurveyParams) *SurveyResulat {
 	return crudServey(su.repo, c, params, "add").(*SurveyResulat)
 
+}
+
+// UpdateSurveyStatus updates the status of a survey (admin)
+func (su *surveyUseCase) UpdateSurveyStatus(c context.Context, surveyID string, status string) *struct {
+	Value bool
+	Err   error
+} {
+	if surveyID == "" {
+		return &struct {
+			Value bool
+			Err   error
+		}{Value: false, Err: fmt.Errorf("surveyId is required")}
+	}
+	allowed := map[string]bool{"draft": true, "active": true, "closed": true}
+	if !allowed[status] {
+		return &struct {
+			Value bool
+			Err   error
+		}{Value: false, Err: fmt.Errorf("invalid status")}
+	}
+	ok, err := su.repo.UpdateSurveyStatus(c, surveyID, status)
+	return &struct {
+		Value bool
+		Err   error
+	}{Value: ok, Err: err}
 }

@@ -25,6 +25,8 @@ type SurveyRepository interface {
 	GetSurveyById(c context.Context, surveyId string, userId string) (*domain.Survey, error)
 	GetAllSurveys(c context.Context) (*[]domain.SurveyBadge, error)
 	GetSurveysByStatus(c context.Context, status string) (*[]domain.SurveyBadge, error)
+	GetAdminSurveys(c context.Context, status string, limit *int, offset *int, startAt *time.Time, endAt *time.Time) (*[]domain.SurveyBadge, error)
+	UpdateSurveyStatus(c context.Context, surveyId string, status string) (bool, error)
 }
 
 func NewSurveyRepository(db database.Database) SurveyRepository {
@@ -94,9 +96,7 @@ func (s *surveyRepository) GetAllSurveys(c context.Context) (*[]domain.SurveyBad
 		if err := list.Decode(&new_survey); err != nil {
 			log.Fatal(err)
 		}
-		survey_badge := domain.SurveyBadge{}
-		survey_badge = new_survey.SurveyBadge
-		list_surveys = append(list_surveys, survey_badge)
+		list_surveys = append(list_surveys, new_survey.SurveyBadge)
 	}
 	return &list_surveys, nil
 }
@@ -118,9 +118,7 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 		if err := list.Decode(&new_survey); err != nil {
 			log.Fatal(err)
 		}
-		survey_badge := domain.SurveyBadge{}
-		survey_badge = new_survey.SurveyBadge
-		list_surveys = append(list_surveys, survey_badge)
+		list_surveys = append(list_surveys, new_survey.SurveyBadge)
 	}
 	return &list_surveys, nil
 }
@@ -194,9 +192,77 @@ func (s *surveyRepository) GetSurveysByStatus(c context.Context, status string) 
 		if err := list.Decode(&new_survey); err != nil {
 			log.Fatal(err)
 		}
-		survey_badge := domain.SurveyBadge{}
-		survey_badge = new_survey.SurveyBadge
-		list_surveys = append(list_surveys, survey_badge)
+		list_surveys = append(list_surveys, new_survey.SurveyBadge)
 	}
 	return &list_surveys, nil
+}
+
+func (s *surveyRepository) GetAdminSurveys(c context.Context, status string, limit *int, offset *int, startAt *time.Time, endAt *time.Time) (*[]domain.SurveyBadge, error) {
+	collection := s.database.Collection("survey")
+	filter := bson.M{}
+	and := []bson.M{}
+	if status != "" {
+		and = append(and, bson.M{"surveybadge.status": status})
+	}
+	if startAt != nil {
+		and = append(and, bson.M{"surveybadge.createdAt": bson.M{"$gte": *startAt}})
+	}
+	if endAt != nil {
+		and = append(and, bson.M{"surveybadge.createdAt": bson.M{"$lte": *endAt}})
+	}
+	if len(and) > 0 {
+		filter = bson.M{"$and": and}
+	}
+
+	cursor, err := collection.Find(c, filter)
+	if err != nil {
+		log.Printf("Failed to load admin surveys: %v", err)
+		return nil, err
+	}
+	var all []domain.SurveyBadge
+	for cursor.Next(c) {
+		var doc domain.Survey
+		if err := cursor.Decode(&doc); err != nil {
+			return nil, err
+		}
+		all = append(all, doc.SurveyBadge)
+	}
+	_ = cursor.Close(c)
+
+	l := 50
+	o := 0
+	if limit != nil && *limit > 0 {
+		l = *limit
+	}
+	if offset != nil && *offset >= 0 {
+		o = *offset
+	}
+	if o > len(all) {
+		return &[]domain.SurveyBadge{}, nil
+	}
+	end := o + l
+	if end > len(all) {
+		end = len(all)
+	}
+	paged := all[o:end]
+	return &paged, nil
+}
+
+func (s *surveyRepository) UpdateSurveyStatus(c context.Context, surveyId string, status string) (bool, error) {
+	collection := s.database.Collection("survey")
+	id, err := primitive.ObjectIDFromHex(surveyId)
+	if err != nil {
+		return false, fmt.Errorf("invalid surveyId")
+	}
+	update := bson.M{
+		"$set": bson.M{
+			"surveybadge.status":    status,
+			"surveybadge.updatedAt": time.Now(),
+		},
+	}
+	res, err := collection.UpdateOne(c, bson.M{"_id": id}, update)
+	if err != nil {
+		return false, err
+	}
+	return res.ModifiedCount > 0, nil
 }
