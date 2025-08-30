@@ -80,6 +80,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	private.NewGetUserListRouter(db, adminRouter)
 	private.NewGetUserByIDRouter(db, adminRouter)
 	private.NewGetSurveysByStatusRouter(db, adminRouter)
+	private.NewGetSurveyByIdRouter(db, adminRouter)
 	private.NewGetAnalyticsRouter(db, adminRouter)
 	private.NewGetAdminSurveysRouter(db, adminRouter)
 	private.NewUpdateSurveyStatusRouter(db, adminRouter)

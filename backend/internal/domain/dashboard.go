@@ -42,11 +42,11 @@ type DashboardStats struct {
 }
 
 type UserListResponse struct {
-	Users  []UserStats    `json:"users"`
-	Stats  DashboardStats `json:"stats"`
-	Total  int            `json:"total"`
-	Limit  int            `json:"limit"`
-	Offset int            `json:"offset"`
+	Users []UserStats `json:"users"`
+	// Stats  DashboardStats `json:"stats"`
+	// Total  int            `json:"total"`
+	// Limit  int            `json:"limit"`
+	// Offset int            `json:"offset"`
 }
 
 type AnalyticsModel struct {

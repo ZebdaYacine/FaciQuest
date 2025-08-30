@@ -145,18 +145,18 @@ func (d *dashboardRepository) GetUserList(c context.Context, filter *domain.User
 	}
 
 	// Get dashboard stats
-	stats, err := d.GetDashboardStats(c)
-	if err != nil {
-		log.Printf("Failed to get dashboard stats: %v", err)
-		stats = &domain.DashboardStats{}
-	}
+	// stats, err := d.GetDashboardStats(c)
+	// if err != nil {
+	// 	log.Printf("Failed to get dashboard stats: %v", err)
+	// 	stats = &domain.DashboardStats{}
+	// }
 
 	return &domain.UserListResponse{
-		Users:  users,
-		Stats:  *stats,
-		Total:  total,
-		Limit:  limit,
-		Offset: offset,
+		Users: users,
+		// Stats:  *stats,
+		// Total:  total,
+		// Limit:  limit,
+		// Offset: offset,
 	}, nil
 }
 
