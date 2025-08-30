@@ -1,5 +1,6 @@
 export 'analytics_model.dart';
 export 'answer_entity.dart';
+export 'auth_models.dart';
 export 'cashout_model.dart';
 export 'collector_entity.dart';
 export 'question_entity.dart';

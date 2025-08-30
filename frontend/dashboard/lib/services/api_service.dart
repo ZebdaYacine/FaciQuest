@@ -1,22 +1,18 @@
 import 'dart:convert';
 import 'package:dashboard/models/models.dart';
 import 'package:http/http.dart' as http;
+import 'auth_service.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:8080/api'; // Update with your backend URL
-
-  // Auth token (should be managed by auth service)
-  static String? _authToken;
-
-  static void setAuthToken(String token) {
-    _authToken = token;
-  }
+  static const String baseUrl = 'http://185.209.229.242:3000';
 
   static Map<String, String> get _headers {
     final headers = {'Content-Type': 'application/json'};
 
-    if (_authToken != null) {
-      headers['Authorization'] = 'Bearer $_authToken';
+    // Get token from AuthService instead of storing locally
+    final token = AuthService.cachedToken;
+    if (token != null && token.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $token';
     }
 
     return headers;
@@ -48,12 +44,12 @@ class ApiService {
         }
       }
 
-      final uri = Uri.parse('$baseUrl/admin/users').replace(queryParameters: queryParams);
+      final uri = Uri.parse('$baseUrl/admin/users');
       final response = await http.get(uri, headers: _headers);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final List<dynamic> usersJson = data['users'] ?? [];
+        final List<dynamic> usersJson = data['date']['users'] ?? [];
         return usersJson.map((json) => UserModel.fromJson(json)).toList();
       } else {
         throw Exception('Failed to fetch users: ${response.statusCode}');
@@ -95,33 +91,28 @@ class ApiService {
   // Surveys API
   static Future<List<SurveyEntity>> getSurveys({SurveyFilters? filters, int page = 1, int limit = 10}) async {
     try {
-      final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
+      // TODO: add filters
+      // final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
 
-      if (filters != null) {
-        if (filters.status != SurveyStatus.active) {
-          queryParams['status'] = filters.status.name;
-        }
-        if (filters.startDate != null) {
-          queryParams['start_date'] = filters.startDate!.toIso8601String();
-        }
-        if (filters.endDate != null) {
-          queryParams['end_date'] = filters.endDate!.toIso8601String();
-        }
-        if (filters.minReward != null) {
-          queryParams['min_reward'] = filters.minReward.toString();
-        }
-        if (filters.maxReward != null) {
-          queryParams['max_reward'] = filters.maxReward.toString();
-        }
-      }
+      // if (filters != null) {
+      //   if (filters.status != SurveyStatus.active) {
+      //     queryParams['status'] = filters.status.name;
+      //   }
+      //   if (filters.startDate != null) {
+      //     queryParams['start_date'] = filters.startDate!.toIso8601String();
+      //   }
+      //   if (filters.endDate != null) {
+      //     queryParams['end_date'] = filters.endDate!.toIso8601String();
+      //   }
+      // }
 
-      final uri = Uri.parse('$baseUrl/admin/surveys').replace(queryParameters: queryParams);
+      final uri = Uri.parse('$baseUrl/admin/surveys');
       final response = await http.get(uri, headers: _headers);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final List<dynamic> surveysJson = data['surveys'] ?? [];
-        return surveysJson.map((json) => SurveyEntity.fromJson(json)).toList();
+        final List<dynamic> surveysJson = data['date'] ?? [];
+        return surveysJson.map((json) => SurveyEntity.fromMap(json)).toList();
       } else {
         throw Exception('Failed to fetch surveys: ${response.statusCode}');
       }
@@ -166,32 +157,32 @@ class ApiService {
     int limit = 10,
   }) async {
     try {
-      final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
+      // final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
 
-      if (filters != null) {
-        if (filters.status != CashoutStatus.all) {
-          queryParams['status'] = filters.status.value;
-        }
-        if (filters.startDate != null) {
-          queryParams['start_date'] = filters.startDate!.toIso8601String();
-        }
-        if (filters.endDate != null) {
-          queryParams['end_date'] = filters.endDate!.toIso8601String();
-        }
-        if (filters.minAmount != null) {
-          queryParams['min_amount'] = filters.minAmount.toString();
-        }
-        if (filters.maxAmount != null) {
-          queryParams['max_amount'] = filters.maxAmount.toString();
-        }
-      }
+      // if (filters != null) {
+      //   if (filters.status != CashoutStatus.all) {
+      //     queryParams['status'] = filters.status.value;
+      //   }
+      //   if (filters.startDate != null) {
+      //     queryParams['start_date'] = filters.startDate!.toIso8601String();
+      //   }
+      //   if (filters.endDate != null) {
+      //     queryParams['end_date'] = filters.endDate!.toIso8601String();
+      //   }
+      //   if (filters.minAmount != null) {
+      //     queryParams['min_amount'] = filters.minAmount.toString();
+      //   }
+      //   if (filters.maxAmount != null) {
+      //     queryParams['max_amount'] = filters.maxAmount.toString();
+      //   }
+      // }
 
-      final uri = Uri.parse('$baseUrl/admin/cashouts').replace(queryParameters: queryParams);
+      final uri = Uri.parse('$baseUrl/admin/get-all-payments');
       final response = await http.get(uri, headers: _headers);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final List<dynamic> cashoutsJson = data['cashouts'] ?? [];
+        final List<dynamic> cashoutsJson = data['date'] ?? [];
         return cashoutsJson.map((json) => CashoutRequestModel.fromJson(json)).toList();
       } else {
         throw Exception('Failed to fetch cashout requests: ${response.statusCode}');
@@ -201,12 +192,9 @@ class ApiService {
     }
   }
 
-  static Future<bool> updateCashoutStatus(String cashoutId, CashoutStatus status, {String? rejectionReason}) async {
+  static Future<bool> updateCashoutStatus(String cashoutId, CashoutStatus status) async {
     try {
       final body = {'status': status.value};
-      if (rejectionReason != null) {
-        body['rejection_reason'] = rejectionReason;
-      }
 
       final response = await http.put(
         Uri.parse('$baseUrl/admin/cashouts/$cashoutId/status'),
@@ -223,13 +211,13 @@ class ApiService {
   // Analytics API
   static Future<AnalyticsModel> getAnalytics(TimePeriod period) async {
     try {
-      final queryParams = {
-        'period': period.value,
-        'start_date': period.getStartDate().toIso8601String(),
-        'end_date': period.getEndDate().toIso8601String(),
-      };
+      // final queryParams = {
+      //   'period': period.value,
+      //   'start_date': period.getStartDate().toIso8601String(),
+      //   'end_date': period.getEndDate().toIso8601String(),
+      // };
 
-      final uri = Uri.parse('$baseUrl/admin/analytics').replace(queryParameters: queryParams);
+      final uri = Uri.parse('$baseUrl/admin/analytics');
       final response = await http.get(uri, headers: _headers);
 
       if (response.statusCode == 200) {

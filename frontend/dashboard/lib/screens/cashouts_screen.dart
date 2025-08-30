@@ -123,7 +123,10 @@ class _CashoutsScreenState extends State<CashoutsScreen> {
                   _buildStatCard(
                     context,
                     'Processed',
-                    provider.cashouts.where((c) => c.status == CashoutStatus.processed).length.toString(),
+                    provider.cashouts
+                        .where((c) => c.status == CashoutStatus.processed || c.status == CashoutStatus.success)
+                        .length
+                        .toString(),
                     Icons.check_circle,
                     Colors.green,
                   ),
@@ -236,7 +239,10 @@ class _CashoutsScreenState extends State<CashoutsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(cashout.userName, style: const TextStyle(fontWeight: FontWeight.w500)),
+              Text(
+                '${cashout.userFirstName} ${cashout.userLastName}',
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
               Text(
                 cashout.userEmail,
                 style: Theme.of(
@@ -257,10 +263,13 @@ class _CashoutsScreenState extends State<CashoutsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(cashout.paymentMethod, style: const TextStyle(fontWeight: FontWeight.w500)),
-              if (cashout.paymentDetails != null)
+              Text(
+                cashout.paymentMethod ?? cashout.wallet?.paymentMethod ?? 'N/A',
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+              if (cashout.ccp != null || cashout.rip != null)
                 Text(
-                  cashout.paymentDetails!,
+                  cashout.ccp ?? cashout.rip ?? '',
                   style: Theme.of(
                     context,
                   ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
@@ -285,28 +294,17 @@ class _CashoutsScreenState extends State<CashoutsScreen> {
         ),
         DataCell(
           Text(
-            DateFormat('MMM dd, yyyy\nHH:mm').format(cashout.requestedAt),
+            cashout.paymentRequestDate != null
+                ? DateFormat('MMM dd, yyyy\nHH:mm').format(cashout.paymentRequestDate!)
+                : 'N/A',
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
         DataCell(
-          cashout.processedAt != null
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      DateFormat('MMM dd, yyyy').format(cashout.processedAt!),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    if (cashout.processedBy != null)
-                      Text(
-                        'By: ${cashout.processedBy!}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                        ),
-                      ),
-                  ],
+          cashout.paymentDate != null
+              ? Text(
+                  DateFormat('MMM dd, yyyy').format(cashout.paymentDate!),
+                  style: Theme.of(context).textTheme.bodySmall,
                 )
               : const Text('-'),
         ),
@@ -346,6 +344,15 @@ class _CashoutsScreenState extends State<CashoutsScreen> {
                   tooltip: 'Mark as Processed',
                 ),
               ],
+              if (cashout.status == CashoutStatus.processed) ...[
+                IconButton(
+                  onPressed: () {
+                    _showStatusChangeDialog(context, cashout, provider, CashoutStatus.success);
+                  },
+                  icon: const Icon(Icons.check_circle, size: 18, color: Colors.green),
+                  tooltip: 'Mark as Success',
+                ),
+              ],
             ],
           ),
         ),
@@ -360,6 +367,8 @@ class _CashoutsScreenState extends State<CashoutsScreen> {
       case CashoutStatus.approved:
         return Colors.blue;
       case CashoutStatus.processed:
+        return Colors.green;
+      case CashoutStatus.success:
         return Colors.green;
       case CashoutStatus.rejected:
         return Colors.red;
@@ -379,17 +388,27 @@ class _CashoutsScreenState extends State<CashoutsScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('User Name', cashout.userName),
+              _buildDetailRow('User Name', '${cashout.userFirstName} ${cashout.userLastName}'),
               _buildDetailRow('User Email', cashout.userEmail),
+              _buildDetailRow('User Phone', cashout.userPhone),
               _buildDetailRow('Amount', '\$${cashout.amount.toStringAsFixed(2)}'),
-              _buildDetailRow('Payment Method', cashout.paymentMethod),
-              if (cashout.paymentDetails != null) _buildDetailRow('Payment Details', cashout.paymentDetails!),
+              _buildDetailRow('Payment Method', cashout.paymentMethod ?? cashout.wallet?.paymentMethod ?? 'N/A'),
+              if (cashout.ccp != null) _buildDetailRow('CCP', cashout.ccp!),
+              if (cashout.rip != null) _buildDetailRow('RIP', cashout.rip!),
               _buildDetailRow('Status', cashout.status.displayName),
-              _buildDetailRow('Requested At', DateFormat('MMM dd, yyyy HH:mm').format(cashout.requestedAt)),
-              if (cashout.processedAt != null)
-                _buildDetailRow('Processed At', DateFormat('MMM dd, yyyy HH:mm').format(cashout.processedAt!)),
-              if (cashout.processedBy != null) _buildDetailRow('Processed By', cashout.processedBy!),
-              if (cashout.rejectionReason != null) _buildDetailRow('Rejection Reason', cashout.rejectionReason!),
+              if (cashout.paymentRequestDate != null)
+                _buildDetailRow('Requested At', DateFormat('MMM dd, yyyy HH:mm').format(cashout.paymentRequestDate!)),
+              if (cashout.paymentDate != null)
+                _buildDetailRow('Payment Date', DateFormat('MMM dd, yyyy HH:mm').format(cashout.paymentDate!)),
+              if (cashout.wallet != null) ...[
+                const SizedBox(height: 8),
+                Text('Wallet Information:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                const SizedBox(height: 4),
+                _buildDetailRow('Wallet Amount', '\$${cashout.wallet!.amount.toStringAsFixed(2)}'),
+                _buildDetailRow('Temp Amount', '\$${cashout.wallet!.tempAmount.toStringAsFixed(2)}'),
+                _buildDetailRow('Number of Surveys', '${cashout.wallet!.nbrSurveys}'),
+                _buildDetailRow('Is Cashable', cashout.wallet!.isCashable ? 'Yes' : 'No'),
+              ],
             ],
           ),
         ),
@@ -429,41 +448,18 @@ class _CashoutsScreenState extends State<CashoutsScreen> {
   }
 
   void _showRejectDialog(BuildContext context, CashoutRequestModel cashout, DashboardProvider provider) {
-    final reasonController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Reject Cashout Request'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Are you sure you want to reject this \$${cashout.amount.toStringAsFixed(2)} cashout request?'),
-            const SizedBox(height: 16),
-            TextField(
-              controller: reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Rejection Reason',
-                border: OutlineInputBorder(),
-                hintText: 'Please provide a reason for rejection',
-              ),
-              maxLines: 3,
-            ),
-          ],
-        ),
+        content: Text('Are you sure you want to reject this \$${cashout.amount.toStringAsFixed(2)} cashout request?'),
         actions: [
           TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
-              if (reasonController.text.isNotEmpty) {
-                provider.updateCashoutStatus(
-                  cashout.id,
-                  CashoutStatus.rejected,
-                  rejectionReason: reasonController.text,
-                );
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Cashout request rejected')));
-              }
+              provider.updateCashoutStatus(cashout.id, CashoutStatus.rejected);
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Cashout request rejected')));
             },
             child: const Text('Reject'),
           ),

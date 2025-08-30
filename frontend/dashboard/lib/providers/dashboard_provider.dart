@@ -88,6 +88,8 @@ class DashboardProvider with ChangeNotifier {
             email: _users[userIndex].email,
             gender: _users[userIndex].gender,
             isActive: isActive,
+            phone: _users[userIndex].phone,
+            username: _users[userIndex].username,
             surveyCount: _users[userIndex].surveyCount,
             participationCount: _users[userIndex].participationCount,
             createdAt: _users[userIndex].createdAt,
@@ -186,25 +188,30 @@ class DashboardProvider with ChangeNotifier {
     loadCashouts(refresh: true);
   }
 
-  Future<void> updateCashoutStatus(String cashoutId, CashoutStatus status, {String? rejectionReason}) async {
+  Future<void> updateCashoutStatus(String cashoutId, CashoutStatus status) async {
     try {
-      final success = await ApiService.updateCashoutStatus(cashoutId, status, rejectionReason: rejectionReason);
+      final success = await ApiService.updateCashoutStatus(cashoutId, status);
       if (success) {
         final cashoutIndex = _cashouts.indexWhere((cashout) => cashout.id == cashoutId);
         if (cashoutIndex != -1) {
+          final existingCashout = _cashouts[cashoutIndex];
           _cashouts[cashoutIndex] = CashoutRequestModel(
-            id: _cashouts[cashoutIndex].id,
-            userId: _cashouts[cashoutIndex].userId,
-            userName: _cashouts[cashoutIndex].userName,
-            userEmail: _cashouts[cashoutIndex].userEmail,
-            amount: _cashouts[cashoutIndex].amount,
+            id: existingCashout.id,
+            userId: existingCashout.userId,
+            userFirstName: existingCashout.userFirstName,
+            userLastName: existingCashout.userLastName,
+            userPhone: existingCashout.userPhone,
+            userEmail: existingCashout.userEmail,
+            amount: existingCashout.amount,
             status: status,
-            paymentMethod: _cashouts[cashoutIndex].paymentMethod,
-            paymentDetails: _cashouts[cashoutIndex].paymentDetails,
-            requestedAt: _cashouts[cashoutIndex].requestedAt,
-            processedAt: DateTime.now(),
-            processedBy: 'admin', // Should be current admin user
-            rejectionReason: rejectionReason,
+            paymentMethod: existingCashout.paymentMethod,
+            ccp: existingCashout.ccp,
+            rip: existingCashout.rip,
+            paymentRequestDate: existingCashout.paymentRequestDate,
+            paymentDate: status == CashoutStatus.processed || status == CashoutStatus.success
+                ? DateTime.now()
+                : existingCashout.paymentDate,
+            wallet: existingCashout.wallet,
           );
           notifyListeners();
         }

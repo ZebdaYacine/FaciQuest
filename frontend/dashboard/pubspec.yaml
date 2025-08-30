@@ -54,6 +54,9 @@ dependencies:
   responsive_framework: ^1.1.1
   trina_grid: ^1.6.10
   objectid: ^4.0.1
+  
+  # Local storage for session persistence
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

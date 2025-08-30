@@ -1,7 +1,9 @@
 class UserModel {
   final String id;
+  final String username;
   final String name;
   final String email;
+  final String phone;
   final String gender;
   final bool isActive;
   final int surveyCount;
@@ -14,6 +16,8 @@ class UserModel {
     required this.name,
     required this.email,
     required this.gender,
+    required this.phone,
+    required this.username,
     required this.isActive,
     required this.surveyCount,
     required this.participationCount,
@@ -23,17 +27,19 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] ?? '',
-      name: json['name'] ?? '',
+      id: json['_id'] ?? '',
+      username: json['username'] ?? '',
+      phone: json['phone'] ?? '',
+      name: (json['firstname'] ?? '') + ' ' + (json['lastname'] ?? ''),
       email: json['email'] ?? '',
       gender: json['gender'] ?? '',
-      isActive: json['is_active'] ?? false,
-      surveyCount: json['survey_count'] ?? 0,
+      isActive: json['isActive'] ?? false,
+      surveyCount: json['surveyCount'] ?? 0,
       participationCount: json['participation_count'] ?? 0,
-      createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
-      lastLoginAt: json['last_login_at'] != null 
-          ? DateTime.tryParse(json['last_login_at']) 
-          : null,
+      createdAt: json['created_at'] is String
+          ? DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now()
+          : DateTime.now(),
+      lastLoginAt: json['lastActivity'] != null ? DateTime.fromMillisecondsSinceEpoch(json['lastActivity']) : null,
     );
   }
 

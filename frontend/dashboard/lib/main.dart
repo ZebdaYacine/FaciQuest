@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'providers/dashboard_provider.dart';
+import 'providers/auth_provider.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/login_screen.dart';
+import 'models/models.dart';
 
 void main() {
   runApp(const FaciQuestDashboard());
@@ -14,7 +17,10 @@ class FaciQuestDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => DashboardProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => DashboardProvider()),
+      ],
       child: MaterialApp(
         title: 'FaciQuest Admin Dashboard',
         debugShowCheckedModeBanner: false,
@@ -27,7 +33,10 @@ class FaciQuestDashboard extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
           filledButtonTheme: FilledButtonThemeData(
-            style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+            style: FilledButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              minimumSize: const Size(double.infinity, 48),
+            ),
           ),
           outlinedButtonTheme: OutlinedButtonThemeData(
             style: OutlinedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
@@ -37,7 +46,7 @@ class FaciQuestDashboard extends StatelessWidget {
           ),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           ),
         ),
         builder: (context, child) => ResponsiveBreakpoints.builder(
@@ -49,8 +58,46 @@ class FaciQuestDashboard extends StatelessWidget {
             const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
           ],
         ),
-        home: const DashboardScreen(),
+        home: const AuthWrapper(),
       ),
+    );
+  }
+}
+
+class AuthWrapper extends StatefulWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize authentication state when app starts
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AuthProvider>().initialize();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) {
+        switch (authProvider.status) {
+          case AuthStatus.loading:
+          case AuthStatus.initial:
+            return const Scaffold(body: Center(child: CircularProgressIndicator()));
+
+          case AuthStatus.authenticated:
+            return const DashboardScreen();
+
+          case AuthStatus.unauthenticated:
+          case AuthStatus.error:
+            return const LoginScreen();
+        }
+      },
     );
   }
 }

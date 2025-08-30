@@ -5,6 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Flutter Dashboard",
+            "cwd": "frontend/dashboard",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug"
+        },
+
+        {
             "name": "faciquest",
             "cwd": "frontend/faciquest",
             "request": "launch",
