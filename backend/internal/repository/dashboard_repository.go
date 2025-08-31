@@ -428,6 +428,8 @@ func (d *dashboardRepository) GetAnalytics(c context.Context, period string, sta
 		TotalSurveys:         int(totalSurveys),
 		TotalCashoutRequests: int(cashoutCount),
 		TotalCashoutAmount:   totalAmount,
+		PeriodStart: *startAt,
+		PeriodEnd:   *endAt,
 	}
 
 	if startAt != nil {
