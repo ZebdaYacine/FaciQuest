@@ -262,11 +262,15 @@ func (dc *DashBoardController) GetUserByIDRequest(c *gin.Context) {
 
 // GetAnalyticsRequest handles analytics query over a period and date range
 func (dc *DashBoardController) GetAnalyticsRequest(c *gin.Context) {
+
+	log.Printf("Received analytics request ")
+
 	period := c.Query("period")
 	startStr := c.Query("start_date")
 	endStr := c.Query("end_date")
 
 	var startAt, endAt *time.Time
+
 	if startStr != "" {
 		t, err := time.Parse(time.RFC3339, startStr)
 		if err != nil {
@@ -275,6 +279,7 @@ func (dc *DashBoardController) GetAnalyticsRequest(c *gin.Context) {
 		}
 		startAt = &t
 	}
+
 	if endStr != "" {
 		t, err := time.Parse(time.RFC3339, endStr)
 		if err != nil {

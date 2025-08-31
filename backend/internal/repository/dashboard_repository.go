@@ -370,6 +370,7 @@ func formatDate(unixTimestamp int64) string {
 }
 
 func (d *dashboardRepository) GetAnalytics(c context.Context, period string, startAt *time.Time, endAt *time.Time) (*domain.AnalyticsModel, error) {
+
 	usersCollection := d.database.Collection("users")
 	surveysCollection := d.database.Collection("survey")
 	paymentsCollection := d.database.Collection("payment")
@@ -386,8 +387,11 @@ func (d *dashboardRepository) GetAnalytics(c context.Context, period string, sta
 		if len(and) == 0 {
 			return bson.M{}
 		}
+
 		return bson.M{"$and": and}
 	}
+
+	log.Println(" >>>>>>>>>>>>>> dateFilter", dateFilter("createdAt"))
 
 	// Totals
 	totalUsers, _ := usersCollection.CountDocuments(c, bson.M{})
