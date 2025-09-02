@@ -1,5 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:collection/collection.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 
@@ -16,12 +16,10 @@ class DropdownQuestionBuilder extends QuestionBuilder {
   final LikertScale? likertScale;
 
   @override
-  State<DropdownQuestionBuilder> createState() =>
-      _DropdownQuestionBuilderState();
+  State<DropdownQuestionBuilder> createState() => _DropdownQuestionBuilderState();
 }
 
-class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
-    with BuildFormMixin {
+class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder> with BuildFormMixin {
   String? selectedType;
   late var question = widget.question as DropdownQuestion;
   late List<TextEditingController> controllers;
@@ -62,7 +60,7 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
     super.dispose();
   }
 
-  onChange({
+  void onChange({
     List<String>? choices,
   }) {
     widget.onChanged?.call(
@@ -86,20 +84,16 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder>
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
-                  value: optionSizes.contains(question.choices.length)
-                      ? question.choices.length
-                      : null,
+                  value: optionSizes.contains(question.choices.length) ? question.choices.length : null,
                   items: [
                     DropdownMenuItem(
                       value: null,
-                      child:
-                          Text('survey.question.checkboxes.select_scale'.tr()),
+                      child: Text('survey.question.checkboxes.select_scale'.tr()),
                     ),
-                    ...getScaleOptionsSize(selectedType)
-                        .map((e) => DropdownMenuItem(
-                              value: e,
-                              child: Text(e.toString()),
-                            ))
+                    ...getScaleOptionsSize(selectedType).map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e.toString()),
+                        ))
                   ],
                   onChanged: (e) {
                     if (e == null) {

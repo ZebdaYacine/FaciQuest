@@ -97,56 +97,75 @@ class _Body extends StatelessWidget {
                   ),
                   AppSpacing.spacing_4.heightBox,
                   const _SignUpForm(),
-                  AppSpacing.spacing_3.heightBox,
-                  Row(
-                    children: [
-                      BlocBuilder<SignUpCubit, SignUpState>(
-                        buildWhen: (previous, current) =>
-                            previous.agreeToTerms != current.agreeToTerms,
-                        builder: (context, state) {
-                          return Checkbox(
-                            value: state.agreeToTerms,
-                            onChanged: cubit.onAgreeToTermsChanged,
-                          );
-                        },
+                  AppSpacing.spacing_4.heightBox,
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: context.colorScheme.surfaceContainerLowest,
+                      border: Border.all(
+                        color: context.colorScheme.outline.withOpacity(0.1),
                       ),
-                      Text('auth.signUp.agreeToThe'.tr()),
-                      AppSpacing.spacing_1.widthBox,
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          'auth.signUp.termsAndConditions'.tr(),
-                          style: TextStyle(
-                            color: context.colorScheme.primary,
-                            decoration: TextDecoration.underline,
-                            decorationThickness: 1,
+                    ),
+                    padding: AppSpacing.spacing_3.padding,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BlocBuilder<SignUpCubit, SignUpState>(
+                          buildWhen: (previous, current) => previous.agreeToTerms != current.agreeToTerms,
+                          builder: (context, state) {
+                            return Container(
+                              margin: const EdgeInsets.only(top: 2),
+                              child: Transform.scale(
+                                scale: 1.2,
+                                child: Checkbox(
+                                  value: state.agreeToTerms,
+                                  onChanged: cubit.onAgreeToTermsChanged,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        AppSpacing.spacing_2.widthBox,
+                        Expanded(
+                          child: Wrap(
+                            children: [
+                              Text(
+                                'auth.signUp.agreeToThe'.tr(),
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                  color: context.colorScheme.onSurface,
+                                ),
+                              ),
+                              const Text(' '),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Text(
+                                  'auth.signUp.termsAndConditions'.tr(),
+                                  style: TextStyle(
+                                    color: context.colorScheme.primary,
+                                    decoration: TextDecoration.underline,
+                                    decorationThickness: 1.5,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  AppSpacing.spacing_3.heightBox,
+                  AppSpacing.spacing_4.heightBox,
                   BlocBuilder<SignUpCubit, SignUpState>(
                     builder: (context, state) {
-                      return ElevatedButton(
+                      return PrimaryButton(
                         onPressed: state.isValid ? cubit.submit : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.colorScheme.primary,
-                          foregroundColor: context.colorScheme.onPrimary,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'auth.signUp.submit'.tr(),
-                            style: context.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: context.colorScheme.onPrimary,
-                            ),
-                          ),
-                        ),
+                        isLoading: state.status.isLoading,
+                        icon: const Icon(Icons.person_add_rounded),
+                        child: Text('auth.signUp.submit'.tr()),
                       );
                     },
                   ),
@@ -167,138 +186,184 @@ class _SignUpForm extends StatefulWidget {
   _SignUpFormState createState() => _SignUpFormState();
 }
 
-class _SignUpFormState extends State<_SignUpForm> {
+class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late List<Animation<double>> _fieldAnimations;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+
+    _fieldAnimations = List.generate(7, (index) {
+      return Tween<double>(
+        begin: 0.0,
+        end: 1.0,
+      ).animate(CurvedAnimation(
+        parent: _animationController,
+        curve: Interval(
+          index * 0.1,
+          0.5 + (index * 0.1),
+          curve: Curves.easeOutCubic,
+        ),
+      ));
+    });
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SignUpCubit>();
     return Container(
-      padding: AppSpacing.spacing_3.padding,
+      padding: AppSpacing.spacing_4.padding,
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: context.colorScheme.shadow.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: context.colorScheme.primary.withOpacity(0.08),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+          BoxShadow(
+            color: context.colorScheme.shadow.withOpacity(0.04),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
+        border: Border.all(
+          color: context.colorScheme.outline.withOpacity(0.1),
+          width: 1,
+        ),
       ),
       child: Column(
         children: [
-          TextFormField(
-            decoration: InputDecoration(
+          _buildAnimatedField(
+            0,
+            EnhancedTextField(
               labelText: 'auth.signUp.username'.tr(),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+              hintText: 'Enter your username',
+              prefixIcon: Icon(
+                Icons.person_outline_rounded,
+                color: context.colorScheme.primary,
               ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              onChanged: cubit.onUsernameChanged,
             ),
-            onChanged: cubit.onUsernameChanged,
           ),
-          AppSpacing.spacing_2.heightBox,
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'auth.signUp.firstName'.tr(),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+          AppSpacing.spacing_3.heightBox,
+          Row(
+            children: [
+              Expanded(
+                child: _buildAnimatedField(
+                  1,
+                  EnhancedTextField(
+                    labelText: 'auth.signUp.firstName'.tr(),
+                    hintText: 'First name',
+                    prefixIcon: Icon(
+                      Icons.badge_outlined,
+                      color: context.colorScheme.primary,
+                    ),
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    textCapitalization: TextCapitalization.words,
+                    onChanged: cubit.onFirstNameChanged,
+                  ),
+                ),
               ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
+              AppSpacing.spacing_2.widthBox,
+              Expanded(
+                child: _buildAnimatedField(
+                  2,
+                  EnhancedTextField(
+                    labelText: 'auth.signUp.lastName'.tr(),
+                    hintText: 'Last name',
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    textCapitalization: TextCapitalization.words,
+                    onChanged: cubit.onLastNameChanged,
+                  ),
+                ),
               ),
-            ),
-            onChanged: cubit.onFirstNameChanged,
+            ],
           ),
-          AppSpacing.spacing_2.heightBox,
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'auth.signUp.lastName'.tr(),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-            ),
-            onChanged: cubit.onLastNameChanged,
-          ),
-          AppSpacing.spacing_2.heightBox,
-          TextFormField(
-            decoration: InputDecoration(
+          AppSpacing.spacing_3.heightBox,
+          _buildAnimatedField(
+            3,
+            EnhancedTextField(
               labelText: 'auth.signUp.email'.tr(),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+              hintText: 'Enter your email address',
+              prefixIcon: Icon(
+                Icons.email_outlined,
+                color: context.colorScheme.primary,
               ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              onChanged: cubit.onEmailChanged,
             ),
-            onChanged: cubit.onEmailChanged,
           ),
-          AppSpacing.spacing_2.heightBox,
-          TextFormField(
-            decoration: InputDecoration(
+          AppSpacing.spacing_3.heightBox,
+          _buildAnimatedField(
+            4,
+            EnhancedTextField(
               labelText: 'auth.signUp.phone'.tr(),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+              hintText: 'Enter your phone number',
+              prefixIcon: Icon(
+                Icons.phone_outlined,
+                color: context.colorScheme.primary,
               ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.next,
+              onChanged: cubit.onPhoneChanged,
             ),
-            onChanged: cubit.onPhoneChanged,
           ),
-          AppSpacing.spacing_2.heightBox,
-          TextFormField(
-            decoration: InputDecoration(
+          AppSpacing.spacing_3.heightBox,
+          _buildAnimatedField(
+            5,
+            PasswordTextField(
               labelText: 'auth.signUp.password'.tr(),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.visibility_off),
-                onPressed: () {
-                  // Toggle password visibility
-                },
-              ),
+              hintText: 'Create a strong password',
+              showStrengthIndicator: true,
+              onChanged: cubit.onPasswordChanged,
             ),
-            obscureText: true,
-            onChanged: cubit.onPasswordChanged,
           ),
-          AppSpacing.spacing_2.heightBox,
-          TextFormField(
-            decoration: InputDecoration(
+          AppSpacing.spacing_3.heightBox,
+          _buildAnimatedField(
+            6,
+            PasswordTextField(
               labelText: 'auth.signUp.confirmPassword'.tr(),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.visibility_off),
-                onPressed: () {
-                  // Toggle password visibility
-                },
-              ),
+              hintText: 'Confirm your password',
+              onChanged: cubit.onCPasswordChanged,
             ),
-            obscureText: true,
-            onChanged: cubit.onCPasswordChanged,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildAnimatedField(int index, Widget child) {
+    return AnimatedBuilder(
+      animation: _fieldAnimations[index],
+      builder: (context, _) {
+        return Transform.translate(
+          offset: Offset(0, 20 * (1 - _fieldAnimations[index].value)),
+          child: Opacity(
+            opacity: _fieldAnimations[index].value,
+            child: child,
+          ),
+        );
+      },
     );
   }
 }

@@ -1,6 +1,6 @@
 class AppUrls {
   static const useLocalhost = false;
-  static const baseUrl = useLocalhost ? 'http://localhost:9000' : 'https://up-0tti.onrender.com';
+  static const baseUrl = useLocalhost ? 'http://localhost:9000' : 'http://185.209.229.242:3000';
 
   /// Auth Urls
   static const authLoginUrl = '$baseUrl/login';

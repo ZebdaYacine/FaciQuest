@@ -110,48 +110,36 @@ class CollectorEntity extends Equatable {
     return CollectorEntity(
       id: map['id'] as String,
       name: map['name'] as String,
-      status: CollectorStatus.fromMap(map['status'] as String?) ??
-          CollectorStatus.draft,
-      type: CollectorType.fromMap(map['type'] as String?) ??
-          CollectorType.targetAudience,
+      status: CollectorStatus.fromMap(map['status'] as String?) ?? CollectorStatus.draft,
+      type: CollectorType.fromMap(map['type'] as String?) ?? CollectorType.targetAudience,
       responsesCount: (map['responsesCount'] as num?)?.toInt() ?? 0,
       viewsCount: (map['viewsCount'] as num?)?.toInt() ?? 0,
-      createdDate: map['createdDate'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(
-              (map['createdDate'] as num).toInt())
-          : null,
+      createdDate:
+          map['createdDate'] != null ? DateTime.fromMillisecondsSinceEpoch((map['createdDate'] as num).toInt()) : null,
       surveyId: map['surveyId'] as String,
       webUrl: map['webUrl'] as String?,
-      population: targetAudience?['population'] != null
-          ? (targetAudience!['population'] as num).toDouble()
-          : null,
+      population: targetAudience?['population'] != null ? (targetAudience!['population'] as num).toDouble() : null,
       gender: targetAudience?['gender'] != null
           ? Gender.fromMap(targetAudience!['gender'] as String?) ?? Gender.both
           : null,
-      ageRange: ageRange != null &&
-              ageRange['start'] is double &&
-              ageRange['end'] is double
+      ageRange: ageRange != null && ageRange['start'] is double && ageRange['end'] is double
           ? RangeValues(ageRange['start'], ageRange['end'])
           : null,
-      countries: targetAudience?['countries'] != null
-          ? List<String>.from(targetAudience!['countries'] as List)
-          : [],
+      countries: targetAudience?['countries'] != null ? List<String>.from(targetAudience!['countries'] as List) : [],
       provinces: targetAudience?['provinces'] != null
           ? List<Province>.from(
-              (targetAudience!['provinces'] as List)
-                  .map((x) => Province.fromMap(x as Map<String, dynamic>)),
+              (targetAudience!['provinces'] as List).map((x) => Province.fromMap(x as Map<String, dynamic>)),
             )
           : [],
       cities: targetAudience?['cities'] != null
           ? List<City>.from(
-              (targetAudience!['cities'] as List)
-                  .map((x) => City.fromMap(x as Map<String, dynamic>)),
+              (targetAudience!['cities'] as List).map((x) => City.fromMap(x as Map<String, dynamic>)),
             )
           : [],
       targetingCriteria: targetAudience?['targetingCriteria'] != null
           ? List<TargetingCriteria>.from(
-              (targetAudience!['targetingCriteria'] as List).map(
-                  (x) => TargetingCriteria.fromMap(x as Map<String, dynamic>)),
+              (targetAudience!['targetingCriteria'] as List)
+                  .map((x) => TargetingCriteria.fromMap(x as Map<String, dynamic>)),
             )
           : [],
     );
@@ -194,6 +182,19 @@ enum CollectorStatus {
   deleted,
   checkingPayment;
 
+  String get displayName {
+    switch (this) {
+      case CollectorStatus.open:
+        return 'Open';
+      case CollectorStatus.draft:
+        return 'Draft';
+      case CollectorStatus.deleted:
+        return 'Deleted';
+      case CollectorStatus.checkingPayment:
+        return 'Checking Payment';
+    }
+  }
+
   String toMap() {
     switch (this) {
       case CollectorStatus.open:
@@ -232,6 +233,15 @@ enum CollectorType {
         return Icons.link;
       case CollectorType.targetAudience:
         return Icons.person;
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case CollectorType.link:
+        return Colors.blue;
+      case CollectorType.targetAudience:
+        return Colors.purple;
     }
   }
 
@@ -275,8 +285,7 @@ class TargetingCriteria extends Equatable {
         id: ObjectId().hexString,
         category: 'Most popular',
         title: 'Education',
-        description:
-            'What is the highest level of school that you have completed?',
+        description: 'What is the highest level of school that you have completed?',
         choices: [
           CriteriaChoices(
             id: ObjectId().hexString,
@@ -384,8 +393,7 @@ class TargetingCriteria extends Equatable {
         id: ObjectId().hexString,
         category: 'Employment',
         title: 'Employment Status',
-        description:
-            'Which of the following categories best describes your employment status?',
+        description: 'Which of the following categories best describes your employment status?',
         choices: [
           CriteriaChoices(
             id: ObjectId().hexString,
@@ -409,8 +417,7 @@ class TargetingCriteria extends Equatable {
           id: ObjectId().hexString,
           category: 'Employment',
           title: 'Job Level',
-          description:
-              'Which of the following best describes your current job level?',
+          description: 'Which of the following best describes your current job level?',
           choices: [
             CriteriaChoices(
               id: ObjectId().hexString,
@@ -465,11 +472,9 @@ class TargetingCriteria extends Equatable {
   factory TargetingCriteria.fromMap(Map<String, dynamic> map) {
     return TargetingCriteria(
       id: map['id'] as String,
-      category:
-          map['category'] != null ? map['category']['Name'] as String : null,
+      category: map['category'] != null ? map['category']['Name'] as String : null,
       title: map['title'] as String,
-      description:
-          map['description'] != null ? map['description'] as String : null,
+      description: map['description'] != null ? map['description'] as String : null,
       choices: List<CriteriaChoices>.from(
         (map['choices'] as List).map<CriteriaChoices>(
           (x) => CriteriaChoices.fromMap(x as Map<String, dynamic>),
