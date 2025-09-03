@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpView extends StatelessWidget {
@@ -44,135 +45,337 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<SignUpCubit>();
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
+              context.colorScheme.primary.withOpacity(0.08),
               context.colorScheme.surface,
-              context.colorScheme.surface.withOpacity(0.95),
+              context.colorScheme.primary.withOpacity(0.05),
             ],
+            stops: const [0.0, 0.6, 1.0],
           ),
         ),
         child: SafeArea(
           child: Padding(
-            padding: AppSpacing.spacing_3.padding,
+            padding: AppSpacing.spacing_2.horizontalPadding,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'auth.signUp.title'.tr(),
-                    style: context.textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: context.colorScheme.primary,
-                    ),
-                  ),
-                  AppSpacing.spacing_1.heightBox,
+                  // Header with back button
                   Row(
                     children: [
-                      Text(
-                        'auth.signUp.alreadyMember'.tr(),
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          color: context.colorScheme.onSurface.withOpacity(0.7),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.surface.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: context.colorScheme.outline.withOpacity(0.1),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: context.colorScheme.shadow.withOpacity(0.05),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
-                      ),
-                      AppSpacing.spacing_1.widthBox,
-                      GestureDetector(
-                        onTap: () {
-                          context.pop();
-                        },
-                        child: Text(
-                          'auth.signUp.login'.tr(),
-                          style: TextStyle(
-                            color: context.colorScheme.primary,
-                            decoration: TextDecoration.underline,
-                            decorationThickness: 1,
+                        child: IconButton(
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.of(context).pop();
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            color: context.colorScheme.onSurface,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  AppSpacing.spacing_4.heightBox,
+
+                  const SizedBox(height: 32),
+
+                  // Welcome section with better typography
+                  _WelcomeSection(),
+
+                  const SizedBox(height: 32),
+
+                  // Enhanced form
                   const _SignUpForm(),
-                  AppSpacing.spacing_4.heightBox,
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: context.colorScheme.surfaceContainerLowest,
-                      border: Border.all(
-                        color: context.colorScheme.outline.withOpacity(0.1),
-                      ),
-                    ),
-                    padding: AppSpacing.spacing_3.padding,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BlocBuilder<SignUpCubit, SignUpState>(
-                          buildWhen: (previous, current) => previous.agreeToTerms != current.agreeToTerms,
-                          builder: (context, state) {
-                            return Container(
-                              margin: const EdgeInsets.only(top: 2),
-                              child: Transform.scale(
-                                scale: 1.2,
-                                child: Checkbox(
-                                  value: state.agreeToTerms,
-                                  onChanged: cubit.onAgreeToTermsChanged,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        AppSpacing.spacing_2.widthBox,
-                        Expanded(
-                          child: Wrap(
-                            children: [
-                              Text(
-                                'auth.signUp.agreeToThe'.tr(),
-                                style: context.textTheme.bodyMedium?.copyWith(
-                                  color: context.colorScheme.onSurface,
-                                ),
-                              ),
-                              const Text(' '),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Text(
-                                  'auth.signUp.termsAndConditions'.tr(),
-                                  style: TextStyle(
-                                    color: context.colorScheme.primary,
-                                    decoration: TextDecoration.underline,
-                                    decorationThickness: 1.5,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  AppSpacing.spacing_4.heightBox,
-                  BlocBuilder<SignUpCubit, SignUpState>(
-                    builder: (context, state) {
-                      return PrimaryButton(
-                        onPressed: state.isValid ? cubit.submit : null,
-                        isLoading: state.status.isLoading,
-                        icon: const Icon(Icons.person_add_rounded),
-                        child: Text('auth.signUp.submit'.tr()),
-                      );
-                    },
-                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Enhanced terms section
+                  _TermsSection(),
+
+                  const SizedBox(height: 32),
+
+                  // Enhanced sign up button
+                  _SignUpButton(),
+
+                  const SizedBox(height: 24),
+
+                  // Sign in prompt
+                  _SignInPrompt(),
+
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _WelcomeSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'auth.signUp.title'.tr(),
+          style: context.textTheme.headlineLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: context.colorScheme.primary,
+            fontSize: 32,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'auth.signUp.subtitle'.tr(),
+          style: context.textTheme.bodyLarge?.copyWith(
+            color: context.colorScheme.onSurface.withOpacity(0.7),
+            height: 1.4,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TermsSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<SignUpCubit>();
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) => previous.agreeToTerms != current.agreeToTerms,
+      builder: (context, state) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: context.colorScheme.surface.withOpacity(0.8),
+            border: Border.all(
+              color: context.colorScheme.outline.withOpacity(0.1),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: context.colorScheme.shadow.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color:
+                        state.agreeToTerms ? context.colorScheme.primary : context.colorScheme.outline.withOpacity(0.3),
+                    width: 2,
+                  ),
+                  color: state.agreeToTerms ? context.colorScheme.primary : Colors.transparent,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    cubit.onAgreeToTermsChanged(!state.agreeToTerms);
+                  },
+                  borderRadius: BorderRadius.circular(6),
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: state.agreeToTerms
+                        ? Icon(
+                            Icons.check_rounded,
+                            color: context.colorScheme.onPrimary,
+                            size: 16,
+                          )
+                        : null,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    cubit.onAgreeToTermsChanged(!state.agreeToTerms);
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: context.colorScheme.onSurface,
+                          ),
+                          children: [
+                            TextSpan(text: 'auth.signUp.agreeToThe'.tr()),
+                            const TextSpan(text: ' '),
+                            TextSpan(
+                              text: 'auth.signUp.termsAndConditions'.tr(),
+                              style: TextStyle(
+                                color: context.colorScheme.primary,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 1.5,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const TextSpan(text: ' '),
+                            TextSpan(text: 'auth.signUp.and'.tr()),
+                            const TextSpan(text: ' '),
+                            TextSpan(
+                              text: 'auth.signUp.privacyPolicy'.tr(),
+                              style: TextStyle(
+                                color: context.colorScheme.primary,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 1.5,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SignUpButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<SignUpCubit>();
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      builder: (context, state) {
+        return Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: state.isValid
+                ? [
+                    BoxShadow(
+                      color: context.colorScheme.primary.withOpacity(0.3),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    ),
+                  ]
+                : [],
+          ),
+          child: ElevatedButton.icon(
+            onPressed: state.isValid
+                ? () {
+                    HapticFeedback.mediumImpact();
+                    cubit.submit();
+                  }
+                : null,
+            icon: state.status.isLoading
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: context.colorScheme.onPrimary,
+                    ),
+                  )
+                : Icon(
+                    Icons.person_add_rounded,
+                    color:
+                        state.isValid ? context.colorScheme.onPrimary : context.colorScheme.onSurface.withOpacity(0.4),
+                  ),
+            label: Text(
+              'auth.signUp.submit'.tr(),
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: state.isValid ? context.colorScheme.onPrimary : context.colorScheme.onSurface.withOpacity(0.4),
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: context.colorScheme.primary,
+              foregroundColor: context.colorScheme.onPrimary,
+              disabledBackgroundColor: context.colorScheme.outline.withOpacity(0.2),
+              disabledForegroundColor: context.colorScheme.onSurface.withOpacity(0.4),
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              elevation: state.isValid ? 6 : 0,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SignInPrompt extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: context.colorScheme.surface.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: context.colorScheme.outline.withOpacity(0.1),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'auth.signUp.alreadyMember'.tr(),
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'auth.signUp.login'.tr(),
+                style: TextStyle(
+                  color: context.colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
+                  decorationThickness: 2,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -205,8 +408,8 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
       ).animate(CurvedAnimation(
         parent: _animationController,
         curve: Interval(
-          index * 0.1,
-          0.5 + (index * 0.1),
+          (index * 0.1).clamp(0.0, 1.0),
+          (0.5 + (index * 0.1)).clamp(0.0, 1.0),
           curve: Curves.easeOutCubic,
         ),
       ));
@@ -225,7 +428,7 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
   Widget build(BuildContext context) {
     final cubit = context.read<SignUpCubit>();
     return Container(
-      padding: AppSpacing.spacing_4.padding,
+      padding: AppSpacing.spacing_2.padding,
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),

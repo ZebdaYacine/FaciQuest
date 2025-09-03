@@ -1,4 +1,21 @@
 {
+  "welcome": {
+    "title": "مرحبًا بك في فاسي كويست",
+    "subtitle": "أنشئ واستعرض استبياناتك بسهولة",
+    "get_started": "ابدأ الآن",
+    "sign_in": "تسجيل الدخول",
+    "terms": "الشروط والأحكام",
+    "privacy": "سياسة الخصوصية",
+    "smart_surveys": "استبيانات ذكية",
+    "real_time_analytics": "تحليلات فورية",
+    "secure_private": "آمن وخاص",
+    "create_intelligent_questionnaires": "أنشئ استبيانات ذكية",
+    "get_instant_insights": "احصل على رؤى فورية",
+    "your_data_is_protected": "بياناتك محمية",
+    "byUsing": "باستخدام هذا التطبيق، فإنك توافق على سياستنا",
+    "and": "و",
+    "privacyPolicy": "سياسة الخصوصية"
+  },
   "profile": {
     "language": "اللغة",
     "my_account": "حسابي",
@@ -39,6 +56,7 @@
     },
     "signIn": {
       "title": "مرحباً بعودتك",
+      "subtitle": "مرحباً بعودتك إلى FaciQuest",
       "newToApp": "جديد في التطبيق؟",
       "signUp": "إنشاء حساب",
       "forgotPassword": "نسيت كلمة المرور؟",
@@ -50,7 +68,10 @@
       "title": "إعادة تعيين كلمة المرور",
       "description": "يرجى إدخال بريدك الإلكتروني لإعادة تعيين كلمة المرور",
       "submit": "إعادة تعيين كلمة المرور",
-      "email": "البريد الإلكتروني"
+      "email": "البريد الإلكتروني",
+      "emailInfo": "سنرسل لك بريد إلكتروني لإعادة تعيين كلمة المرور",
+      "backToSignIn": "العودة إلى تسجيل الدخول",
+      "rememberPassword": "هل تتذكر كلمة المرور؟"
     },
     "setNewPassword": {
       "title": "إعادة تعيين كلمة المرور",

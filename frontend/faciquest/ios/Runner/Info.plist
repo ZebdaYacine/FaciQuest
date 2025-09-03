@@ -45,5 +45,58 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Camera Permission -->
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to camera to take photos for surveys and user profile.</string>
+	
+	<!-- Photo Library Permission -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to photo library to select images for surveys and user profile.</string>
+	
+	<!-- Microphone Permission -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to microphone to record audio responses for surveys.</string>
+	
+	<!-- File System Access -->
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>This app needs access to documents to save and load survey files.</string>
+	
+	<!-- Location Permission (if needed for surveys) -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app may need access to location for location-based survey questions.</string>
+	
+	<!-- Contacts Permission (if needed for sharing) -->
+	<key>NSContactsUsageDescription</key>
+	<string>This app may need access to contacts to share survey links.</string>
+	
+	<!-- Face ID/Touch ID Permission (for secure storage) -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>This app uses Face ID for secure authentication and data protection.</string>
+	
+	<!-- Network Usage -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	
+	<!-- Background Modes (if needed) -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>background-processing</string>
+		<string>background-fetch</string>
+	</array>
+	
+	<!-- File Sharing -->
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	
+	<!-- Prevent backup of sensitive data -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	
 </dict>
 </plist>

@@ -1,4 +1,21 @@
 {
+  "welcome": {
+    "title": "Bienvenue sur FaciQuest",
+    "subtitle": "Créez et gérez vos sondages avec facilité",
+    "get_started": "Commencer",
+    "sign_in": "Se Connecter",
+    "terms": "Conditions Générales",
+    "privacy": "Politique de Confidentialité",
+    "smart_surveys": "Sondages Inteligents",
+    "real_time_analytics": "Analyses en Temps Réel",
+    "secure_private": "Sécurisé & Privé",
+    "create_intelligent_questionnaires": "Créer des questionnaires intelligents",
+    "get_instant_insights": "Obtenir des insights instantanés",
+    "your_data_is_protected": "Vos données sont protégées",
+    "byUsing": "En utilisant cette application, vous acceptez nos",
+    "and": "et",
+    "privacyPolicy": "Politique de Confidentialité"
+  },
   "profile": {
     "language": "Langue",
     "my_account": "Mon Compte",
@@ -39,6 +56,8 @@
     },
     "signIn": {
       "title": "Bienvenue",
+      "subtitle": "Bienvenue de retour à FaciQuest",
+
       "newToApp": "Nouveau sur l'application ?",
       "signUp": "S'inscrire",
       "forgotPassword": "Mot de passe oublié ?",
@@ -50,7 +69,10 @@
       "title": "Réinitialiser le Mot de Passe",
       "description": "Veuillez saisir votre adresse email pour réinitialiser votre mot de passe",
       "submit": "Réinitialiser",
-      "email": "Email"
+      "email": "Email",
+      "emailInfo": "Nous vous enverrons un email pour réinitialiser votre mot de passe",
+      "backToSignIn": "Retour à la connexion",
+      "rememberPassword": "Vous avez un mot de passe ?"
     },
     "setNewPassword": {
       "title": "Réinitialiser le Mot de Passe",

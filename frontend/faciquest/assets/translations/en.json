@@ -1,4 +1,22 @@
 {
+  "welcome": {
+    "title": "Welcome to FaciQuest",
+    "subtitle": "Create and manage your surveys with ease",
+    "get_started": "Get Started",
+    "sign_in": "Sign In",
+    "terms": "Terms and Conditions",
+    "privacy": "Privacy Policy",
+    "smart_surveys": "Smart Surveys",
+    "real_time_analytics": "Real-time Analytics",
+    "secure_private": "Secure & Private",
+    "create_intelligent_questionnaires": "Create intelligent questionnaires",
+    "get_instant_insights": "Get instant insights",
+    "your_data_is_protected": "Your data is protected",
+    "byUsing": "By using this app, you agree to our",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy"
+  },
+
   "profile": {
     "language": "Language",
     "my_account": "My Account",
@@ -39,6 +57,7 @@
     },
     "signIn": {
       "title": "Welcome Back",
+      "subtitle": "Welcome back to FaciQuest",
       "newToApp": "New to this app?",
       "signUp": "Sign Up",
       "forgotPassword": "Forgot password?",
@@ -50,7 +69,10 @@
       "title": "Reset Password",
       "description": "Please enter your email address to reset your password",
       "submit": "Reset Password",
-      "email": "Email"
+      "email": "Email",
+      "emailInfo": "We will send you an email to reset your password",
+      "backToSignIn": "Back to Sign In",
+      "rememberPassword": "Remember your password?"
     },
     "setNewPassword": {
       "title": "Reset Password",
