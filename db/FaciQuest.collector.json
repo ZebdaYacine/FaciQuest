@@ -1,0 +1,399 @@
+[{
+  "_id": {
+    "$oid": "676ef8c6403ae06e924291cf"
+  },
+  "id": "676ef8c6403ae06e924291cf",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "6755972343eba9422f4ba022",
+  "targetAudience": {
+    "population": 1000,
+    "gender": "Both",
+    "ageRange": {
+      "start": 22,
+      "end": 35
+    },
+    "countries": []
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "676ef8dc403ae06e924291d0"
+  },
+  "id": "676ef8dc403ae06e924291d0",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "6755972343eba9422f4ba022",
+  "targetAudience": {
+    "population": 1000,
+    "gender": "Both",
+    "ageRange": {
+      "start": 30,
+      "end": 35
+    },
+    "countries": []
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "676efcdd04f7d49b60db991f"
+  },
+  "id": "676efcdd04f7d49b60db991f",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "6755972343eba9422f4ba022",
+  "targetAudience": {
+    "population": 1000,
+    "gender": "Both",
+    "ageRange": {
+      "start": 30,
+      "end": 35
+    },
+    "countries": []
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67790855ab18608eb772d1ff"
+  },
+  "id": "67790855ab18608eb772d1ff",
+  "name": "عامة",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 2000,
+    "gender": "Both",
+    "ageRange": {
+      "start": 11,
+      "end": 113
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "6779088fab18608eb772d200"
+  },
+  "id": "6779088fab18608eb772d200",
+  "name": "عامة",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 2000,
+    "gender": "Both",
+    "ageRange": {
+      "start": 11,
+      "end": 113
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "677a850bc54046171f0511ab"
+  },
+  "id": "677a850bc54046171f0511ab",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "677a83d3c54046171f0511a9",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "677aa1b9b10e415be07c8361"
+  },
+  "id": "677aa1b9b10e415be07c8361",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 150,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "677ac963aec93e043f0bc1b1"
+  },
+  "id": "677ac963aec93e043f0bc1b1",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "677ac8f1aec93e043f0bc1b0",
+  "targetAudience": {
+    "population": 100,
+    "gender": "Both",
+    "ageRange": {
+      "start": 23,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "677bb31f79c5a8ddd69f9b83"
+  },
+  "id": "677bb31f79c5a8ddd69f9b83",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "6784e550f0aabd051083f117"
+  },
+  "id": "6784e550f0aabd051083f117",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "6784e4a8f0aabd051083f116",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 33,
+      "end": 78
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "6784e568f0aabd051083f119"
+  },
+  "id": "6784e568f0aabd051083f119",
+  "name": "نن",
+  "type": "targetAudience",
+  "surveyId": "6784e4a8f0aabd051083f116",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 33,
+      "end": 78
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67852cbe36a9947808b3fdf2"
+  },
+  "id": "67852cbe36a9947808b3fdf2",
+  "name": "hhj",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67852ccb36a9947808b3fdf3"
+  },
+  "id": "67852ccb36a9947808b3fdf3",
+  "name": "hhj",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 210,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67861df1a14e3f00bd06f8ee"
+  },
+  "id": "67861df1a14e3f00bd06f8ee",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 3549,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67862d8be4b10fc8d7b2b6c7"
+  },
+  "id": "67862d8be4b10fc8d7b2b6c7",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67862d91e4b10fc8d7b2b6c8"
+  },
+  "id": "67862d91e4b10fc8d7b2b6c8",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67862f1fe4b10fc8d7b2b6cb"
+  },
+  "id": "67862f1fe4b10fc8d7b2b6cb",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67862f21e4b10fc8d7b2b6cc"
+  },
+  "id": "67862f21e4b10fc8d7b2b6cc",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "67863ac81616b1a16bcd26b3"
+  },
+  "id": "67863ac81616b1a16bcd26b3",
+  "name": "",
+  "type": "targetAudience",
+  "surveyId": "678639db55228843500a1815",
+  "targetAudience": {
+    "population": 200,
+    "gender": "Both",
+    "ageRange": {
+      "start": 18,
+      "end": 99
+    },
+    "countries": null
+  },
+  "webCollector": {
+    "webUrl": ""
+  }
+}]

@@ -1,0 +1,134 @@
+[{
+  "_id": {
+    "$oid": "6778fc4b12afd17054eef5be"
+  },
+  "id": "6778fc4b12afd17054eef5be",
+  "title": "IT",
+  "description": "IT",
+  "choices": [
+    {
+      "id": "54564565",
+      "title": "choise 1"
+    }
+  ],
+  "category": {
+    "id": "",
+    "Name": "TECHNIQ"
+  }
+},
+{
+  "_id": {
+    "$oid": "67791ab6391238391ac0a4b2"
+  },
+  "id": "67791ab6391238391ac0a4b2",
+  "title": "Education",
+  "description": "What is the highest level of school that you have completed?",
+  "choices": [
+    {
+      "id": "",
+      "title": "Elementary School"
+    },
+    {
+      "id": "",
+      "title": "High School"
+    },
+    {
+      "id": "",
+      "title": "College"
+    },
+    {
+      "id": "",
+      "title": "University"
+    }
+  ],
+  "category": {
+    "id": "1",
+    "Name": "Most popular"
+  }
+},
+{
+  "_id": {
+    "$oid": "67791b64391238391ac0a4b3"
+  },
+  "id": "67791b64391238391ac0a4b3",
+  "title": "Marital Status",
+  "description": "What is your marital status?",
+  "choices": [
+    {
+      "id": "",
+      "title": "Single"
+    },
+    {
+      "id": "",
+      "title": "Married"
+    },
+    {
+      "id": "",
+      "title": "Divorced"
+    },
+    {
+      "id": "",
+      "title": "Widowed"
+    }
+  ],
+  "category": {
+    "id": "1",
+    "Name": "Most popular"
+  }
+},
+{
+  "_id": {
+    "$oid": "67791b71391238391ac0a4b4"
+  },
+  "id": "67791b71391238391ac0a4b4",
+  "title": "Parental Status",
+  "description": "What is your parental status?",
+  "choices": [
+    {
+      "id": "",
+      "title": "No children"
+    },
+    {
+      "id": "",
+      "title": "Has children"
+    }
+  ],
+  "category": {
+    "id": "1",
+    "Name": "Most popular"
+  }
+},
+{
+  "_id": {
+    "$oid": "67791b87391238391ac0a4b5"
+  },
+  "id": "67791b87391238391ac0a4b5",
+  "title": "Job Level",
+  "description": "Which of the following best describes your current job level?",
+  "choices": [
+    {
+      "id": "",
+      "title": "Entry-level"
+    },
+    {
+      "id": "",
+      "title": "Mid-level"
+    },
+    {
+      "id": "",
+      "title": "Senior-level"
+    },
+    {
+      "id": "",
+      "title": "Manager"
+    },
+    {
+      "id": "",
+      "title": "Director"
+    }
+  ],
+  "category": {
+    "id": "2",
+    "Name": "Employment"
+  }
+}]

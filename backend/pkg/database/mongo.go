@@ -4,6 +4,7 @@ import (
 	"back-end/pkg"
 	"context"
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -123,22 +124,39 @@ func (mc *mongoCollection) DeleteOne(ctx context.Context, filter interface{}) (*
 	return mc.coll.DeleteOne(ctx, filter)
 }
 
+// func ConnectionDb() Database {
+// 	client, err := NewClient(db_opt.SERVER_ADDRESS_DB)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	ctx := context.TODO()
+// 	err = client.Connect(ctx)
+// 	if err != nil {
+// 		log.Print("Connection error")
+// 		log.Fatal(err)
+// 	}
+// 	err = client.Ping(ctx)
+// 	if err != nil {
+// 		log.Print("Ping error")
+// 		log.Fatal(err)
+// 	}
+// 	log.Print("_________________________CONNECT TO DATABASE_________________________")
+// 	return client.Database(db_opt.DB_NAME)
+// }
+
 func ConnectionDb() Database {
-	client, err := NewClient(db_opt.SERVER_ADDRESS_DB)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(db_opt.SERVER_ADDRESS_DB))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Connection error:", err)
 	}
-	ctx := context.TODO()
-	err = client.Connect(ctx)
-	if err != nil {
-		log.Print("Connection error")
-		log.Fatal(err)
+
+	if err := client.Ping(ctx, readpref.Primary()); err != nil {
+		log.Fatal("Ping error:", err)
 	}
-	err = client.Ping(ctx)
-	if err != nil {
-		log.Print("Ping error")
-		log.Fatal(err)
-	}
+
 	log.Print("_________________________CONNECT TO DATABASE_________________________")
-	return client.Database(db_opt.DB_NAME)
+	return &mongoDatabase{db: client.Database(db_opt.DB_NAME)}
 }

@@ -19,5 +19,5 @@ type User struct {
 	SocialStatus string `json:"socialStatus"`
 	Role         string `json:"role"`
 	ImageUrl     string `json:"imageUrl"`
-	LastActivity string `json:"lastActivity" bson:"lastActivity"`
+	LastActivity int64  `json:"lastActivity" bson:"lastActivity"`
 }

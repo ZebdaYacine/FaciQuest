@@ -1,0 +1,317 @@
+[{
+  "_id": {
+    "$oid": "66ced91b015ced6ece935ed4"
+  },
+  "id": "66ced91b015ced6ece935ed4",
+  "username": "",
+  "phone": "0658185867",
+  "firstname": "ZED",
+  "lastname": "Yacine",
+  "email": "zebdaadam1996@gmail.com",
+  "role": "User",
+  "password": "admin",
+  "age": {
+    "$numberLong": "0"
+  },
+  "birthDate": {
+    "$numberLong": "-2208988800000"
+  },
+  "birthPlace": "Laghoaut",
+  "country": "algerie",
+  "education": "master 2 IT",
+  "imageUrl": "lknqiowehqwioe",
+  "institution": "ESSS",
+  "municipal": "laghoaut",
+  "socialStatus": "single",
+  "workerAt": "CNAS",
+  "lastActivity": {
+    "$numberLong": "329439048384384"
+  }
+},
+{
+  "_id": {
+    "$oid": "66d1a1a0a9bc2753dc7d6820"
+  },
+  "id": "66d1a1a0a9bc2753dc7d6820",
+  "username": "YG",
+  "phone": "0663519649",
+  "firstname": "G",
+  "lastname": "Y",
+  "email": "m.goudjal.y@gmail.com",
+  "role": "User",
+  "password": "azerty"
+},
+{
+  "_id": {
+    "$oid": "66eda46454180b170701c51d"
+  },
+  "id": "66eda46454180b170701c51d",
+  "username": "ZedMed",
+  "phone": "0658185867",
+  "firstname": "ZED",
+  "lastname": "Med",
+  "email": "a.zebda@edu.esss.dz",
+  "role": "Admin",
+  "password": "admin",
+  "age": {
+    "$numberLong": "0"
+  },
+  "birthDate": {
+    "$numberLong": "-2208988800000"
+  },
+  "birthPlace": "Laghoaut",
+  "country": "algerie",
+  "education": "master 2 IT",
+  "imageUrl": "lknqiowehqwioe",
+  "institution": "ESSS",
+  "municipal": "laghoaut",
+  "socialStatus": "single",
+  "workerAt": "CNAS"
+},
+{
+  "_id": {
+    "$oid": "67561fb951e1a814e863ff85"
+  },
+  "id": "",
+  "username": "idris",
+  "phone": "0676114453",
+  "firstname": "idris",
+  "lastname": "test",
+  "email": "idris.remmache@gmail.com",
+  "role": "User",
+  "password": "333-i9"
+},
+{
+  "_id": {
+    "$oid": "675820f1ce451def8b84f098"
+  },
+  "id": "",
+  "username": "Riad",
+  "phone": "0671555808",
+  "firstname": "Riad",
+  "lastname": "LEBRAGUE",
+  "email": "riadle88@gmail.com",
+  "role": "User",
+  "password": "1234567890"
+},
+{
+  "_id": {
+    "$oid": "67582c7f7e35b909303146d1"
+  },
+  "id": "",
+  "username": "Samira Bylka",
+  "phone": "0665728968",
+  "firstname": "Zahra Samira",
+  "lastname": "Abbi",
+  "email": "abbisamira03@gmail.com",
+  "role": "User",
+  "password": "samira@2000"
+},
+{
+  "_id": {
+    "$oid": "676869269eeb7f3a6c9e5921"
+  },
+  "id": "",
+  "username": "riad",
+  "phone": "0671555808",
+  "firstname": "riad",
+  "lastname": "lebrague",
+  "email": "riad_lebrague@hotmail.fr",
+  "role": "User",
+  "password": "1234567890"
+},
+{
+  "_id": {
+    "$oid": "6779124f2f3f138a73598a77"
+  },
+  "id": "",
+  "username": "aissa",
+  "phone": "0658188865",
+  "firstname": "zed",
+  "lastname": "zed",
+  "email": "aissascience@gmail.com",
+  "role": "User",
+  "password": "1234"
+},
+{
+  "_id": {
+    "$oid": "677abd6aaec93e043f0bc1ae"
+  },
+  "id": "",
+  "username": "samiraby",
+  "phone": "0775723677",
+  "firstname": "samira",
+  "lastname": "bylka",
+  "email": "samirabylka11@gmail.com",
+  "role": "User",
+  "password": "samira@2025"
+},
+{
+  "_id": {
+    "$oid": "677abe8baec93e043f0bc1af"
+  },
+  "id": "",
+  "username": "malikaby",
+  "phone": "0658704469",
+  "firstname": "malika",
+  "lastname": "majda",
+  "email": "malimalika770@gmail.com",
+  "role": "User",
+  "password": "malika@2025"
+},
+{
+  "_id": {
+    "$oid": "677bb15c79c5a8ddd69f9b7d"
+  },
+  "id": "",
+  "username": "ly",
+  "phone": "0555555555",
+  "firstname": "ly",
+  "lastname": "lou",
+  "email": "loumachilyna@gmail.com",
+  "role": "User",
+  "password": "azerty1234"
+},
+{
+  "_id": {
+    "$oid": "68b9f7d4471890c1d91c4e8e"
+  },
+  "id": "",
+  "username": "FGHJK",
+  "phone": "0777777777777",
+  "firstname": "JPO",
+  "lastname": "ASZ",
+  "email": "TAYEBIABDERRAHMEN@gmail.COM",
+  "role": "User",
+  "password": "1234567890"
+},
+{
+  "_id": {
+    "$oid": "68b9f7f6471890c1d91c4e8f"
+  },
+  "id": "",
+  "username": "samira11",
+  "phone": "0665728968",
+  "firstname": "عبي",
+  "lastname": "سميرة",
+  "email": "ninarina040@gmail.com",
+  "role": "User",
+  "password": "samira@2000"
+},
+{
+  "_id": {
+    "$oid": "68b9f9a3471890c1d91c4e90"
+  },
+  "id": "",
+  "username": "samira",
+  "phone": "0775723677",
+  "firstname": "Samira",
+  "lastname": "Ab",
+  "email": "bylkaa2020@gmail.com",
+  "role": "User",
+  "password": "samira@2025"
+},
+{
+  "_id": {
+    "$oid": "68b9fae5471890c1d91c4e91"
+  },
+  "id": "",
+  "username": "sa",
+  "phone": "0655244156",
+  "firstname": "Sa",
+  "lastname": "By",
+  "email": "moumoulakamora6@gmail.com",
+  "role": "User",
+  "password": "moumou@2025"
+},
+{
+  "_id": {
+    "$oid": "68bb21c3471890c1d91c4e92"
+  },
+  "id": "",
+  "username": "ma306",
+  "phone": "6595683585",
+  "firstname": "Ahm",
+  "lastname": "Ab",
+  "email": "ahmedlamine306@gmail.com",
+  "role": "User",
+  "password": "ahmed@2025"
+},
+{
+  "_id": {
+    "$oid": "68bb4dfbc36c0585ccbe9b06"
+  },
+  "id": "",
+  "username": "linda12",
+  "phone": "0668705862",
+  "firstname": "Linda",
+  "lastname": "Abbi",
+  "email": "lindayasmineabbi@gmail.com",
+  "role": "User",
+  "password": "linda@2002"
+},
+{
+  "_id": {
+    "$oid": "68bbd061c36c0585ccbe9b09"
+  },
+  "id": "",
+  "username": "abdou",
+  "phone": "0666666666",
+  "firstname": "Abderrahmen",
+  "lastname": "Tayebi",
+  "email": "ensseaafnane@gmail.com",
+  "role": "User",
+  "password": "1234567890a"
+},
+{
+  "_id": {
+    "$oid": "68bbd0d5c36c0585ccbe9b0a"
+  },
+  "id": "",
+  "username": "abdou",
+  "phone": "0666666666",
+  "firstname": "Abderrahmen",
+  "lastname": "Tayebi",
+  "email": "tayebiabderrahmen@gmail.com",
+  "role": "User",
+  "password": "1234567890"
+},
+{
+  "_id": {
+    "$oid": "68c4c720aebb5a403ce51879"
+  },
+  "id": "",
+  "username": "@Abdou",
+  "phone": "0666666666",
+  "firstname": "Abderrahmen",
+  "lastname": "Tayebi",
+  "email": "abderrahmen120299@gmail.com",
+  "role": "User",
+  "password": "123456789"
+},
+{
+  "_id": {
+    "$oid": "68c53e19aebb5a403ce5187a"
+  },
+  "id": "",
+  "username": "jdgdg",
+  "phone": "886696886698888889",
+  "firstname": "Tt",
+  "lastname": "Hio",
+  "email": "za.abbi@lagh-univ.dz",
+  "role": "User",
+  "password": "sxyf"
+},
+{
+  "_id": {
+    "$oid": "68c53e8aaebb5a403ce5187b"
+  },
+  "id": "",
+  "username": "gggf",
+  "phone": "588",
+  "firstname": "Tfh",
+  "lastname": "Jhfh",
+  "email": "riad.lebrague@lagh-univ.dz",
+  "role": "User",
+  "password": "med@2025"
+}]

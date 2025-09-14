@@ -1,0 +1,157 @@
+[{
+  "_id": {
+    "$oid": "66ced91b015ced6ece935ed5"
+  },
+  "id": "66ced91b015ced6ece935ed5",
+  "amount": 4000,
+  "temp_amount": 3000,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "0987654321",
+  "rip": "2109876543210987654321",
+  "userid": "66ced91b015ced6ece935ed4",
+  "payment_method": "ccp",
+  "is_cashable": true
+},
+{
+  "_id": {
+    "$oid": "66d1a1a0a9bc2753dc7d6821"
+  },
+  "id": "66d1a1a0a9bc2753dc7d6821",
+  "amount": 0,
+  "nbrsurveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "userid": "66d1a1a0a9bc2753dc7d6820",
+  "paymentmethod": ""
+},
+{
+  "_id": {
+    "$oid": "66eda46454180b170701c51e"
+  },
+  "id": "66eda46454180b170701c51e",
+  "amount": 0,
+  "temp_amount": 0,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "rip": "",
+  "userid": "66eda46454180b170701c51d",
+  "payment_method": "",
+  "is_cashable": false
+},
+{
+  "_id": {
+    "$oid": "67561fb951e1a814e863ff86"
+  },
+  "id": "",
+  "amount": 0,
+  "temp_amount": 0,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "rip": "",
+  "userid": "67561fb951e1a814e863ff85",
+  "payment_method": "",
+  "is_cashable": false
+},
+{
+  "_id": {
+    "$oid": "675820f1ce451def8b84f099"
+  },
+  "id": "",
+  "amount": 0,
+  "temp_amount": 0,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "rip": "",
+  "userid": "675820f1ce451def8b84f098",
+  "payment_method": "",
+  "is_cashable": false
+},
+{
+  "_id": {
+    "$oid": "67582c7f7e35b909303146d2"
+  },
+  "id": "",
+  "amount": 0,
+  "temp_amount": 0,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "rip": "",
+  "userid": "67582c7f7e35b909303146d1",
+  "payment_method": "",
+  "is_cashable": false
+},
+{
+  "_id": {
+    "$oid": "676869269eeb7f3a6c9e5922"
+  },
+  "id": "",
+  "amount": 0,
+  "temp_amount": 0,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "rip": "",
+  "userid": "676869269eeb7f3a6c9e5921",
+  "payment_method": "",
+  "is_cashable": false
+},
+{
+  "_id": {
+    "$oid": "6779124f2f3f138a73598a78"
+  },
+  "id": "",
+  "amount": 0,
+  "temp_amount": 0,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "rip": "",
+  "userid": "6779124f2f3f138a73598a77",
+  "payment_method": "",
+  "is_cashable": false
+},
+{
+  "_id": {
+    "$oid": "677bb15c79c5a8ddd69f9b7e"
+  },
+  "id": "",
+  "amount": 0,
+  "temp_amount": 0,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "rip": "",
+  "userid": "677bb15c79c5a8ddd69f9b7d",
+  "payment_method": "",
+  "is_cashable": false
+},
+{
+  "_id": {
+    "$oid": "68bb4dfbc36c0585ccbe9b07"
+  },
+  "id": "",
+  "amount": 0,
+  "temp_amount": 0,
+  "nbr_surveys": {
+    "$numberLong": "0"
+  },
+  "ccp": "",
+  "rip": "",
+  "userid": "68bb4dfbc36c0585ccbe9b06",
+  "payment_method": "",
+  "is_cashable": false
+}]

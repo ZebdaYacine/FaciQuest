@@ -1,0 +1,439 @@
+[{
+  "_id": {
+    "$oid": "67790912ab18608eb772d202"
+  },
+  "surveyId": "675834fe7e35b909303146d3",
+  "collectorId": "675834fe7e35b909303146d3",
+  "answers": [
+    {
+      "questionId": "675830a2ed6e08cd1ca0bd08",
+      "type": "multipleChoice",
+      "selectedChoice": "موافق بشدة"
+    },
+    {
+      "questionId": "6758313ced6e08cd1ca0bd09",
+      "type": "multipleChoice",
+      "selectedChoice": " موافق بشدة"
+    }
+  ],
+  "userId": "66ced91b015ced6ece935ed4"
+},
+{
+  "_id": {
+    "$oid": "6779091fab18608eb772d203"
+  },
+  "surveyId": "675624bb51e1a814e863ff89",
+  "collectorId": "675624bb51e1a814e863ff89",
+  "answers": [
+    {
+      "questionId": "675624b18898fb2ebe478a14",
+      "type": "starRating"
+    }
+  ],
+  "userId": "66ced91b015ced6ece935ed4"
+},
+{
+  "_id": {
+    "$oid": "6779092dab18608eb772d204"
+  },
+  "surveyId": "6779081dab18608eb772d1fe",
+  "collectorId": "6779081dab18608eb772d1fe",
+  "answers": [
+    {
+      "questionId": "677907c8c90ae28186120bb9",
+      "type": "multipleChoice",
+      "selectedChoice": "Yes"
+    },
+    {
+      "questionId": "677907e1c90ae28186120bba",
+      "type": "multipleChoice",
+      "selectedChoice": "من خلال الدراسة"
+    }
+  ],
+  "userId": "66ced91b015ced6ece935ed4"
+},
+{
+  "_id": {
+    "$oid": "6779125c2f3f138a73598a79"
+  },
+  "surveyId": "6779081dab18608eb772d1fe",
+  "collectorId": "6779081dab18608eb772d1fe",
+  "answers": [
+    {
+      "questionId": "677907c8c90ae28186120bb9",
+      "type": "multipleChoice",
+      "selectedChoice": "Yes"
+    },
+    {
+      "questionId": "677907e1c90ae28186120bba",
+      "type": "multipleChoice",
+      "selectedChoice": "من خلال الدراسة"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677a84ddc54046171f0511aa"
+  },
+  "surveyId": "6779081dab18608eb772d1fe",
+  "collectorId": "6779081dab18608eb772d1fe",
+  "answers": [
+    {
+      "questionId": "677907c8c90ae28186120bb9",
+      "type": "multipleChoice",
+      "selectedChoice": "Yes"
+    },
+    {
+      "questionId": "677907e1c90ae28186120bba",
+      "type": "multipleChoice",
+      "selectedChoice": "الاعلام"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677aa144b10e415be07c835f"
+  },
+  "surveyId": "672965669b126308f923c27b",
+  "collectorId": "672965669b126308f923c27b",
+  "answers": [
+    {
+      "questionId": "672965605aab462ec64c884f",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677adb038351064b7e64c61d"
+  },
+  "surveyId": "672965669b126308f923c27b",
+  "collectorId": "672965669b126308f923c27b",
+  "answers": [
+    {
+      "questionId": "672965605aab462ec64c884f",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677adb098351064b7e64c61e"
+  },
+  "surveyId": "672965669b126308f923c27b",
+  "collectorId": "672965669b126308f923c27b",
+  "answers": [
+    {
+      "questionId": "672965605aab462ec64c884f",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677adb668351064b7e64c61f"
+  },
+  "surveyId": "677ac8f1aec93e043f0bc1b0",
+  "collectorId": "677ac8f1aec93e043f0bc1b0",
+  "answers": [
+    {
+      "questionId": "677ac85726593defe56add5b",
+      "type": "dropdown",
+      "selectedChoice": "غير مهمة"
+    },
+    {
+      "questionId": "677ac8bc26593defe56add5c",
+      "type": "multipleChoice",
+      "selectedChoice": "Yes"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677adc1b8351064b7e64c620"
+  },
+  "surveyId": "677ac8f1aec93e043f0bc1b0",
+  "collectorId": "677ac8f1aec93e043f0bc1b0",
+  "answers": [
+    {
+      "questionId": "677ac6b726593defe56add4f",
+      "type": "multipleChoice",
+      "selectedChoice": "Dissatisfied"
+    },
+    {
+      "questionId": "677ac70126593defe56add50",
+      "type": "starRating"
+    },
+    {
+      "questionId": "677ac85726593defe56add5b",
+      "type": "dropdown",
+      "selectedChoice": "مهمة جدا"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677bb28579c5a8ddd69f9b7f"
+  },
+  "surveyId": "672965669b126308f923c27b",
+  "collectorId": "672965669b126308f923c27b",
+  "answers": [
+    {
+      "questionId": "672965605aab462ec64c884f",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677bb29b79c5a8ddd69f9b80"
+  },
+  "surveyId": "672b442795745918a9bc4324",
+  "collectorId": "672b442795745918a9bc4324",
+  "answers": [
+    {
+      "questionId": "672b4424179c09c82189dd18",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677bb4b179c5a8ddd69f9b84"
+  },
+  "surveyId": "677bb2c279c5a8ddd69f9b81",
+  "collectorId": "677bb2c279c5a8ddd69f9b81",
+  "answers": [
+    {
+      "questionId": "677bb2b985e5495428b0f8c1",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "677fd9211b444209556dda19"
+  },
+  "surveyId": "677bb2c279c5a8ddd69f9b81",
+  "collectorId": "677bb2c279c5a8ddd69f9b81",
+  "answers": [
+    {
+      "questionId": "677bb2b985e5495428b0f8c1",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6784ee1f0f5468639b7d396c"
+  },
+  "surveyId": "677ac8f1aec93e043f0bc1b0",
+  "collectorId": "677ac8f1aec93e043f0bc1b0",
+  "answers": []
+},
+{
+  "_id": {
+    "$oid": "6784ee430f5468639b7d396d"
+  },
+  "surveyId": "677ac8f1aec93e043f0bc1b0",
+  "collectorId": "677ac8f1aec93e043f0bc1b0",
+  "answers": []
+},
+{
+  "_id": {
+    "$oid": "6785f581112dd43c4bfa5cf0"
+  },
+  "surveyId": "6779081dab18608eb772d1fe",
+  "collectorId": "6779081dab18608eb772d1fe",
+  "answers": []
+},
+{
+  "_id": {
+    "$oid": "6785f5eb112dd43c4bfa5cf1"
+  },
+  "surveyId": "6779081dab18608eb772d1fe",
+  "collectorId": "6779081dab18608eb772d1fe",
+  "answers": []
+},
+{
+  "_id": {
+    "$oid": "67861d5cd7ee1039c2c4570c"
+  },
+  "surveyId": "6785b85f3ff8aded6d20b24e",
+  "collectorId": "6785b85f3ff8aded6d20b24e",
+  "answers": [
+    {
+      "questionId": "question1",
+      "type": "starRating"
+    },
+    {
+      "questionId": "question2",
+      "type": "multipleChoice",
+      "selectedChoice": "Price"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67862de2e4b10fc8d7b2b6c9"
+  },
+  "surveyId": "67862d81e4b10fc8d7b2b6c6",
+  "collectorId": "67862d81e4b10fc8d7b2b6c6",
+  "answers": [
+    {
+      "questionId": "67862dceab267ebc958fd34c",
+      "type": "imageChoice",
+      "selectedChoices": [
+        ""
+      ]
+    },
+    {
+      "questionId": "67862cafab267ebc958fd340",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68b5f7f7383509c10077637a"
+  },
+  "surveyId": "678639db55228843500a1815",
+  "collectorId": "678639db55228843500a1815",
+  "userId": "",
+  "answers": [
+    {
+      "questionId": "678637bc03a1b319453bc0ca",
+      "type": "multipleChoice",
+      "selectedChoice": "Yes"
+    },
+    {
+      "questionId": "678637dc03a1b319453bc0cb",
+      "type": "multipleChoice",
+      "selectedChoice": "Strongly agree"
+    },
+    {
+      "questionId": "68b5f7e409ff64b6d52546e8",
+      "type": "imageChoice",
+      "selectedChoices": [
+        ""
+      ]
+    },
+    {
+      "questionId": "678638aa03a1b319453bc0ce",
+      "type": "starRating"
+    },
+    {
+      "questionId": "678638e403a1b319453bc0cf",
+      "value": "10",
+      "type": "shortAnswer"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68bb452554f5113dfe71be0e"
+  },
+  "surveyId": "68b5f5fb383509c100776379",
+  "collectorId": "68b5f5fb383509c100776379",
+  "userId": "",
+  "answers": []
+},
+{
+  "_id": {
+    "$oid": "68bb4e78c36c0585ccbe9b08"
+  },
+  "surveyId": "677ac8f1aec93e043f0bc1b0",
+  "collectorId": "677ac8f1aec93e043f0bc1b0",
+  "userId": "",
+  "answers": [
+    {
+      "questionId": "677ac60a26593defe56add4d",
+      "type": "multipleChoice",
+      "selectedChoice": "Agree"
+    },
+    {
+      "questionId": "677ac67a26593defe56add4e",
+      "type": "multipleChoice",
+      "selectedChoice": "Likely"
+    },
+    {
+      "questionId": "677ac6b726593defe56add4f",
+      "type": "multipleChoice",
+      "selectedChoice": "Neither satisfied nor dissatisfied"
+    },
+    {
+      "questionId": "677ac70126593defe56add50",
+      "type": "starRating"
+    },
+    {
+      "questionId": "68bb4e5c4752cfb81d20afce",
+      "type": "imageChoice",
+      "selectedChoices": [
+        ""
+      ]
+    },
+    {
+      "questionId": "677ac7ef26593defe56add59",
+      "value": "5",
+      "type": "shortAnswer"
+    },
+    {
+      "questionId": "677ac8bc26593defe56add5c",
+      "type": "multipleChoice",
+      "selectedChoice": "Yes"
+    },
+    {
+      "questionId": "677ac8e626593defe56add5d",
+      "value": "Uhh",
+      "type": "commentBox"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68c49bfbaebb5a403ce51876"
+  },
+  "surveyId": "68b5f5fb383509c100776379",
+  "collectorId": "68b5f5fb383509c100776379",
+  "userId": "",
+  "answers": [
+    {
+      "questionId": "68b5f5f899642dc12c091f0a",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68c49c05aebb5a403ce51877"
+  },
+  "surveyId": "68b5f5fb383509c100776379",
+  "collectorId": "68b5f5fb383509c100776379",
+  "userId": "",
+  "answers": [
+    {
+      "questionId": "68b5f5f899642dc12c091f0a",
+      "type": "starRating"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68c49ec1aebb5a403ce51878"
+  },
+  "surveyId": "675834fe7e35b909303146d3",
+  "collectorId": "675834fe7e35b909303146d3",
+  "userId": "",
+  "answers": [
+    {
+      "questionId": "675830a2ed6e08cd1ca0bd08",
+      "type": "multipleChoice",
+      "selectedChoice": "موافق بشدة"
+    },
+    {
+      "questionId": "6758313ced6e08cd1ca0bd09",
+      "type": "multipleChoice",
+      "selectedChoice": "محايد"
+    }
+  ]
+}]
