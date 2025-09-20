@@ -5,8 +5,10 @@ import (
 	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/internal/usecase"
+	util "back-end/util/token"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,8 +23,20 @@ func (cc *SubmissionController) CreateSubmissionRequest(c *gin.Context) {
 	if !core.IsDataRequestSupported(&new_submission, c) {
 		return
 	}
+
+	authHeader := c.Request.Header.Get("Authorization")
+	tokens := strings.Split(authHeader, " ")
+	if len(tokens) < 2 {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Authorization header missing or invalid"})
+		return
+	}
+	token := tokens[1]
+
 	params := usecase.SubmissionParams{}
 	params.Data = &new_submission
+	id, _ := util.ExtractFieldFromToken(token, core.RootServer.SECRET_KEY, "id")
+	params.Data.UserId = id.(string)
+
 	result := cc.SubmissionUseCase.CreateNewSubmission(c, &params)
 	if result.Err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
