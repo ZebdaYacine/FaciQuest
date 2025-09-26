@@ -3,9 +3,15 @@ package repository
 import (
 	"back-end/internal/domain"
 	"back-end/pkg/database"
+	"bytes"
 	"context"
+	"encoding/base64"
 	"fmt"
+	"image"
 	"log"
+	"os"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -145,25 +151,142 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 	return &list_surveys, nil
 }
 
+func saveBase64Image(base64Str, folder, filenameWithoutExt string) (string, error) {
+	// Detect extension from prefix
+	ext, err := detectExtension(base64Str)
+	if err != nil {
+		// fallback: decode and detect from bytes
+		if idx := strings.Index(base64Str, ","); idx != -1 {
+			base64Str = base64Str[idx+1:]
+		}
+		data, err := base64.StdEncoding.DecodeString(base64Str)
+		if err != nil {
+			return "", fmt.Errorf("failed to decode base64: %v", err)
+		}
+		ext, err = detectExtensionFromBytes(data)
+		if err != nil {
+			return "", err
+		}
+	} else {
+		// remove prefix for decoding
+		if idx := strings.Index(base64Str, ","); idx != -1 {
+			base64Str = base64Str[idx+1:]
+		}
+	}
+
+	// Decode base64
+	data, err := base64.StdEncoding.DecodeString(base64Str)
+	if err != nil {
+		return "", fmt.Errorf("failed to decode base64: %v", err)
+	}
+
+	// Create folder if not exists
+	baseDir := "/var/www/ftp"
+	folderPath := filepath.Join(baseDir, folder)
+	if err := os.MkdirAll(folderPath, os.ModePerm); err != nil {
+		return "", fmt.Errorf("failed to create folder: %v", err)
+	}
+
+	// Save file with proper extension
+	filePath := filepath.Join(folderPath, filenameWithoutExt+ext)
+	if err := os.WriteFile(filePath, data, 0644); err != nil {
+		return "", fmt.Errorf("failed to write file: %v", err)
+	}
+
+	log.Println("Saved file:", filePath, "Size:", len(data))
+	return filePath, nil
+}
+
+func detectExtension(base64Str string) (string, error) {
+	if idx := strings.Index(base64Str, ","); idx != -1 {
+		prefix := base64Str[:idx]
+		if strings.HasPrefix(prefix, "data:") && strings.Contains(prefix, ";base64") {
+			parts := strings.Split(prefix[5:], ";") // remove "data:"
+			mime := parts[0]
+			switch mime {
+			case "image/jpeg":
+				return ".jpg", nil
+			case "image/png":
+				return ".png", nil
+			case "image/gif":
+				return ".gif", nil
+			case "image/webp":
+				return ".webp", nil
+			default:
+				return "", fmt.Errorf("unsupported mime type: %s", mime)
+			}
+		}
+	}
+	return "", fmt.Errorf("no mime type found")
+}
+
+func detectExtensionFromBytes(data []byte) (string, error) {
+	reader := bytes.NewReader(data)
+	_, format, err := image.DecodeConfig(reader)
+	if err != nil {
+		return "", fmt.Errorf("cannot detect image format: %v", err)
+	}
+	switch format {
+	case "jpeg":
+		return ".jpg", nil
+	case "png":
+		return ".png", nil
+	case "gif":
+		return ".gif", nil
+	case "webp":
+		return ".webp", nil
+	default:
+		return "", fmt.Errorf("unsupported image format: %s", format)
+	}
+}
+
 // CreateSurvey implements SurveyRepository.
 func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error) {
 	collection := s.database.Collection("survey")
 	survey.CreatedAt = time.Now()
 	survey.Status = "draft"
-	// survey.UpdatedAt = time.Now()
-	resulat, err := collection.InsertOne(c, &survey)
+
+	for i, q := range survey.Questions {
+		switch q.GetType() {
+		case "Image Choice":
+			imageChoiceQuestion, ok := q.(domain.ImageChoiceQuestion)
+			if !ok {
+				return nil, fmt.Errorf("invalid ImageChoiceQuestion type assertion at index %d", i)
+			}
+
+			for j := range imageChoiceQuestion.Choices {
+				if imageChoiceQuestion.Choices[j].Image != nil && *imageChoiceQuestion.Choices[j].Image != "" {
+					log.Printf("Processing image choice %d-%d, Base64 size: %d", i, j, len(*imageChoiceQuestion.Choices[j].Image))
+					filename := fmt.Sprintf("%d%d", i+1, j+1) // filename without extension
+					url, err := saveBase64Image(*imageChoiceQuestion.Choices[j].Image, survey.Name, filename)
+					if err != nil {
+						return nil, fmt.Errorf("failed to save image: %v", err)
+					}
+					str := ""
+					imageChoiceQuestion.Choices[j].URL = &url
+					imageChoiceQuestion.Choices[j].Image = &str // clear Base64
+				}
+			}
+			survey.Questions[i] = imageChoiceQuestion
+		}
+	}
+
+	res, err := collection.InsertOne(c, survey)
 	if err != nil {
 		log.Printf("Failed to create survey: %v", err)
 		return nil, err
 	}
-	surveyId := resulat.(string)
-	survey.ID = surveyId
+
+	surveyid := res.(string)
+	survey.ID = surveyid
+
+	// Optional: update survey if needed
 	survey, err = s.UpdateSurvey(c, survey)
 	if err != nil {
 		log.Printf("Failed to update survey: %v", err)
 		return nil, err
 	}
-	log.Println(survey)
+
 	return survey, nil
 }
 
@@ -184,7 +307,7 @@ func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain
 		"$set": updatedSurvey,
 	}
 	_, err = collection.UpdateOne(c, filterUpdate, update)
-	if err == nil {
+	if err != nil {
 		return nil, fmt.Errorf("operation not allowed")
 	}
 	new_survey := &domain.Survey{}

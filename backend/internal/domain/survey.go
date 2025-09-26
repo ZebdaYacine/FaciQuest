@@ -230,13 +230,14 @@ type ImageQuestion struct {
 }
 
 func (q ImageQuestion) GetType() string {
-	return "Image"
+	return "Image Choice"
 }
 
 type ImageDetail struct {
 	Caption *string `json:"caption,omitempty" bson:"caption,omitempty"`
 	AltText *string `json:"altText,omitempty" bson:"altText,omitempty"`
 	URL     *string `json:"url,omitempty" bson:"url,omitempty"`
+	Image   *string `json:"image,omitempty" bson:"image,omitempty"`
 }
 
 func (s *Survey) QuestionToBSON(question QuestionType) (bson.M, error) {

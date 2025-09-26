@@ -19,8 +19,9 @@ type Category struct {
 }
 
 type Choices struct {
-	ID    string `json:"id" bson:"id"`
-	Title string `json:"title" bson:"title"`
+	ID     string   `json:"id" bson:"id"`
+	Title  string   `json:"title" bson:"title"`
+	UserId []string `json:"userId" bson:"userId"`
 }
 
 func (c *Criteria) Validate() error {
