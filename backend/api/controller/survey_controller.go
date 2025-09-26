@@ -44,15 +44,15 @@ func (sc *SurveyController) CreateSurveyRequest(c *gin.Context) {
 
 func (sc *SurveyController) UpdateSurveyRequest(c *gin.Context) {
 	log.Println("__***__***___________ UPDATE SURVEY  REQUEST ___________***__***__")
-	create_survey_request := &domain.Survey{}
+	update_survey_request := &domain.Survey{}
 
-	if !core.IsDataRequestSupported(create_survey_request, c) {
+	if !core.IsDataRequestSupported(update_survey_request, c) {
 		return
 	}
 	userId := core.GetIdUser(c)
-	create_survey_request.UserId = userId
+	update_survey_request.SurveyBadge.UserId = userId
 	surveyParams := &usecase.SurveyParams{}
-	surveyParams.Data = create_survey_request
+	surveyParams.Data = update_survey_request
 	resulat := sc.SurveyUseCase.UpdateSurvey(c, surveyParams)
 	if resulat.Err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{

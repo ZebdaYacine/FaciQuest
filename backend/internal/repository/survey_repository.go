@@ -152,14 +152,17 @@ func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain
 		log.Fatal(err)
 	}
 	updatedSurvey.UpdatedAt = time.Now()
-	filterUpdate := bson.D{{Key: "_id", Value: id}}
+	// filterUpdate := bson.D{{Key: "_id", Value: id}}
+	filterUpdate := bson.M{
+		"_id":                id,
+		"surveybadge.userId": updatedSurvey.SurveyBadge.UserId,
+	}
 	update := bson.M{
 		"$set": updatedSurvey,
 	}
 	_, err = collection.UpdateOne(c, filterUpdate, update)
-	if err != nil {
-		log.Panic(err)
-		return nil, err
+	if err == nil {
+		return nil, fmt.Errorf("operation not allowed")
 	}
 	new_survey := &domain.Survey{}
 	err = collection.FindOne(c, filterUpdate).Decode(new_survey)
