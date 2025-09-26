@@ -13,8 +13,7 @@ class SignInView extends StatefulWidget {
   State<SignInView> createState() => _SignInViewState();
 }
 
-class _SignInViewState extends State<SignInView>
-    with TickerProviderStateMixin {
+class _SignInViewState extends State<SignInView> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -128,36 +127,36 @@ class _Body extends StatelessWidget {
                       _LanguageSelector(),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 40),
-                  
+
                   // Hero section with improved logo
                   Center(
                     child: _LogoSection(),
                   ),
-                  
+
                   const SizedBox(height: 50),
-                  
+
                   // Welcome text with better typography
                   _WelcomeSection(),
-                  
+
                   const SizedBox(height: 40),
-                  
+
                   // Enhanced form
                   const _LogInForm(),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Forgot password link with better styling
                   _ForgotPasswordLink(),
-                  
+
                   const SizedBox(height: 32),
-                  
+
                   // Enhanced sign in button
                   _SignInButton(),
-                  
+
                   const SizedBox(height: 32),
-                  
+
                   // Sign up prompt
                   _SignUpPrompt(),
                 ],
@@ -284,19 +283,23 @@ class _SignInButton extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            boxShadow: state.isValid ? [
-              BoxShadow(
-                color: context.colorScheme.primary.withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
-              ),
-            ] : [],
+            boxShadow: state.isValid
+                ? [
+                    BoxShadow(
+                      color: context.colorScheme.primary.withOpacity(0.3),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    ),
+                  ]
+                : [],
           ),
           child: ElevatedButton(
-            onPressed: state.isValid ? () {
-              HapticFeedback.mediumImpact();
-              cubit.submit();
-            } : null,
+            onPressed: state.isValid
+                ? () {
+                    HapticFeedback.mediumImpact();
+                    cubit.submit();
+                  }
+                : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: context.colorScheme.primary,
               foregroundColor: context.colorScheme.onPrimary,
@@ -308,24 +311,24 @@ class _SignInButton extends StatelessWidget {
               ),
               elevation: state.isValid ? 6 : 0,
             ),
-            child: state.status.isLoading 
-              ? SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: context.colorScheme.onPrimary,
+            child: state.status.isLoading
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: context.colorScheme.onPrimary,
+                    ),
+                  )
+                : Text(
+                    'auth.signIn.submit'.tr(),
+                    style: context.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: state.isValid
+                          ? context.colorScheme.onPrimary
+                          : context.colorScheme.onSurface.withOpacity(0.4),
+                    ),
                   ),
-                )
-              : Text(
-                  'auth.signIn.submit'.tr(),
-                  style: context.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: state.isValid 
-                      ? context.colorScheme.onPrimary
-                      : context.colorScheme.onSurface.withOpacity(0.4),
-                  ),
-                ),
           ),
         );
       },
@@ -419,7 +422,7 @@ class _LogInFormState extends State<_LogInForm> {
           TextFormField(
             decoration: InputDecoration(
               labelText: 'auth.signIn.email'.tr(),
-              hintText: 'Enter your email address',
+              hintText: 'auth.signIn.emailHint'.tr(),
               prefixIcon: Icon(
                 Icons.email_outlined,
                 color: context.colorScheme.primary,
@@ -454,23 +457,21 @@ class _LogInFormState extends State<_LogInForm> {
             textInputAction: TextInputAction.next,
             onChanged: (value) => cubit.onEmailChanged(value),
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Password field
           TextFormField(
             decoration: InputDecoration(
               labelText: 'auth.signIn.password'.tr(),
-              hintText: 'Enter your password',
+              hintText: 'auth.signIn.passwordHint'.tr(),
               prefixIcon: Icon(
                 Icons.lock_outline_rounded,
                 color: context.colorScheme.primary,
               ),
               suffixIcon: IconButton(
                 icon: Icon(
-                  _obscurePassword 
-                    ? Icons.visibility_off_outlined
-                    : Icons.visibility_outlined,
+                  _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                   color: context.colorScheme.onSurface.withOpacity(0.6),
                 ),
                 onPressed: () {

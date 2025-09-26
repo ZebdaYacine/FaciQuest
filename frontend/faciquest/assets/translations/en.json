@@ -42,18 +42,25 @@
     },
     "signUp": {
       "title": "Create Account",
+      "subtitle": "Create your account now",
       "alreadyMember": "Already a member?",
       "login": "Log In",
       "agreeToThe": "I agree to the",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
       "termsAndConditions": "Terms & Conditions",
       "submit": "Sign Up",
       "username": "Username",
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
+      "emailHint": "Enter your email address",
       "phone": "Phone",
+      "phoneHint": "Enter your phone number",
       "password": "Password",
-      "confirmPassword": "Confirm Password"
+      "passwordHint": "Create a strong password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordHint": "Confirm your password"
     },
     "signIn": {
       "title": "Welcome Back",
@@ -63,7 +70,9 @@
       "forgotPassword": "Forgot password?",
       "submit": "Login",
       "email": "Email",
-      "password": "Password"
+      "emailHint": "Enter your email address",
+      "password": "Password",
+      "passwordHint": "Enter your password"
     },
     "forgotPassword": {
       "title": "Reset Password",

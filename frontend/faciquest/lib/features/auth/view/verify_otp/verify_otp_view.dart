@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -639,29 +639,32 @@ class _FormState extends State<_Form> with TickerProviderStateMixin {
                 final offset = sin(_shakeAnimation.value * pi * 2) * 3;
                 return Transform.translate(
                   offset: Offset(offset, 0),
-                  child: Pinput(
-                    length: 6,
-                    defaultPinTheme: defaultPinTheme,
-                    focusedPinTheme: focusedPinTheme,
-                    submittedPinTheme: submittedPinTheme,
-                    errorPinTheme: errorPinTheme,
-                    onChanged: (value) {
-                      HapticFeedback.lightImpact();
-                      cubit.setOtp(value);
-                    },
-                    onCompleted: (value) {
-                      HapticFeedback.mediumImpact();
-                      cubit.setOtp(value);
-                    },
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    separatorBuilder: (_) => const SizedBox(width: 12),
-                    cursor: Container(
-                      width: 2,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.primary,
-                        borderRadius: BorderRadius.circular(1),
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Pinput(
+                      length: 6,
+                      defaultPinTheme: defaultPinTheme,
+                      focusedPinTheme: focusedPinTheme,
+                      submittedPinTheme: submittedPinTheme,
+                      errorPinTheme: errorPinTheme,
+                      onChanged: (value) {
+                        HapticFeedback.lightImpact();
+                        cubit.setOtp(value);
+                      },
+                      onCompleted: (value) {
+                        HapticFeedback.mediumImpact();
+                        cubit.setOtp(value);
+                      },
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      separatorBuilder: (_) => const SizedBox(width: 12),
+                      cursor: Container(
+                        width: 2,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.primary,
+                          borderRadius: BorderRadius.circular(1),
+                        ),
                       ),
                     ),
                   ),

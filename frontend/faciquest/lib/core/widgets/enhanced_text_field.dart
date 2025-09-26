@@ -33,6 +33,7 @@ class EnhancedTextField extends StatefulWidget {
     this.errorText,
     this.helperText,
     this.isLoading = false,
+    this.showCounter = false,
   });
 
   final TextEditingController? controller;
@@ -61,7 +62,7 @@ class EnhancedTextField extends StatefulWidget {
   final String? errorText;
   final String? helperText;
   final bool isLoading;
-
+  final bool showCounter;
   @override
   State<EnhancedTextField> createState() => _EnhancedTextFieldState();
 }
@@ -276,7 +277,7 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> with SingleTicker
                     ),
                   ),
                   errorText: widget.errorText,
-                  counterText: '',
+                  counterText: widget.showCounter ? '${widget.controller?.text.length ?? 0}/${widget.maxLength}' : '',
                 ),
               ),
             ),

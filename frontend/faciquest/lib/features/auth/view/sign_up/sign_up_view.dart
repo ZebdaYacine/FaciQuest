@@ -455,7 +455,7 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
             0,
             EnhancedTextField(
               labelText: 'auth.signUp.username'.tr(),
-              hintText: 'Enter your username',
+              hintText: 'auth.signUp.usernameHint'.tr(),
               prefixIcon: Icon(
                 Icons.person_outline_rounded,
                 color: context.colorScheme.primary,
@@ -473,7 +473,7 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
                   1,
                   EnhancedTextField(
                     labelText: 'auth.signUp.firstName'.tr(),
-                    hintText: 'First name',
+                    hintText: 'auth.signUp.firstNameHint'.tr(),
                     prefixIcon: Icon(
                       Icons.badge_outlined,
                       color: context.colorScheme.primary,
@@ -491,7 +491,7 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
                   2,
                   EnhancedTextField(
                     labelText: 'auth.signUp.lastName'.tr(),
-                    hintText: 'Last name',
+                    hintText: 'auth.signUp.lastNameHint'.tr(),
                     keyboardType: TextInputType.name,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.words,
@@ -506,7 +506,7 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
             3,
             EnhancedTextField(
               labelText: 'auth.signUp.email'.tr(),
-              hintText: 'Enter your email address',
+              hintText: 'auth.signUp.emailHint'.tr(),
               prefixIcon: Icon(
                 Icons.email_outlined,
                 color: context.colorScheme.primary,
@@ -521,7 +521,7 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
             4,
             EnhancedTextField(
               labelText: 'auth.signUp.phone'.tr(),
-              hintText: 'Enter your phone number',
+              hintText: 'auth.signUp.phoneHint'.tr(),
               prefixIcon: Icon(
                 Icons.phone_outlined,
                 color: context.colorScheme.primary,
@@ -529,6 +529,8 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
               keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.next,
               onChanged: cubit.onPhoneChanged,
+              maxLength: 10,
+              showCounter: true,
             ),
           ),
           AppSpacing.spacing_3.heightBox,
@@ -536,7 +538,7 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
             5,
             PasswordTextField(
               labelText: 'auth.signUp.password'.tr(),
-              hintText: 'Create a strong password',
+              hintText: 'auth.signUp.passwordHint'.tr(),
               showStrengthIndicator: true,
               onChanged: cubit.onPasswordChanged,
             ),
@@ -546,7 +548,7 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
             6,
             PasswordTextField(
               labelText: 'auth.signUp.confirmPassword'.tr(),
-              hintText: 'Confirm your password',
+              hintText: 'auth.signUp.confirmPasswordHint'.tr(),
               onChanged: cubit.onCPasswordChanged,
             ),
           ),
