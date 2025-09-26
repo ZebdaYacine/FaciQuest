@@ -5,6 +5,7 @@ import (
 	"back-end/internal/domain"
 	"back-end/pkg/database"
 	"context"
+	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -17,12 +18,31 @@ type submissionRepository struct {
 type SubmissionRepository interface {
 	CreateNewSubmission(c context.Context, submission *domain.Submission) (*domain.Submission, error)
 	GetAnswers(c context.Context, surveyId string) (*[]domain.Answer, error)
+	GetSurveyIDsByUserID(ctx context.Context, userID string) ([]string, error)
 }
 
 func NewSubmissionRepository(db database.Database) SubmissionRepository {
 	return &submissionRepository{
 		database: db,
 	}
+}
+
+func (s *submissionRepository) GetSurveyIDsByUserID(ctx context.Context, userID string) ([]string, error) {
+	collection := s.database.Collection("submission")
+
+	results, err := collection.Distinct(ctx, "surveyId", bson.M{"userId": userID})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get survey IDs: %w", err)
+	}
+
+	surveyIDs := make([]string, len(results))
+	for i, v := range results {
+		if idStr, ok := v.(string); ok {
+			surveyIDs[i] = idStr
+		}
+	}
+
+	return surveyIDs, nil
 }
 
 func (r *submissionRepository) CreateNewSubmission(c context.Context, submission *domain.Submission) (*domain.Submission, error) {
@@ -40,7 +60,7 @@ func (r *submissionRepository) GetAnswers(c context.Context, surveyId string) (*
 
 	// Query filter for surveyId and collectorId
 	filter := bson.M{
-		"surveyId":    surveyId,
+		"surveyId": surveyId,
 	}
 
 	// Find documents matching the filter

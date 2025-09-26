@@ -24,6 +24,7 @@ type Collection interface {
 	DeleteOne(context.Context, interface{}) (*mongo.DeleteResult, error)
 	FindOne(context.Context, interface{}) SingleResult
 	Find(context.Context, interface{}) (*mongo.Cursor, error)
+	Distinct(ctx context.Context, fieldName string, filter interface{}, opts ...*options.DistinctOptions) ([]interface{}, error)
 	CountDocuments(context.Context, interface{}) (int64, error)
 	UpdateOne(context.Context, interface{}, interface{}, ...*options.UpdateOptions) (*mongo.UpdateResult, error)
 }
@@ -122,6 +123,10 @@ func (mc *mongoCollection) UpdateOne(ctx context.Context, filter interface{}, up
 // DeleteOne implements Collection.
 func (mc *mongoCollection) DeleteOne(ctx context.Context, filter interface{}) (*mongo.DeleteResult, error) {
 	return mc.coll.DeleteOne(ctx, filter)
+}
+
+func (mc *mongoCollection) Distinct(ctx context.Context, fieldName string, filter interface{}, opts ...*options.DistinctOptions) ([]interface{}, error) {
+	return mc.coll.Distinct(ctx, fieldName, filter, opts...)
 }
 
 // func ConnectionDb() Database {

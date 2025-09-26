@@ -23,7 +23,7 @@ type SurveyRepository interface {
 	DeleteSurvey(c context.Context, surveyId string, userId string) (bool, error)
 	GetMySurveys(c context.Context, userId string) (*[]domain.SurveyBadge, error)
 	GetSurveyById(c context.Context, surveyId string, userId string) (*domain.Survey, error)
-	GetAllSurveys(c context.Context) (*[]domain.SurveyBadge, error)
+	GetAllSurveys(c context.Context, userid string) (*[]domain.SurveyBadge, error)
 	GetSurveysByStatus(c context.Context, status string) (*[]domain.SurveyBadge, error)
 	GetAdminSurveys(c context.Context, status string, limit *int, offset *int, startAt *time.Time, endAt *time.Time) (*[]domain.SurveyBadge, error)
 	UpdateSurveyStatus(c context.Context, surveyId string, status string) (bool, error)
@@ -82,9 +82,31 @@ func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, use
 }
 
 // GetAllSurveys implements SurveyRepository.
-func (s *surveyRepository) GetAllSurveys(c context.Context) (*[]domain.SurveyBadge, error) {
+func (s *surveyRepository) GetAllSurveys(c context.Context, userid string) (*[]domain.SurveyBadge, error) {
 	collection := s.database.Collection("survey")
+	sr := NewSubmissionRepository(s.database)
+
+	// Get surveys already answered by this user
+	surveys, err := sr.GetSurveyIDsByUserID(c, userid)
+	if err != nil {
+		return nil, err
+	}
+
+	// Convert string IDs to ObjectIDs if needed
+	var objectIDs []primitive.ObjectID
+	for _, id := range surveys {
+		objID, err := primitive.ObjectIDFromHex(id)
+		if err == nil {
+			objectIDs = append(objectIDs, objID)
+		}
+	}
+
+	// Find surveys NOT in the answered list
 	filter := bson.M{}
+	if len(objectIDs) > 0 {
+		filter = bson.M{"_id": bson.M{"$nin": objectIDs}}
+	}
+
 	list, err := collection.Find(c, filter)
 	if err != nil {
 		log.Printf("Failed to load surveys: %v", err)
@@ -127,6 +149,7 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error) {
 	collection := s.database.Collection("survey")
 	survey.CreatedAt = time.Now()
+	survey.Status = "draft"
 	// survey.UpdatedAt = time.Now()
 	resulat, err := collection.InsertOne(c, &survey)
 	if err != nil {

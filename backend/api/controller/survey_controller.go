@@ -142,7 +142,8 @@ func (sc *SurveyController) GetMySurveysRequest(c *gin.Context) {
 
 func (sc *SurveyController) GetAllSurveysRequest(c *gin.Context) {
 	log.Println("__***__***___________ GET All SURVEYS  REQUEST ___________***__***__")
-	result := sc.SurveyUseCase.GetAllSurveys(c)
+	userId := core.GetIdUser(c)
+	result := sc.SurveyUseCase.GetAllSurveys(c, userId)
 	if err := result.Err; err != nil {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{
 			Message: err.Error(),

@@ -68,7 +68,7 @@ type SurveyUseCase interface {
 	DeleteSurvey(c context.Context, survey *SurveyParams) (bool, error)
 	GetSurveyById(c context.Context, survey *SurveyParams) *SurveyResulat
 	GetMySurveys(c context.Context, survey *SurveyParams) *SurveysResulat
-	GetAllSurveys(c context.Context) *SurveysResulat
+	GetAllSurveys(c context.Context, userid string) *SurveysResulat
 	GetSurveysByStatus(c context.Context, status string) *SurveysResulat
 	GetAdminSurveys(c context.Context, params AdminSurveyListParams) *AdminSurveysResult
 	UpdateSurveyStatus(c context.Context, surveyID string, status string) *struct {
@@ -174,9 +174,9 @@ func NewSurveyUseCase(repo repository.SurveyRepository, collection string) Surve
 }
 
 // GetAllSurveys implements SurveyUseCase.
-func (su *surveyUseCase) GetAllSurveys(c context.Context) *SurveysResulat {
+func (su *surveyUseCase) GetAllSurveys(c context.Context, userid string) *SurveysResulat {
 	//return crudServey(su.repo, c, nil, "getAll").(*SurveysResulat)
-	result, err := su.repo.GetAllSurveys(c)
+	result, err := su.repo.GetAllSurveys(c, userid)
 	if err != nil {
 		return &SurveysResulat{
 			List: nil,
