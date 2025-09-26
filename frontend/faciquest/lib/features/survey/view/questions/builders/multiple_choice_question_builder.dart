@@ -15,12 +15,10 @@ class MultipleChoiceQuestionBuilder extends QuestionBuilder {
   final LikertScale? likertScale;
 
   @override
-  State<MultipleChoiceQuestionBuilder> createState() =>
-      _MultipleChoiceQuestionBuilderState();
+  State<MultipleChoiceQuestionBuilder> createState() => _MultipleChoiceQuestionBuilderState();
 }
 
-class _MultipleChoiceQuestionBuilderState
-    extends State<MultipleChoiceQuestionBuilder> {
+class _MultipleChoiceQuestionBuilderState extends State<MultipleChoiceQuestionBuilder> {
   String? selectedType;
   late var question = widget.question as MultipleChoiceQuestion;
   // Add controllers list
@@ -69,7 +67,7 @@ class _MultipleChoiceQuestionBuilderState
   }
 
   // Synchronize choices with TextEditingControllers
-  onChange({
+  void onChange({
     List<String>? choices,
   }) {
     widget.onChanged?.call(
@@ -93,20 +91,16 @@ class _MultipleChoiceQuestionBuilderState
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
-                  value: optionSizes.contains(question.choices.length)
-                      ? question.choices.length
-                      : null,
+                  value: optionSizes.contains(question.choices.length) ? question.choices.length : null,
                   items: [
                     DropdownMenuItem(
                       value: null,
-                      child: Text(
-                          'survey.question.multiple_choice.select_scale'.tr()),
+                      child: Text('survey.question.multiple_choice.select_scale'.tr()),
                     ),
-                    ...getScaleOptionsSize(selectedType)
-                        .map((e) => DropdownMenuItem(
-                              value: e,
-                              child: Text(e.toString()),
-                            ))
+                    ...getScaleOptionsSize(selectedType).map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e.toString()),
+                        ))
                   ],
                   onChanged: (e) {
                     if (e == null) {
@@ -131,13 +125,12 @@ class _MultipleChoiceQuestionBuilderState
                 items: [
                   DropdownMenuItem(
                     value: null,
-                    child: Text(
-                        'survey.question.multiple_choice.select_type'.tr()),
+                    child: Text('survey.question.multiple_choice.select_type'.tr()),
                   ),
                   ...scaleOptions.keys.map(
                     (e) => DropdownMenuItem(
                       value: e,
-                      child: Text(e),
+                      child: Text(e.tr()),
                     ),
                   ),
                 ],
@@ -157,6 +150,7 @@ class _MultipleChoiceQuestionBuilderState
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: question.choices.length,
           itemBuilder: (context, index) {
             final item = question.choices[index];

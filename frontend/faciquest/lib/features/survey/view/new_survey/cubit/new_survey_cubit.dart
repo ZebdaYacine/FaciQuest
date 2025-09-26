@@ -118,6 +118,7 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
         survey: result,
         page: NewSurveyPages.collectResponses,
         previousPage: state.page,
+        shouldShowCollectorModal: action == SurveyAction.newSurvey, // Only show for new surveys
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -241,6 +242,10 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
       submissions: submissions,
     )));
     return submissions;
+  }
+
+  void resetCollectorModalFlag() {
+    emit(state.copyWith(shouldShowCollectorModal: false));
   }
 }
 

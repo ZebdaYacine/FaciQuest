@@ -5,6 +5,7 @@ class AddressQuestion extends QuestionEntity {
     required super.id,
     required super.title,
     required super.order,
+    super.isRequired = false,
     super.type = QuestionType.address,
     this.streetAddress1Label = 'Address',
     this.streetAddress1Hint,
@@ -81,6 +82,7 @@ class AddressQuestion extends QuestionEntity {
   @override
   QuestionEntity copyWith({
     String? id,
+    bool? isRequired,
     String? title,
     int? order,
     QuestionType? type,
@@ -108,6 +110,7 @@ class AddressQuestion extends QuestionEntity {
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
       streetAddress1Label: streetAddress1Label ?? this.streetAddress1Label,
       streetAddress1Hint: streetAddress1Hint ?? this.streetAddress1Hint,
       showStreetAddress1: showStreetAddress1 ?? this.showStreetAddress1,

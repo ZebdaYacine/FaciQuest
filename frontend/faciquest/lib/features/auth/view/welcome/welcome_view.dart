@@ -486,7 +486,7 @@ class _LanguageSelector extends StatelessWidget {
               ],
             ),
           ),
-          const PopupMenuItem<String>(
+           PopupMenuItem<String>(
             value: 'fr',
             child: Row(
               children: [
@@ -496,7 +496,7 @@ class _LanguageSelector extends StatelessWidget {
                   height: 18,
                 ),
                 SizedBox(width: 12),
-                Text('Français'),
+                Text('language.fr'.tr()),
               ],
             ),
           ),

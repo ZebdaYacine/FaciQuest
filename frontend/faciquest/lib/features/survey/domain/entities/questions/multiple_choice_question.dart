@@ -8,6 +8,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.multipleChoice,
+    super.isRequired = false,
     this.choices = const [''],
   });
   final List<String> choices;
@@ -26,12 +27,14 @@ class MultipleChoiceQuestion extends QuestionEntity {
     String? title,
     int? order,
     QuestionType? type,
+    bool? isRequired,
     List<String>? choices,
   }) {
     return MultipleChoiceQuestion(
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
       choices: choices ?? this.choices,
     );
   }
@@ -55,11 +58,12 @@ class MultipleChoiceQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [...super.props, choices];
-  static MultipleChoiceQuestion copyFrom(QuestionEntity question) {
+  static MultipleChoiceQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
     return MultipleChoiceQuestion(
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: isRequired,
     );
   }
 }

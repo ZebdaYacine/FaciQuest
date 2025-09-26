@@ -9,6 +9,7 @@ class EmailAddressQuestion extends QuestionEntity {
     this.emailAddressLabel = 'Email Address',
     this.emailAddressHint,
     this.showEmailAddress = true,
+    super.isRequired = false,
   });
 
   final String emailAddressLabel;
@@ -24,6 +25,7 @@ class EmailAddressQuestion extends QuestionEntity {
     String? emailAddressLabel,
     String? emailAddressHint,
     bool? showEmailAddress,
+    bool? isRequired,
   }) {
     return EmailAddressQuestion(
       id: id ?? this.id,
@@ -32,6 +34,7 @@ class EmailAddressQuestion extends QuestionEntity {
       emailAddressLabel: emailAddressLabel ?? this.emailAddressLabel,
       emailAddressHint: emailAddressHint ?? this.emailAddressHint,
       showEmailAddress: showEmailAddress ?? this.showEmailAddress,
+      isRequired: isRequired ?? this.isRequired,
     );
   }
 

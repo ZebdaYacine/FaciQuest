@@ -6,6 +6,7 @@ class DropdownQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.dropdown,
+    super.isRequired = false,
     this.choices = const [''],
   });
   final List<String> choices;
@@ -16,12 +17,14 @@ class DropdownQuestion extends QuestionEntity {
     String? title,
     int? order,
     QuestionType? type,
+    bool? isRequired,
     List<String>? choices,
   }) {
     return DropdownQuestion(
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
       choices: choices ?? this.choices,
     );
   }
@@ -54,11 +57,12 @@ class DropdownQuestion extends QuestionEntity {
   @override
   List<Object?> get props => [title, choices];
 
-  static DropdownQuestion copyFrom(QuestionEntity question) {
+  static DropdownQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
     return DropdownQuestion(
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: isRequired,
     );
   }
 }

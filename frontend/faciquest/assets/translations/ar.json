@@ -33,6 +33,18 @@
     "fr": "Français",
     "en": "English"
   },
+  "Name": "الاسم",
+  "Date Created": "تاريخ الإنشاء",
+  "Date Updated": "تاريخ التحديث",
+  "Responses": "الردود",
+  "Status": "الحالة",
+  "Active": "نشط",
+  "All Surveys": "كل الاستبيانات",
+  "Draft": "مسودة",
+  "Closed": "مغلق",
+  "Sort options": "خيارات الفرز",
+  "Survey": "استبيان",
+  "Surveys": "استبيانات",
   "auth": {
     "verifyOtp": {
       "title": "التحقق من رمز OTP",
@@ -48,8 +60,11 @@
       "termsAndConditions": "الشروط والأحكام",
       "submit": "تسجيل",
       "username": "اسم المستخدم",
+      "usernameHint": "أدخل اسم المستخدم",
       "firstName": "الاسم الأول",
+      "firstNameHint": "أدخل الاسم الأول",
       "lastName": "اسم العائلة",
+      "lastNameHint": "أدخل اسم العائلة",
       "email": "البريد الإلكتروني",
       "phone": "الهاتف",
       "password": "كلمة المرور",
@@ -91,9 +106,90 @@
     }
   },
   "survey": {
-    "loading": "جاري تحميل الاستبيان...",
-    "empty": "لم يتم العثور على الاستبيان",
-    "error": "حدث خطأ ما",
+    "Summary": "الملخص",
+    "Survey Details": "تفاصيل الاستبيان",
+    "Questions": "الأسئلة",
+    "Collect Responses": "جمع الإجابات",
+    "Analyse Results": "تحليل النتائج",
+    "loading": {
+      "title": "جاري تحميل الاستبيان...",
+      "message": "يرجى الإنتظار لمدة أطول بينما نؤكد الاستبيان..."
+    },
+    "empty": {
+      "title": "الاستبيان غير موجود",
+      "message": "هذا الاستبيان لا يحتوي على أي أسئلة بعد.",
+      "button": {
+        "go_back": "العودة"
+      }
+    },
+    "error": {
+      "title": "حدث خطأ ما",
+      "message": "حدث خطأ أثناء تحميل الاستبيان. يرجى المحاولة مرة أخرى.",
+      "button": {
+        "go_back": "العودة",
+        "retry": "إعادة المحاولة"
+      }
+    },
+    "button": {
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "collectors": {
+      "web_link": "رابط الويب",
+      "web_link_description": "شارك عبر رابط الويب",
+      "qr_code": "رمز QR",
+      "qr_code_description": "إنشاء رمز QR",
+      "email_invitation": "البريد الإلكتروني",
+      "email_invitation_description": "إرسال عبر البريد الإلكتروني",
+      "active_collectors": "أدوات جمع مفعلة",
+      "refresh": "تحديث",
+      "show_more": "إظهار {} أداة الجمع أخرى",
+      "add_new": "إضافة أداة الجمع الجديدة",
+      "create_first_collector": "إنشاء أداة الجمع الأولى",
+      "email_addresses": "البريد الإلكتروني",
+      "enter_email_addresses_separated_by_commas": "أدخل البريد الإلكتروني منفصلة بفواصل\nexample@email.com, another@email.com",
+      "subject": "الموضوع",
+      "message": "الرسالة",
+      "survey_link_will_be_automatically_included_in_the_email": "رابط الاستبيان سيتم تضمينه تلقائيا في البريد الإلكتروني",
+      "email_invitations_sent_successfully": "تم إرسال البريد الإلكتروني بنجاح!",
+      "send_invites": "إرسال البريد الإلكتروني",
+      "hi_there": "مرحباً! لقد تمت دعوتك للمشاركة في استبياننا. رأيك مهم بالنسبة لنا.",
+      "send_personalized_email_invitations_to_your_target_audience": "إرسال البريد الإلكتروني المخصص لجميع أفراد الجمع المستهدف",
+      "no_collectors": "لا توجد أدوات جمع حتى الآن",
+      "create_your_first_collector": "إنشاء أداة الجمع الأولى",
+      "download": "تحميل",
+      "share_qr": "شارك رمز QR"
+    },
+    "stats": {
+      "performance": "أداء الاستبيان",
+      "total_responses": "إجمالي الإجابات",
+      "active_collectors": "أدوات جمع مفعلة",
+      "collector_activity_rate": "معدل نشاط أداة الجمع"
+    },
+    "QuestionType": {
+      "Star Rating": "تقييم بالنجوم",
+      "Multiple Choice": "اختيار من متعدد",
+      "Checkboxes": "مربعات اختيار",
+      "Dropdown": "قائمة منسدلة",
+      "File Upload": "رفع ملف",
+      "Audio Record": "تسجيل صوتي",
+      "Short Answer": "إجابة قصيرة",
+      "Comment Box": "مربع التعليقات",
+      "Slider": "شريط التمرير",
+      "Date / Time": "تاريخ / وقت",
+      "Matrix": "مصفوفة",
+      "Image Choice": "اختيار صورة",
+      "Name": "الاسم",
+      "Email Address": "البريد الإلكتروني",
+      "Phone Number": "رقم الهاتف",
+      "Address": "العنوان",
+      "Text": "نص",
+      "Image": "صورة",
+      "2-point Likert scale": "مقياس ليكرت 2 نقطة",
+      "3-point Likert scale": "مقياس ليكرت 3 نقطة",
+      "5-point Likert scale": "مقياس ليكرت 5 نقطة",
+      "7-point Likert scale": "مقياس ليكرت 7 نقطة"
+    },
     "question": {
       "progress": "السؤال {} من {}",
       "checkboxes": {
@@ -178,6 +274,10 @@
         "message": "شكراً لإكمال الاستبيان"
       }
     },
+    "validation": {
+      "required_question": "يرجى الإجابة على هذا السؤال قبل المتابعة.",
+      "understood": "فهمت"
+    },
     "address": {
       "street_address1": "عنوان الشارع 1",
       "street_address2": "عنوان الشارع 2",
@@ -195,7 +295,8 @@
     "manage_my_surveys_title": "إدارة استبياناتي",
     "create_survey_button": "إنشاء استبيان",
     "search_surveys_hint": "البحث في الاستبيانات...",
-    "no_surveys_found": "لم يتم العثور على استبيانات"
+    "no_surveys_found": "لم يتم العثور على استبيانات",
+    "template_selector_coming_soon": "منتقي القوالب قريباً!"
   },
   "status": {
     "open_status": "مفتوح"
@@ -221,7 +322,11 @@
     "move_question_to": "نقل هذا السؤال إلى...",
     "next": "التالي",
     "export_results": "تصدير النتائج",
-    "save": "حفظ"
+    "save": "حفظ",
+    "export_as_csv": "تصدير كـ CSV",
+    "export_as_pdf": "تصدير كـ PDF",
+    "export_as_excel": "تصدير كـ Excel",
+    "advanced_analytics": "تحليلات متقدمة"
   },
   "delete_dialog": {
     "delete_survey_title": "حذف الاستبيان",
@@ -258,7 +363,19 @@
     "before": "قبل"
   },
   "error": {
-    "generic": "حدث خطأ"
+    "generic": "حدث خطأ",
+    "export_data_success": "تم تصدير البيانات بنجاح كـ {}",
+    "export_data_error": "خطأ في تصدير البيانات: {}",
+    "pdf_export_coming_soon": "ميزة التصدير بصيغة PDF قريباً!",
+    "excel_export_coming_soon": "ميزة التصدير بصيغة Excel قريباً!",
+    "no_collectors_yet": "لا توجد أدوات جمع حتى الآن",
+    "error_showing_modal": "خطأ في عرض النافذة المنبثقة: {}",
+    "error_initializing": "خطأ في التهيئة: {}",
+    "error_adding_criteria": "خطأ في إضافة المعايير: {}",
+    "error_selecting_country": "خطأ في اختيار البلد: {}",
+    "error_selecting_gender": "خطأ في اختيار الجنس: {}",
+    "error_selecting_age": "خطأ في اختيار العمر: {}",
+    "error_during_checkout": "خطأ أثناء الدفع: {}"
   },
   "collectors": {
     "add_new": "إضافة أداة جمع جديدة",
@@ -314,6 +431,18 @@
   "personal_info": {
     "title": "المعلومات الشخصية",
     "save_changes": "حفظ التغييرات",
+    "profile_updated_success": "تم تحديث الملف الشخصي بنجاح",
+    "profile_update_failed": "فشل في تحديث الملف الشخصي",
+    "tooltips": {
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "edit": "تعديل"
+    },
+    "sections": {
+      "basic_information": "المعلومات الأساسية",
+      "personal_details": "التفاصيل الشخصية",
+      "professional_information": "المعلومات المهنية"
+    },
     "fields": {
       "username": "اسم المستخدم",
       "first_name": "الاسم الأول",
@@ -321,7 +450,14 @@
       "email": "البريد الإلكتروني",
       "phone": "الهاتف",
       "birth_date": "تاريخ الميلاد",
-      "tap_to_select_date": "انقر لاختيار التاريخ"
+      "tap_to_select_date": "انقر لاختيار التاريخ",
+      "birth_place": "مكان الميلاد",
+      "country": "البلد",
+      "municipal": "البلدية",
+      "education": "التعليم",
+      "work_at": "يعمل في",
+      "institution": "المؤسسة",
+      "social_status": "الحالة الاجتماعية"
     }
   },
   "home": {
@@ -331,7 +467,8 @@
     "available_surveys": "الاستبيانات المتاحة",
     "new_survey": "استبيان جديد",
     "empty_state": {
-      "no_surveys": "لم يتم العثور على استبيانات"
+      "no_surveys": "لم يتم العثور على استبيانات",
+      "description": "كن أول من ينشئ استبياناً رائعاً وابدأ في جمع رؤى قيمة من جمهورك."
     },
     "error_state": {
       "error_message": "حدث خطأ ما"
@@ -344,8 +481,52 @@
     "Enter your question here": "أدخل سؤالك هنا",
     "Question Type": "نوع السؤال",
     "Question Settings": "إعدادات السؤال",
-    "Please select a question type to configure settings": "الرجاء اختيار نوع السؤال لتكوين الإعدادات"
+    "Please select a question type to configure settings": "الرجاء اختيار نوع السؤال لتكوين الإعدادات",
+    "required_question": "سؤال إجباري",
+    "required_question_description": "يجب على المشاركين الإجابة على هذا السؤال قبل الانتقال إلى التالي"
   },
+  "Agree - Disagree": "أوافق - لا أوافق",
+  "Satisfied - Dissatisfied": "راضٍ - غير راضٍ",
+  "Yes - No": "نعم - لا",
+  "Likely - Unlikely": "محتمل - غير محتمل",
+  "Familiar - Not familiar": "على دراية - لست على دراية",
+  "A great deal - None at all": "بقدر كبير - لا شيء على الإطلاق",
+  "Interested - Not interested": "مهتم - غير مهتم",
+  "Easy - Difficult": "سهل - صعب",
+  "Always - Never": "دائماً - أبداً",
+  "Better - Worse": "أفضل - أسوأ",
+  "Approve - Disapprove": "أوافق - لا أوافق",
+  "Above average - Below average": "فوق المتوسط - تحت المتوسط",
+  "High quality - Low quality": "جودة عالية - جودة منخفضة",
+  "True - False": "صحيح - خطأ",
+  "Definitely would - Definitely would not": "بالتأكيد سأفعل - بالتأكيد لن أفعل",
+  "Useful - Not useful": "مفيد - غير مفيد",
+  "Valuable - Not valuable": "ذو قيمة - غير ذو قيمة",
+  "Clear - Not clear": "واضح - غير واضح",
+  "Helpful - Not helpful": "مفيد - غير مفيد",
+  "All - None": "الكل - لا شيء",
+  "Friendly - Not friendly": "ودود - غير ودود",
+  "Effective - Not effective": "فعال - غير فعال",
+  "Positive - Negative": "إيجابي - سلبي",
+  "Too short - Too long": "قصير جداً - طويل جداً",
+  "Responsive - Not responsive": "متجاوب - غير متجاوب",
+  "Top priority - Not a priority": "أولوية قصوى - ليست أولوية",
+  "Important - Not important": "مهم - غير مهم",
+  "Aware - Not aware": "على علم - غير على علم",
+  "Desirable - Not desirable": "مرغوب - غير مرغوب",
+  "Confident - Not confident": "واثق - غير واثق",
+  "Professional - Not professional": "مهني - غير مهني",
+  "Clearly - Not clearly": "بوضوح - ليس بوضوح",
+  "Exceeded expectations - Not exceeded expectations": "تجاوز التوقعات - لم يتجاوز التوقعات",
+  "Attentive - Not attentive": "منتبه - غير منتبه",
+  "Early - Not early": "مبكر - غير مبكر",
+  "Months": "أشهر",
+  "Days": "أيام",
+  "Race/Ethnicity": "العرق/الإثنية",
+  "Age": "العمر",
+  "Quarters": "أرباع",
+  "Frequency": "التكرار",
+  "Recent Experience": "تجربة حديثة",
   "Agree": "أوافق",
   "Disagree": "لا أوافق",
   "Strongly agree": "أوافق بشدة",
@@ -550,5 +731,14 @@
   "Once a month": "مرة في الشهر",
   "In the last week": "في الأسبوع الماضي",
   "More than a week, less than a month": "أكثر من أسبوع، أقل من شهر",
-  "More than a month ago": "منذ أكثر من شهر"
+  "More than a month ago": "منذ أكثر من شهر",
+  "Somewhat agree": "أوافق إلى حد ما",
+  "Somewhat disagree": "لا أوافق إلى حد ما",
+  "Somewhat satisfied": "راضٍ إلى حد ما",
+  "Somewhat dissatisfied": "غير راضٍ إلى حد ما",
+  "Somewhat likely": "محتمل إلى حد ما",
+  "Somewhat unlikely": "غير محتمل إلى حد ما",
+  "Disapprove": "لا أوافق",
+  "Somewhat high quality": "جودة عالية إلى حد ما",
+  "Somewhat low quality": "جودة منخفضة إلى حد ما"
 }

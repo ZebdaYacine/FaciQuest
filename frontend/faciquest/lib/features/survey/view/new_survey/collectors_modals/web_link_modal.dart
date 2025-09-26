@@ -8,13 +8,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
 Future<void> showWebLinkModal(BuildContext context) async {
+  // Get the cubit reference before opening the modal to avoid accessing deactivated context
+  final cubit = context.read<NewSurveyCubit>();
+
   await showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
     constraints: BoxConstraints(maxHeight: context.height * 0.9),
     builder: (BuildContext _) {
       return BlocProvider.value(
-        value: context.read<NewSurveyCubit>(),
+        value: cubit,
         child: const WebLinkModal(),
       );
     },
@@ -35,12 +38,14 @@ class WebLinkModal extends StatefulWidget {
 class _WebLinkModalState extends State<WebLinkModal> {
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
+  late final NewSurveyCubit _cubit;
   bool _isCreating = false;
   String? _generatedLink;
 
   @override
   void initState() {
     super.initState();
+    _cubit = context.read<NewSurveyCubit>();
     _nameController = TextEditingController(
       text: widget.collector?.name ?? 'Web Link Collector',
     );
@@ -61,8 +66,7 @@ class _WebLinkModalState extends State<WebLinkModal> {
   }
 
   String get _surveyUrl {
-    final cubit = context.read<NewSurveyCubit>();
-    return 'https://survey.faciquest.com/s/${cubit.state.survey.id}';
+    return 'https://survey.faciquest.com/s/${_cubit.state.survey.id}';
   }
 
   @override

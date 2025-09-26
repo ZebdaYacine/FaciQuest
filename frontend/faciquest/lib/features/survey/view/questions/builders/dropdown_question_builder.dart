@@ -123,7 +123,7 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder> with 
                   ...scaleOptions.keys.map(
                     (e) => DropdownMenuItem(
                       value: e,
-                      child: Text(e),
+                      child: Text(e.tr()),
                     ),
                   ),
                 ],
@@ -143,6 +143,7 @@ class _DropdownQuestionBuilderState extends State<DropdownQuestionBuilder> with 
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: question.choices.length,
           itemBuilder: (context, index) {
             final item = question.choices[index];

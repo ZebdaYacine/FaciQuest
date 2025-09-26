@@ -86,7 +86,7 @@ class UserEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      if (id != '') 'id': id,
+      if (id != '') '_id': id,
       'username': username,
       'email': email,
       'firstName': firstName,

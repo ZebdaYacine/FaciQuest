@@ -6,6 +6,7 @@ class SliderQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.slider,
+    super.isRequired = false,
     this.min = 0,
     this.max = 100,
   });
@@ -18,6 +19,7 @@ class SliderQuestion extends QuestionEntity {
     String? title,
     int? order,
     QuestionType? type,
+    bool? isRequired,
     double? min,
     double? max,
   }) {
@@ -25,6 +27,7 @@ class SliderQuestion extends QuestionEntity {
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
       min: min ?? this.min,
       max: max ?? this.max,
     );
@@ -52,11 +55,12 @@ class SliderQuestion extends QuestionEntity {
   @override
   List<Object?> get props => [super.props, min, max];
 
-  static SliderQuestion copyFrom(QuestionEntity question) {
+  static SliderQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
     return SliderQuestion(
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: isRequired,
     );
   }
 

@@ -1,6 +1,6 @@
 class AppUrls {
   static const useLocalhost = false;
-  static const baseUrl = useLocalhost ? 'http://localhost:9000' : 'http://185.209.229.242:3000';
+  static const baseUrl = useLocalhost ? 'http://localhost:9000' : 'http://185.209.230.104:3000';
 
   /// Auth Urls
   static const authLoginUrl = '$baseUrl/login';
@@ -9,6 +9,7 @@ class AppUrls {
   static const authLogoutUrl = '$baseUrl/profile/logout';
   static const authSetNewPasswordUrl = '$baseUrl/profile/set-new-pwd';
   static const authVerifyOtpUrl = '$baseUrl/confirm-account';
+  static const authUpdateUserUrl = '$baseUrl/profile/update-user';
 
   /// survey
   static const createSurvey = '$baseUrl/profile/create-survey';

@@ -15,6 +15,7 @@ class NameQuestion extends QuestionEntity {
     this.showFirstName = true,
     this.showLastName = true,
     this.showMiddleName = false,
+    super.isRequired = false,
   });
 
   final String firstNameLabel;
@@ -40,6 +41,7 @@ class NameQuestion extends QuestionEntity {
     bool? showFirstName,
     bool? showLastName,
     bool? showMiddleName,
+    bool? isRequired,
   }) {
     return NameQuestion(
       id: id ?? this.id,
@@ -54,6 +56,7 @@ class NameQuestion extends QuestionEntity {
       showFirstName: showFirstName ?? this.showFirstName,
       showLastName: showLastName ?? this.showLastName,
       showMiddleName: showMiddleName ?? this.showMiddleName,
+      isRequired: isRequired ?? this.isRequired,
     );
   }
 
@@ -71,6 +74,7 @@ class NameQuestion extends QuestionEntity {
       showFirstName: map['showFirstName'],
       showLastName: map['showLastName'],
       showMiddleName: map['showMiddleName'],
+      isRequired: map['isRequired'],
     );
   }
 

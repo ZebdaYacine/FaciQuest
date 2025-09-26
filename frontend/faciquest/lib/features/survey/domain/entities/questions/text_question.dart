@@ -6,6 +6,7 @@ class TextQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.text,
+    super.isRequired = false,
   });
 
   @override
@@ -14,11 +15,13 @@ class TextQuestion extends QuestionEntity {
     String? title,
     int? order,
     QuestionType? type,
+    bool? isRequired,
   }) {
     return TextQuestion(
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
     );
   }
 
@@ -35,6 +38,7 @@ class TextQuestion extends QuestionEntity {
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: question.isRequired,
     );
   }
 }

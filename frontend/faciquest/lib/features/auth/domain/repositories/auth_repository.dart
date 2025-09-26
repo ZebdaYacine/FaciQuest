@@ -7,7 +7,7 @@ abstract class AuthRepository {
   Future<void> signOut();
   Future<void> forgotPassword(String email);
   Future<void> setNewPassword(String password);
-  Future<void> verifyOtp(String otp,
-      {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp});
+  Future<void> verifyOtp(String otp, {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp});
   Future<UserEntity?> signInWithCredentials(String token);
+  Future<UserEntity> updateUser(UserEntity user);
 }

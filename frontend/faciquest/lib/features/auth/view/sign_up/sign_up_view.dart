@@ -43,7 +43,6 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<SignUpCubit>();
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -504,33 +503,47 @@ class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin 
           AppSpacing.spacing_3.heightBox,
           _buildAnimatedField(
             3,
-            EnhancedTextField(
-              labelText: 'auth.signUp.email'.tr(),
-              hintText: 'auth.signUp.emailHint'.tr(),
-              prefixIcon: Icon(
-                Icons.email_outlined,
-                color: context.colorScheme.primary,
-              ),
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              onChanged: cubit.onEmailChanged,
+            BlocBuilder<SignUpCubit, SignUpState>(
+              buildWhen: (previous, current) =>
+                  previous.user.email != current.user.email || previous.emailError != current.emailError,
+              builder: (context, state) {
+                return EnhancedTextField(
+                  labelText: 'auth.signUp.email'.tr(),
+                  hintText: 'auth.signUp.emailHint'.tr(),
+                  prefixIcon: Icon(
+                    Icons.email_outlined,
+                    color: state.emailError != null ? context.colorScheme.error : context.colorScheme.primary,
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  onChanged: cubit.onEmailChanged,
+                  errorText: state.emailError,
+                );
+              },
             ),
           ),
           AppSpacing.spacing_3.heightBox,
           _buildAnimatedField(
             4,
-            EnhancedTextField(
-              labelText: 'auth.signUp.phone'.tr(),
-              hintText: 'auth.signUp.phoneHint'.tr(),
-              prefixIcon: Icon(
-                Icons.phone_outlined,
-                color: context.colorScheme.primary,
-              ),
-              keyboardType: TextInputType.phone,
-              textInputAction: TextInputAction.next,
-              onChanged: cubit.onPhoneChanged,
-              maxLength: 10,
-              showCounter: true,
+            BlocBuilder<SignUpCubit, SignUpState>(
+              buildWhen: (previous, current) =>
+                  previous.user.phone != current.user.phone || previous.phoneError != current.phoneError,
+              builder: (context, state) {
+                return EnhancedTextField(
+                  labelText: 'auth.signUp.phone'.tr(),
+                  hintText: 'auth.signUp.phoneHint'.tr(),
+                  prefixIcon: Icon(
+                    Icons.phone_outlined,
+                    color: state.phoneError != null ? context.colorScheme.error : context.colorScheme.primary,
+                  ),
+                  keyboardType: TextInputType.phone,
+                  textInputAction: TextInputAction.next,
+                  onChanged: cubit.onPhoneChanged,
+                  maxLength: 10,
+                  showCounter: true,
+                  errorText: state.phoneError,
+                );
+              },
             ),
           ),
           AppSpacing.spacing_3.heightBox,

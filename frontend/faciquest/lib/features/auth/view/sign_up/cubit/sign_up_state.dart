@@ -6,22 +6,28 @@ class SignUpState extends Equatable {
   final bool agreeToTerms;
   final Status status;
   final String? msg;
+  final String? emailError;
+  final String? phoneError;
   const SignUpState({
     this.user = UserEntity.empty,
     this.cPassword = '',
     this.agreeToTerms = false,
     this.status = Status.initial,
     this.msg,
+    this.emailError,
+    this.phoneError,
   });
   @override
-  List<Object?> get props => [user, agreeToTerms, cPassword, status, msg];
+  List<Object?> get props => [user, agreeToTerms, cPassword, status, msg, emailError, phoneError];
 
   bool get isValid =>
       user.username.isNotEmpty &&
       user.email.isNotEmpty &&
       user.email.isEmail &&
+      emailError == null &&
       user.password.isNotEmpty &&
       user.phone.isNotEmpty &&
+      phoneError == null &&
       user.password == cPassword &&
       agreeToTerms;
   SignUpState copyWith({
@@ -35,6 +41,8 @@ class SignUpState extends Equatable {
     bool? agreeToTerms,
     Status? status,
     String? msg,
+    String? emailError,
+    String? phoneError,
   }) {
     return SignUpState(
       agreeToTerms: agreeToTerms ?? this.agreeToTerms,
@@ -49,6 +57,8 @@ class SignUpState extends Equatable {
       ),
       status: status ?? Status.initial,
       msg: msg,
+      emailError: emailError,
+      phoneError: phoneError,
     );
   }
 }

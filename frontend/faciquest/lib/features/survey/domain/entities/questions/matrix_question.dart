@@ -11,6 +11,7 @@ class MatrixQuestion extends QuestionEntity {
     this.rows = const [''],
     this.cols = const [''],
     this.useCheckbox = false,
+    super.isRequired = false,
   });
   final List<String> rows;
   final List<String> cols;
@@ -33,6 +34,7 @@ class MatrixQuestion extends QuestionEntity {
     List<String>? rows,
     List<String>? cols,
     bool? useCheckbox,
+    bool? isRequired,
   }) {
     return MatrixQuestion(
       id: id ?? this.id,
@@ -41,6 +43,7 @@ class MatrixQuestion extends QuestionEntity {
       rows: rows ?? this.rows,
       cols: cols ?? this.cols,
       useCheckbox: useCheckbox ?? this.useCheckbox,
+      isRequired: isRequired ?? this.isRequired,
     );
   }
 
@@ -52,6 +55,7 @@ class MatrixQuestion extends QuestionEntity {
       rows: List<String>.from(map['rows']),
       cols: List<String>.from(map['cols']),
       useCheckbox: map['useCheckbox'],
+      isRequired: map['isRequired'],
     );
   }
 
@@ -62,6 +66,7 @@ class MatrixQuestion extends QuestionEntity {
       'rows': rows,
       'cols': cols,
       'useCheckbox': useCheckbox,
+
     };
   }
 

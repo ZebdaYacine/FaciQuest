@@ -9,8 +9,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   late final dioClient = dioService.dioClient;
   final StreamController<UserEntity?> _controller;
 
-  AuthDataSourceImpl({required this.dioService})
-      : _controller = StreamController<UserEntity?>.broadcast() {
+  AuthDataSourceImpl({required this.dioService}) : _controller = StreamController<UserEntity?>.broadcast() {
     logInfo('AuthDataSourceImpl:init');
     getUserFromLocal().then(
       (value) {
@@ -108,8 +107,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     logInfo('AuthDataSourceImpl:getUserFromLocal');
 
     try {
-      final result =
-          (await SecuredStorageKeys.user.getStoredValue()) as String?;
+      final result = (await SecuredStorageKeys.user.getStoredValue()) as String?;
       if (result == null) {
         return null;
       }
@@ -157,8 +155,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<void> verifyOtp(String otp,
-      {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp}) {
+  Future<void> verifyOtp(String otp, {ConfirmAccountReasons reason = ConfirmAccountReasons.singUp}) {
     logInfo('AuthDataSourceImpl:verifyOtp');
 
     return dioService.handleRequest(
@@ -173,9 +170,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         );
         if (response.statusCode == 200) {
           saveUserToLocal(
-            response.data['date']['userdata'] == null
-                ? null
-                : UserEntity.fromMap(response.data['date']['userdata']),
+            response.data['date']['userdata'] == null ? null : UserEntity.fromMap(response.data['date']['userdata']),
             response.data['date']['token'],
           );
         }
@@ -187,6 +182,30 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<UserEntity?> signInWithCredentials(String token) {
     // TODO: implement signInWithCredentials
     throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntity> updateUser(UserEntity user) {
+    logInfo('AuthDataSourceImpl:updateUser');
+
+    return dioService.handleRequest(
+      () async {
+        final response = await dioClient.put(
+          AppUrls.authUpdateUserUrl, // You'll need to add this URL
+          data: user.toMap(),
+        );
+        if (response.statusCode == 200) {
+          logSuccess('Update User Successful');
+          final updatedUser = UserEntity.fromMap(response.data['date']['userdata']);
+
+          // Update local storage and stream
+          saveUserToLocal(updatedUser, null); // Keep existing token
+          return updatedUser;
+        } else {
+          throw Exception('Failed to update user');
+        }
+      },
+    );
   }
 }
 

@@ -60,7 +60,6 @@ class _SurveyContent extends StatelessWidget {
     HapticFeedback.heavyImpact();
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.6,
@@ -244,6 +243,16 @@ class _SurveyQuestionsState extends State<_SurveyQuestions> with TickerProviderS
 
   void _nextQuestion() {
     if (_currentIndex < widget.state.survey.questions.length - 1) {
+      final currentQuestion = widget.state.survey.questions[_currentIndex];
+      final cubit = context.read<SurveyCubit>();
+      final currentAnswer = cubit.state.answers[currentQuestion.id];
+
+      // Check if current question is required and not answered
+      if (currentQuestion.isRequired && !_isQuestionAnswered(currentQuestion, currentAnswer)) {
+        _showAnswerRequiredMessage(context, currentQuestion);
+        return;
+      }
+
       HapticFeedback.lightImpact();
       _currentIndex++;
       _pageController.nextPage(
@@ -269,6 +278,102 @@ class _SurveyQuestionsState extends State<_SurveyQuestions> with TickerProviderS
   void _updateProgress() {
     _progressAnimationController.reset();
     _progressAnimationController.forward();
+  }
+
+  bool _isQuestionAnswered(QuestionEntity question, AnswerEntity? answer) {
+    if (answer == null) return false;
+
+    switch (question.type) {
+      case QuestionType.shortAnswer:
+        return answer is ShortAnswerAnswer && answer.value.trim().isNotEmpty;
+      case QuestionType.commentBox:
+        return answer is CommentBoxAnswer && answer.value.trim().isNotEmpty;
+      case QuestionType.multipleChoice:
+        return answer is MultipleChoiceAnswer && answer.selectedChoice.isNotEmpty;
+      case QuestionType.checkboxes:
+        return answer is CheckboxesAnswer && answer.selectedChoices.isNotEmpty;
+      case QuestionType.dropdown:
+        return answer is DropdownAnswer && (answer.selectedChoice?.isNotEmpty ?? false);
+      case QuestionType.slider:
+        return answer is SliderAnswer;
+      case QuestionType.starRating:
+        return answer is StarRatingAnswer && answer.rating > 0;
+      case QuestionType.dateTime:
+        return answer is DateTimeAnswer && answer.value.trim().isNotEmpty;
+      case QuestionType.matrix:
+        if (answer is MatrixAnswer) {
+          // Check if at least one value is selected for each row
+          return answer.values.isNotEmpty && answer.values.values.every((row) => row.values.any((value) => value));
+        }
+        return false;
+      case QuestionType.imageChoice:
+        return answer is ImageChoiceAnswer && answer.selectedChoices.isNotEmpty;
+      case QuestionType.fileUpload:
+        return answer is FileUploadAnswer; // File upload just needs to exist
+      case QuestionType.audioRecord:
+        return answer is AudioRecordAnswer; // Audio record just needs to exist
+      case QuestionType.nameType:
+        if (answer is NameAnswer) {
+          return (answer.firstName?.trim().isNotEmpty ?? false) || (answer.lastName?.trim().isNotEmpty ?? false);
+        }
+        return false;
+      case QuestionType.emailAddress:
+        return answer is EmailAddressAnswer && answer.value.trim().isNotEmpty;
+      case QuestionType.phoneNumber:
+        return answer is PhoneAnswer && answer.value.trim().isNotEmpty;
+      case QuestionType.address:
+        if (answer is AddressAnswer) {
+          return (answer.streetAddress1?.trim().isNotEmpty ?? false) ||
+              (answer.city?.trim().isNotEmpty ?? false) ||
+              (answer.postalCode?.trim().isNotEmpty ?? false);
+        }
+        return false;
+      case QuestionType.text:
+        return true; // Text questions don't require answers
+      case QuestionType.image:
+        return true; // Image questions don't require answers
+    }
+  }
+
+  void _showAnswerRequiredMessage(BuildContext context, QuestionEntity question) {
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(
+              Icons.warning_rounded,
+              color: Colors.orange,
+              size: 20,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'survey.validation.required_question'.tr(),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: context.colorScheme.onSurface.withOpacity(0.9),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        margin: const EdgeInsets.all(16),
+        duration: const Duration(seconds: 3),
+        action: SnackBarAction(
+          label: 'survey.validation.understood'.tr(),
+          textColor: context.colorScheme.primary,
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -342,12 +447,6 @@ class _SurveyQuestionsState extends State<_SurveyQuestions> with TickerProviderS
               color: context.colorScheme.onSurface,
             ),
           ),
-          Text(
-            'Survey Response',
-            style: context.textTheme.bodySmall?.copyWith(
-              color: context.colorScheme.onSurfaceVariant,
-            ),
-          ),
         ],
       ),
       centerTitle: false,
@@ -372,7 +471,8 @@ class _SurveyQuestionsState extends State<_SurveyQuestions> with TickerProviderS
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Question ${_currentIndex + 1} of ${widget.state.survey.questions.length}',
+                'survey.question.progress'
+                    .tr(args: [(_currentIndex + 1).toString(), widget.state.survey.questions.length.toString()]),
                 style: context.textTheme.bodyMedium?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w600,
@@ -479,7 +579,7 @@ class _SurveyQuestionsState extends State<_SurveyQuestions> with TickerProviderS
     final isLastQuestion = _currentIndex == widget.state.survey.questions.length - 1;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         border: Border(
@@ -506,7 +606,7 @@ class _SurveyQuestionsState extends State<_SurveyQuestions> with TickerProviderS
                   variant: ButtonVariant.outline,
                   size: ButtonSize.large,
                   icon: const Icon(Icons.arrow_back_rounded),
-                  child: const Text('Previous'),
+                  child: Text('survey.button.previous'.tr()),
                 ),
               ),
             if (!isFirstQuestion && !isLastQuestion) const SizedBox(width: 16),
@@ -518,7 +618,7 @@ class _SurveyQuestionsState extends State<_SurveyQuestions> with TickerProviderS
                   variant: ButtonVariant.primary,
                   size: ButtonSize.large,
                   suffixIcon: const Icon(Icons.arrow_forward_rounded),
-                  child: const Text('Next'),
+                  child: Text('survey.button.next'.tr()),
                 ),
               ),
           ],
@@ -911,7 +1011,7 @@ class _LoadingStateState extends State<_LoadingState> with TickerProviderStateMi
               ),
               const SizedBox(height: 32),
               Text(
-                'survey.loading'.tr(),
+                'survey.loading.title'.tr(),
                 style: context.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.onSurface,
@@ -920,7 +1020,7 @@ class _LoadingStateState extends State<_LoadingState> with TickerProviderStateMi
               ),
               const SizedBox(height: 12),
               Text(
-                'Please wait while we prepare your survey...',
+                'survey.loading.message'.tr(),
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                 ),
@@ -982,7 +1082,7 @@ class _EmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'This survey doesn\'t have any questions yet.',
+                'survey.empty.message'.tr(),
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                 ),
@@ -994,7 +1094,7 @@ class _EmptyState extends StatelessWidget {
                 variant: ButtonVariant.outline,
                 size: ButtonSize.large,
                 icon: const Icon(Icons.arrow_back_rounded),
-                child: const Text('Go Back'),
+                child: Text('survey.empty.button.go_back'.tr()),
               ),
             ],
           ),
@@ -1043,7 +1143,7 @@ class _FailureState extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                'survey.error'.tr(),
+                'survey.error.title'.tr(),
                 style: context.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.onSurface,
@@ -1052,7 +1152,7 @@ class _FailureState extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Something went wrong while loading the survey. Please try again.',
+                'survey.error.message'.tr(),
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                 ),
@@ -1067,7 +1167,7 @@ class _FailureState extends StatelessWidget {
                       variant: ButtonVariant.outline,
                       size: ButtonSize.large,
                       icon: const Icon(Icons.arrow_back_rounded),
-                      child: const Text('Go Back'),
+                      child: Text('survey.error.button.go_back'.tr()),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -1080,7 +1180,7 @@ class _FailureState extends StatelessWidget {
                       variant: ButtonVariant.primary,
                       size: ButtonSize.large,
                       icon: const Icon(Icons.refresh_rounded),
-                      child: const Text('Retry'),
+                      child: Text('survey.error.button.retry'.tr()),
                     ),
                   ),
                 ],

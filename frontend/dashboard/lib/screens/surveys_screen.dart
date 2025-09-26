@@ -382,8 +382,6 @@ class _SurveysScreenState extends State<SurveysScreen> {
         return Colors.orange;
       case SurveyStatus.deleted:
         return Colors.red;
-      case SurveyStatus.draft:
-        return Colors.grey;
       default:
         return Colors.grey;
     }

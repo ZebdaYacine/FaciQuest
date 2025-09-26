@@ -4,6 +4,7 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
@@ -24,7 +25,9 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
 
   Future<void> _refreshCollectors() async {
     try {
-      context.read<NewSurveyCubit>().fetchCollectors();
+      if (mounted) {
+        context.read<NewSurveyCubit>().fetchCollectors();
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -41,13 +44,26 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
   Widget build(BuildContext context) {
     return BlocListener<NewSurveyCubit, NewSurveyState>(
       listener: (context, state) {
-        if (state.status == Status.failure && state.msg != null) {
+        if (state.status == Status.failure && state.msg != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.msg!),
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
+        }
+
+        // Auto-show collector modal for new surveys with no collectors
+        if (state.shouldShowCollectorModal &&
+            state.survey.collectors.isEmpty &&
+            state.status == Status.success &&
+            mounted) {
+          // Use post frame callback to ensure the widget is built
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              _showFirstCollectorModal(context);
+            }
+          });
         }
       },
       child: RefreshIndicator(
@@ -70,6 +86,24 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
             const _BottomNavigationSection(),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showFirstCollectorModal(BuildContext context) {
+    if (!mounted) return;
+
+    // Reset the flag first to prevent showing again
+    context.read<NewSurveyCubit>().resetCollectorModalFlag();
+
+    // Show the collector creation modal
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (modalContext) => BlocProvider.value(
+        value: context.read<NewSurveyCubit>(),
+        child: const _AddCollectorBottomSheet(),
       ),
     );
   }
@@ -109,7 +143,7 @@ class _SurveyStatsCard extends StatelessWidget {
                       ),
                       12.widthBox,
                       Text(
-                        'Survey Performance',
+                        'survey.stats.performance'.tr(),
                         style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: context.colorScheme.primary,
@@ -123,7 +157,7 @@ class _SurveyStatsCard extends StatelessWidget {
                       Expanded(
                         child: _StatItem(
                           icon: Icons.people_outline,
-                          label: 'Total Responses',
+                          label: 'survey.stats.total_responses'.tr(),
                           value: totalResponses.toString(),
                           color: context.colorScheme.primary,
                         ),
@@ -131,7 +165,7 @@ class _SurveyStatsCard extends StatelessWidget {
                       Expanded(
                         child: _StatItem(
                           icon: Icons.campaign_outlined,
-                          label: 'Active Collectors',
+                          label: 'survey.stats.active_collectors'.tr(),
                           value: '$activeCollectors/$totalCollectors',
                           color: context.colorScheme.secondary,
                         ),
@@ -147,7 +181,7 @@ class _SurveyStatsCard extends StatelessWidget {
                     ),
                     8.heightBox,
                     Text(
-                      'Collector Activity Rate',
+                      'survey.stats.collector_activity_rate'.tr(),
                       style: context.textTheme.bodySmall?.copyWith(
                         color: context.colorScheme.onSurfaceVariant,
                       ),
@@ -314,30 +348,30 @@ class _CollectorOptionsGrid extends StatelessWidget {
             }
           },
         ),
-        _CollectorOptionCard(
-          icon: Icons.link_rounded,
-          title: 'Web Link',
-          description: 'Share via web link',
-          color: context.colorScheme.secondary,
-          onTap: () {
-            Navigator.of(context).pop(); // Close bottom sheet
-            _showWebLinkModal(context);
-          },
-        ),
-        _CollectorOptionCard(
-          icon: Icons.qr_code_rounded,
-          title: 'QR Code',
-          description: 'Generate QR code',
-          color: context.colorScheme.tertiary,
-          onTap: () {
-            Navigator.of(context).pop(); // Close bottom sheet
-            _showQRCodeModal(context);
-          },
-        ),
+        // _CollectorOptionCard(
+        //   icon: Icons.link_rounded,
+        //   title: 'survey.collectors.web_link'.tr(),
+        //   description: 'survey.collectors.web_link_description'.tr(),
+        //   color: context.colorScheme.secondary,
+        //   onTap: () {
+        //     Navigator.of(context).pop(); // Close bottom sheet
+        //     _showWebLinkModal(context);
+        //   },
+        // ),
+        // _CollectorOptionCard(
+        //   icon: Icons.qr_code_rounded,
+        //   title: 'survey.collectors.qr_code'.tr(),
+        //   description: 'survey.collectors.qr_code_description'.tr(),
+        //   color: context.colorScheme.tertiary,
+        //   onTap: () {
+        //     Navigator.of(context).pop(); // Close bottom sheet
+        //     _showQRCodeModal(context);
+        //   },
+        // ),
         _CollectorOptionCard(
           icon: Icons.email_outlined,
-          title: 'Email Invitation',
-          description: 'Send via email',
+          title: 'survey.collectors.email_invitation'.tr(),
+          description: 'survey.collectors.email_invitation_description'.tr(),
           color: Colors.orange,
           onTap: () {
             Navigator.of(context).pop(); // Close bottom sheet
@@ -349,6 +383,7 @@ class _CollectorOptionsGrid extends StatelessWidget {
   }
 
   void _showWebLinkModal(BuildContext context) async {
+    if (!context.mounted) return;
     await showWebLinkModal(context);
     if (context.mounted) {
       context.read<NewSurveyCubit>().fetchCollectors();
@@ -356,6 +391,7 @@ class _CollectorOptionsGrid extends StatelessWidget {
   }
 
   void _showQRCodeModal(BuildContext context) async {
+    if (!context.mounted) return;
     await showQRCodeModal(context);
     if (context.mounted) {
       context.read<NewSurveyCubit>().fetchCollectors();
@@ -363,6 +399,7 @@ class _CollectorOptionsGrid extends StatelessWidget {
   }
 
   void _showEmailModal(BuildContext context) async {
+    if (!context.mounted) return;
     await showEmailInvitationModal(context);
     if (context.mounted) {
       context.read<NewSurveyCubit>().fetchCollectors();
@@ -613,7 +650,7 @@ class _CollectorsTableState extends State<CollectorsTable> {
           ),
           12.widthBox,
           Text(
-            'Active Collectors',
+            'survey.collectors.active_collectors'.tr(),
             style: context.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -625,7 +662,7 @@ class _CollectorsTableState extends State<CollectorsTable> {
               Icons.refresh_rounded,
               color: context.colorScheme.primary,
             ),
-            tooltip: 'Refresh',
+            tooltip: 'actions.refresh'.tr(),
           ),
         ],
       ),
@@ -662,7 +699,7 @@ class _CollectorsTableState extends State<CollectorsTable> {
             color: context.colorScheme.primary,
           ),
           label: Text(
-            'Show ${totalCount - 2} more collectors',
+            'survey.collectors.show_more'.tr(args: [(totalCount - 2).toString()]),
             style: TextStyle(color: context.colorScheme.primary),
           ),
         ),
@@ -682,7 +719,7 @@ class _CollectorsTableState extends State<CollectorsTable> {
             color: context.colorScheme.primary,
           ),
           label: Text(
-            'Add New Collector',
+            'survey.collectors.add_new'.tr(),
             style: TextStyle(color: context.colorScheme.primary),
           ),
           style: OutlinedButton.styleFrom(
@@ -695,11 +732,16 @@ class _CollectorsTableState extends State<CollectorsTable> {
   }
 
   void _showAddCollectorSheet(BuildContext context) {
+    if (!context.mounted) return;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => const _AddCollectorBottomSheet(),
+      builder: (modalContext) => BlocProvider.value(
+        value: context.read<NewSurveyCubit>(),
+        child: const _AddCollectorBottomSheet(),
+      ),
     );
   }
 }
@@ -715,7 +757,7 @@ class _CollectorListTile extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       leading: _buildCollectorIcon(context),
       title: Text(
-        collector.name.isNotEmpty ? collector.name : 'Unnamed Collector',
+        collector.name.isNotEmpty ? collector.name : 'survey.collectors.unnamed'.tr(),
         style: context.textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600,
         ),
@@ -735,7 +777,7 @@ class _CollectorListTile extends StatelessWidget {
               ),
               4.widthBox,
               Text(
-                '${collector.viewsCount} views',
+                '${collector.viewsCount} ${'survey.collectors.views'.tr()}',
                 style: context.textTheme.bodySmall?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                 ),
@@ -879,7 +921,7 @@ class _CollectorListTile extends StatelessWidget {
             children: [
               Icon(Icons.edit_outlined, size: 20, color: context.colorScheme.primary),
               12.widthBox,
-              Text('Edit Collector'),
+              Text('survey.collectors.edit'.tr()),
             ],
           ),
         ),
@@ -889,7 +931,7 @@ class _CollectorListTile extends StatelessWidget {
             children: [
               Icon(Icons.share_outlined, size: 20, color: context.colorScheme.secondary),
               12.widthBox,
-              Text('Share'),
+              Text('survey.collectors.share'.tr()),
             ],
           ),
         ),
@@ -903,7 +945,9 @@ class _CollectorListTile extends StatelessWidget {
                 color: collector.status == CollectorStatus.open ? Colors.orange : Colors.green,
               ),
               12.widthBox,
-              Text(collector.status == CollectorStatus.open ? 'Pause' : 'Activate'),
+              Text(collector.status == CollectorStatus.open
+                  ? 'survey.collectors.pause'.tr()
+                  : 'survey.collectors.activate'.tr()),
             ],
           ),
         ),
@@ -914,7 +958,7 @@ class _CollectorListTile extends StatelessWidget {
             children: [
               Icon(Icons.delete_outline, size: 20, color: context.colorScheme.error),
               12.widthBox,
-              Text('Delete', style: TextStyle(color: context.colorScheme.error)),
+              Text('survey.collectors.delete'.tr(), style: TextStyle(color: context.colorScheme.error)),
             ],
           ),
         ),
@@ -927,7 +971,7 @@ class _CollectorListTile extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Link copied to clipboard'),
+        content: Text('survey.collectors.link_copied_to_clipboard'.tr()),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
@@ -968,7 +1012,8 @@ class _CollectorListTile extends StatelessWidget {
     // Implement toggle status functionality
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${collector.status == CollectorStatus.open ? 'Paused' : 'Activated'} collector'),
+        content: Text(
+            '${collector.status == CollectorStatus.open ? 'survey.collectors.paused'.tr() : 'survey.collectors.activated'.tr()} ${'survey.collectors.collector'.tr()}'),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -1007,7 +1052,7 @@ class _CollectorListTile extends StatelessWidget {
       context.read<NewSurveyCubit>().deleteCollector(collector.id);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Collector deleted successfully'),
+          content: Text('survey.collectors.deleted_successfully'.tr()),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -1046,14 +1091,14 @@ class _EmptyCollectorsState extends StatelessWidget {
               ),
               24.heightBox,
               Text(
-                'No Collectors Yet',
+                'survey.collectors.no_collectors'.tr(),
                 style: context.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               12.heightBox,
               Text(
-                'Create your first collector to start gathering responses from your target audience.',
+                'survey.collectors.create_your_first_collector'.tr(),
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                 ),
@@ -1062,15 +1107,20 @@ class _EmptyCollectorsState extends StatelessWidget {
               24.heightBox,
               FilledButton.icon(
                 onPressed: () {
+                  if (!context.mounted) return;
+
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
                     backgroundColor: Colors.transparent,
-                    builder: (context) => const _AddCollectorBottomSheet(),
+                    builder: (modalContext) => BlocProvider.value(
+                      value: context.read<NewSurveyCubit>(),
+                      child: const _AddCollectorBottomSheet(),
+                    ),
                   );
                 },
                 icon: const Icon(Icons.add_rounded),
-                label: const Text('Create First Collector'),
+                label: Text('survey.collectors.create_first_collector'.tr()),
               ),
             ],
           ),
@@ -1189,7 +1239,7 @@ Future<void> showQRCodeModal(BuildContext context) async {
             ),
             12.widthBox,
             Text(
-              'QR Code Collector',
+              'survey.collectors.qr_code'.tr(),
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -1200,7 +1250,7 @@ Future<void> showQRCodeModal(BuildContext context) async {
           child: Column(
             children: [
               Text(
-                'Generate a QR code for easy survey access',
+                'survey.collectors.generate_qr_code_for_easy_survey_access'.tr(),
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                 ),
@@ -1254,7 +1304,7 @@ Future<void> showQRCodeModal(BuildContext context) async {
                         Clipboard.setData(ClipboardData(text: surveyUrl));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: const Text('Link copied to clipboard'),
+                            content: Text('survey.collectors.link_copied_to_clipboard'.tr()),
                             behavior: SnackBarBehavior.floating,
                           ),
                         );
@@ -1277,14 +1327,14 @@ Future<void> showQRCodeModal(BuildContext context) async {
                 onPressed: () {
                   // Download QR code functionality
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('QR Code download feature coming soon!'),
+                    SnackBar(
+                      content: Text('survey.collectors.qr_code_download_feature_coming_soon'.tr()),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
                 },
                 icon: const Icon(Icons.download_rounded),
-                label: const Text('Download'),
+                label: Text('survey.collectors.download'.tr()),
               ),
             ),
             16.widthBox,
@@ -1294,7 +1344,7 @@ Future<void> showQRCodeModal(BuildContext context) async {
                   Share.share(surveyUrl);
                 },
                 icon: const Icon(Icons.share_rounded),
-                label: const Text('Share QR'),
+                label: Text('survey.collectors.share_qr'.tr()),
               ),
             ),
           ],
@@ -1308,11 +1358,10 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
   final cubit = context.read<NewSurveyCubit>();
   final emailController = TextEditingController();
   final subjectController = TextEditingController(
-    text: 'You\'re invited to participate in our survey',
+    text: 'survey.collectors.you_are_invited_to_participate_in_our_survey'.tr(),
   );
   final messageController = TextEditingController(
-    text:
-        'Hi there!\n\nWe would love to hear your thoughts. Please take a moment to complete our survey.\n\nThank you for your time!',
+    text: 'survey.collectors.hi_there'.tr(),
   );
 
   await showModalBottomSheet(
@@ -1332,7 +1381,7 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
               ),
               12.widthBox,
               Text(
-                'Email Invitation',
+                'survey.collectors.email_invitation'.tr(),
                 style: context.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -1344,14 +1393,14 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Send personalized email invitations to your target audience',
+                  'survey.collectors.send_personalized_email_invitations_to_your_target_audience'.tr(),
                   style: context.textTheme.bodyLarge?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
                 ),
                 24.heightBox,
                 Text(
-                  'Email Addresses',
+                  'survey.collectors.email_addresses'.tr(),
                   style: context.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -1361,7 +1410,7 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
                   controller: emailController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: 'Enter email addresses separated by commas\nexample@email.com, another@email.com',
+                    hintText: 'survey.collectors.enter_email_addresses_separated_by_commas'.tr(),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -1370,7 +1419,7 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
                 ),
                 20.heightBox,
                 Text(
-                  'Subject',
+                  'survey.collectors.subject'.tr(),
                   style: context.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -1387,7 +1436,7 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
                 ),
                 20.heightBox,
                 Text(
-                  'Message',
+                  'survey.collectors.message'.tr(),
                   style: context.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -1422,7 +1471,7 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
                       12.widthBox,
                       Expanded(
                         child: Text(
-                          'Survey link will be automatically included in the email',
+                          'survey.collectors.survey_link_will_be_automatically_included_in_the_email'.tr(),
                           style: context.textTheme.bodySmall?.copyWith(
                             color: Colors.orange.shade700,
                           ),
@@ -1440,7 +1489,7 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
                 child: OutlinedButton.icon(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close_rounded),
-                  label: const Text('Cancel'),
+                  label: Text('actions.cancel'.tr()),
                 ),
               ),
               16.widthBox,
@@ -1451,14 +1500,14 @@ Future<void> showEmailInvitationModal(BuildContext context) async {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: const Text('Email invitations sent successfully!'),
+                        content: Text('survey.collectors.email_invitations_sent_successfully'.tr()),
                         backgroundColor: Colors.green,
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
                   },
                   icon: const Icon(Icons.send_rounded),
-                  label: const Text('Send Invites'),
+                  label: Text('survey.collectors.send_invites'.tr()),
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.orange,
                   ),

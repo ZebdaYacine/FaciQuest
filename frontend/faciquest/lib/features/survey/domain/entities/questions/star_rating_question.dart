@@ -10,6 +10,7 @@ class StarRatingQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.starRating,
+    super.isRequired = false,
     this.maxRating = 5,
     this.shape = StarRatingShape.star,
     this.color = Colors.amber,
@@ -43,6 +44,7 @@ class StarRatingQuestion extends QuestionEntity {
     String? title,
     int? order,
     QuestionType? type,
+    bool? isRequired,
     int? maxRating,
     StarRatingShape? shape,
     Color? color,
@@ -52,6 +54,7 @@ class StarRatingQuestion extends QuestionEntity {
       title: title ?? this.title,
       order: order ?? this.order,
       type: type ?? this.type,
+      isRequired: isRequired ?? this.isRequired,
       maxRating: maxRating ?? this.maxRating,
       shape: shape ?? this.shape,
       color: color ?? this.color,
@@ -61,11 +64,12 @@ class StarRatingQuestion extends QuestionEntity {
   @override
   List<Object?> get props => [title, maxRating, shape, color];
 
-  static StarRatingQuestion copyFrom(QuestionEntity question) {
+  static StarRatingQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
     return StarRatingQuestion(
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: isRequired,
     );
   }
 }

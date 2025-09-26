@@ -8,6 +8,7 @@ class CheckboxesQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.checkboxes,
+    super.isRequired = false,
     this.choices = const [''],
   });
   final List<String> choices;
@@ -18,12 +19,14 @@ class CheckboxesQuestion extends QuestionEntity {
     String? title,
     int? order,
     QuestionType? type,
+    bool? isRequired,
     List<String>? choices,
   }) {
     return CheckboxesQuestion(
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
       choices: choices ?? this.choices,
     );
   }
@@ -54,11 +57,12 @@ class CheckboxesQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, choices];
-  static CheckboxesQuestion copyFrom(QuestionEntity question) {
+  static CheckboxesQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
     return CheckboxesQuestion(
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: isRequired,
     );
   }
 }

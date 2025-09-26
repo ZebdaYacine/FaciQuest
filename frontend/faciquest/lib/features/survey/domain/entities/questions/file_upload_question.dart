@@ -57,6 +57,7 @@ class FileUploadQuestion extends QuestionEntity {
     super.type = QuestionType.fileUpload,
     this.allowedExtensions = const {},
     this.instructions,
+    super.isRequired = false,
   });
 
   final String? instructions;
@@ -71,11 +72,13 @@ class FileUploadQuestion extends QuestionEntity {
     QuestionType? type,
     List<FileUploadType>? allowedExtensions,
     String? instructions,
+    bool? isRequired,
   }) {
     return FileUploadQuestion(
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
       allowedExtensions: allowedExtensions?.toSet() ?? this.allowedExtensions,
       instructions: instructions ?? this.instructions,
     );
@@ -88,9 +91,7 @@ class FileUploadQuestion extends QuestionEntity {
       order: map['order'],
       instructions: map['instructions'],
       allowedExtensions: FileUploadType.fromMap(
-        (map['allowedExtensions'] as List<dynamic>)
-            .map((e) => e.toString())
-            .toList(),
+        (map['allowedExtensions'] as List<dynamic>).map((e) => e.toString()).toList(),
       ),
     );
   }

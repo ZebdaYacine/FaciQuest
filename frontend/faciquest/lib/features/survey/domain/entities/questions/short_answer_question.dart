@@ -6,6 +6,7 @@ class ShortAnswerQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.shortAnswer,
+    super.isRequired = false,
     this.maxLength = 255,
   });
 
@@ -19,12 +20,14 @@ class ShortAnswerQuestion extends QuestionEntity {
     QuestionType? type,
     String? headline6,
     String? title,
+    bool? isRequired,
     int? maxLength,
   }) {
     return ShortAnswerQuestion(
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
       maxLength: maxLength ?? this.maxLength,
     );
   }
@@ -53,6 +56,7 @@ class ShortAnswerQuestion extends QuestionEntity {
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: question.isRequired,
     );
   }
 }

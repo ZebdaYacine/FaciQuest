@@ -8,6 +8,7 @@ class DateTimeQuestion extends QuestionEntity {
     super.type = QuestionType.dateTime,
     this.collectDateInfo = true,
     this.collectTimeInfo = false,
+    super.isRequired = false,
   });
   final bool collectDateInfo;
   final bool collectTimeInfo;
@@ -19,13 +20,16 @@ class DateTimeQuestion extends QuestionEntity {
     QuestionType? type,
     bool? collectDateInfo,
     bool? collectTimeInfo,
+    bool? isRequired,
   }) {
     return DateTimeQuestion(
-        id: id,
-        title: title ?? this.title,
-        order: order ?? this.order,
-        collectDateInfo: collectDateInfo ?? this.collectDateInfo,
-        collectTimeInfo: collectTimeInfo ?? this.collectTimeInfo);
+      id: id,
+      title: title ?? this.title,
+      order: order ?? this.order,
+      collectDateInfo: collectDateInfo ?? this.collectDateInfo,
+      collectTimeInfo: collectTimeInfo ?? this.collectTimeInfo,
+      isRequired: isRequired ?? this.isRequired,
+    );
   }
 
   static QuestionEntity fromMap(Map<String, dynamic> map) {

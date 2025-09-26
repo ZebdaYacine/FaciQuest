@@ -9,6 +9,7 @@ class PhoneQuestion extends QuestionEntity {
     this.phoneLabel = 'Phone Number',
     this.phoneHint,
     this.showPhone = true,
+    super.isRequired = false,
   });
 
   final String phoneLabel;
@@ -24,6 +25,7 @@ class PhoneQuestion extends QuestionEntity {
     String? phoneLabel,
     String? phoneHint,
     bool? showPhone,
+    bool? isRequired,
   }) {
     return PhoneQuestion(
       id: id ?? this.id,
@@ -32,6 +34,7 @@ class PhoneQuestion extends QuestionEntity {
       phoneLabel: phoneLabel ?? this.phoneLabel,
       phoneHint: phoneHint ?? this.phoneHint,
       showPhone: showPhone ?? this.showPhone,
+      isRequired: isRequired ?? this.isRequired,
     );
   }
 
@@ -43,6 +46,7 @@ class PhoneQuestion extends QuestionEntity {
       phoneLabel: map['phoneLabel'],
       phoneHint: map['phoneHint'],
       showPhone: map['showPhone'],
+      isRequired: map['isRequired'],
     );
   }
 
@@ -61,6 +65,7 @@ class PhoneQuestion extends QuestionEntity {
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: question.isRequired,
     );
   }
 }

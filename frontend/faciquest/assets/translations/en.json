@@ -16,7 +16,6 @@
     "and": "and",
     "privacyPolicy": "Privacy Policy"
   },
-
   "profile": {
     "language": "Language",
     "my_account": "My Account",
@@ -34,6 +33,18 @@
     "fr": "Français",
     "en": "English"
   },
+  "Name": "Name",
+  "Date Created": "Date Created",
+  "Date Updated": "Date Updated",
+  "Responses": "Responses",
+  "Status": "Status",
+  "Active": "Active",
+  "All Surveys": "All Surveys",
+  "Draft": "Draft",
+  "Closed": "Closed",
+  "Sort options": "Sort options",
+  "Survey": "Survey",
+  "Surveys": "Surveys",
   "auth": {
     "verifyOtp": {
       "title": "Verify OTP",
@@ -51,8 +62,11 @@
       "termsAndConditions": "Terms & Conditions",
       "submit": "Sign Up",
       "username": "Username",
+      "usernameHint": "Enter your username",
       "firstName": "First Name",
+      "firstNameHint": "Enter your first name",
       "lastName": "Last Name",
+      "lastNameHint": "Enter your last name",
       "email": "Email",
       "emailHint": "Enter your email address",
       "phone": "Phone",
@@ -92,9 +106,58 @@
     }
   },
   "survey": {
-    "loading": "Loading Survey...",
-    "empty": "Survey Not Found",
-    "error": "Something Went Wrong",
+    "Summary": "Summary",
+    "Survey Details": "Survey Details",
+    "Questions": "Questions",
+    "Collect Responses": "Collect Responses",
+    "Analyse Results": "Analyse Results",
+    "loading": {
+      "title": "Loading Survey...",
+      "message": "Please wait while we prepare your survey..."
+    },
+    "empty": {
+      "title": "Survey Not Found",
+      "message": "This survey doesn't have any questions yet.",
+      "button": {
+        "go_back": "Go Back"
+      }
+    },
+    "error": {
+      "title": "Something Went Wrong",
+      "message": "Something went wrong while loading the survey. Please try again.",
+      "button": {
+        "go_back": "Go Back",
+        "retry": "Retry"
+      }
+    },
+    "button": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "QuestionType": {
+      "Star Rating": "Star Rating",
+      "Multiple Choice": "Multiple Choice",
+      "Checkboxes": "Checkboxes",
+      "Dropdown": "Dropdown",
+      "File Upload": "File Upload",
+      "Audio Record": "Audio Record",
+      "Short Answer": "Short Answer",
+      "Comment Box": "Comment Box",
+      "Slider": "Slider",
+      "Date / Time": "Date / Time",
+      "Matrix": "Matrix",
+      "Image Choice": "Image Choice",
+      "Name": "Name",
+      "Email Address": "Email Address",
+      "Phone Number": "Phone Number",
+      "Address": "Address",
+      "Text": "Text",
+      "Image": "Image",
+      "2-point Likert scale": "2-point Likert scale",
+      "3-point Likert scale": "3-point Likert scale",
+      "5-point Likert scale": "5-point Likert scale",
+      "7-point Likert scale": "7-point Likert scale"
+    },
     "question": {
       "progress": "Question {} of {}",
       "checkboxes": {
@@ -179,6 +242,10 @@
         "message": "Thank you for completing the survey"
       }
     },
+    "validation": {
+      "required_question": "Please answer this question before proceeding.",
+      "understood": "Got it"
+    },
     "address": {
       "street_address1": "Street Address 1",
       "street_address2": "Street Address 2",
@@ -190,13 +257,49 @@
     },
     "audio_record": {
       "coming_soon": "Coming soon"
-    }
+    },
+    "collectors": {
+      "web_link": "Web Link",
+      "web_link_description": "Share via web link",
+      "qr_code": "QR Code",
+      "qr_code_description": "Generate QR code",
+      "email_invitation": "Email Invitation",
+      "email_invitation_description": "Send via email",
+      "active_collectors": "Active Collectors",
+      "refresh": "Refresh",
+      "show_more": "Show {} more collectors",
+      "add_new": "Add New Collector",
+      "create_first_collector": "Create First Collector",
+      "email_addresses": "Email Addresses",
+      "enter_email_addresses_separated_by_commas": "Enter email addresses separated by commas\nexample@email.com, another@email.com",
+      "subject": "Subject",
+      "message": "Message",
+      "survey_link_will_be_automatically_included_in_the_email": "Survey link will be automatically included in the email",
+      "email_invitations_sent_successfully": "Email invitations sent successfully!",
+      "send_invites": "Send Invites",
+      "hi_there": "Hi there! You've been invited to participate in our survey. Your feedback is valuable to us."
+    },
+    "stats": {
+      "performance": "Survey Performance",
+      "total_responses": "Total Responses",
+      "active_collectors": "Active Collectors",
+      "collector_activity_rate": "Collector Activity Rate"
+    },
+    "unnamed": "Unnamed Collector",
+    "views": "views",
+    "edit": "Edit",
+    "share": "Share",
+    "pause": "Pause",
+    "activate": "Activate",
+    "delete": "Delete",
+    "link_copied_to_clipboard": "Link copied to clipboard"
   },
   "manage": {
     "manage_my_surveys_title": "Manage My Surveys",
     "create_survey_button": "Create Survey",
     "search_surveys_hint": "Search surveys...",
-    "no_surveys_found": "No surveys found"
+    "no_surveys_found": "No surveys found",
+    "template_selector_coming_soon": "Template selector coming soon!"
   },
   "status": {
     "open_status": "Open"
@@ -222,7 +325,11 @@
     "move_question_to": "Move this question to...",
     "next": "Next",
     "export_results": "Export Results",
-    "save": "Save"
+    "save": "Save",
+    "export_as_csv": "Export as CSV",
+    "export_as_pdf": "Export as PDF",
+    "export_as_excel": "Export as Excel",
+    "advanced_analytics": "Advanced Analytics"
   },
   "delete_dialog": {
     "delete_survey_title": "Delete Survey",
@@ -259,7 +366,19 @@
     "before": "Before"
   },
   "error": {
-    "generic": "Error Occurred"
+    "generic": "Error Occurred",
+    "export_data_success": "Successfully exported data as {}",
+    "export_data_error": "Error exporting data: {}",
+    "pdf_export_coming_soon": "PDF export feature coming soon!",
+    "excel_export_coming_soon": "Excel export feature coming soon!",
+    "no_collectors_yet": "No collectors yet",
+    "error_showing_modal": "Error showing modal: {}",
+    "error_initializing": "Error initializing: {}",
+    "error_adding_criteria": "Error adding criteria: {}",
+    "error_selecting_country": "Error selecting country: {}",
+    "error_selecting_gender": "Error selecting gender: {}",
+    "error_selecting_age": "Error selecting age: {}",
+    "error_during_checkout": "Error during checkout: {}"
   },
   "collectors": {
     "add_new": "Add a new collector",
@@ -315,14 +434,33 @@
   "personal_info": {
     "title": "Personal Info",
     "save_changes": "Save Changes",
+    "profile_updated_success": "Profile updated successfully",
+    "profile_update_failed": "Failed to update profile",
+    "tooltips": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "edit": "Edit"
+    },
+    "sections": {
+      "basic_information": "Basic Information",
+      "personal_details": "Personal Details",
+      "professional_information": "Professional Information"
+    },
     "fields": {
       "username": "Username",
       "first_name": "First Name",
       "last_name": "Last Name",
       "email": "Email",
       "phone": "Phone",
-      "birth_date": "Date of Birth",
-      "tap_to_select_date": "Tap to select date"
+      "birth_date": "Birth Date",
+      "tap_to_select_date": "Tap to select date",
+      "birth_place": "Birth Place",
+      "country": "Country",
+      "municipal": "Municipal",
+      "education": "Education",
+      "work_at": "Work At",
+      "institution": "Institution",
+      "social_status": "Social Status"
     }
   },
   "home": {
@@ -332,7 +470,8 @@
     "available_surveys": "Available Surveys",
     "new_survey": "New Survey",
     "empty_state": {
-      "no_surveys": "No surveys found"
+      "no_surveys": "No surveys found",
+      "description": "Be the first to create an amazing survey and start collecting valuable insights from your audience."
     },
     "error_state": {
       "error_message": "Something went wrong"
@@ -345,8 +484,52 @@
     "Enter your question here": "Enter your question here",
     "Question Type": "Question Type",
     "Question Settings": "Question Settings",
-    "Please select a question type to configure settings": "Please select a question type to configure settings"
+    "Please select a question type to configure settings": "Please select a question type to configure settings",
+    "required_question": "Required Question",
+    "required_question_description": "Respondents must answer this question before proceeding to the next one"
   },
+  "Agree - Disagree": "Agree - Disagree",
+  "Satisfied - Dissatisfied": "Satisfied - Dissatisfied",
+  "Yes - No": "Yes - No",
+  "Likely - Unlikely": "Likely - Unlikely",
+  "Familiar - Not familiar": "Familiar - Not familiar",
+  "A great deal - None at all": "A great deal - None at all",
+  "Interested - Not interested": "Interested - Not interested",
+  "Easy - Difficult": "Easy - Difficult",
+  "Always - Never": "Always - Never",
+  "Better - Worse": "Better - Worse",
+  "Approve - Disapprove": "Approve - Disapprove",
+  "Above average - Below average": "Above average - Below average",
+  "High quality - Low quality": "High quality - Low quality",
+  "True - False": "True - False",
+  "Definitely would - Definitely would not": "Definitely would - Definitely would not",
+  "Useful - Not useful": "Useful - Not useful",
+  "Valuable - Not valuable": "Valuable - Not valuable",
+  "Clear - Not clear": "Clear - Not clear",
+  "Helpful - Not helpful": "Helpful - Not helpful",
+  "All - None": "All - None",
+  "Friendly - Not friendly": "Friendly - Not friendly",
+  "Effective - Not effective": "Effective - Not effective",
+  "Positive - Negative": "Positive - Negative",
+  "Too short - Too long": "Too short - Too long",
+  "Responsive - Not responsive": "Responsive - Not responsive",
+  "Top priority - Not a priority": "Top priority - Not a priority",
+  "Important - Not important": "Important - Not important",
+  "Aware - Not aware": "Aware - Not aware",
+  "Desirable - Not desirable": "Desirable - Not desirable",
+  "Confident - Not confident": "Confident - Not confident",
+  "Professional - Not professional": "Professional - Not professional",
+  "Clearly - Not clearly": "Clearly - Not clearly",
+  "Exceeded expectations - Not exceeded expectations": "Exceeded expectations - Not exceeded expectations",
+  "Attentive - Not attentive": "Attentive - Not attentive",
+  "Early - Not early": "Early - Not early",
+  "Months": "Months",
+  "Days": "Days",
+  "Race/Ethnicity": "Race/Ethnicity",
+  "Age": "Age",
+  "Quarters": "Quarters",
+  "Frequency": "Frequency",
+  "Recent Experience": "Recent Experience",
   "Agree": "Agree",
   "Disagree": "Disagree",
   "Strongly agree": "Strongly agree",
@@ -551,5 +734,14 @@
   "Once a month": "Once a month",
   "In the last week": "In the last week",
   "More than a week, less than a month": "More than a week, less than a month",
-  "More than a month ago": "More than a month ago"
+  "More than a month ago": "More than a month ago",
+  "Somewhat agree": "Somewhat agree",
+  "Somewhat disagree": "Somewhat disagree",
+  "Somewhat satisfied": "Somewhat satisfied",
+  "Somewhat dissatisfied": "Somewhat dissatisfied",
+  "Somewhat likely": "Somewhat likely",
+  "Somewhat unlikely": "Somewhat unlikely",
+  "Disapprove": "Disapprove",
+  "Somewhat high quality": "Somewhat high quality",
+  "Somewhat low quality": "Somewhat low quality"
 }

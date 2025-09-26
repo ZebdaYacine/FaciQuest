@@ -7,6 +7,7 @@ class CommentBoxQuestion extends QuestionEntity {
     required super.title,
     required super.order,
     super.type = QuestionType.commentBox,
+    super.isRequired = false,
     this.maxLength = 500,
     this.maxLines = 5,
   });
@@ -20,6 +21,7 @@ class CommentBoxQuestion extends QuestionEntity {
     String? title,
     int? order,
     QuestionType? type,
+    bool? isRequired,
     int? maxLength,
     int? maxLines,
   }) {
@@ -27,6 +29,7 @@ class CommentBoxQuestion extends QuestionEntity {
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
+      isRequired: isRequired ?? this.isRequired,
       maxLength: maxLength ?? this.maxLength,
       maxLines: maxLines ?? this.maxLines,
     );
@@ -51,11 +54,12 @@ class CommentBoxQuestion extends QuestionEntity {
     };
   }
 
-  static CommentBoxQuestion copyFrom(QuestionEntity question) {
+  static CommentBoxQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
     return CommentBoxQuestion(
       id: question.id,
       title: question.title,
       order: question.order,
+      isRequired: isRequired,
     );
   }
 }

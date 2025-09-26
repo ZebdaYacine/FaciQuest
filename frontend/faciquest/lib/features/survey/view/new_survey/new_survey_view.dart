@@ -30,7 +30,7 @@ class NewSurveyView extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  state.page.title,
+                  "survey.${state.page.title}".tr(),
                   style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -268,7 +268,7 @@ class __NewSurveyFormState extends State<_NewSurveyForm> with BuildFormMixin {
                     (e) {
                       return DropdownMenuItem(
                         value: e,
-                        child: Text(e.getValue()),
+                        child: Text("survey.QuestionType.${e.getValue()}".tr()),
                       );
                     },
                   ).toList(),

@@ -33,6 +33,18 @@
     "fr": "Français",
     "en": "English"
   },
+  "Name": "Nom",
+  "Date Created": "Date Créée",
+  "Date Updated": "Date Modifiée",
+  "Responses": "Réponses",
+  "Status": "Statut",
+  "Active": "Actif",
+  "All Surveys": "Tous les Sondages",
+  "Draft": "Brouillon",
+  "Closed": "Fermé",
+  "Sort options": "Options de Tri",
+  "Survey": "Sondage",
+  "Surveys": "Sondages",
   "auth": {
     "verifyOtp": {
       "title": "Vérifier OTP",
@@ -50,7 +62,10 @@
       "termsAndConditions": "Conditions Générales",
       "submit": "S'inscrire",
       "username": "Nom d'utilisateur",
+      "usernameHint": "Entrez votre nom d'utilisateur",
       "firstName": "Prénom",
+      "firstNameHint": "Entrez votre prénom",
+      "lastNameHint": "Entrez votre nom",
       "lastName": "Nom",
       "email": "Email",
       "emailHint": "Entrez votre adresse email",
@@ -64,7 +79,6 @@
     "signIn": {
       "title": "Bienvenue",
       "subtitle": "Bienvenue de retour à FaciQuest",
-
       "newToApp": "Nouveau sur l'application ?",
       "signUp": "S'inscrire",
       "forgotPassword": "Mot de passe oublié ?",
@@ -92,9 +106,90 @@
     }
   },
   "survey": {
-    "loading": "Chargement du sondage...",
-    "empty": "Sondage non trouvé",
-    "error": "Une erreur est survenue",
+    "Summary": "Résumé",
+    "Survey Details": "Détails du Sondage",
+    "Questions": "Questions",
+    "Collect Responses": "Collecter les Réponses",
+    "Analyse Results": "Analyser les Résultats",
+    "loading": {
+      "title": "Chargement du sondage...",
+      "message": "Veuillez patienter pendant que nous préparons votre sondage..."
+    },
+    "empty": {
+      "title": "Sondage non trouvé",
+      "message": "Ce sondage n'a pas de questions encore.",
+      "button": {
+        "go_back": "Retour"
+      }
+    },
+    "error": {
+      "title": "Une erreur est survenue",
+      "message": "Une erreur est survenue lors du chargement du sondage. Veuillez réessayer.",
+      "button": {
+        "go_back": "Retour",
+        "retry": "Réessayer"
+      }
+    },
+    "button": {
+      "previous": "Précédent",
+      "next": "Suivant"
+    },
+    "collectors": {
+      "web_link": "Lien Web",
+      "web_link_description": "Partager via le lien web",
+      "qr_code": "Code QR",
+      "qr_code_description": "Générer un code QR",
+      "email_invitation": "Invitation par email",
+      "email_invitation_description": "Envoyer par email",
+      "active_collectors": "Collecteurs actifs",
+      "refresh": "Actualiser",
+      "show_more": "Afficher {} collecteurs supplémentaires",
+      "add_new": "Ajouter un nouveau collecteur",
+      "create_first_collector": "Créer un premier collecteur",
+      "email_addresses": "Adresses email",
+      "enter_email_addresses_separated_by_commas": "Entrez les adresses email séparées par des virgules\nexample@email.com, another@email.com",
+      "subject": "Sujet",
+      "message": "Message",
+      "survey_link_will_be_automatically_included_in_the_email": "Le lien du sondage sera automatiquement inclus dans l'email",
+      "email_invitations_sent_successfully": "Invitations par email envoyées avec succès !",
+      "send_invites": "Envoyer les invitations",
+      "hi_there": "Bonjour ! Vous êtes invité(e) à participer à notre sondage. Votre avis est important pour nous.",
+      "send_personalized_email_invitations_to_your_target_audience": "Envoyer les invitations par email personnalisées à votre audience cible",
+      "no_collectors": "Aucun collecteur pour le moment",
+      "create_your_first_collector": "Créer un premier collecteur",
+      "download": "Télécharger",
+      "share_qr": "Partager le code QR"
+    },
+    "stats": {
+      "performance": "Performance du sondage",
+      "total_responses": "Total des réponses",
+      "active_collectors": "Collecteurs actifs",
+      "collector_activity_rate": "Taux d'activité des collecteurs"
+    },
+    "QuestionType": {
+      "Star Rating": "Évaluation par étoiles",
+      "Multiple Choice": "Choix multiple",
+      "Checkboxes": "Cases à cocher",
+      "Dropdown": "Liste déroulante",
+      "File Upload": "Téléchargement de fichier",
+      "Audio Record": "Enregistrement audio",
+      "Short Answer": "Réponse courte",
+      "Comment Box": "Zone de commentaire",
+      "Slider": "Slider",
+      "Date / Time": "Date / Heure",
+      "Matrix": "Matrice",
+      "Image Choice": "Choix d'image",
+      "Name": "Nom",
+      "Email Address": "Adresse email",
+      "Phone Number": "Numéro de téléphone",
+      "Address": "Adresse",
+      "Text": "Texte",
+      "Image": "Image",
+      "2-point Likert scale": "Échelle de Likert 2 points",
+      "3-point Likert scale": "Échelle de Likert 3 points",
+      "5-point Likert scale": "Échelle de Likert 5 points",
+      "7-point Likert scale": "Échelle de Likert 7 points"
+    },
     "question": {
       "progress": "Question {} sur {}",
       "checkboxes": {
@@ -179,6 +274,10 @@
         "message": "Merci d'avoir complété le sondage"
       }
     },
+    "validation": {
+      "required_question": "Veuillez répondre à cette question avant de continuer.",
+      "understood": "Compris"
+    },
     "address": {
       "street_address1": "Adresse 1",
       "street_address2": "Adresse 2",
@@ -196,7 +295,8 @@
     "manage_my_surveys_title": "Gérer Mes Sondages",
     "create_survey_button": "Créer un Sondage",
     "search_surveys_hint": "Rechercher des sondages...",
-    "no_surveys_found": "Aucun sondage trouvé"
+    "no_surveys_found": "Aucun sondage trouvé",
+    "template_selector_coming_soon": "Sélecteur de modèles bientôt disponible !"
   },
   "status": {
     "open_status": "Ouvert"
@@ -222,7 +322,11 @@
     "move_question_to": "Déplacer cette question vers...",
     "next": "Suivant",
     "export_results": "Exporter les Résultats",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "export_as_csv": "Exporter en CSV",
+    "export_as_pdf": "Exporter en PDF",
+    "export_as_excel": "Exporter en Excel",
+    "advanced_analytics": "Analyses Avancées"
   },
   "delete_dialog": {
     "delete_survey_title": "Supprimer le Sondage",
@@ -259,7 +363,19 @@
     "before": "Avant"
   },
   "error": {
-    "generic": "Une erreur est survenue"
+    "generic": "Une erreur est survenue",
+    "export_data_success": "Données exportées avec succès en {}",
+    "export_data_error": "Erreur lors de l'export des données : {}",
+    "pdf_export_coming_soon": "Fonctionnalité d'export PDF bientôt disponible !",
+    "excel_export_coming_soon": "Fonctionnalité d'export Excel bientôt disponible !",
+    "no_collectors_yet": "Aucun collecteur pour le moment",
+    "error_showing_modal": "Erreur lors de l'affichage de la modale : {}",
+    "error_initializing": "Erreur lors de l'initialisation : {}",
+    "error_adding_criteria": "Erreur lors de l'ajout de critères : {}",
+    "error_selecting_country": "Erreur lors de la sélection du pays : {}",
+    "error_selecting_gender": "Erreur lors de la sélection du genre : {}",
+    "error_selecting_age": "Erreur lors de la sélection de l'âge : {}",
+    "error_during_checkout": "Erreur lors du paiement : {}"
   },
   "collectors": {
     "add_new": "Ajouter un nouveau collecteur",
@@ -315,6 +431,18 @@
   "personal_info": {
     "title": "Informations Personnelles",
     "save_changes": "Enregistrer les Modifications",
+    "profile_updated_success": "Profil mis à jour avec succès",
+    "profile_update_failed": "Échec de la mise à jour du profil",
+    "tooltips": {
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "edit": "Modifier"
+    },
+    "sections": {
+      "basic_information": "Informations de Base",
+      "personal_details": "Détails Personnels",
+      "professional_information": "Informations Professionnelles"
+    },
     "fields": {
       "username": "Nom d'utilisateur",
       "first_name": "Prénom",
@@ -322,7 +450,14 @@
       "email": "Email",
       "phone": "Téléphone",
       "birth_date": "Date de Naissance",
-      "tap_to_select_date": "Appuyez pour sélectionner une date"
+      "tap_to_select_date": "Appuyez pour sélectionner une date",
+      "birth_place": "Lieu de Naissance",
+      "country": "Pays",
+      "municipal": "Commune",
+      "education": "Éducation",
+      "work_at": "Travaille à",
+      "institution": "Institution",
+      "social_status": "Statut Social"
     }
   },
   "home": {
@@ -332,7 +467,8 @@
     "available_surveys": "Sondages Disponibles",
     "new_survey": "Nouveau Sondage",
     "empty_state": {
-      "no_surveys": "Aucun sondage trouvé"
+      "no_surveys": "Aucun sondage trouvé",
+      "description": "Soyez le premier à créer un sondage extraordinaire et commencez à collecter des informations précieuses de votre audience."
     },
     "error_state": {
       "error_message": "Une erreur est survenue"
@@ -345,8 +481,52 @@
     "Enter your question here": "Saisissez votre question ici",
     "Question Type": "Type de question",
     "Question Settings": "Paramètres de la question",
-    "Please select a question type to configure settings": "Veuillez sélectionner un type de question pour configurer les paramètres"
+    "Please select a question type to configure settings": "Veuillez sélectionner un type de question pour configurer les paramètres",
+    "required_question": "Question obligatoire",
+    "required_question_description": "Les répondants doivent répondre à cette question avant de passer à la suivante"
   },
+  "Agree - Disagree": "D'accord - Pas d'accord",
+  "Satisfied - Dissatisfied": "Satisfait - Insatisfait",
+  "Yes - No": "Oui - Non",
+  "Likely - Unlikely": "Probable - Peu probable",
+  "Familiar - Not familiar": "Familier - Pas familier",
+  "A great deal - None at all": "Beaucoup - Pas du tout",
+  "Interested - Not interested": "Intéressé - Pas intéressé",
+  "Easy - Difficult": "Facile - Difficile",
+  "Always - Never": "Toujours - Jamais",
+  "Better - Worse": "Mieux - Pire",
+  "Approve - Disapprove": "Approuver - Désapprouver",
+  "Above average - Below average": "Au-dessus de la moyenne - En dessous de la moyenne",
+  "High quality - Low quality": "Haute qualité - Basse qualité",
+  "True - False": "Vrai - Faux",
+  "Definitely would - Definitely would not": "Certainement - Certainement pas",
+  "Useful - Not useful": "Utile - Pas utile",
+  "Valuable - Not valuable": "Précieux - Pas précieux",
+  "Clear - Not clear": "Clair - Pas clair",
+  "Helpful - Not helpful": "Utile - Pas utile",
+  "All - None": "Tout - Aucun",
+  "Friendly - Not friendly": "Amical - Pas amical",
+  "Effective - Not effective": "Efficace - Pas efficace",
+  "Positive - Negative": "Positif - Négatif",
+  "Too short - Too long": "Trop court - Trop long",
+  "Responsive - Not responsive": "Réactif - Pas réactif",
+  "Top priority - Not a priority": "Priorité absolue - Pas une priorité",
+  "Important - Not important": "Important - Pas important",
+  "Aware - Not aware": "Conscient - Pas conscient",
+  "Desirable - Not desirable": "Désirable - Pas désirable",
+  "Confident - Not confident": "Confiant - Pas confiant",
+  "Professional - Not professional": "Professionnel - Pas professionnel",
+  "Clearly - Not clearly": "Clairement - Pas clairement",
+  "Exceeded expectations - Not exceeded expectations": "A dépassé les attentes - N'a pas dépassé les attentes",
+  "Attentive - Not attentive": "Attentif - Pas attentif",
+  "Early - Not early": "Tôt - Pas tôt",
+  "Months": "Mois",
+  "Days": "Jours",
+  "Race/Ethnicity": "Race/Ethnicité",
+  "Age": "Âge",
+  "Quarters": "Trimestres",
+  "Frequency": "Fréquence",
+  "Recent Experience": "Expérience récente",
   "Agree": "D'accord",
   "Disagree": "Pas d'accord",
   "Strongly agree": "Tout à fait d'accord",
@@ -551,5 +731,14 @@
   "Once a month": "Une fois par mois",
   "In the last week": "Dans la dernière semaine",
   "More than a week, less than a month": "Plus d'une semaine, moins d'un mois",
-  "More than a month ago": "Il y a plus d'un mois"
+  "More than a month ago": "Il y a plus d'un mois",
+  "Somewhat agree": "Plutôt d'accord",
+  "Somewhat disagree": "Plutôt en désaccord",
+  "Somewhat satisfied": "Plutôt satisfait",
+  "Somewhat dissatisfied": "Plutôt insatisfait",
+  "Somewhat likely": "Plutôt probable",
+  "Somewhat unlikely": "Plutôt peu probable",
+  "Disapprove": "Désapprouver",
+  "Somewhat high quality": "Plutôt haute qualité",
+  "Somewhat low quality": "Plutôt basse qualité"
 }

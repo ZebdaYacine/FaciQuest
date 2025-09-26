@@ -443,7 +443,7 @@ class _EmptyStateState extends State<_EmptyState> with SingleTickerProviderState
                         ),
                         AppSpacing.spacing_2.heightBox,
                         Text(
-                          'Be the first to create an amazing survey and start collecting valuable insights from your audience.',
+                          'home.empty_state.description'.tr(),
                           style: context.textTheme.bodyLarge?.copyWith(
                             color: context.colorScheme.onSurfaceVariant,
                             height: 1.5,

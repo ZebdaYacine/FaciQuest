@@ -152,7 +152,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
                     (e) {
                       return DropdownMenuItem(
                         value: e,
-                        child: Text(e),
+                        child: Text(e.tr()),
                       );
                     },
                   ),
@@ -176,6 +176,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: question.rows.length,
           itemBuilder: (context, index) {
             return Row(
@@ -226,6 +227,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: question.cols.length,
           itemBuilder: (context, index) {
             return Row(

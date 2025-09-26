@@ -128,7 +128,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
                     (e) {
                       return DropdownMenuItem(
                         value: e,
-                        child: Text(e),
+                        child: Text(e.tr()),
                       );
                     },
                   ),
@@ -149,6 +149,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
         AppSpacing.spacing_1.heightBox,
         ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: question.choices.length,
           itemBuilder: (context, index) {
             final item = question.choices[index];

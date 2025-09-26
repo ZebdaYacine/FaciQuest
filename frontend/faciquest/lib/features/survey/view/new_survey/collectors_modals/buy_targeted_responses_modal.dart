@@ -7,18 +7,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:objectid/objectid.dart';
 
-Future<void> showBuyTargetedResponsesModal(BuildContext context,
-    {CollectorEntity? collector}) async {
+Future<void> showBuyTargetedResponsesModal(BuildContext context, {CollectorEntity? collector}) async {
   try {
+    // Get the cubit reference before opening the modal to avoid accessing deactivated context
+    final cubit = context.read<NewSurveyCubit>();
+    final defaultCollector = collector ?? _createDefaultCollector(cubit);
+
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       constraints: BoxConstraints(maxHeight: context.height * 0.9),
       builder: (BuildContext _) {
         return BlocProvider.value(
-          value: context.read<NewSurveyCubit>(),
+          value: cubit,
           child: BuyTargetedResponsesModal(
-            collector: collector ?? _createDefaultCollector(context),
+            collector: defaultCollector,
           ),
         );
       },
@@ -26,15 +29,16 @@ Future<void> showBuyTargetedResponsesModal(BuildContext context,
   } catch (e) {
     debugPrint('Error showing modal: $e');
     // Show error snackbar
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error showing modal: $e')),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('error.error_showing_modal'.tr(args: [e.toString()]))),
+      );
+    }
   }
 }
 
-CollectorEntity _createDefaultCollector(BuildContext context) {
+CollectorEntity _createDefaultCollector(NewSurveyCubit cubit) {
   try {
-    final cubit = context.read<NewSurveyCubit>();
     final survey = cubit.state.survey;
 
     return CollectorEntity(
@@ -67,8 +71,7 @@ class BuyTargetedResponsesModal extends StatefulWidget {
   final CollectorEntity collector;
 
   @override
-  State<BuyTargetedResponsesModal> createState() =>
-      _BuyTargetedResponsesModalState();
+  State<BuyTargetedResponsesModal> createState() => _BuyTargetedResponsesModalState();
 }
 
 class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
@@ -105,7 +108,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       // Show error snackbar
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error initializing: $e')),
+          SnackBar(content: Text('error.error_initializing'.tr(args: [e.toString()]))),
         );
       });
     }
@@ -462,7 +465,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
     } catch (e) {
       debugPrint('Error adding criteria: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error adding criteria: $e')),
+        SnackBar(content: Text('error.error_adding_criteria'.tr(args: [e.toString()]))),
       );
     }
   }
@@ -484,7 +487,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
     } catch (e) {
       debugPrint('Error selecting country: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error selecting country: $e')),
+        SnackBar(content: Text('error.error_selecting_country'.tr(args: [e.toString()]))),
       );
     }
   }
@@ -503,7 +506,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
     } catch (e) {
       debugPrint('Error selecting gender: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error selecting gender: $e')),
+        SnackBar(content: Text('error.error_selecting_gender'.tr(args: [e.toString()]))),
       );
     }
   }
@@ -523,7 +526,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       debugPrint('Error selecting age: $e');
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error selecting age: $e')),
+          SnackBar(content: Text('error.error_selecting_age'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -549,9 +552,9 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       }
     } catch (e) {
       debugPrint('Error during checkout: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error during checkout: $e')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('error.error_during_checkout'.tr(args: [e.toString()])),
+      ));
     }
   }
 }

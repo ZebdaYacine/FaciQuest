@@ -1,6 +1,6 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 
 import '../core.dart';
 
@@ -274,16 +274,14 @@ class _ExpandableFABState extends State<ExpandableFAB> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.expand(
-      child: Stack(
-        alignment: Alignment.bottomRight,
-        clipBehavior: Clip.none,
-        children: [
-          _buildTapToCloseFab(),
-          ..._buildExpandingActionButtons(),
-          _buildTapToOpenFab(),
-        ],
-      ),
+    return Stack(
+      alignment: Alignment.bottomRight,
+      clipBehavior: Clip.hardEdge,
+      children: [
+        _buildTapToCloseFab(),
+        ..._buildExpandingActionButtons(),
+        _buildTapToOpenFab(),
+      ],
     );
   }
 
@@ -372,14 +370,14 @@ class _ExpandingActionButton extends StatelessWidget {
       animation: progress,
       builder: (context, child) {
         final offset = Offset.fromDirection(
-          directionInDegrees * (3.14159 / 180.0),
+          directionInDegrees * (math.pi / 180.0),
           progress.value * maxDistance,
         );
         return Positioned(
-          right: 4.0 + offset.dx,
-          bottom: 4.0 + offset.dy,
+          right: 4.0 - offset.dx,
+          bottom: 4.0 - offset.dy,
           child: Transform.rotate(
-            angle: (1.0 - progress.value) * 3.14159 / 2,
+            angle: (1.0 - progress.value) * math.pi / 2,
             child: child!,
           ),
         );

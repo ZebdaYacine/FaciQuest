@@ -7,6 +7,7 @@ class ImageQuestion extends QuestionEntity {
     required super.order,
     this.image = ImageChoice.empty,
     super.type = QuestionType.image,
+    super.isRequired = false,
   });
 
   final ImageChoice image;
@@ -20,12 +21,14 @@ class ImageQuestion extends QuestionEntity {
     int? order,
     QuestionType? type,
     ImageChoice? image,
+    bool? isRequired,
   }) {
     return ImageQuestion(
       id: id ?? this.id,
       title: title ?? this.title,
       order: order ?? this.order,
       image: image ?? this.image,
+      isRequired: isRequired ?? this.isRequired,
     );
   }
 

@@ -83,6 +83,14 @@ class EditView extends StatefulWidget {
 class _EditViewState extends State<EditView> with BuildFormMixin {
   QuestionType? questionType;
   String title = '';
+  bool isRequired = false;
+
+  @override
+  void initState() {
+    super.initState();
+    title = widget.question?.title ?? '';
+    isRequired = widget.question?.isRequired ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +104,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if ((widget.question.runtimeType != TextQuestion &&
-                  widget.question.runtimeType != ImageQuestion)) ...[
+              if ((widget.question.runtimeType != TextQuestion && widget.question.runtimeType != ImageQuestion)) ...[
                 Text(
                   'questionModal.Question Title'.tr(),
                   style: context.textTheme.titleMedium?.copyWith(
@@ -111,8 +118,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                   decoration: InputDecoration(
                     hintText: 'questionModal.Enter your question here'.tr(),
                     filled: true,
-                    fillColor: context.colorScheme.surfaceContainerHighest
-                        .withOpacity(0.3),
+                    fillColor: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -123,10 +129,68 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                     if (widget.question != null) {
                       widget.onChang?.call(widget.question!.copyWith(
                         title: title,
+                        isRequired: isRequired,
                       ));
                     }
                   },
                 ),
+                AppSpacing.spacing_3.heightBox,
+                // Required Question Checkbox
+                if (widget.question?.runtimeType != TextQuestion && widget.question?.runtimeType != ImageQuestion)
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: context.colorScheme.outline.withOpacity(0.1),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          value: isRequired,
+                          activeColor: context.colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              isRequired = value ?? false;
+                            });
+                            if (widget.question != null) {
+                              widget.onChang?.call(widget.question!.copyWith(
+                                isRequired: isRequired,
+                              ));
+                            }
+                          },
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'questionModal.required_question'.tr(),
+                                style: context.textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: context.colorScheme.onSurface,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'questionModal.required_question_description'.tr(),
+                                style: context.textTheme.bodySmall?.copyWith(
+                                  color: context.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
               AppSpacing.spacing_3.heightBox,
               Text(
@@ -139,8 +203,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
               AppSpacing.spacing_2.heightBox,
               Container(
                 decoration: BoxDecoration(
-                  color: context.colorScheme.surfaceContainerHighest
-                      .withOpacity(0.3),
+                  color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -167,7 +230,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                             ),
                             AppSpacing.spacing_2.widthBox,
                             Text(
-                              e.name.tr(),
+                              "survey.QuestionType.${e.name}".tr(),
                               style: context.textTheme.bodyLarge,
                             ),
                           ],
@@ -186,7 +249,9 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                             id: ObjectId().hexString,
                             title: title,
                             order: 0,
+                            isRequired: isRequired,
                           ),
+                      isRequired: isRequired,
                     ));
                     setState(() {});
                   },
@@ -217,8 +282,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                       AppSpacing.spacing_2.widthBox,
                       Expanded(
                         child: Text(
-                          'questionModal.Please select a question type to configure settings'
-                              .tr(),
+                          'questionModal.Please select a question type to configure settings'.tr(),
                           style: context.textTheme.bodyMedium?.copyWith(
                             color: context.colorScheme.error,
                           ),
@@ -231,8 +295,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 Container(
                   padding: AppSpacing.spacing_3.padding,
                   decoration: BoxDecoration(
-                    color: context.colorScheme.surfaceContainerHighest
-                        .withOpacity(0.3),
+                    color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: QuestionBuilder.create(
@@ -240,6 +303,7 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                     (value) {
                       widget.onChang?.call(value.copyWith(
                         title: widget.question?.title ?? title,
+                        isRequired: isRequired,
                       ));
                       setState(() {});
                     },
@@ -254,45 +318,71 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
   }
 }
 
+// Helper function to safely apply isRequired to any question type
+QuestionEntity _applyIsRequired(QuestionEntity question, bool isRequired) {
+  try {
+    return question.copyWith(isRequired: isRequired);
+  } catch (e) {
+    // If copyWith doesn't support isRequired, create a new question with isRequired
+    switch (question.type) {
+      case QuestionType.starRating:
+        return StarRatingQuestion(
+          id: question.id,
+          title: question.title,
+          order: question.order,
+          isRequired: isRequired,
+        );
+      case QuestionType.multipleChoice:
+        return MultipleChoiceQuestion(
+          id: question.id,
+          title: question.title,
+          order: question.order,
+          isRequired: isRequired,
+        );
+      case QuestionType.shortAnswer:
+        return ShortAnswerQuestion(
+          id: question.id,
+          title: question.title,
+          order: question.order,
+          isRequired: isRequired,
+        );
+      default:
+        // For unsupported types, return the original question
+        // TODO: Update other question types to support isRequired
+        return question;
+    }
+  }
+}
+
 extension on QuestionType {
-  QuestionEntity newQuestion(QuestionEntity question) {
+  QuestionEntity newQuestion(QuestionEntity question, {bool isRequired = false}) {
     switch (this) {
       case QuestionType.starRating:
-        return StarRatingQuestion.copyFrom(question);
+        return StarRatingQuestion.copyFrom(question, isRequired: isRequired);
       case QuestionType.multipleChoice:
-        return MultipleChoiceQuestion.copyFrom(question);
-      case QuestionType.checkboxes:
-        return CheckboxesQuestion.copyFrom(question);
-      case QuestionType.dropdown:
-        return DropdownQuestion.copyFrom(question);
-      case QuestionType.fileUpload:
-        return FileUploadQuestion.copyFrom(question);
-      case QuestionType.audioRecord:
-        return AudioRecordQuestion.copyFrom(question);
+        return MultipleChoiceQuestion.copyFrom(question, isRequired: isRequired);
       case QuestionType.shortAnswer:
         return ShortAnswerQuestion.copyFrom(question);
-      case QuestionType.commentBox:
-        return CommentBoxQuestion.copyFrom(question);
-      case QuestionType.slider:
-        return SliderQuestion.copyFrom(question);
-      case QuestionType.dateTime:
-        return DateTimeQuestion.copyFrom(question);
-      case QuestionType.matrix:
-        return MatrixQuestion.copyFrom(question);
-      case QuestionType.imageChoice:
-        return ImageChoiceQuestion.copyFrom(question);
-      case QuestionType.nameType:
-        return NameQuestion.copyFrom(question);
-      case QuestionType.emailAddress:
-        return EmailAddressQuestion.copyFrom(question);
-      case QuestionType.phoneNumber:
-        return PhoneQuestion.copyFrom(question);
-      case QuestionType.address:
-        return AddressQuestion.copyFrom(question);
-      case QuestionType.text:
-        return TextQuestion.copyFrom(question);
-      case QuestionType.image:
-        return ImageQuestion.copyFrom(question);
+      default:
+        final baseQuestion = switch (this) {
+          QuestionType.checkboxes => CheckboxesQuestion.copyFrom(question, isRequired: isRequired),
+          QuestionType.dropdown => DropdownQuestion.copyFrom(question, isRequired: isRequired),
+          QuestionType.commentBox => CommentBoxQuestion.copyFrom(question, isRequired: isRequired),
+          QuestionType.fileUpload => FileUploadQuestion.copyFrom(question),
+          QuestionType.audioRecord => AudioRecordQuestion.copyFrom(question),
+          QuestionType.slider => SliderQuestion.copyFrom(question, isRequired: isRequired),
+          QuestionType.dateTime => DateTimeQuestion.copyFrom(question),
+          QuestionType.matrix => MatrixQuestion.copyFrom(question),
+          QuestionType.imageChoice => ImageChoiceQuestion.copyFrom(question),
+          QuestionType.nameType => NameQuestion.copyFrom(question),
+          QuestionType.emailAddress => EmailAddressQuestion.copyFrom(question),
+          QuestionType.phoneNumber => PhoneQuestion.copyFrom(question),
+          QuestionType.address => AddressQuestion.copyFrom(question),
+          QuestionType.text => TextQuestion.copyFrom(question),
+          QuestionType.image => ImageQuestion.copyFrom(question),
+          _ => question,
+        };
+        return _applyIsRequired(baseQuestion, isRequired);
     }
   }
 }

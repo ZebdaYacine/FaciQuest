@@ -8,6 +8,7 @@ class ImageChoiceQuestion extends QuestionEntity {
     super.type = QuestionType.imageChoice,
     this.choices = const [ImageChoice.empty],
     this.multipleSelect = false,
+    super.isRequired = false,
   });
   final List<ImageChoice> choices;
   final bool multipleSelect;
@@ -27,6 +28,7 @@ class ImageChoiceQuestion extends QuestionEntity {
     QuestionType? type,
     List<ImageChoice>? choices,
     bool? useCheckbox,
+    bool? isRequired,
   }) {
     return ImageChoiceQuestion(
       id: id ?? this.id,
@@ -34,6 +36,7 @@ class ImageChoiceQuestion extends QuestionEntity {
       order: order ?? this.order,
       choices: choices ?? this.choices,
       multipleSelect: useCheckbox ?? multipleSelect,
+      isRequired: isRequired ?? this.isRequired,
     );
   }
 
@@ -101,12 +104,44 @@ class ImageChoice with EquatableMixin {
   }
 
   static ImageChoice fromMap(Map<String, dynamic> map) {
+    final dynamic rawUrl = map['url'];
+    final dynamic rawImage = map['image'];
+
+    String? resolvedUrl;
+    Uint8List? decodedImage;
+
+    String? base64Source;
+    if (rawImage is String && rawImage.isNotEmpty) {
+      base64Source = rawImage.trim();
+    } else if (rawUrl is String && rawUrl.isNotEmpty) {
+      final trimmedUrl = rawUrl.trim();
+      final isHttpUrl = trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://');
+      if (isHttpUrl) {
+        resolvedUrl = trimmedUrl;
+      } else {
+        base64Source = trimmedUrl;
+      }
+    }
+
+    if (base64Source != null) {
+      final payload = base64Source.contains(',')
+          ? base64Source.substring(base64Source.indexOf(',') + 1)
+          : base64Source;
+      try {
+        decodedImage = base64Decode(payload);
+      } on FormatException {
+        resolvedUrl ??= base64Source;
+      }
+    }
+
+    resolvedUrl ??= rawUrl is String ? rawUrl.trim() : null;
+
     return ImageChoice(
       id: map['_id'] ?? '',
       caption: map['caption'],
       altText: map['altText'],
-      url: map['url'],
-      image: map['url'] != null ? base64Decode(map['url']) : null,
+      url: resolvedUrl,
+      image: decodedImage,
     );
   }
 

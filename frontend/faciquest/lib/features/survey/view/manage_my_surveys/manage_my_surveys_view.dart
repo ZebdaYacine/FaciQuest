@@ -106,7 +106,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
               ),
               if (state.surveys.isNotEmpty)
                 Text(
-                  '${state.filteredSurveys.length} ${state.filteredSurveys.length == 1 ? 'survey' : 'surveys'}',
+                  '${state.filteredSurveys.length} ${state.filteredSurveys.length == 1 ? 'survey'.tr() : 'surveys'.tr()}',
                   style: context.textTheme.bodySmall?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -128,7 +128,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
                 Icons.sort_rounded,
                 color: context.colorScheme.onSurfaceVariant,
               ),
-              tooltip: 'Sort options',
+              tooltip: 'Sort options'.tr(),
             );
           },
         ),
@@ -167,29 +167,29 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
             ),
           ),
         ),
-        BouncyButton(
-          onTap: () => _showTemplateSelector(context),
-          child: Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: context.colorScheme.secondaryContainer,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: context.colorScheme.shadow.withOpacity(0.2),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Icon(
-              Icons.library_add_rounded,
-              color: context.colorScheme.onSecondaryContainer,
-              size: 24,
-            ),
-          ),
-        ),
+        // BouncyButton(
+        //   onTap: () => _showTemplateSelector(context),
+        //   child: Container(
+        //     width: 56,
+        //     height: 56,
+        //     decoration: BoxDecoration(
+        //       color: context.colorScheme.secondaryContainer,
+        //       shape: BoxShape.circle,
+        //       boxShadow: [
+        //         BoxShadow(
+        //           color: context.colorScheme.shadow.withOpacity(0.2),
+        //           blurRadius: 8,
+        //           offset: const Offset(0, 4),
+        //         ),
+        //       ],
+        //     ),
+        //     child: Icon(
+        //       Icons.library_add_rounded,
+        //       color: context.colorScheme.onSecondaryContainer,
+        //       size: 24,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
@@ -294,7 +294,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          filter.name,
+                          filter.name.tr(),
                           style: context.textTheme.bodySmall?.copyWith(
                             color: isSelected ? context.colorScheme.primary : context.colorScheme.onSurfaceVariant,
                             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
@@ -330,7 +330,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
     // TODO: Implement template selector
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Template selector coming soon!'),
+        content: Text('manage.template_selector_coming_soon'.tr()),
         backgroundColor: context.colorScheme.secondaryContainer,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -1076,7 +1076,7 @@ class SortOptionsBottomSheet extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Sort by',
+                    'Sort by'.tr(),
                     style: context.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -1121,7 +1121,7 @@ class SortOptionsBottomSheet extends StatelessWidget {
                         AppSpacing.spacing_3.widthBox,
                         Expanded(
                           child: Text(
-                            option.name,
+                            option.name.tr(),
                             style: context.textTheme.titleMedium?.copyWith(
                               color: isSelected ? context.colorScheme.primary : context.colorScheme.onSurface,
                               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,

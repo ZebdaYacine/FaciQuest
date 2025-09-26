@@ -119,7 +119,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
             children: [
               Icon(Icons.table_chart_outlined, color: Colors.green),
               12.widthBox,
-              Text('Export as CSV'),
+              Text('actions.export_as_csv'.tr()),
             ],
           ),
         ),
@@ -129,7 +129,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
             children: [
               Icon(Icons.picture_as_pdf_outlined, color: Colors.red),
               12.widthBox,
-              Text('Export as PDF'),
+              Text('actions.export_as_pdf'.tr()),
             ],
           ),
         ),
@@ -139,7 +139,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
             children: [
               Icon(Icons.grid_on_outlined, color: Colors.blue),
               12.widthBox,
-              Text('Export as Excel'),
+              Text('actions.export_as_excel'.tr()),
             ],
           ),
         ),
@@ -286,7 +286,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
               child: FilledButton.icon(
                 onPressed: survey.submissions.isNotEmpty ? () => _showAdvancedAnalytics(survey) : null,
                 icon: const Icon(Icons.insights_rounded),
-                label: const Text('Advanced Analytics'),
+                label: Text('actions.advanced_analytics'.tr()),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -317,7 +317,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Successfully exported data as ${format.toUpperCase()}'),
+          content: Text('error.export_data_success'.tr(args: [format.toUpperCase()])),
           backgroundColor: Colors.green,
           behavior: SnackBarBehavior.floating,
         ),
@@ -325,7 +325,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error exporting data: $e'),
+          content: Text('error.export_data_error'.tr(args: [e.toString()])),
           backgroundColor: context.colorScheme.error,
           behavior: SnackBarBehavior.floating,
         ),
@@ -352,8 +352,8 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
   Future<void> _exportToPDF(SurveyEntity survey) async {
     // Implement PDF export
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('PDF export feature coming soon!'),
+       SnackBar(
+        content: Text('error.pdf_export_coming_soon'.tr()),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -362,8 +362,8 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
   Future<void> _exportToExcel(SurveyEntity survey) async {
     // Implement Excel export
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Excel export feature coming soon!'),
+       SnackBar(
+        content: Text('error.excel_export_coming_soon'.tr()),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -483,7 +483,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
             ),
             16.heightBox,
             if (survey.collectors.isEmpty)
-              const Center(child: Text('No collectors yet'))
+              Center(child: Text('error.no_collectors_yet'.tr()))
             else
               ...survey.collectors.map(
                 (collector) => ListTile(

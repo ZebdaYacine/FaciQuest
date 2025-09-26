@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:objectid/objectid.dart';
@@ -213,6 +214,7 @@ sealed class QuestionEntity extends Equatable {
     String? title,
     int? order,
     QuestionType? type,
+    bool? isRequired,
   });
 
   static List<QuestionEntity> dummyList() {
@@ -690,7 +692,7 @@ final Map<String, List<List<String>>> scaleOptions = {
     ['Monthly', 'Twice annually', 'Quarterly', 'Yearly']
   ],
   'Frequency': [
-    ['Every day', 'A few times a week', 'About once a week', 'A few times a month', 'once a month', 'Never'],
+    ['Every day', 'A few times a week', 'About once a week', 'A few times a month', 'Once a month', 'Never'],
   ],
   'Recent Experience': [
     [
@@ -704,10 +706,11 @@ final Map<String, List<List<String>>> scaleOptions = {
 List<String> getScaleOptions(String? scaleName, int? scaleSize) {
   if (scaleOptions.containsKey(scaleName)) {
     final option = scaleOptions[scaleName]!;
-    return option.firstWhere(
+    final selectedOptions = option.firstWhere(
       (scale) => scale.length == scaleSize,
       orElse: () => option.lastOrNull ?? [],
     );
+    return selectedOptions.map((e) => e.tr()).toList();
   }
   return [];
 }
