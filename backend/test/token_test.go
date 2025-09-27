@@ -18,10 +18,10 @@ func TestToken(t *testing.T) {
 func TestGetIdToken(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2Y2VkOTFiMDE1Y2VkNmVjZTkzNWVkNCIsImFjdGlvbiI6IlVzZXIiLCJleHAiOjE3Mjk5OTA0ODZ9.AX-ealIjnmKPNoTbgAojASsI4kuMEAMgIkPgaDfyo2I"
-		id, err := util.ExtractFieldFromToken(token, core.RootServer.SECRET_KEY, "id")
+		claims, err := util.ExtractClaims(token, core.RootServer.SECRET_KEY)
 		if err != nil {
 			log.Printf("Failed to extract id from token: %v", err)
 		}
-		log.Println(id.(string))
+		log.Println(claims.ID)
 	})
 }

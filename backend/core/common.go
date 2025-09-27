@@ -33,13 +33,13 @@ func GetIdUser(c *gin.Context) string {
 	authHeader := c.Request.Header.Get("Authorization")
 	token := strings.Split(authHeader, " ")
 	log.Println(token[1])
-	id, err := util.ExtractFieldFromToken(token[1], RootServer.SECRET_KEY, "id")
+	claims, err := util.ExtractClaims(token[1], RootServer.SECRET_KEY)
 	if err != nil {
 		fmt.Println(err)
 		log.Printf("Failed to extract id from token: %v", err)
 		return ""
 	}
-	return id.(string)
+	return claims.ID
 }
 
 func ConvertBsonToStruct[T domain.Account](bsonData primitive.M) (*T, error) {

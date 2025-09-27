@@ -559,8 +559,12 @@ func (ic *AccountController) SetNewPwdRequest(c *gin.Context) {
 	}
 	token := tokens[1]
 
-	id, _ := util.ExtractFieldFromToken(token, core.RootServer.SECRET_KEY, "id")
-
+	claims, err := util.ExtractClaims(token, core.RootServer.SECRET_KEY)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Message: err.Error()})
+		return
+	}
+	id := claims.ID
 	clientIP := c.ClientIP()
 	mu.Lock()
 	cnfrMdlStored, exists := codeStore[clientIP]

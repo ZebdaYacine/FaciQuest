@@ -34,8 +34,12 @@ func (cc *SubmissionController) CreateSubmissionRequest(c *gin.Context) {
 
 	params := usecase.SubmissionParams{}
 	params.Data = &new_submission
-	id, _ := util.ExtractFieldFromToken(token, core.RootServer.SECRET_KEY, "id")
-	params.Data.UserId = id.(string)
+	claims, err := util.ExtractClaims(token, core.RootServer.SECRET_KEY)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Message: err.Error()})
+		return
+	}
+	params.Data.UserId = claims.ID
 
 	result := cc.SubmissionUseCase.CreateNewSubmission(c, &params)
 	if result.Err != nil {

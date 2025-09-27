@@ -3,7 +3,6 @@ package util
 import (
 	"back-end/api/controller/model"
 	"fmt"
-	"log"
 	"time"
 
 	jwt "github.com/golang-jwt/jwt/v4"
@@ -39,75 +38,26 @@ func IsAuthorized(requestToken string, secret string) (bool, error) {
 	return true, nil
 }
 
-func ExtractFieldFromToken(requestToken string, secret string, feild string) (any, error) {
-	token, err := jwt.Parse(requestToken, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(secret), nil
-	})
+func ExtractClaims(requestToken string, secret string) (*model.JwtCustomClaims, error) {
+	token, err := jwt.ParseWithClaims(
+		requestToken,
+		&model.JwtCustomClaims{},
+		func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+			}
+			return []byte(secret), nil
+		},
+	)
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok && !token.Valid {
-		return "", fmt.Errorf("invalid Token")
-	}
-	val, ok := claims[feild]
-	log.Println(ok)
-	switch val.(type) {
-	case string:
-		return claims[feild].(string), nil
-	case float64:
-		return claims[feild].(float64), nil
-	case int32:
-		return claims[feild].(int32), nil
-	default:
-		return nil, nil
+	claims, ok := token.Claims.(*model.JwtCustomClaims)
+	if !ok || !token.Valid {
+		return nil, fmt.Errorf("invalid Token")
 	}
 
-}
-
-func ExtractIDFromToken(requestToken string, secret string) (string, error) {
-	token, err := jwt.Parse(requestToken, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(secret), nil
-	})
-
-	if err != nil {
-		return "", err
-	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok && !token.Valid {
-		return "", fmt.Errorf("invalid Token")
-	}
-	return claims["id"].(string), nil
-}
-
-func ExtractActionFromToken(requestToken string, secret string) (string, error) {
-	token, err := jwt.Parse(requestToken, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(secret), nil
-	})
-
-	if err != nil {
-		return "", err
-	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok && !token.Valid {
-		return "", fmt.Errorf("invalid Token")
-	}
-	return claims["action"].(string), nil
-
+	return claims, nil
 }
