@@ -28,6 +28,36 @@
       "logout": "Logout"
     }
   },
+  "how_it_works": {
+    "subtitle": "Learn how FaciQuest works and start earning rewards",
+    "step1": {
+      "title": "Create Your Account",
+      "description": "Sign up with your email and complete your profile to get started with FaciQuest"
+    },
+    "step2": {
+      "title": "Browse & Take Surveys",
+      "description": "Explore available surveys and participate in ones that match your interests and demographics"
+    },
+    "step3": {
+      "title": "Earn Rewards",
+      "description": "Complete surveys and earn money for each successful submission based on survey complexity"
+    },
+    "step4": {
+      "title": "Withdraw Your Earnings",
+      "description": "Cash out your earnings to your preferred payment method when you reach the minimum threshold"
+    },
+    "why_choose": "Why Choose FaciQuest?",
+    "features": {
+      "smart_surveys": "Smart Survey Matching",
+      "smart_surveys_desc": "Our AI matches you with surveys that fit your profile and interests for better completion rates",
+      "real_time": "Real-time Analytics",
+      "real_time_desc": "Track your earnings, completion rates, and performance with detailed analytics dashboard",
+      "secure": "Secure & Private",
+      "secure_desc": "Your data is encrypted and protected. We never share personal information with third parties"
+    },
+    "watch_video": "Watch Tutorial",
+    "video_error": "Unable to open video. Please try again later."
+  },
   "language": {
     "ar": "العربية",
     "fr": "Français",
@@ -299,7 +329,20 @@
     "create_survey_button": "Create Survey",
     "search_surveys_hint": "Search surveys...",
     "no_surveys_found": "No surveys found",
-    "template_selector_coming_soon": "Template selector coming soon!"
+    "template_selector_coming_soon": "Template selector coming soon!",
+    "no_surveys_match_criteria": "No surveys match your criteria",
+    "no_surveys_yet": "No surveys yet",
+    "try_adjusting_search_filters": "Try adjusting your search or filters",
+    "create_first_survey_to_start": "Create your first survey to get started",
+    "clear_filters": "Clear filters",
+    "sort_by": "Sort by",
+    "survey_with_questions": "Survey with {} {}",
+    "question": "question",
+    "questions": "questions",
+    "analytics_coming_soon": "Analytics coming soon!",
+    "preview_coming_soon": "Preview coming soon!",
+    "oops_something_went_wrong": "Oops! Something went wrong",
+    "try_again": "Try Again"
   },
   "status": {
     "open_status": "Open"
@@ -502,11 +545,27 @@
     "new_survey": "New Survey",
     "empty_state": {
       "no_surveys": "No surveys found",
-      "description": "Be the first to create an amazing survey and start collecting valuable insights from your audience."
+      "description": "Be the first to create an amazing survey and start collecting valuable insights from your audience.",
+      "create_first_survey": "Create your first survey"
     },
     "error_state": {
-      "error_message": "Something went wrong"
+      "error_message": "Something went wrong",
+      "error_description": "Something went wrong while loading the surveys. Please check your connection and try again.",
+      "try_again": "Try Again"
+    },
+    "survey_card": {
+      "fallback_title": "Survey Title",
+      "fallback_description": "Share your thoughts and earn rewards by participating in this engaging survey designed to understand your preferences.",
+      "fallback_price": "150.00 DZD",
+      "duration_text": "5-10 min",
+      "participants": "participants",
+      "status_active": "Active",
+      "earnings_label": "Earn up to"
     }
+  },
+  "wallet": {
+    "balance": "Wallet Balance",
+    "cash_out": "Cash Out"
   },
   "questionModal": {
     "Add Question": "Add Question",

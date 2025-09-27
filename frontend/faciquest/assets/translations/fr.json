@@ -28,6 +28,36 @@
       "logout": "Déconnexion"
     }
   },
+  "how_it_works": {
+    "subtitle": "Découvrez comment FaciQuest fonctionne et commencez à gagner des récompenses",
+    "step1": {
+      "title": "Créez votre compte",
+      "description": "Inscrivez-vous avec votre e-mail et complétez votre profil pour commencer avec FaciQuest"
+    },
+    "step2": {
+      "title": "Parcourez et répondez aux sondages",
+      "description": "Explorez les sondages disponibles et participez à ceux qui correspondent à vos intérêts et à votre profil"
+    },
+    "step3": {
+      "title": "Gagnez des récompenses",
+      "description": "Complétez les sondages et gagnez de l'argent pour chaque soumission réussie selon la complexité du sondage"
+    },
+    "step4": {
+      "title": "Retirez vos gains",
+      "description": "Encaissez vos gains vers votre méthode de paiement préférée lorsque vous atteignez le seuil minimum"
+    },
+    "why_choose": "Pourquoi choisir FaciQuest ?",
+    "features": {
+      "smart_surveys": "Correspondance intelligente de sondages",
+      "smart_surveys_desc": "Notre IA vous fait correspondre avec des sondages qui correspondent à votre profil et à vos intérêts pour de meilleurs taux de réussite",
+      "real_time": "Analyses en temps réel",
+      "real_time_desc": "Suivez vos gains, taux de réussite et performances avec un tableau de bord d'analyses détaillé",
+      "secure": "Sécurisé et privé",
+      "secure_desc": "Vos données sont cryptées et protégées. Nous ne partageons jamais d'informations personnelles avec des tiers"
+    },
+    "watch_video": "Regarder le tutoriel",
+    "video_error": "Impossible d'ouvrir la vidéo. Veuillez réessayer plus tard."
+  },
   "language": {
     "ar": "العربية",
     "fr": "Français",
@@ -296,7 +326,20 @@
     "create_survey_button": "Créer un Sondage",
     "search_surveys_hint": "Rechercher des sondages...",
     "no_surveys_found": "Aucun sondage trouvé",
-    "template_selector_coming_soon": "Sélecteur de modèles bientôt disponible !"
+    "template_selector_coming_soon": "Sélecteur de modèles bientôt disponible !",
+    "no_surveys_match_criteria": "Aucun sondage ne correspond à vos critères",
+    "no_surveys_yet": "Aucun sondage pour le moment",
+    "try_adjusting_search_filters": "Essayez d'ajuster votre recherche ou vos filtres",
+    "create_first_survey_to_start": "Créez votre premier sondage pour commencer",
+    "clear_filters": "Effacer les filtres",
+    "sort_by": "Trier par",
+    "survey_with_questions": "Sondage avec {} {}",
+    "question": "question",
+    "questions": "questions",
+    "analytics_coming_soon": "Analyses bientôt disponibles !",
+    "preview_coming_soon": "Aperçu bientôt disponible !",
+    "oops_something_went_wrong": "Oups ! Une erreur est survenue",
+    "try_again": "Réessayer"
   },
   "status": {
     "open_status": "Ouvert"
@@ -499,11 +542,27 @@
     "new_survey": "Nouveau Sondage",
     "empty_state": {
       "no_surveys": "Aucun sondage trouvé",
-      "description": "Soyez le premier à créer un sondage extraordinaire et commencez à collecter des informations précieuses de votre audience."
+      "description": "Soyez le premier à créer un sondage extraordinaire et commencez à collecter des informations précieuses de votre audience.",
+      "create_first_survey": "Créez votre premier sondage"
     },
     "error_state": {
-      "error_message": "Une erreur est survenue"
+      "error_message": "Une erreur est survenue",
+      "error_description": "Une erreur est survenue lors du chargement des sondages. Veuillez vérifier votre connexion et réessayer.",
+      "try_again": "Réessayer"
+    },
+    "survey_card": {
+      "fallback_title": "Titre du Sondage",
+      "fallback_description": "Partagez vos pensées et gagnez des récompenses en participant à cette enquête engageante conçue pour comprendre vos préférences.",
+      "fallback_price": "1,00 DZD",
+      "duration_text": "5-10 min",
+      "participants": "participants",
+      "status_active": "Actif",
+      "earnings_label": "Gagnez jusqu'à"
     }
+  },
+  "wallet": {
+    "balance": "Solde du Portefeuille",
+    "cash_out": "Retrait"
   },
   "questionModal": {
     "Add Question": "Ajouter une question",

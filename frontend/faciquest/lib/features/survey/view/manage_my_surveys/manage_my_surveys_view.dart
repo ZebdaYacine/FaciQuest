@@ -71,7 +71,40 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
       child: Scaffold(
         backgroundColor: context.colorScheme.surfaceContainerLowest,
         appBar: _buildAppBar(context),
-        floatingActionButton: _buildExpandableFAB(context),
+        floatingActionButton: TweenAnimationBuilder<double>(
+          duration: const Duration(milliseconds: 800),
+          tween: Tween(begin: 0.0, end: 1.0),
+          builder: (context, value, child) {
+            return Transform.scale(
+              scale: 0.8 + (0.2 * value),
+              child: Opacity(
+                opacity: value,
+                child: FloatingActionButton.extended(
+                  onPressed: () {
+                    AppRoutes.newSurvey.push(
+                      context,
+                      pathParameters: {
+                        'id': '-1',
+                      },
+                    );
+                  },
+                  backgroundColor: context.colorScheme.primaryContainer,
+                  foregroundColor: context.colorScheme.onPrimaryContainer,
+                  elevation: 6,
+                  extendedPadding: const EdgeInsets.symmetric(horizontal: 20),
+                  icon: const Icon(Icons.add_circle_outline_rounded),
+                  label: Text(
+                    'home.new_survey'.tr(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
         body: FadeTransition(
           opacity: _fadeAnimation,
           child: RefreshIndicator(
@@ -106,7 +139,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
               ),
               if (state.surveys.isNotEmpty)
                 Text(
-                  '${state.filteredSurveys.length} ${state.filteredSurveys.length == 1 ? 'survey'.tr() : 'surveys'.tr()}',
+                  '${state.filteredSurveys.length} ${state.filteredSurveys.length == 1 ? 'survey '.tr() : 'surveys'.tr()}',
                   style: context.textTheme.bodySmall?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -136,67 +169,8 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
     );
   }
 
-  Widget _buildExpandableFAB(BuildContext context) {
-    return ExpandableFAB(
-      distance: 80,
-      icon: const Icon(Icons.add_rounded),
-      closeIcon: const Icon(Icons.close_rounded),
-      backgroundColor: context.colorScheme.primary,
-      foregroundColor: context.colorScheme.onPrimary,
-      children: [
-        BouncyButton(
-          onTap: () => _handleCreateSurvey(context),
-          child: Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: context.colorScheme.primaryContainer,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: context.colorScheme.shadow.withOpacity(0.2),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Icon(
-              Icons.quiz_rounded,
-              color: context.colorScheme.onPrimaryContainer,
-              size: 24,
-            ),
-          ),
-        ),
-        // BouncyButton(
-        //   onTap: () => _showTemplateSelector(context),
-        //   child: Container(
-        //     width: 56,
-        //     height: 56,
-        //     decoration: BoxDecoration(
-        //       color: context.colorScheme.secondaryContainer,
-        //       shape: BoxShape.circle,
-        //       boxShadow: [
-        //         BoxShadow(
-        //           color: context.colorScheme.shadow.withOpacity(0.2),
-        //           blurRadius: 8,
-        //           offset: const Offset(0, 4),
-        //         ),
-        //       ],
-        //     ),
-        //     child: Icon(
-        //       Icons.library_add_rounded,
-        //       color: context.colorScheme.onSecondaryContainer,
-        //       size: 24,
-        //     ),
-        //   ),
-        // ),
-      ],
-    );
-  }
-
   Widget _buildSearchAndFilters(BuildContext context) {
     return Container(
-      padding: AppSpacing.spacing_3.padding,
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         border: Border(
@@ -208,15 +182,19 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
       ),
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(child: _buildEnhancedSearchField(context)),
-              AppSpacing.spacing_2.widthBox,
-              _buildViewStyleToggle(context),
-            ],
+          Padding(
+            padding: AppSpacing.spacing_2.horizontalPadding,
+            child: Row(
+              children: [
+                Expanded(child: _buildEnhancedSearchField(context)),
+                AppSpacing.spacing_2.widthBox,
+                _buildViewStyleToggle(context),
+              ],
+            ),
           ),
           AppSpacing.spacing_2.heightBox,
           _buildFilterChips(context),
+          AppSpacing.spacing_2.heightBox,
         ],
       ),
     );
@@ -262,46 +240,43 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
+            spacing: AppSpacing.spacing_2,
             children: FilterOption.values.map((filter) {
               final isSelected = state.selectedFilter == filter;
-              return Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: BouncyButton(
-                  onTap: () => _cubit.updateFilter(filter),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+              return BouncyButton(
+                onTap: () => _cubit.updateFilter(filter),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color:
+                        isSelected ? context.colorScheme.primaryContainer : context.colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isSelected ? context.colorScheme.primary : context.colorScheme.outline.withOpacity(0.3),
+                      width: isSelected ? 2 : 1,
                     ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? context.colorScheme.primaryContainer
-                          : context.colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: isSelected ? context.colorScheme.primary : context.colorScheme.outline.withOpacity(0.3),
-                        width: isSelected ? 2 : 1,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        filter.icon,
+                        size: 16,
+                        color: isSelected ? context.colorScheme.primary : context.colorScheme.onSurfaceVariant,
                       ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          filter.icon,
-                          size: 16,
+                      const SizedBox(width: 6),
+                      Text(
+                        filter.name.tr(),
+                        style: context.textTheme.bodySmall?.copyWith(
                           color: isSelected ? context.colorScheme.primary : context.colorScheme.onSurfaceVariant,
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                         ),
-                        const SizedBox(width: 6),
-                        Text(
-                          filter.name.tr(),
-                          style: context.textTheme.bodySmall?.copyWith(
-                            color: isSelected ? context.colorScheme.primary : context.colorScheme.onSurfaceVariant,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -469,7 +444,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
             ),
             AppSpacing.spacing_4.heightBox,
             Text(
-              hasSearch || hasFilters ? 'No surveys match your criteria' : 'No surveys yet',
+              hasSearch || hasFilters ? 'manage.no_surveys_match_criteria'.tr() : 'manage.no_surveys_yet'.tr(),
               style: context.textTheme.headlineSmall?.copyWith(
                 color: context.colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
@@ -479,8 +454,8 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
             AppSpacing.spacing_2.heightBox,
             Text(
               hasSearch || hasFilters
-                  ? 'Try adjusting your search or filters'
-                  : 'Create your first survey to get started',
+                  ? 'manage.try_adjusting_search_filters'.tr()
+                  : 'manage.create_first_survey_to_start'.tr(),
               style: context.textTheme.bodyLarge?.copyWith(
                 color: context.colorScheme.onSurfaceVariant,
               ),
@@ -496,7 +471,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView> with TickerPr
                 },
                 size: ButtonSize.medium,
                 fullWidth: false,
-                child: const Text('Clear filters'),
+                child: Text('manage.clear_filters'.tr()),
               ),
             ] else ...[
               PrimaryButton(
@@ -1076,7 +1051,7 @@ class SortOptionsBottomSheet extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Sort by'.tr(),
+                    'manage.sort_by'.tr(),
                     style: context.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -1363,7 +1338,10 @@ class EnhancedSurveyCard extends StatelessWidget {
 
   Widget _buildDescription(BuildContext context) {
     return Text(
-      'Survey with ${survey.questions.length} ${survey.questions.length == 1 ? 'question' : 'questions'}',
+      'manage.survey_with_questions'
+          .tr()
+          .replaceFirst('{}', '${survey.questions.length}')
+          .replaceFirst('{}', survey.questions.length == 1 ? 'manage.question'.tr() : 'manage.questions'.tr()),
       style: context.textTheme.bodyMedium?.copyWith(
         color: context.colorScheme.onSurfaceVariant,
         height: 1.3,
@@ -1508,7 +1486,7 @@ class EnhancedSurveyCard extends StatelessWidget {
     HapticFeedback.selectionClick();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Analytics coming soon!'),
+        content: Text('manage.analytics_coming_soon'.tr()),
         backgroundColor: context.colorScheme.secondaryContainer,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -1523,7 +1501,7 @@ class EnhancedSurveyCard extends StatelessWidget {
     // TODO: Navigate to preview
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Preview coming soon!'),
+        content: Text('manage.preview_coming_soon'.tr()),
         backgroundColor: context.colorScheme.secondaryContainer,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -1715,7 +1693,10 @@ class EnhancedSurveyListItem extends StatelessWidget {
 
   Widget _buildDescription(BuildContext context) {
     return Text(
-      'Survey with ${survey.questions.length} ${survey.questions.length == 1 ? 'question' : 'questions'}',
+      'manage.survey_with_questions'
+          .tr()
+          .replaceFirst('{}', '${survey.questions.length}')
+          .replaceFirst('{}', survey.questions.length == 1 ? 'manage.question'.tr() : 'manage.questions'.tr()),
       style: context.textTheme.bodyMedium?.copyWith(
         color: context.colorScheme.onSurfaceVariant,
         height: 1.3,
@@ -1876,7 +1857,7 @@ class EnhancedErrorWidget extends StatelessWidget {
             ),
             AppSpacing.spacing_3.heightBox,
             Text(
-              'Oops! Something went wrong',
+              'manage.oops_something_went_wrong'.tr(),
               style: context.textTheme.titleLarge?.copyWith(
                 color: context.colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
@@ -1897,7 +1878,7 @@ class EnhancedErrorWidget extends StatelessWidget {
               size: ButtonSize.medium,
               fullWidth: false,
               icon: const Icon(Icons.refresh_rounded),
-              child: const Text('Try Again'),
+              child: Text('manage.try_again'.tr()),
             ),
           ],
         ),

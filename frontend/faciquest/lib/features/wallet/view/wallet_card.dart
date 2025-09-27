@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
                   ),
                   AppSpacing.spacing_2.widthBox,
                   Text(
-                    'Wallet Balance',
+                    'wallet.balance'.tr(),
                     style: context.textTheme.titleMedium?.copyWith(
                       color: context.colorScheme.onPrimary,
                       fontWeight: FontWeight.w500,
@@ -102,7 +103,7 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
                     Icons.arrow_outward_rounded,
                     color: context.colorScheme.primary,
                   ),
-                  label: const Text('Cash Out'),
+                  label: Text('wallet.cash_out'.tr()),
                 ),
               ),
             ],

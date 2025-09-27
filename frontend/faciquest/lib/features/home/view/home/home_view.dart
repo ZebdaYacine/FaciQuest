@@ -468,9 +468,9 @@ class _EmptyStateState extends State<_EmptyState> with SingleTickerProviderState
                             ),
                           ),
                           icon: const Icon(Icons.add_circle_outline_rounded),
-                          label: const Text(
-                            'Create your first survey',
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                          label: Text(
+                            'home.empty_state.create_first_survey'.tr(),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
                       ],
@@ -583,7 +583,7 @@ class _FailureStateState extends State<_FailureState> with SingleTickerProviderS
                   ),
                   AppSpacing.spacing_2.heightBox,
                   Text(
-                    'Something went wrong while loading the surveys. Please check your connection and try again.',
+                    'home.error_state.error_description'.tr(),
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                       height: 1.5,
@@ -605,9 +605,9 @@ class _FailureStateState extends State<_FailureState> with SingleTickerProviderS
                       ),
                     ),
                     icon: const Icon(Icons.refresh_rounded),
-                    label: const Text(
-                      'Try Again',
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                    label: Text(
+                      'home.error_state.try_again'.tr(),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
@@ -677,23 +677,25 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
           child: Container(
             margin: AppSpacing.spacing_2.bottomPadding,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: cardColor.withOpacity(0.1),
-                  blurRadius: 12,
+                  color: cardColor.withOpacity(0.15),
+                  blurRadius: 16,
                   offset: const Offset(0, 4),
+                  spreadRadius: -2,
                 ),
                 BoxShadow(
-                  color: context.colorScheme.shadow.withOpacity(0.08),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
+                  color: context.colorScheme.shadow.withOpacity(0.1),
+                  blurRadius: 32,
+                  offset: const Offset(0, 12),
+                  spreadRadius: -8,
                 ),
               ],
             ),
             child: Material(
-              color: context.colorScheme.surface,
-              borderRadius: BorderRadius.circular(20),
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(24),
               clipBehavior: Clip.antiAlias,
               child: Container(
                 decoration: BoxDecoration(
@@ -702,14 +704,16 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
                     end: Alignment.bottomRight,
                     colors: [
                       context.colorScheme.surface,
-                      cardColor.withOpacity(0.02),
+                      cardColor.withOpacity(0.03),
+                      cardColor.withOpacity(0.01),
                     ],
+                    stops: const [0.0, 0.6, 1.0],
                   ),
                   border: Border.all(
-                    color: cardColor.withOpacity(0.1),
-                    width: 1,
+                    color: cardColor.withOpacity(0.12),
+                    width: 1.5,
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                 ),
                 child: Padding(
                   padding: AppSpacing.spacing_4.padding,
@@ -719,30 +723,47 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
                       Row(
                         children: [
                           Container(
-                            width: 48,
-                            height: 48,
+                            width: 56,
+                            height: 56,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [
-                                  cardColor.withOpacity(0.8),
+                                  cardColor.withOpacity(0.9),
                                   cardColor,
+                                  cardColor.withOpacity(0.8),
                                 ],
+                                stops: const [0.0, 0.5, 1.0],
                               ),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
-                                  color: cardColor.withOpacity(0.3),
+                                  color: cardColor.withOpacity(0.4),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                  spreadRadius: -2,
+                                ),
+                                BoxShadow(
+                                  color: cardColor.withOpacity(0.2),
                                   blurRadius: 8,
                                   offset: const Offset(0, 2),
                                 ),
                               ],
                             ),
-                            child: Icon(
-                              Icons.quiz_rounded,
-                              color: Colors.white,
-                              size: 24,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.2),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.quiz_rounded,
+                                color: Colors.white,
+                                size: 28,
+                              ),
                             ),
                           ),
                           AppSpacing.spacing_3.widthBox,
@@ -751,7 +772,7 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.surveyEntity?.name ?? 'Survey Title',
+                                  widget.surveyEntity?.name ?? 'home.survey_card.fallback_title'.tr(),
                                   style: context.textTheme.titleLarge?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: context.colorScheme.onSurface,
@@ -763,31 +784,71 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
                                 const SizedBox(height: 4),
                                 Row(
                                   children: [
-                                    Icon(
-                                      Icons.access_time_rounded,
-                                      size: 14,
-                                      color: context.colorScheme.onSurfaceVariant,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      '5-10 min',
-                                      style: context.textTheme.bodySmall?.copyWith(
-                                        color: context.colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.w500,
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: context.colorScheme.surface,
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: context.colorScheme.outline.withOpacity(0.2),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.access_time_rounded,
+                                            size: 14,
+                                            color: cardColor,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            'home.survey_card.duration_text'.tr(),
+                                            style: context.textTheme.bodySmall?.copyWith(
+                                              color: context.colorScheme.onSurfaceVariant,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 11,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(width: 16),
-                                    Icon(
-                                      Icons.group_rounded,
-                                      size: 14,
-                                      color: context.colorScheme.onSurfaceVariant,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      '${100 + (widget.index * 23)} participants',
-                                      style: context.textTheme.bodySmall?.copyWith(
-                                        color: context.colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.w500,
+                                    const SizedBox(width: 8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: context.colorScheme.surface,
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: context.colorScheme.outline.withOpacity(0.2),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.group_rounded,
+                                            size: 14,
+                                            color: cardColor,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            '${100 + (widget.index * 23)} ${'home.survey_card.participants'.tr()}',
+                                            style: context.textTheme.bodySmall?.copyWith(
+                                              color: context.colorScheme.onSurfaceVariant,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 11,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -799,8 +860,7 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
                       ),
                       AppSpacing.spacing_3.heightBox,
                       Text(
-                        widget.surveyEntity?.description ??
-                            'Share your thoughts and earn rewards by participating in this engaging survey designed to understand your preferences.',
+                        widget.surveyEntity?.description ?? 'home.survey_card.fallback_description'.tr(),
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                           height: 1.5,
@@ -813,42 +873,59 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
+                              horizontal: 20,
+                              vertical: 10,
                             ),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                                 colors: [
-                                  cardColor.withOpacity(0.9),
+                                  cardColor.withOpacity(0.95),
                                   cardColor,
+                                  cardColor.withOpacity(0.85),
                                 ],
+                                stops: const [0.0, 0.5, 1.0],
                               ),
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: cardColor.withOpacity(0.2),
+                                  color: cardColor.withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 3),
+                                  spreadRadius: -1,
+                                ),
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
                                   blurRadius: 4,
-                                  offset: const Offset(0, 2),
+                                  offset: const Offset(0, 1),
                                 ),
                               ],
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
-                                  Icons.monetization_on_rounded,
-                                  color: Colors.white,
-                                  size: 16,
+                                Container(
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Icon(
+                                    Icons.monetization_on_rounded,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
                                 ),
-                                const SizedBox(width: 6),
+                                const SizedBox(width: 8),
                                 Text(
-                                  widget.surveyEntity?.price?.toStringAsFixed(2).replaceAll('.', ',') ?? '150,00 DZD',
+                                  widget.surveyEntity?.price?.toStringAsFixed(2).replaceAll('.', ',') ??
+                                      'home.survey_card.fallback_price'.tr(),
                                   style: context.textTheme.titleSmall?.copyWith(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.2,
+                                    letterSpacing: 0.3,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ],
@@ -857,19 +934,57 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
                           const Spacer(),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
+                              horizontal: 16,
+                              vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: context.colorScheme.secondaryContainer.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              'Active',
-                              style: context.textTheme.bodySmall?.copyWith(
-                                color: context.colorScheme.onSecondaryContainer,
-                                fontWeight: FontWeight.w600,
+                              gradient: LinearGradient(
+                                colors: [
+                                  context.colorScheme.secondaryContainer.withOpacity(0.9),
+                                  context.colorScheme.secondaryContainer,
+                                ],
                               ),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: context.colorScheme.onSecondaryContainer.withOpacity(0.1),
+                                width: 1,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: context.colorScheme.secondaryContainer.withOpacity(0.3),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(4),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.green.withOpacity(0.4),
+                                        blurRadius: 4,
+                                        spreadRadius: 1,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'home.survey_card.status_active'.tr(),
+                                  style: context.textTheme.bodySmall?.copyWith(
+                                    color: context.colorScheme.onSecondaryContainer,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

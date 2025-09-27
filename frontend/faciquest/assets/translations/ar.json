@@ -28,6 +28,36 @@
       "logout": "تسجيل الخروج"
     }
   },
+  "how_it_works": {
+    "subtitle": "تعرف على كيفية عمل FaciQuest وابدأ في كسب المكافآت",
+    "step1": {
+      "title": "إنشاء حسابك",
+      "description": "قم بالتسجيل باستخدام بريدك الإلكتروني وأكمل ملفك الشخصي للبدء مع FaciQuest"
+    },
+    "step2": {
+      "title": "تصفح الاستطلاعات وشارك فيها",
+      "description": "استكشف الاستطلاعات المتاحة وشارك في تلك التي تتناسب مع اهتماماتك وخصائصك الديموغرافية"
+    },
+    "step3": {
+      "title": "احصل على المكافآت",
+      "description": "أكمل الاستطلاعات واحصل على المال مقابل كل إرسال ناجح بناءً على تعقيد الاستطلاع"
+    },
+    "step4": {
+      "title": "اسحب أرباحك",
+      "description": "اسحب أرباحك إلى وسيلة الدفع المفضلة لديك عندما تصل إلى الحد الأدنى"
+    },
+    "why_choose": "لماذا تختار FaciQuest؟",
+    "features": {
+      "smart_surveys": "مطابقة الاستطلاعات الذكية",
+      "smart_surveys_desc": "الذكاء الاصطناعي الخاص بنا يطابقك مع الاستطلاعات التي تناسب ملفك الشخصي واهتماماتك لمعدلات إكمال أفضل",
+      "real_time": "التحليلات في الوقت الفعلي",
+      "real_time_desc": "تتبع أرباحك ومعدلات الإكمال والأداء مع لوحة تحكم تحليلية مفصلة",
+      "secure": "آمن وخاص",
+      "secure_desc": "بياناتك مشفرة ومحمية. نحن لا نشارك المعلومات الشخصية مع أطراف ثالثة أبداً"
+    },
+    "watch_video": "شاهد الفيديو",
+    "video_error": "غير قادر على فتح الفيديو. يرجى المحاولة مرة أخرى لاحقاً."
+  },
   "language": {
     "ar": "العربية",
     "fr": "Français",
@@ -296,7 +326,20 @@
     "create_survey_button": "إنشاء استبيان",
     "search_surveys_hint": "البحث في الاستبيانات...",
     "no_surveys_found": "لم يتم العثور على استبيانات",
-    "template_selector_coming_soon": "منتقي القوالب قريباً!"
+    "template_selector_coming_soon": "منتقي القوالب قريباً!",
+    "no_surveys_match_criteria": "لا توجد استبيانات تتطابق مع معاييرك",
+    "no_surveys_yet": "لا توجد استبيانات بعد",
+    "try_adjusting_search_filters": "جرب تعديل البحث أو المرشحات",
+    "create_first_survey_to_start": "أنشئ استبيانك الأول للبدء",
+    "clear_filters": "مسح المرشحات",
+    "sort_by": "ترتيب حسب",
+    "survey_with_questions": "استبيان مع {} {}",
+    "question": "سؤال",
+    "questions": "أسئلة",
+    "analytics_coming_soon": "التحليلات قريباً!",
+    "preview_coming_soon": "المعاينة قريباً!",
+    "oops_something_went_wrong": "عذراً! حدث خطأ ما",
+    "try_again": "حاول مرة أخرى"
   },
   "status": {
     "open_status": "مفتوح"
@@ -499,11 +542,27 @@
     "new_survey": "استبيان جديد",
     "empty_state": {
       "no_surveys": "لم يتم العثور على استبيانات",
-      "description": "كن أول من ينشئ استبياناً رائعاً وابدأ في جمع رؤى قيمة من جمهورك."
+      "description": "كن أول من ينشئ استبياناً رائعاً وابدأ في جمع رؤى قيمة من جمهورك.",
+      "create_first_survey": "أنشئ استبيانك الأول"
     },
     "error_state": {
-      "error_message": "حدث خطأ ما"
+      "error_message": "حدث خطأ ما",
+      "error_description": "حدث خطأ ما أثناء تحميل الاستبيانات. يرجى التحقق من الاتصال وإعادة المحاولة.",
+      "try_again": "حاول مرة أخرى"
+    },
+    "survey_card": {
+      "fallback_title": "عنوان الاستبيان",
+      "fallback_description": "شارك أفكارك واحصل على مكافآت عبر المشاركة في هذا الاستبيان التفاعلي المصمم لفهم تفضيلاتك.",
+      "fallback_price": "150,00 دج",
+      "duration_text": "5-10 دقيقة",
+      "participants": "مشارك",
+      "status_active": "نشط",
+      "earnings_label": "اربح حتى"
     }
+  },
+  "wallet": {
+    "balance": "رصيد المحفظة",
+    "cash_out": "سحب"
   },
   "questionModal": {
     "Add Question": "إضافة سؤال",
