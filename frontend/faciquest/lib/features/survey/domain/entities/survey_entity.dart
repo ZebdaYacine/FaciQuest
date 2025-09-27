@@ -54,6 +54,23 @@ enum SurveyAction {
     }
     return null;
   }
+
+  String toJson() {
+    switch (this) {
+      case SurveyAction.newSurvey:
+        return 'newSurvey';
+      case SurveyAction.edit:
+        return 'edit';
+      case SurveyAction.preview:
+        return 'preview';
+      case SurveyAction.analyze:
+        return 'analyze';
+      case SurveyAction.delete:
+        return 'delete';
+      case SurveyAction.collectResponses:
+        return 'collectResponses';
+    }
+  }
 }
 
 class SurveyEntity extends Equatable {
@@ -167,53 +184,34 @@ class SurveyEntity extends Equatable {
     return SurveyEntity(
       id: map['_id'] as String? ?? '',
       name: map['name'] as String,
-      description:
-          map['description'] != null ? map['description'] as String : null,
+      description: map['description'] != null ? map['description'] as String : null,
       status: SurveyStatus.values.firstWhere(
         (element) => element.name == map['status'] as String?,
         orElse: () => SurveyStatus.draft,
       ),
       price: map['price'] != null ? (map['price'] as num).toDouble() : null,
       collectors: map['collectors'] != null
-          ? (map['collectors'] as List)
-              .map((e) => CollectorEntity.fromMap(e as Map<String, dynamic>))
-              .toList()
+          ? (map['collectors'] as List).map((e) => CollectorEntity.fromMap(e as Map<String, dynamic>)).toList()
           : const [],
       collectorId: map['collectorId'] as String?,
       submissions: map['submissions'] != null
-          ? (map['submissions'] as List)
-              .map((e) => SubmissionEntity.fromMap(e as Map<String, dynamic>))
-              .toList()
+          ? (map['submissions'] as List).map((e) => SubmissionEntity.fromMap(e as Map<String, dynamic>)).toList()
           : const [],
       languages: map['languages'] != null && map['languages'] is List
-          ? (map['languages'] as List<dynamic>)
-              .map((e) => e.toString())
-              .toList()
+          ? (map['languages'] as List<dynamic>).map((e) => e.toString()).toList()
           : const [],
       topics: map['topics'] != null && map['topics'] is List
           ? (map['topics'] as List<dynamic>).map((e) => e.toString()).toList()
           : const [],
-      likertScale: map['likertScale'] != null
-          ? LikertScale.fromMap(map['likertScale'] as String)
-          : null,
+      likertScale: map['likertScale'] != null ? LikertScale.fromMap(map['likertScale'] as String) : null,
       questions: map['questions'] != null
-          ? (map['questions'] as List)
-              .map((e) => QuestionEntity.fromMap(e as Map<String, dynamic>))
-              .toList()
+          ? (map['questions'] as List).map((e) => QuestionEntity.fromMap(e as Map<String, dynamic>)).toList()
           : <QuestionEntity>[],
       viewCount: map['views'] != null ? (map['views'] as num).toInt() : 0,
-      questionCount: map['countQuestions'] != null
-          ? (map['countQuestions'] as num).toInt()
-          : 0,
-      responseCount: map['countAnswers'] != null
-          ? (map['countAnswers'] as num).toInt()
-          : 0,
-      createdAt: map['createdAt'] != null && map['createdAt'] is String
-          ? DateTime.tryParse(map['createdAt'])
-          : null,
-      updatedAt: map['updatedAt'] != null && map['updatedAt'] is String
-          ? DateTime.tryParse(map['updatedAt'])
-          : null,
+      questionCount: map['countQuestions'] != null ? (map['countQuestions'] as num).toInt() : 0,
+      responseCount: map['countAnswers'] != null ? (map['countAnswers'] as num).toInt() : 0,
+      createdAt: map['createdAt'] != null && map['createdAt'] is String ? DateTime.tryParse(map['createdAt']) : null,
+      updatedAt: map['updatedAt'] != null && map['updatedAt'] is String ? DateTime.tryParse(map['updatedAt']) : null,
       // answers: map['answers'] != null
       //     ? (map['answers'] as List<Map<String, dynamic>>)
       //         .map(AnswerEntity.fromMap)
@@ -229,8 +227,7 @@ class SurveyEntity extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory SurveyEntity.fromJson(String source) =>
-      SurveyEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory SurveyEntity.fromJson(String source) => SurveyEntity.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;

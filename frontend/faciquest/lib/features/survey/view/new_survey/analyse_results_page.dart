@@ -74,13 +74,13 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Survey Analysis',
+                      'analysis.survey_analysis'.tr(),
                       style: context.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'Detailed insights and response data for "${survey.name}"',
+                      '${'analysis.detailed_insights'.tr()} "${survey.name}"',
                       style: context.textTheme.bodyMedium?.copyWith(
                         color: context.colorScheme.onSurfaceVariant,
                       ),
@@ -148,42 +148,6 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
     );
   }
 
-  Widget _buildQuickStats(SurveyEntity survey) {
-    return Row(
-      children: [
-        Expanded(
-          child: _StatCard(
-            icon: Icons.people_outline,
-            label: 'Total Responses',
-            value: '${survey.submissions.length}',
-            color: context.colorScheme.primary,
-            trend: '+5 today',
-          ),
-        ),
-        12.widthBox,
-        Expanded(
-          child: _StatCard(
-            icon: Icons.trending_up_rounded,
-            label: 'Completion Rate',
-            value: '87%',
-            color: Colors.green,
-            trend: '+3% vs last week',
-          ),
-        ),
-        12.widthBox,
-        Expanded(
-          child: _StatCard(
-            icon: Icons.schedule_rounded,
-            label: 'Avg. Time',
-            value: '3m 24s',
-            color: Colors.orange,
-            trend: '-12s improvement',
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildTabBar() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -199,10 +163,10 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
         ),
         labelColor: context.colorScheme.onPrimary,
         unselectedLabelColor: context.colorScheme.onSurfaceVariant,
-        tabs: const [
-          Tab(text: 'Overview'),
-          Tab(text: 'Responses'),
-          Tab(text: 'Analytics'),
+        tabs: [
+          Tab(text: 'analysis.overview'.tr()),
+          Tab(text: 'analysis.responses'.tr()),
+          Tab(text: 'analysis.analytics'.tr()),
         ],
       ),
     );
@@ -352,7 +316,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
   Future<void> _exportToPDF(SurveyEntity survey) async {
     // Implement PDF export
     ScaffoldMessenger.of(context).showSnackBar(
-       SnackBar(
+      SnackBar(
         content: Text('error.pdf_export_coming_soon'.tr()),
         behavior: SnackBarBehavior.floating,
       ),
@@ -362,7 +326,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
   Future<void> _exportToExcel(SurveyEntity survey) async {
     // Implement Excel export
     ScaffoldMessenger.of(context).showSnackBar(
-       SnackBar(
+      SnackBar(
         content: Text('error.excel_export_coming_soon'.tr()),
         behavior: SnackBarBehavior.floating,
       ),
@@ -399,7 +363,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Response Distribution Overview',
+              'analysis.response_distribution_overview'.tr(),
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -441,7 +405,9 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
                       ),
                       16.heightBox,
                       Text(
-                        survey.questions.isEmpty ? 'No questions in survey' : 'No responses collected yet',
+                        survey.questions.isEmpty
+                            ? 'analysis.no_questions_in_survey'.tr()
+                            : 'analysis.no_responses'.tr(),
                         style: context.textTheme.titleMedium?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                         ),
@@ -449,8 +415,8 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
                       8.heightBox,
                       Text(
                         survey.questions.isEmpty
-                            ? 'Add questions to see response distributions'
-                            : 'Response distributions will appear when survey responses are collected',
+                            ? 'analysis.add_questions_to_see_distributions'.tr()
+                            : 'analysis.distributions_appear_when_responses_collected'.tr(),
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                         ),
@@ -476,7 +442,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Collector Performance',
+              'analysis.collector_performance'.tr(),
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -509,19 +475,19 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Recent Responses',
+              'analysis.recent_responses'.tr(),
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             16.heightBox,
             if (survey.submissions.isEmpty)
-              const Center(child: Text('No responses yet'))
+              Center(child: Text('analysis.no_responses'.tr()))
             else
               ...survey.submissions.take(3).map(
                     (response) => ListTile(
-                      title: Text('Response ${response.surveyId}'),
-                      subtitle: Text('Collector: ${response.collectorId}'),
+                      title: Text('${'analysis.response'.tr()} ${response.surveyId}'),
+                      subtitle: Text('${'analysis.collector'.tr()} ${response.collectorId}'),
                     ),
                   ),
           ],
@@ -540,7 +506,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Response Trends',
+              'analysis.response_trends'.tr(),
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -548,7 +514,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
             16.heightBox,
             SizedBox(
               height: 200,
-              child: const Center(child: Text('Trends chart will be here')),
+              child: Center(child: Text('analysis.trends_chart_placeholder'.tr())),
             ),
           ],
         ),
@@ -568,7 +534,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
             Row(
               children: [
                 Text(
-                  'Question Analytics',
+                  'analysis.question_analytics'.tr(),
                   style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -578,7 +544,7 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
                   FilledButton.tonalIcon(
                     onPressed: () => _showAllQuestionAnalytics(survey),
                     icon: const Icon(Icons.analytics_outlined),
-                    label: const Text('View All'),
+                    label: Text('analysis.view_all'.tr()),
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     ),
@@ -645,14 +611,14 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
                       ),
                       8.heightBox,
                       Text(
-                        'No questions in survey',
+                        'analysis.no_questions_in_survey'.tr(),
                         style: context.textTheme.titleSmall?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                         ),
                       ),
                       4.heightBox,
                       Text(
-                        'Add questions to see analytics',
+                        'analysis.add_questions_to_see_distributions'.tr(),
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                         ),
@@ -679,14 +645,14 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
                       ),
                       8.heightBox,
                       Text(
-                        'Waiting for responses',
+                        'analysis.waiting_for_responses'.tr(),
                         style: context.textTheme.titleSmall?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                         ),
                       ),
                       4.heightBox,
                       Text(
-                        'Question analytics will appear when responses are collected',
+                        'analysis.question_analytics_appear_when_responses_collected'.tr(),
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                         ),
@@ -712,92 +678,26 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage> with TickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Device Breakdown',
+              'analysis.device_breakdown'.tr(),
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             16.heightBox,
-            const ListTile(
-              leading: Icon(Icons.smartphone),
-              title: Text('Mobile'),
-              trailing: Text('65%'),
+            ListTile(
+              leading: const Icon(Icons.smartphone),
+              title: Text('analysis.mobile'.tr()),
+              trailing: const Text('65%'),
             ),
-            const ListTile(
-              leading: Icon(Icons.computer),
-              title: Text('Desktop'),
-              trailing: Text('25%'),
+            ListTile(
+              leading: const Icon(Icons.computer),
+              title: Text('analysis.desktop'.tr()),
+              trailing: const Text('25%'),
             ),
-            const ListTile(
-              leading: Icon(Icons.tablet),
-              title: Text('Tablet'),
-              trailing: Text('10%'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  const _StatCard({
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.color,
-    required this.trend,
-  });
-
-  final IconData icon;
-  final String label;
-  final String value;
-  final Color color;
-  final String trend;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(icon, color: color, size: 20),
-                ),
-                const Spacer(),
-                Text(
-                  value,
-                  style: context.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: color,
-                  ),
-                ),
-              ],
-            ),
-            12.heightBox,
-            Text(
-              label,
-              style: context.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            4.heightBox,
-            Text(
-              trend,
-              style: context.textTheme.bodySmall?.copyWith(
-                color: Colors.green,
-              ),
+            ListTile(
+              leading: const Icon(Icons.tablet),
+              title: Text('analysis.tablet'.tr()),
+              trailing: const Text('10%'),
             ),
           ],
         ),
@@ -816,22 +716,22 @@ class _AdvancedAnalyticsModal extends StatelessWidget {
     return AppBackDrop(
       headerActions: BackdropHeaderActions.none,
       title: Text(
-        'Advanced Analytics',
+        'analysis.advanced_analytics'.tr(),
         style: context.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.bold,
         ),
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Card(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    Text('Advanced analytics features coming soon!'),
-                    SizedBox(height: 20),
-                    Text('This will include detailed statistical analysis and insights.'),
+                    Text('analysis.advanced_analytics_coming_soon'.tr()),
+                    const SizedBox(height: 20),
+                    Text('analysis.detailed_statistical_analysis_description'.tr()),
                   ],
                 ),
               ),
@@ -842,7 +742,7 @@ class _AdvancedAnalyticsModal extends StatelessWidget {
       actions: FilledButton.icon(
         onPressed: () => Navigator.pop(context),
         icon: const Icon(Icons.close_rounded),
-        label: const Text('Close'),
+        label: Text('analysis.close'.tr()),
         style: FilledButton.styleFrom(
           minimumSize: const Size.fromHeight(48),
         ),
@@ -861,7 +761,7 @@ class _AllQuestionAnalyticsModal extends StatelessWidget {
     return AppBackDrop(
       headerActions: BackdropHeaderActions.none,
       title: Text(
-        'All Question Analytics',
+        'analysis.all_question_analytics'.tr(),
         style: context.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.bold,
         ),
@@ -884,14 +784,14 @@ class _AllQuestionAnalyticsModal extends StatelessWidget {
                   ),
                   16.heightBox,
                   Text(
-                    'No questions in survey',
+                    'analysis.no_questions_in_survey'.tr(),
                     style: context.textTheme.titleLarge?.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                     ),
                   ),
                   8.heightBox,
                   Text(
-                    'Add questions to see detailed analytics',
+                    'analysis.add_questions_detailed_analytics'.tr(),
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                     ),
@@ -1002,7 +902,7 @@ class _AllQuestionAnalyticsModal extends StatelessWidget {
       actions: FilledButton.icon(
         onPressed: () => Navigator.pop(context),
         icon: const Icon(Icons.close_rounded),
-        label: const Text('Close'),
+        label: Text('analysis.close'.tr()),
         style: FilledButton.styleFrom(
           minimumSize: const Size.fromHeight(48),
         ),
@@ -1016,30 +916,28 @@ class _ResultsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: AppSpacing.spacing_2.horizontalPadding,
-        child: Card(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: AppSpacing.spacing_2.padding,
-                child: Text(
-                  'analysis.survey_results'.tr(),
-                  style: context.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Padding(
+      padding: AppSpacing.spacing_2.horizontalPadding,
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: AppSpacing.spacing_2.padding,
+              child: Text(
+                'analysis.survey_results'.tr(),
+                style: context.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const Divider(),
-              const Expanded(child: _AnswersGrid()),
-            ],
-          ),
+            ),
+            const Divider(),
+            const Expanded(child: _AnswersGrid()),
+          ],
         ),
       ),
     );
