@@ -30,6 +30,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	public.NewForgetPwdRouter(db, publicRouter)
 
 	userRouter := gin.Group("/profile")
+	private.NewLogoutRouterRouter(db, userRouter, redis)
 
 	//Middleware to verify AccessToken
 	userRouter.Use(middleware.JwtAuthMiddleware(
@@ -44,7 +45,7 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 	//Auth API
 	private.NewSetNewPwdRouter(db, userRouter)
 	private.NewUpdateProfileRouter(db, userRouter)
-	private.NewLogoutRouterRouter(db, userRouter, redis)
+	// private.NewLogoutRouterRouter(db, userRouter, redis)
 	//Wallet API
 	private.NewUpdateWalletRouter(db, userRouter)
 	private.NewCashOutWalletRouter(db, userRouter)

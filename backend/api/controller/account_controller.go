@@ -541,15 +541,25 @@ func (ic *AccountController) LoginRequest(c *gin.Context) {
 // --- Logout ---
 func (ic *AccountController) LogoutRequest(c *gin.Context) {
 	log.Println("=== Logout Request ===")
-	authHeader := c.Request.Header.Get("Authorization")
-	tokens := strings.Split(authHeader, " ")
-	if len(tokens) < 2 {
-		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Authorization header missing or invalid"})
+
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: "Authorization header is required",
+		})
 		return
 	}
-	token := tokens[1]
 
-	// TODO: Add token to Redis blacklist if required
+	parts := strings.SplitN(authHeader, " ", 2)
+	if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Message: "Authorization header must be in format: Bearer <token>",
+		})
+		return
+	}
+
+	token := parts[1]
+
 	c.JSON(http.StatusOK, model.SuccessResponse{
 		Message: "Logout successful",
 		Data:    token,
@@ -593,7 +603,7 @@ func (ic *AccountController) SetNewPwdRequest(c *gin.Context) {
 		return
 	}
 
-	log.Println( RestPwdParms)
+	log.Println(RestPwdParms)
 
 	if cnfrMdlStored.Code != RestPwdParms.Pin {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Invalid PIN"})

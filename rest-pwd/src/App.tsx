@@ -31,7 +31,7 @@ export default function ResetPassword() {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/profile/set-new-pwd",
+        "http://185.209.230.104:3000/profile/set-new-pwd",
         {
           method: "POST",
           headers: {
