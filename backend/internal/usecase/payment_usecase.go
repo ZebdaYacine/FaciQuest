@@ -60,14 +60,14 @@ func (pu *paymentUsecase) PaymentRequest(c context.Context, query *PaymentParams
 			Err:  err1,
 		}
 	}
-	if payment_request.Amount < 0 || payment_request.Amount > wallet_db.TempAmount {
-		return &PaymentResulat{
-			Data: nil,
-			Err:  fmt.Errorf("you cannot cash out this amount there are some pending requests"),
-		}
-	}
+	// if payment_request.Amount < 0 || payment_request.Amount > wallet_db.TempAmount {
+	// 	return &PaymentResulat{
+	// 		Data: nil,
+	// 		Err:  fmt.Errorf("you cannot cash out this amount there are some pending requests"),
+	// 	}
+	// }
 	payment_request.Wallet = *wallet_db
-	wallet_db.TempAmount -= payment_request.Amount
+	// wallet_db.TempAmount -= payment_request.Amount
 	_, err := pu.repoW.UpdateTempAmount(c, wallet_db)
 	if err != nil {
 		return &PaymentResulat{
@@ -77,7 +77,7 @@ func (pu *paymentUsecase) PaymentRequest(c context.Context, query *PaymentParams
 	}
 	record, err := pu.repoP.PaymentRequest(c, payment_request)
 	record.Wallet.Amount = wallet_db.Amount
-	record.Wallet.TempAmount = wallet_db.TempAmount
+	// record.Wallet.TempAmount = wallet_db.TempAmount
 	if err != nil {
 		return &PaymentResulat{
 			Data: nil,

@@ -47,9 +47,19 @@ func (s *submissionRepository) GetSurveyIDsByUserID(ctx context.Context, userID 
 
 func (r *submissionRepository) CreateNewSubmission(c context.Context, submission *domain.Submission) (*domain.Submission, error) {
 	collection := r.database.Collection(core.SUBMISSION)
+	submission.Rewarded = 200.0
 	_, err := collection.InsertOne(c, &submission)
 	if err != nil {
 		log.Printf("Failed to create submission: %v", err)
+		return nil, err
+	}
+	repowalet := NewWalletRepository(r.database)
+	wallet, _ := repowalet.GetWallet(c, core.WALLET, submission.UserId)
+	wallet.Amount += float64(submission.Rewarded)
+	wallet.NbrSurveys = wallet.NbrSurveys + 1
+	_, err = repowalet.UpdateMyWallet(c, wallet)
+	if err != nil {
+		log.Printf("Failed to update wallet: %v", err)
 		return nil, err
 	}
 	return submission, nil

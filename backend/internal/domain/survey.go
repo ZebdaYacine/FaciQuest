@@ -230,7 +230,7 @@ type ImageQuestion struct {
 }
 
 func (q ImageQuestion) GetType() string {
-	return "Image Choice"
+	return "Image"
 }
 
 type ImageDetail struct {

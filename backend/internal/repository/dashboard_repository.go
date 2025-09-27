@@ -293,9 +293,9 @@ func (d *dashboardRepository) GetAllPayments(c context.Context) ([]domain.Paymen
 		if walletData, exists := payment["wallet"]; exists {
 			if walletMap, ok := walletData.(bson.M); ok {
 				paymentDoc.Wallet = domain.Wallet{
-					UserID:        walletMap["userid"].(string),
-					Amount:        walletMap["amount"].(float64),
-					TempAmount:    walletMap["temp_amount"].(float64),
+					UserID: walletMap["userid"].(string),
+					Amount: walletMap["amount"].(float64),
+					// TempAmount:    walletMap["temp_amount"].(float64),
 					CCP:           walletMap["ccp"].(string),
 					RIP:           walletMap["rip"].(string),
 					PaymentMethod: walletMap["payment_method"].(string),
@@ -428,8 +428,8 @@ func (d *dashboardRepository) GetAnalytics(c context.Context, period string, sta
 		TotalSurveys:         int(totalSurveys),
 		TotalCashoutRequests: int(cashoutCount),
 		TotalCashoutAmount:   totalAmount,
-		PeriodStart: *startAt,
-		PeriodEnd:   *endAt,
+		PeriodStart:          *startAt,
+		PeriodEnd:            *endAt,
 	}
 
 	if startAt != nil {

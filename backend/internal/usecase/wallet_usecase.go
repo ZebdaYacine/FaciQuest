@@ -94,7 +94,7 @@ func (wu *walletUsecase) UpdateMyWallet(c context.Context, query *WalletParams) 
 	}
 	wallet := query.Data.(domain.Wallet)
 	wallet.IsCashable = wallet.Amount >= 1000
-	wallet.TempAmount = wallet.Amount
+	// wallet.TempAmount = wallet.Amount
 	result, err := wu.repo.UpdateMyWallet(c, &wallet)
 	if err == nil {
 		walletResulat.Err = err

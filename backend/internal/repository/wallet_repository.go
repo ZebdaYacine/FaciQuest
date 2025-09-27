@@ -40,10 +40,10 @@ func (wr *walletRepository) GetWallet(c context.Context, col string, userId stri
 		return nil, fmt.Errorf("user has not wallet %s", err.Error())
 	}
 	return &domain.Wallet{
-		ID:            resulat["_id"].(primitive.ObjectID).Hex(),
-		UserID:        userId,
-		Amount:        resulat["amount"].(float64),
-		TempAmount:    resulat["temp_amount"].(float64),
+		ID:     resulat["_id"].(primitive.ObjectID).Hex(),
+		UserID: userId,
+		Amount: resulat["amount"].(float64),
+		// TempAmount:    resulat["temp_amount"].(float64),
 		NbrSurveys:    resulat["nbr_surveys"].(int64),
 		CCP:           resulat["ccp"].(string),
 		RIP:           resulat["rip"].(string),
@@ -56,8 +56,8 @@ func (wr *walletRepository) GetWallet(c context.Context, col string, userId stri
 func (wr *walletRepository) InitMyWallet(c context.Context, data *domain.User) (*domain.Wallet, error) {
 	collection := wr.database.Collection("wallet")
 	wallet := &domain.Wallet{
-		Amount:        0,
-		TempAmount:    0,
+		Amount: 0,
+		// TempAmount:    0,
 		NbrSurveys:    0,
 		CCP:           "",
 		RIP:           "",
@@ -90,11 +90,8 @@ func (wr *walletRepository) UpdateTempAmount(c context.Context, wallet *domain.W
 	filterUpdate := bson.D{{Key: "userid", Value: wallet.UserID}}
 	update := bson.M{
 		"$set": bson.M{
-			"temp_amount": wallet.TempAmount,
+			// "temp_amount": wallet.TempAmount,
 		},
 	}
 	return core.UpdateDoc[domain.Wallet](c, collection, update, filterUpdate)
 }
-
-
-

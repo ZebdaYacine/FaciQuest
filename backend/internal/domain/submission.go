@@ -30,6 +30,7 @@ type Submission struct {
 	CollectorID string   `json:"collectorId" bson:"collectorId"`
 	UserId      string   `json:"userId" bson:"userId"`
 	Answers     []Answer `json:"answers" bson:"answers"`
+	Rewarded    float64  `json:"rewarded" bson:"rewarded"`
 }
 
 type SurCol struct {

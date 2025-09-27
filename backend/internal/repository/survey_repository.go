@@ -154,6 +154,7 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 func saveBase64Image(base64Str, folder, filenameWithoutExt string) (string, error) {
 	// Detect extension from prefix
 	ext, err := detectExtension(base64Str)
+	url:="http://185.209.230.104/"+folder + "/" + filenameWithoutExt+ext
 	if err != nil {
 		// fallback: decode and detect from bytes
 		if idx := strings.Index(base64Str, ","); idx != -1 {
@@ -194,7 +195,7 @@ func saveBase64Image(base64Str, folder, filenameWithoutExt string) (string, erro
 	}
 
 	log.Println("Saved file:", filePath, "Size:", len(data))
-	return filePath, nil
+	return url, nil
 }
 
 func detectExtension(base64Str string) (string, error) {
@@ -247,29 +248,54 @@ func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey
 	survey.Status = "draft"
 
 	for i, q := range survey.Questions {
-		switch q.GetType() {
-		case "Image Choice":
-			imageChoiceQuestion, ok := q.(domain.ImageChoiceQuestion)
-			if !ok {
-				return nil, fmt.Errorf("invalid ImageChoiceQuestion type assertion at index %d", i)
+	switch q.GetType() {
+	case "Image Choice":
+		imageChoiceQuestion, ok := q.(domain.ImageChoiceQuestion)
+		if !ok {
+			return nil, fmt.Errorf("invalid ImageChoiceQuestion type assertion at index %d", i)
+		}
+
+		for j := range imageChoiceQuestion.Choices {
+			img := imageChoiceQuestion.Choices[j].Image
+			if img != nil && *img != "" {
+				log.Printf("Processing image choice %d-%d, Base64 size: %d", i, j, len(*img))
+				
+				filename := fmt.Sprintf("%d%d", i+1, j+1)
+				url, err := saveBase64Image(*img, survey.Name, filename)
+				if err != nil {
+					return nil, fmt.Errorf("failed to save image: %v", err)
+				}
+
+				imageChoiceQuestion.Choices[j].URL = &url
+				imageChoiceQuestion.Choices[j].Image = new(string) // clear Base64
+			}
+		}
+		survey.Questions[i] = imageChoiceQuestion
+
+	case "Image":
+		imageQuestion, ok := q.(domain.ImageQuestion)
+		if !ok {
+			return nil, fmt.Errorf("invalid ImageQuestion type assertion at index %d", i)
+		}
+
+		if imageQuestion.Image.Image != nil && *imageQuestion.Image.Image != "" {
+			log.Printf("Processing image question %d, Base64 size: %d", i, len(*imageQuestion.Image.Image))
+
+			filename := fmt.Sprintf("%d", i+1)
+			url, err := saveBase64Image(*imageQuestion.Image.Image, survey.Name, filename)
+			if err != nil {
+				return nil, fmt.Errorf("failed to save image: %v", err)
 			}
 
-			for j := range imageChoiceQuestion.Choices {
-				if imageChoiceQuestion.Choices[j].Image != nil && *imageChoiceQuestion.Choices[j].Image != "" {
-					log.Printf("Processing image choice %d-%d, Base64 size: %d", i, j, len(*imageChoiceQuestion.Choices[j].Image))
-					filename := fmt.Sprintf("%d%d", i+1, j+1) // filename without extension
-					url, err := saveBase64Image(*imageChoiceQuestion.Choices[j].Image, survey.Name, filename)
-					if err != nil {
-						return nil, fmt.Errorf("failed to save image: %v", err)
-					}
-					str := ""
-					imageChoiceQuestion.Choices[j].URL = &url
-					imageChoiceQuestion.Choices[j].Image = &str // clear Base64
-				}
-			}
-			survey.Questions[i] = imageChoiceQuestion
+			log.Println("Saved image URL:", url)
+			imageQuestion.Image.URL = &url
+			imageQuestion.Image.Image = new(string) // clear Base64
 		}
+		survey.Questions[i] = imageQuestion
 	}
+}
+
+	
 
 	res, err := collection.InsertOne(c, survey)
 	if err != nil {
@@ -277,14 +303,10 @@ func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey
 		return nil, err
 	}
 
-	surveyid := res.(string)
-	survey.ID = surveyid
-
-	// Optional: update survey if needed
-	survey, err = s.UpdateSurvey(c, survey)
-	if err != nil {
-		log.Printf("Failed to update survey: %v", err)
-		return nil, err
+	if result, ok := res.(*mongo.InsertOneResult); ok {
+		if oid, ok := result.InsertedID.(primitive.ObjectID); ok {
+			survey.ID = oid.Hex()
+		}
 	}
 
 	return survey, nil
