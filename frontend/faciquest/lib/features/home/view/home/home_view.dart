@@ -633,30 +633,62 @@ class _SurveyCard extends StatefulWidget {
   State<_SurveyCard> createState() => _SurveyCardState();
 }
 
-class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
+class _SurveyCardState extends State<_SurveyCard> {
+  bool _isHovered = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this,
-    );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.95,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+  void _setHover(bool value) {
+    if (_isHovered == value) {
+      return;
+    }
+    setState(() {
+      _isHovered = value;
+    });
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  Widget _buildInfoPill({
+    required IconData icon,
+    required String label,
+    required ColorScheme colorScheme,
+    required Color accentColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: colorScheme.surface.withOpacity(0.92),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colorScheme.outline.withOpacity(0.18),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: accentColor.withOpacity(0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 8),
+            spreadRadius: -6,
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 16,
+            color: accentColor,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.1,
+                ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -668,335 +700,325 @@ class _SurveyCardState extends State<_SurveyCard> with SingleTickerProviderState
       context.colorScheme.primaryContainer,
     ];
     final cardColor = colors[widget.index % colors.length];
+    final colorScheme = context.colorScheme;
+    final textTheme = context.textTheme;
+    final participantsLabel = '${100 + (widget.index * 23)} ${'home.survey_card.participants'.tr()}';
+    final title = widget.surveyEntity?.name ?? 'home.survey_card.fallback_title'.tr();
+    final description = widget.surveyEntity?.description ?? 'home.survey_card.fallback_description'.tr();
+    final price =
+        widget.surveyEntity?.price?.toStringAsFixed(2).replaceAll('.', ',') ?? 'home.survey_card.fallback_price'.tr();
 
-    return AnimatedBuilder(
-      animation: _scaleAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          child: Container(
-            margin: AppSpacing.spacing_2.bottomPadding,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: [
-                BoxShadow(
-                  color: cardColor.withOpacity(0.15),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
-                  spreadRadius: -2,
-                ),
-                BoxShadow(
-                  color: context.colorScheme.shadow.withOpacity(0.1),
-                  blurRadius: 32,
-                  offset: const Offset(0, 12),
-                  spreadRadius: -8,
-                ),
+    return MouseRegion(
+      onEnter: (_) => _setHover(true),
+      onExit: (_) => _setHover(false),
+      child: AnimatedScale(
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOutCubic,
+        scale: _isHovered ? 1.01 : 1.0,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.easeOutCubic,
+          margin: AppSpacing.spacing_2.bottomPadding,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                colorScheme.surface,
+                cardColor.withOpacity(_isHovered ? 0.16 : 0.1),
+                cardColor.withOpacity(_isHovered ? 0.06 : 0.03),
               ],
+              stops: const [0.0, 0.55, 1.0],
             ),
-            child: Material(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(24),
-              clipBehavior: Clip.antiAlias,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      context.colorScheme.surface,
-                      cardColor.withOpacity(0.03),
-                      cardColor.withOpacity(0.01),
-                    ],
-                    stops: const [0.0, 0.6, 1.0],
+            border: Border.all(
+              color: cardColor.withOpacity(_isHovered ? 0.24 : 0.16),
+              width: 1.3,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: cardColor.withOpacity(_isHovered ? 0.24 : 0.14),
+                blurRadius: _isHovered ? 28 : 20,
+                offset: const Offset(0, 18),
+                spreadRadius: -12,
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: -32,
+                  right: -32,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 320),
+                    width: _isHovered ? 160 : 120,
+                    height: _isHovered ? 160 : 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          cardColor.withOpacity(_isHovered ? 0.26 : 0.18),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
                   ),
-                  border: Border.all(
-                    color: cardColor.withOpacity(0.12),
-                    width: 1.5,
-                  ),
-                  borderRadius: BorderRadius.circular(24),
                 ),
-                child: Padding(
-                  padding: AppSpacing.spacing_4.padding,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                Positioned(
+                  bottom: -28,
+                  left: -28,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 320),
+                    width: _isHovered ? 120 : 90,
+                    height: _isHovered ? 120 : 90,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          cardColor.withOpacity(_isHovered ? 0.2 : 0.12),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withOpacity(_isHovered ? 0.08 : 0.04),
+                          Colors.white.withOpacity(0.0),
+                        ],
+                      ),
+                    ),
+                    child: Padding(
+                      padding: AppSpacing.spacing_2.padding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 56,
+                                height: 56,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(18),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      cardColor,
+                                      cardColor.withOpacity(0.85),
+                                    ],
+                                  ),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.14),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: cardColor.withOpacity(0.35),
+                                      blurRadius: 18,
+                                      offset: const Offset(0, 10),
+                                      spreadRadius: -8,
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.quiz_rounded,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                              ),
+                              AppSpacing.spacing_3.widthBox,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      title,
+                                      style: textTheme.titleLarge?.copyWith(
+                                        fontWeight: FontWeight.w800,
+                                        color: colorScheme.onSurface,
+                                        letterSpacing: -0.3,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    AppSpacing.spacing_2.heightBox,
+                                    Wrap(
+                                      spacing: 8,
+                                      runSpacing: 8,
+                                      children: [
+                                        _buildInfoPill(
+                                          icon: Icons.access_time_rounded,
+                                          label: 'home.survey_card.duration_text'.tr(),
+                                          colorScheme: colorScheme,
+                                          accentColor: cardColor,
+                                        ),
+                                        _buildInfoPill(
+                                          icon: Icons.group_rounded,
+                                          label: participantsLabel,
+                                          colorScheme: colorScheme,
+                                          accentColor: cardColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          AppSpacing.spacing_3.heightBox,
+                          Text(
+                            description,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                              height: 1.55,
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 20),
                           Container(
-                            width: 56,
-                            height: 56,
+                            width: double.infinity,
+                            height: 1,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
                                 colors: [
-                                  cardColor.withOpacity(0.9),
-                                  cardColor,
-                                  cardColor.withOpacity(0.8),
+                                  Colors.transparent,
+                                  colorScheme.outline.withOpacity(0.18),
+                                  Colors.transparent,
                                 ],
-                                stops: const [0.0, 0.5, 1.0],
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: cardColor.withOpacity(0.4),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 4),
-                                  spreadRadius: -2,
-                                ),
-                                BoxShadow(
-                                  color: cardColor.withOpacity(0.2),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: Colors.white.withOpacity(0.2),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Icon(
-                                Icons.quiz_rounded,
-                                color: Colors.white,
-                                size: 28,
                               ),
                             ),
                           ),
-                          AppSpacing.spacing_3.widthBox,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.surveyEntity?.name ?? 'home.survey_card.fallback_title'.tr(),
-                                  style: context.textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: context.colorScheme.onSurface,
-                                    letterSpacing: -0.2,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 11,
                                 ),
-                                const SizedBox(height: 4),
-                                Row(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      cardColor.withOpacity(0.95),
+                                      cardColor.withOpacity(0.8),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.16),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: cardColor.withOpacity(0.35),
+                                      blurRadius: 18,
+                                      offset: const Offset(0, 12),
+                                      spreadRadius: -10,
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 4,
-                                      ),
+                                      padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
-                                        color: context.colorScheme.surface,
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                          color: context.colorScheme.outline.withOpacity(0.2),
-                                          width: 1,
-                                        ),
+                                        color: Colors.white.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(
-                                            Icons.access_time_rounded,
-                                            size: 14,
-                                            color: cardColor,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            'home.survey_card.duration_text'.tr(),
-                                            style: context.textTheme.bodySmall?.copyWith(
-                                              color: context.colorScheme.onSurfaceVariant,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11,
-                                            ),
-                                          ),
-                                        ],
+                                      child: const Icon(
+                                        Icons.monetization_on_rounded,
+                                        color: Colors.white,
+                                        size: 18,
                                       ),
                                     ),
                                     const SizedBox(width: 8),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 4,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: context.colorScheme.surface,
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                          color: context.colorScheme.outline.withOpacity(0.2),
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(
-                                            Icons.group_rounded,
-                                            size: 14,
-                                            color: cardColor,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            '${100 + (widget.index * 23)} ${'home.survey_card.participants'.tr()}',
-                                            style: context.textTheme.bodySmall?.copyWith(
-                                              color: context.colorScheme.onSurfaceVariant,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11,
-                                            ),
-                                          ),
-                                        ],
+                                    Text(
+                                      price,
+                                      style: textTheme.titleSmall?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 0.2,
                                       ),
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      AppSpacing.spacing_3.heightBox,
-                      Text(
-                        widget.surveyEntity?.description ?? 'home.survey_card.fallback_description'.tr(),
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: context.colorScheme.onSurfaceVariant,
-                          height: 1.5,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      AppSpacing.spacing_3.heightBox,
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  cardColor.withOpacity(0.95),
-                                  cardColor,
-                                  cardColor.withOpacity(0.85),
-                                ],
-                                stops: const [0.0, 0.5, 1.0],
                               ),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: cardColor.withOpacity(0.3),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 3),
-                                  spreadRadius: -1,
+                              const Spacer(),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 8,
                                 ),
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(8),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.secondaryContainer.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: colorScheme.onSecondaryContainer.withOpacity(0.12),
                                   ),
-                                  child: Icon(
-                                    Icons.monetization_on_rounded,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: colorScheme.secondaryContainer.withOpacity(0.28),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 10),
+                                      spreadRadius: -8,
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  widget.surveyEntity?.price?.toStringAsFixed(2).replaceAll('.', ',') ??
-                                      'home.survey_card.fallback_price'.tr(),
-                                  style: context.textTheme.titleSmall?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.3,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Spacer(),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  context.colorScheme.secondaryContainer.withOpacity(0.9),
-                                  context.colorScheme.secondaryContainer,
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: context.colorScheme.onSecondaryContainer.withOpacity(0.1),
-                                width: 1,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: context.colorScheme.secondaryContainer.withOpacity(0.3),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 8,
-                                  height: 8,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(4),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.green.withOpacity(0.4),
-                                        blurRadius: 4,
-                                        spreadRadius: 1,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: 8,
+                                      height: 8,
+                                      decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.circular(4),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.green.withOpacity(0.4),
+                                            blurRadius: 6,
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'home.survey_card.status_active'.tr(),
+                                      style: textTheme.labelMedium?.copyWith(
+                                        color: colorScheme.onSecondaryContainer,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  'home.survey_card.status_active'.tr(),
-                                  style: context.textTheme.bodySmall?.copyWith(
-                                    color: context.colorScheme.onSecondaryContainer,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
