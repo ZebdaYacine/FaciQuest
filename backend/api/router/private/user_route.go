@@ -19,6 +19,15 @@ func NewSetNewPwdRouter(db database.Database, group *gin.RouterGroup) {
 	group.POST("set-new-pwd", ic.SetNewPwdRequest)
 }
 
+func NewSetNewPwdWebRouter(db database.Database, group *gin.RouterGroup) {
+	ir := repository.NewUserRepository(db)
+	uc := usecase.NewUserUsecase(ir, "")
+	ic := &controller.AccountController{
+		UserUsecase: uc, // usecase for insured operations
+	}
+	group.POST("set-new-pwd-web", ic.SetNewPwdRequestWeb)
+}
+
 func NewUpdateProfileRouter(db database.Database, group *gin.RouterGroup) {
 	ir := repository.NewUserRepository(db)
 	uc := usecase.NewUserUsecase(ir, "")

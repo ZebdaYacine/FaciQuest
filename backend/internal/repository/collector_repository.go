@@ -136,7 +136,12 @@ func (cr *collectorRepository) UpdateCollector(c context.Context, col *domain.Co
 
 // EstimatePriceByCollector implements CollectorRepository.
 func (cu *collectorRepository) EstimatePriceByCollector(c context.Context, collector *domain.Collector) float64 {
-	return 3 * float64(collector.TargetAudience.Population)
+	surveyRepository := NewSurveyRepository(cu.database)
+	survey, err := surveyRepository.GetSurveyById(c, collector.SurveyId, "")
+	if err != nil || survey == nil {
+		log.Printf("Failed to load survey: %v", err)
+	}
+	return (APP_COMMISSION + USER_COMMISSION) * float64(collector.TargetAudience.Population*survey.CountQuestions)
 }
 
 // ConfirmPayment implements CollectorRepository.

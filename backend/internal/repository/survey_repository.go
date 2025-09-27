@@ -23,6 +23,11 @@ type surveyRepository struct {
 	database database.Database
 }
 
+const (
+	APP_COMMISSION = 1
+	USER_COMMISSION  = 1
+)
+
 type SurveyRepository interface {
 	CreateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
 	UpdateSurvey(c context.Context, survey *domain.Survey) (*domain.Survey, error)
@@ -124,6 +129,7 @@ func (s *surveyRepository) GetAllSurveys(c context.Context, userid string) (*[]d
 		if err := list.Decode(&new_survey); err != nil {
 			log.Fatal(err)
 		}
+		new_survey.SurveyBadge.Price = float64(new_survey.CountQuestions) * APP_COMMISSION
 		list_surveys = append(list_surveys, new_survey.SurveyBadge)
 	}
 	return &list_surveys, nil

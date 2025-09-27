@@ -44,6 +44,8 @@ func Setup(db database.Database, gin *gin.Engine, redis *redis.Client) {
 
 	//Auth API
 	private.NewSetNewPwdRouter(db, userRouter)
+	private.NewSetNewPwdRouter(db, userRouter)
+
 	private.NewUpdateProfileRouter(db, userRouter)
 	// private.NewLogoutRouterRouter(db, userRouter, redis)
 	//Wallet API

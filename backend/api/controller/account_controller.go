@@ -566,8 +566,69 @@ func (ic *AccountController) LogoutRequest(c *gin.Context) {
 	})
 }
 
-// --- Reset Password (Set New) ---
 func (ic *AccountController) SetNewPwdRequest(c *gin.Context) {
+	log.Println("=== Reset Password Request ===")
+
+	var RestPwdParms domain.SetNewPasswordModel
+	if !core.IsDataRequestSupported(&RestPwdParms, c) {
+		return
+	}
+
+	authHeader := c.Request.Header.Get("Authorization")
+	tokens := strings.Split(authHeader, " ")
+	if len(tokens) < 2 {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Authorization header missing or invalid"})
+		return
+	}
+	token := tokens[1]
+
+	claims, err := util.ExtractClaims(token, core.RootServer.SECRET_KEY)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.ErrorResponse{Message: err.Error()})
+		return
+	}
+	id := claims.ID
+	clientIP := c.ClientIP()
+	mu.Lock()
+	cnfrMdlStored, exists := codeStore[clientIP]
+	mu.Unlock()
+
+	if !exists {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "No active reset request for this client"})
+		return
+	}
+	if cnfrMdlStored.SgnModel.Id != id {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Token does not match user"})
+		return
+	}
+
+	log.Println(RestPwdParms)
+
+	var data = domain.User{
+		Email:    cnfrMdlStored.SgnModel.Email,
+		PassWord: RestPwdParms.NewPassword,
+	}
+	user, err := ic.UserUsecase.SetNewPassword(c, &data)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Failed to reset password"})
+		return
+	}
+
+	body := html.HtmlMessageRestPwd(user)
+	if err := email.SendEmail(data.Email, "Password Reset Successful", body); err != nil {
+		log.Println("Failed to send reset confirmation email:", err)
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: "Password updated but email failed"})
+		return
+	}
+
+	c.JSON(http.StatusOK, model.SuccessResponse{
+		Message: "Password reset successful",
+		Data:    "",
+	})
+}
+
+// --- Reset Password (Set New) ---
+func (ic *AccountController) SetNewPwdRequestWeb(c *gin.Context) {
 	log.Println("=== Reset Password Request ===")
 
 	var RestPwdParms domain.SetNewPasswordModel
