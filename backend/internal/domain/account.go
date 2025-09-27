@@ -29,7 +29,7 @@ type LoginModel struct {
 
 type SetNewPasswordModel struct {
 	// UserName    string `form:"username"`
-	// Token       string `form:"token"`
+	Pin         string `form:"pin"`
 	NewPassword string `form:"newpassword"`
 }
 

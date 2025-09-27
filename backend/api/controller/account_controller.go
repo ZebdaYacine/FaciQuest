@@ -319,6 +319,7 @@ import (
 	"back-end/util/email"
 	"back-end/util/email/html"
 	util "back-end/util/token"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -349,11 +350,24 @@ func sendOTP(signupModel domain.SignupModel, c *gin.Context, header string) {
 	}
 
 	// Prepare email body
-	var htmlMsg html.HtlmlMsg
-	htmlMsg.Code = code
-	htmlMsg.FirstName = signupModel.FirstName
-	htmlMsg.LastName = signupModel.LastName
-	body := html.HtmlMessageConfirmAccount(htmlMsg)
+	// var htmlMsg html.HtlmlMsg
+	// htmlMsg.Code = code
+	// htmlMsg.FirstName = signupModel.FirstName
+	// htmlMsg.LastName = signupModel.LastName
+	// body := html.HtmlMessageConfirmAccount(htmlMsg)
+	token, err := util.CreateAccessToken(signupModel.Id, core.RootServer.SECRET_KEY, 15, "User")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{Message: "Failed to create reset token"})
+		return
+	}
+	body := fmt.Sprintf(`
+		<h2>Password Reset Request</h2>
+		<p>Here is your reset token:</p>
+		<p>And your verification PIN:</p>
+		<p><b>%s</b></p>
+		<p>Click 
+		<a href="http://localhost:5173/?token=%s&pin=%s">here</a> to reset your password.</p>
+	    `, code, token, code)
 
 	// Send email
 	if err := email.SendEmail(signupModel.Email, header, body); err != nil {
@@ -576,6 +590,13 @@ func (ic *AccountController) SetNewPwdRequest(c *gin.Context) {
 	}
 	if cnfrMdlStored.SgnModel.Id != id {
 		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Token does not match user"})
+		return
+	}
+
+	log.Println( RestPwdParms)
+
+	if cnfrMdlStored.Code != RestPwdParms.Pin {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{Message: "Invalid PIN"})
 		return
 	}
 
