@@ -79,6 +79,11 @@
     "verifyOtp": {
       "title": "Verify OTP",
       "description": "Please enter your OTP sent to your email",
+      "descriptionReset": "Please enter the verification code sent to your email to reset your password",
+      "codeInfo": "Enter the 6-digit verification code",
+      "enterCode": "Enter verification code",
+      "didntReceive": "Didn't receive the code?",
+      "resendIn": "Resend in",
       "submit": "Verify"
     },
     "signUp": {

@@ -79,6 +79,11 @@
     "verifyOtp": {
       "title": "Vérifier OTP",
       "description": "Veuillez saisir l'OTP envoyé à votre email",
+      "descriptionReset": "Veuillez saisir le code de vérification envoyé à votre email pour réinitialiser votre mot de passe",
+      "codeInfo": "Saisissez le code de vérification à 6 chiffres",
+      "enterCode": "Saisissez le code de vérification",
+      "didntReceive": "Vous n'avez pas reçu le code ?",
+      "resendIn": "Renvoyer dans",
       "submit": "Vérifier"
     },
     "signUp": {

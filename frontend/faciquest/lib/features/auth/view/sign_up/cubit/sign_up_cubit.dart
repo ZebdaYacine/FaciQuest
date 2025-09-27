@@ -50,11 +50,6 @@ class SignUpCubit extends Cubit<SignUpState> {
       return 'Phone number cannot exceed 10 digits';
     }
 
-    // Check if it starts with a valid digit (not 0 or 1 for US numbers)
-    if (digitsOnly.startsWith('0') || digitsOnly.startsWith('1')) {
-      return 'Phone number cannot start with 0 or 1';
-    }
-
     return null;
   }
 
