@@ -55,6 +55,17 @@ func (r *submissionRepository) CreateNewSubmission(c context.Context, submission
 	}
 	repowalet := NewWalletRepository(r.database)
 	wallet, _ := repowalet.GetWallet(c, core.WALLET, submission.UserId)
+	if wallet == nil {
+		wallet = &domain.Wallet{
+			UserID:        submission.UserId,
+			Amount:        0,
+			NbrSurveys:    0,
+			IsCashable:    false,
+			CCP:           "",
+			RIP:           "",
+			PaymentMethod: "",
+		}
+	}
 	wallet.Amount += float64(submission.Rewarded)
 	wallet.NbrSurveys = wallet.NbrSurveys + 1
 	_, err = repowalet.UpdateMyWallet(c, wallet)

@@ -126,7 +126,7 @@ func (cc *CollectorController) ConfirmPaymentRequest(c *gin.Context) {
 	log.Println(decodedData)
 	result := cc.CollectorUseCase.ConfirmPayment(c, &new_cofirm_payment)
 	c.JSON(http.StatusOK, model.SuccessResponse{
-		Message: "ESSTIMATE PRICE REQUEST DONE SUCCESSFULY",
+		Message: "PROOF OF PAYEMENT  REQUEST DONE SUCCESSFULY",
 		Data:    result,
 	})
 }

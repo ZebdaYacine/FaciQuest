@@ -146,5 +146,10 @@ func (cu *collectorRepository) EstimatePriceByCollector(c context.Context, colle
 
 // ConfirmPayment implements CollectorRepository.
 func (cu *collectorRepository) ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool {
+	log.Println("LAUNCHE CONFIRM PAYMENT REPOSITORY")
+	log.Println(ConfirmPayment)
+	// TOOD: save proof of payment to storage
+	// TOOD: update collector status to paid
+
 	return true
 }

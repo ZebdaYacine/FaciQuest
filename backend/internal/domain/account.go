@@ -27,9 +27,15 @@ type LoginModel struct {
 	Password string `json:"password"`
 }
 
-type SetNewPasswordModel struct {
+type SetNewPasswordWebModel struct {
 	// UserName    string `form:"username"`
 	Pin         string `form:"pin"`
+	NewPassword string `form:"newpassword"`
+}
+
+type SetNewPasswordModel struct {
+	// UserName    string `form:"username"`
+	// Pin         string `form:"pin"`
 	NewPassword string `form:"newpassword"`
 }
 
@@ -45,9 +51,9 @@ type GetBySurveyIdModel struct {
 
 type Account interface {
 	SignupModel | LoginModel | ConfirmationModel |
-		Wallet | SetNewPasswordModel | User |
+		Wallet | SetNewPasswordWebModel | User |
 		ForgetPasswordModel | Payment |
 		Survey | GetBySurveyIdModel | SurveyBadge |
-		Criteria | Collector | Submission | ConfirmPayment |
+		Criteria | Collector | Submission | ConfirmPayment | SetNewPasswordModel |
 		SurCol
 }

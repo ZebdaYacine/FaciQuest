@@ -3,17 +3,15 @@ package repository
 import (
 	"back-end/internal/domain"
 	"back-end/pkg/database"
-	"bytes"
 	"context"
-	"encoding/base64"
 	"fmt"
-	"image"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
+	magic "github.com/ZebdaYacine/magic-bytes"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -24,8 +22,8 @@ type surveyRepository struct {
 }
 
 const (
-	APP_COMMISSION = 1
-	USER_COMMISSION  = 1
+	APP_COMMISSION  = 1
+	USER_COMMISSION = 1
 )
 
 type SurveyRepository interface {
@@ -93,6 +91,48 @@ func (s *surveyRepository) GetSurveyById(c context.Context, surveyId string, use
 }
 
 // GetAllSurveys implements SurveyRepository.
+// func (s *surveyRepository) GetAllSurveys(c context.Context, userid string) (*[]domain.SurveyBadge, error) {
+// 	collection := s.database.Collection("survey")
+// 	sr := NewSubmissionRepository(s.database)
+
+// 	// Get surveys already answered by this user
+// 	surveys, err := sr.GetSurveyIDsByUserID(c, userid)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	// Convert string IDs to ObjectIDs if needed
+// 	var objectIDs []primitive.ObjectID
+// 	for _, id := range surveys {
+// 		objID, err := primitive.ObjectIDFromHex(id)
+// 		if err == nil {
+// 			objectIDs = append(objectIDs, objID)
+// 		}
+// 	}
+
+// 	// Find surveys NOT in the answered list
+// 	filter := bson.M{}
+// 	if len(objectIDs) > 0 {
+// 		filter = bson.M{"_id": bson.M{"$nin": objectIDs}}
+// 	}
+
+// 	list, err := collection.Find(c, filter)
+// 	if err != nil {
+// 		log.Printf("Failed to load surveys: %v", err)
+// 		return nil, err
+// 	}
+// 	list_surveys := []domain.SurveyBadge{}
+// 	for list.Next(c) {
+// 		new_survey := domain.Survey{}
+// 		if err := list.Decode(&new_survey); err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		new_survey.SurveyBadge.Price = float64(new_survey.CountQuestions) * APP_COMMISSION
+// 		list_surveys = append(list_surveys, new_survey.SurveyBadge)
+// 	}
+// 	return &list_surveys, nil
+// }
+
 func (s *surveyRepository) GetAllSurveys(c context.Context, userid string) (*[]domain.SurveyBadge, error) {
 	collection := s.database.Collection("survey")
 	sr := NewSubmissionRepository(s.database)
@@ -112,17 +152,21 @@ func (s *surveyRepository) GetAllSurveys(c context.Context, userid string) (*[]d
 		}
 	}
 
-	// Find surveys NOT in the answered list
-	filter := bson.M{}
+	// Exclude surveys answered by user + surveys created by user
+	filter := bson.M{
+		"userId": bson.M{"$ne": userid}, // use userId field from SurveyBadge
+	}
 	if len(objectIDs) > 0 {
-		filter = bson.M{"_id": bson.M{"$nin": objectIDs}}
+		filter["_id"] = bson.M{"$nin": objectIDs}
 	}
 
+	// Query surveys
 	list, err := collection.Find(c, filter)
 	if err != nil {
 		log.Printf("Failed to load surveys: %v", err)
 		return nil, err
 	}
+
 	list_surveys := []domain.SurveyBadge{}
 	for list.Next(c) {
 		new_survey := domain.Survey{}
@@ -132,6 +176,7 @@ func (s *surveyRepository) GetAllSurveys(c context.Context, userid string) (*[]d
 		new_survey.SurveyBadge.Price = float64(new_survey.CountQuestions) * APP_COMMISSION
 		list_surveys = append(list_surveys, new_survey.SurveyBadge)
 	}
+
 	return &list_surveys, nil
 }
 
@@ -158,93 +203,18 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 }
 
 func saveBase64Image(base64Str, folder, filenameWithoutExt string) (string, error) {
-	// Detect extension from prefix
-	ext, err := detectExtension(base64Str)
-	url := "http://185.209.230.104/" + folder + "/" + filenameWithoutExt + ext
+	dir := filepath.Join("/var/www/ftp", folder)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return "", fmt.Errorf("failed to create directory: %v", err)
+	}
+	log.Println("Directory ensured:", dir)
+	fileDir := filepath.Join(dir, filenameWithoutExt)
+	filename, err := magic.SaveBase64ToFile(base64Str, fileDir)
 	if err != nil {
-		// fallback: decode and detect from bytes
-		if idx := strings.Index(base64Str, ","); idx != -1 {
-			base64Str = base64Str[idx+1:]
-		}
-		data, err := base64.StdEncoding.DecodeString(base64Str)
-		if err != nil {
-			return "", fmt.Errorf("failed to decode base64: %v", err)
-		}
-		ext, err = detectExtensionFromBytes(data)
-		if err != nil {
-			return "", err
-		}
-	} else {
-		// remove prefix for decoding
-		if idx := strings.Index(base64Str, ","); idx != -1 {
-			base64Str = base64Str[idx+1:]
-		}
+		return "", fmt.Errorf("failed to save image: %v", err)
 	}
-
-	// Decode base64
-	data, err := base64.StdEncoding.DecodeString(base64Str)
-	if err != nil {
-		return "", fmt.Errorf("failed to decode base64: %v", err)
-	}
-
-	// Create folder if not exists
-	baseDir := "/var/www/ftp"
-	folderPath := filepath.Join(baseDir, folder)
-	if err := os.MkdirAll(folderPath, os.ModePerm); err != nil {
-		return "", fmt.Errorf("failed to create folder: %v", err)
-	}
-
-	// Save file with proper extension
-	filePath := filepath.Join(folderPath, filenameWithoutExt+ext)
-	if err := os.WriteFile(filePath, data, 0644); err != nil {
-		return "", fmt.Errorf("failed to write file: %v", err)
-	}
-
-	log.Println("Saved file:", filePath, "Size:", len(data))
+	url := "http://185.209.230.104/" + strings.TrimPrefix(*filename, "/var/www/ftp/")
 	return url, nil
-}
-
-func detectExtension(base64Str string) (string, error) {
-	if idx := strings.Index(base64Str, ","); idx != -1 {
-		prefix := base64Str[:idx]
-		if strings.HasPrefix(prefix, "data:") && strings.Contains(prefix, ";base64") {
-			parts := strings.Split(prefix[5:], ";") // remove "data:"
-			mime := parts[0]
-			switch mime {
-			case "image/jpeg":
-				return ".jpg", nil
-			case "image/png":
-				return ".png", nil
-			case "image/gif":
-				return ".gif", nil
-			case "image/webp":
-				return ".webp", nil
-			default:
-				return "", fmt.Errorf("unsupported mime type: %s", mime)
-			}
-		}
-	}
-	return "", fmt.Errorf("no mime type found")
-}
-
-func detectExtensionFromBytes(data []byte) (string, error) {
-	reader := bytes.NewReader(data)
-	_, format, err := image.DecodeConfig(reader)
-	if err != nil {
-		return "", fmt.Errorf("cannot detect image format: %v", err)
-	}
-	switch format {
-	case "jpeg":
-		return ".jpg", nil
-	case "png":
-		return ".png", nil
-	case "gif":
-		return ".gif", nil
-	case "webp":
-		return ".webp", nil
-	default:
-		return "", fmt.Errorf("unsupported image format: %s", format)
-	}
 }
 
 // CreateSurvey implements SurveyRepository.
@@ -265,15 +235,13 @@ func (s *surveyRepository) CreateSurvey(c context.Context, survey *domain.Survey
 				img := imageChoiceQuestion.Choices[j].Image
 				if img != nil && *img != "" {
 					log.Printf("Processing image choice %d-%d, Base64 size: %d", i, j, len(*img))
-
 					filename := fmt.Sprintf("%d%d", i+1, j+1)
 					url, err := saveBase64Image(*img, survey.Name, filename)
 					if err != nil {
 						return nil, fmt.Errorf("failed to save image: %v", err)
 					}
-
 					imageChoiceQuestion.Choices[j].URL = &url
-					imageChoiceQuestion.Choices[j].Image = new(string) // clear Base64
+					imageChoiceQuestion.Choices[j].Image = new(string)
 				}
 			}
 			survey.Questions[i] = imageChoiceQuestion
@@ -334,6 +302,54 @@ func (s *surveyRepository) UpdateSurvey(c context.Context, updatedSurvey *domain
 	update := bson.M{
 		"$set": updatedSurvey,
 	}
+
+	for i, q := range updatedSurvey.Questions {
+		switch q.GetType() {
+		case "Image Choice":
+			imageChoiceQuestion, ok := q.(domain.ImageChoiceQuestion)
+			if !ok {
+				return nil, fmt.Errorf("invalid ImageChoiceQuestion type assertion at index %d", i)
+			}
+
+			for j := range imageChoiceQuestion.Choices {
+				img := imageChoiceQuestion.Choices[j].Image
+				if img != nil && *img != "" {
+					log.Printf("Processing image choice %d-%d, Base64 size: %d", i, j, len(*img))
+					filename := fmt.Sprintf("%d%d", i+1, j+1)
+					log.Println("Image:", &img)
+					url, err := saveBase64Image(*img, updatedSurvey.Name, filename)
+					if err != nil {
+						return nil, fmt.Errorf("failed to save image: %v", err)
+					}
+					imageChoiceQuestion.Choices[j].URL = &url
+					imageChoiceQuestion.Choices[j].Image = new(string)
+				}
+			}
+			updatedSurvey.Questions[i] = imageChoiceQuestion
+
+		case "Image":
+			imageQuestion, ok := q.(domain.ImageQuestion)
+			if !ok {
+				return nil, fmt.Errorf("invalid ImageQuestion type assertion at index %d", i)
+			}
+
+			if imageQuestion.Image.Image != nil && *imageQuestion.Image.Image != "" {
+				log.Printf("Processing image question %d, Base64 size: %d", i, len(*imageQuestion.Image.Image))
+
+				filename := fmt.Sprintf("%d", i+1)
+				url, err := saveBase64Image(*imageQuestion.Image.Image, updatedSurvey.Name, filename)
+				if err != nil {
+					return nil, fmt.Errorf("failed to save image: %v", err)
+				}
+
+				log.Println("Saved image URL:", url)
+				imageQuestion.Image.URL = &url
+				imageQuestion.Image.Image = new(string) // clear Base64
+			}
+			updatedSurvey.Questions[i] = imageQuestion
+		}
+	}
+
 	_, err = collection.UpdateOne(c, filterUpdate, update)
 	if err != nil {
 		return nil, fmt.Errorf("operation not allowed")
