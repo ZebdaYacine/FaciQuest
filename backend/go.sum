@@ -4,6 +4,10 @@ github.com/ZebdaYacine/magic-bytes v0.0.0-20251001055525-a63551162a9b h1:UZNq2+I
 github.com/ZebdaYacine/magic-bytes v0.0.0-20251001055525-a63551162a9b/go.mod h1:JCCnfVG0eS7iwQ9w6bnBLSyf9iMoltLkrbHl+q2z7Gs=
 github.com/ZebdaYacine/magic-bytes v0.0.0-20251001060655-0fe63af95362 h1:Idw0OxnaMIuMU9zVKC4mMRW4TEFWmXZ+lQPLQuhoMJ4=
 github.com/ZebdaYacine/magic-bytes v0.0.0-20251001060655-0fe63af95362/go.mod h1:kXFa1G79n/+wzO9Nn46j5h8mmrXj+bzddD/svNoeU9Y=
+github.com/ZebdaYacine/magic-bytes v0.0.0-20251001063754-f3a889e35f66 h1:datZXBV+zEhSjxZvXGS10plj6gPlSgcUs5d9ulVVTPs=
+github.com/ZebdaYacine/magic-bytes v0.0.0-20251001063754-f3a889e35f66/go.mod h1:kXFa1G79n/+wzO9Nn46j5h8mmrXj+bzddD/svNoeU9Y=
+github.com/ZebdaYacine/magic-bytes v0.0.0-20251001221440-82bfc71f548a h1:SiSiqLR68QZigtkXCAg24TxE5Cjf/FElpAvtzjkxoZY=
+github.com/ZebdaYacine/magic-bytes v0.0.0-20251001221440-82bfc71f548a/go.mod h1:kXFa1G79n/+wzO9Nn46j5h8mmrXj+bzddD/svNoeU9Y=
 github.com/bytedance/sonic v1.11.6 h1:oUp34TzMlL+OY1OUWxHqsdkgC/Zfc85zGqw9siXjrc0=
 github.com/bytedance/sonic v1.11.6/go.mod h1:LysEHSvpvDySVdC2f87zGWf6CIKJcAvqab1ZaiQtds4=
 github.com/bytedance/sonic/loader v0.1.1 h1:c+e5Pt1k/cy5wMveRDyk2X4B9hF4g7an8N3zCYjJFNM=

@@ -12,7 +12,7 @@ require (
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
-require github.com/ZebdaYacine/magic-bytes v0.0.0-20251001060655-0fe63af95362
+require github.com/ZebdaYacine/magic-bytes v0.0.0-20251001221440-82bfc71f548a
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect

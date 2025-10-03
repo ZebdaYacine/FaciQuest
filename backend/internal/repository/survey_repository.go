@@ -3,6 +3,7 @@ package repository
 import (
 	"back-end/internal/domain"
 	"back-end/pkg/database"
+	util "back-end/util/tools"
 	"context"
 	"fmt"
 	"log"
@@ -11,7 +12,6 @@ import (
 	"strings"
 	"time"
 
-	magic "github.com/ZebdaYacine/magic-bytes"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -209,7 +209,7 @@ func saveBase64Image(base64Str, folder, filenameWithoutExt string) (string, erro
 	}
 	log.Println("Directory ensured:", dir)
 	fileDir := filepath.Join(dir, filenameWithoutExt)
-	filename, err := magic.SaveBase64ToFile(base64Str, fileDir)
+	filename, err := util.SaveBase64ToFile(base64Str, fileDir)
 	if err != nil {
 		return "", fmt.Errorf("failed to save image: %v", err)
 	}

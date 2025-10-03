@@ -8,4 +8,5 @@ var (
 	CRITERIA   = "criteria"
 	SUBMISSION = "submission"
 	COLLECTOR  = "collector"
+	PROOF      = "proof"
 )

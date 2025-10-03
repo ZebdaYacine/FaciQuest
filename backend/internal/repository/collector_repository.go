@@ -4,9 +4,13 @@ import (
 	"back-end/core"
 	"back-end/internal/domain"
 	"back-end/pkg/database"
+	util "back-end/util/tools"
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -148,8 +152,25 @@ func (cu *collectorRepository) EstimatePriceByCollector(c context.Context, colle
 func (cu *collectorRepository) ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool {
 	log.Println("LAUNCHE CONFIRM PAYMENT REPOSITORY")
 	log.Println(ConfirmPayment)
-	// TOOD: save proof of payment to storage
-	// TOOD: update collector status to paid
-
+	dir := filepath.Join("/var/www/ftp", ConfirmPayment.CollectorId)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		fmt.Println("Error creating directory:", err)
+	}
+	log.Println("Directory ensured:", dir)
+	fileDir := filepath.Join(dir, ConfirmPayment.FileName)
+	filename, err := util.SaveBase64ToFile(ConfirmPayment.ProofOfPayment, fileDir)
+	if err != nil {
+		log.Fatalf("Failed to save image: %v", err)
+	}
+	ConfirmPayment.FileName = *filename
+	_, err = cu.database.Collection(core.PROOF).InsertOne(c, bson.M{
+		"collectorId": ConfirmPayment.CollectorId,
+		"fileName":    ConfirmPayment.FileName,
+		"createdAt":   time.Now(),
+	})
+	if err != nil {
+		log.Printf("failed to insert payment in DB: %v", err)
+		return false
+	}
 	return true
 }
