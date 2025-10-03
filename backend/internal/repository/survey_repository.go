@@ -203,7 +203,7 @@ func (s *surveyRepository) GetMySurveys(c context.Context, userId string) (*[]do
 }
 
 func saveBase64Image(base64Str, folder, filenameWithoutExt string) (string, error) {
-	dir := filepath.Join("/var/www/ftp", folder)
+	dir := filepath.Join("/var/www/ftp/faciquest/surveys/", folder)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return "", fmt.Errorf("failed to create directory: %v", err)
 	}

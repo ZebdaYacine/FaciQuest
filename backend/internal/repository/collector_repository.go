@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -152,7 +153,7 @@ func (cu *collectorRepository) EstimatePriceByCollector(c context.Context, colle
 func (cu *collectorRepository) ConfirmPayment(c context.Context, ConfirmPayment *domain.ConfirmPayment) bool {
 	log.Println("LAUNCHE CONFIRM PAYMENT REPOSITORY")
 	log.Println(ConfirmPayment)
-	dir := filepath.Join("/var/www/ftp", ConfirmPayment.CollectorId)
+	dir := filepath.Join("/var/www/ftp/faciquest/proofPayments", ConfirmPayment.CollectorId)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		fmt.Println("Error creating directory:", err)
 	}
@@ -162,10 +163,12 @@ func (cu *collectorRepository) ConfirmPayment(c context.Context, ConfirmPayment 
 	if err != nil {
 		log.Fatalf("Failed to save image: %v", err)
 	}
-	ConfirmPayment.FileName = *filename
+	// ConfirmPayment.FileName = *filename
+	url := "http://185.209.230.104/" + strings.TrimPrefix(*filename, "/var/www/ftp/")
+
 	_, err = cu.database.Collection(core.PROOF).InsertOne(c, bson.M{
 		"collectorId": ConfirmPayment.CollectorId,
-		"fileName":    ConfirmPayment.FileName,
+		"fileName":    url,
 		"createdAt":   time.Now(),
 	})
 	if err != nil {
