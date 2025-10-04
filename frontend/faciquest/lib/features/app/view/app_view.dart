@@ -31,7 +31,7 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
       buildWhen: (previous, current) => previous.themeMode != current.themeMode,
       builder: (context, themeState) {
         return MaterialApp.router(
-          title: 'onemobe',
+          title: 'FaciQuest',
           // localization
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,

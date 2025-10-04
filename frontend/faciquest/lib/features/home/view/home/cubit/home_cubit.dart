@@ -29,7 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
     subscription = repository.getSurveys().listen(
           (surveys) => emit(
             state.copyWith(
-              surveys: surveys,
+              surveys: [...surveys],
               status: Status.success,
             ),
           ),
