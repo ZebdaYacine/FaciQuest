@@ -144,6 +144,7 @@ class SurveyEntity extends Equatable {
         updatedAt = updatedAt ?? DateTime.now();
 
   SurveyEntity copyWith({
+    String? id,
     String? name,
     String? description,
     SurveyStatus? status,
@@ -155,6 +156,7 @@ class SurveyEntity extends Equatable {
     List<CollectorEntity>? collectors,
   }) {
     return SurveyEntity(
+      id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
       status: status ?? this.status,
@@ -169,6 +171,7 @@ class SurveyEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      "_id": id,
       "name": name,
       "description": description,
       // 'status': status.name,

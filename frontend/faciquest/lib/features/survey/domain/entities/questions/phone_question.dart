@@ -46,7 +46,7 @@ class PhoneQuestion extends QuestionEntity {
       phoneLabel: map['phoneLabel'],
       phoneHint: map['phoneHint'],
       showPhone: map['showPhone'],
-      isRequired: map['isRequired'],
+      isRequired: map['isrequired'] ?? false,
     );
   }
 

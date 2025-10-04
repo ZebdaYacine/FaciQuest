@@ -8,6 +8,7 @@ class PersonalInfoState extends Equatable {
   final String? emailError;
   final String? phoneError;
   final bool hasUnsavedChanges;
+  final bool isRefreshing;
 
   const PersonalInfoState({
     this.user = UserEntity.empty,
@@ -17,6 +18,7 @@ class PersonalInfoState extends Equatable {
     this.emailError,
     this.phoneError,
     this.hasUnsavedChanges = false,
+    this.isRefreshing = false,
   });
 
   @override
@@ -28,6 +30,7 @@ class PersonalInfoState extends Equatable {
         emailError,
         phoneError,
         hasUnsavedChanges,
+        isRefreshing,
       ];
 
   bool get isValid =>
@@ -47,6 +50,7 @@ class PersonalInfoState extends Equatable {
     String? emailError,
     String? phoneError,
     bool? hasUnsavedChanges,
+    bool? isRefreshing,
   }) {
     return PersonalInfoState(
       user: user ?? this.user,
@@ -56,6 +60,7 @@ class PersonalInfoState extends Equatable {
       emailError: emailError ?? this.emailError,
       phoneError: phoneError ?? this.phoneError,
       hasUnsavedChanges: hasUnsavedChanges ?? this.hasUnsavedChanges,
+      isRefreshing: isRefreshing ?? this.isRefreshing,
     );
   }
 }

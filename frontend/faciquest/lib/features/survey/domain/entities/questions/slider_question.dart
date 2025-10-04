@@ -40,6 +40,7 @@ class SliderQuestion extends QuestionEntity {
       order: (map['order'] as num).toInt(),
       min: (map['min'] as num).toDouble(),
       max: (map['max'] as num).toDouble(),
+      isRequired: map['isrequired']??false,
     );
   }
 

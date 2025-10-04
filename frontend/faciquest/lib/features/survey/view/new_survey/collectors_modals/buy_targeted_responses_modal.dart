@@ -43,7 +43,7 @@ CollectorEntity _createDefaultCollector(NewSurveyCubit cubit) {
 
     return CollectorEntity(
       id: ObjectId().hexString,
-      surveyId: survey.id,
+      surveyId: survey.id ?? 'fallback',
       name: '',
       status: CollectorStatus.draft,
       responsesCount: 0,
@@ -95,13 +95,13 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       _nameController = TextEditingController(text: widget.collector.name);
       // Initialize with existing collector data if available
       if (widget.collector.type == CollectorType.targetAudience) {
-        _population = widget.collector.population ?? 200;
-        _gender = widget.collector.gender ?? Gender.male;
+        _population = (widget.collector.population ?? 200.0).clamp(0.0, 5000.0);
+        _gender = widget.collector.gender ?? Gender.both;
         _ageRange = widget.collector.ageRange ?? const RangeValues(18, 99);
-        _countries = Set.from(widget.collector.countries ?? ['Algeria']);
-        _provinces = Set.from(widget.collector.provinces ?? []);
-        _cities = Set.from(widget.collector.cities ?? []);
-        _selectedCriteria = Set.from(widget.collector.targetingCriteria ?? []);
+        _countries = Set.from(widget.collector.countries.where((c) => c.isNotEmpty) ?? ['Algeria']);
+        _provinces = Set.from(widget.collector.provinces.where((p) => p.name.isNotEmpty ?? false) ?? []);
+        _cities = Set.from(widget.collector.cities.where((c) => c.name.isNotEmpty ?? false) ?? []);
+        _selectedCriteria = Set.from(widget.collector.targetingCriteria.where((c) => c.title.isNotEmpty) ?? []);
       }
     } catch (e) {
       debugPrint('Error initializing state: $e');
@@ -144,12 +144,12 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
     try {
       return {
         ..._countries,
-        ..._provinces.map((e) => e.name),
-        ..._cities.map((e) => e.name),
+        ..._provinces.map((e) => e.name ?? ''),
+        ..._cities.map((e) => e.name ?? ''),
       };
     } catch (e) {
       debugPrint('Error getting selected countries: $e');
-      return {'Error loading countries'};
+      return {'error.generic'.tr()};
     }
   }
 
@@ -318,19 +318,19 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       children: [
         _buildTargetingTile(
           icon: Icons.language,
-          title: 'Country',
+          title: 'collectors.targeting.country_title'.tr(),
           subtitle: _selectedCountries.join(', '),
           onTap: _handleCountrySelection,
         ),
         _buildTargetingTile(
           icon: Icons.male,
-          title: 'Gender',
+          title: 'collectors.targeting.gender_title'.tr(),
           subtitle: _gender.name,
           onTap: _handleGenderSelection,
         ),
         _buildTargetingTile(
           icon: Icons.people_outline,
-          title: 'Age Range',
+          title: 'collectors.targeting.age_range_title'.tr(),
           subtitle: '${_ageRange.start.round()} - ${_ageRange.end.round()}',
           onTap: _handleAgeSelection,
         ),
@@ -384,7 +384,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text(
-                'Error',
+                'collectors.buy_targeted.error_loading_price'.tr(),
                 style: context.textTheme.titleLarge?.copyWith(
                   color: context.colorScheme.error,
                   fontWeight: FontWeight.bold,
@@ -456,75 +456,105 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
 
   Future<void> _handleAddCriteria() async {
     try {
+      if (!mounted) return;
+
       final result = await showTargetingCriteriaModal(context);
-      if (result != null) {
+      if (result != null && mounted) {
+        // Filter out invalid criteria
+        final validCriteria = result.where((c) => c.title.isNotEmpty && c.choices.isNotEmpty).toSet();
+
         setState(() {
-          _selectedCriteria = result;
+          _selectedCriteria = validCriteria;
         });
       }
     } catch (e) {
       debugPrint('Error adding criteria: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('error.error_adding_criteria'.tr(args: [e.toString()]))),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('error.error_adding_criteria'.tr(args: [e.toString()]))),
+        );
+      }
     }
   }
 
   Future<void> _handleCountrySelection() async {
     try {
+      if (!mounted) return;
+
       final result = await showModalBottomSheet(
         context: context,
         builder: (context) => const CountryModal(),
       );
 
-      if (result != null && result is Map) {
-        setState(() {
-          _countries = result['countries'] as Set<String>;
-          _provinces = result['provinces'] as Set<Province>;
-          _cities = result['cities'] as Set<City>;
-        });
+      if (result != null && result is Map && mounted) {
+        final countries = result['countries'];
+        final provinces = result['provinces'];
+        final cities = result['cities'];
+
+        if (countries is Set<String> && provinces is Set<Province> && cities is Set<City>) {
+          setState(() {
+            _countries = countries.where((c) => c.isNotEmpty).toSet();
+            _provinces = provinces.where((p) => p.name.isNotEmpty ?? false).toSet();
+            _cities = cities.where((c) => c.name.isNotEmpty ?? false).toSet();
+          });
+        }
       }
     } catch (e) {
       debugPrint('Error selecting country: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('error.error_selecting_country'.tr(args: [e.toString()]))),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('error.error_selecting_country'.tr(args: [e.toString()]))),
+        );
+      }
     }
   }
 
   Future<void> _handleGenderSelection() async {
     try {
+      if (!mounted) return;
+
       final result = await showModalBottomSheet(
         context: context,
         builder: (context) => const GenderModal(),
       );
-      if (result != null && result is Gender) {
+
+      if (result != null && result is Gender && mounted) {
         setState(() {
           _gender = result;
         });
       }
     } catch (e) {
       debugPrint('Error selecting gender: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('error.error_selecting_gender'.tr(args: [e.toString()]))),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('error.error_selecting_gender'.tr(args: [e.toString()]))),
+        );
+      }
     }
   }
 
   Future<void> _handleAgeSelection() async {
     try {
+      if (!mounted) return;
+
       final result = await showModalBottomSheet(
         context: context,
         builder: (context) => const AgeModal(),
       );
-      if (result != null && result is RangeValues) {
+
+      if (result != null && result is RangeValues && mounted) {
+        // Validate age range
+        final validRange = RangeValues(
+          result.start.clamp(0, 120),
+          result.end.clamp(result.start, 120),
+        );
         setState(() {
-          _ageRange = result;
+          _ageRange = validRange;
         });
       }
     } catch (e) {
       debugPrint('Error selecting age: $e');
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('error.error_selecting_age'.tr(args: [e.toString()]))),
         );
@@ -534,27 +564,54 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
 
   void _handleCheckout() async {
     try {
-      await _cubit.createCollector(
-        widget.collector.copyWith(
-          name: _nameController.text,
-          type: CollectorType.targetAudience,
-          population: _population,
-          gender: _gender,
-          ageRange: _ageRange,
-          countries: _countries.toList(),
-          provinces: _provinces.toList(),
-          cities: _cities.toList(),
-          targetingCriteria: _selectedCriteria.toList(),
-        ),
+      if (!mounted) return;
+
+      // Validate required fields
+      if (_nameController.text.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('collectors.buy_targeted.enter_name'.tr())),
+        );
+        return;
+      }
+
+      if (_population <= 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('collectors.buy_targeted.responses_needed'.tr())),
+        );
+        return;
+      }
+
+      final collector = widget.collector.copyWith(
+        name: _nameController.text.trim(),
+        type: CollectorType.targetAudience,
+        population: _population.clamp(1.0, 5000.0),
+        gender: _gender,
+        ageRange: _ageRange,
+        countries: _countries.where((c) => c.isNotEmpty).toList(),
+        provinces: _provinces.where((p) => p.name.isNotEmpty ?? false).toList(),
+        cities: _cities.where((c) => c.name.isNotEmpty ?? false).toList(),
+        targetingCriteria: _selectedCriteria.where((c) => c.title.isNotEmpty).toList(),
       );
-      if (context.mounted) {
-        await showPaymentModal(context);
+
+      await _cubit.createCollector(collector);
+
+      if (mounted) {
+        final price = await _estimatedPrice;
+        if (price is double && context.mounted) {
+          await showPaymentModal(
+            context,
+            price: price,
+            collectorId: collector.id,
+          );
+        }
       }
     } catch (e) {
       debugPrint('Error during checkout: $e');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('error.error_during_checkout'.tr(args: [e.toString()])),
-      ));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('error.error_during_checkout'.tr(args: [e.toString()])),
+        ));
+      }
     }
   }
 }

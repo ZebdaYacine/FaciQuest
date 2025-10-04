@@ -116,213 +116,211 @@ class _PersonalInfoFormState extends State<_PersonalInfoForm> with BuildFormMixi
         final user = state.user;
         final isEditing = state.isEditing;
 
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              // Basic Information Section
-              _buildSectionHeader(context, 'personal_info.sections.basic_information'.tr()),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.username'.tr(),
-                onChanged: isEditing ? cubit.onUsernameChanged : null,
-                initialValue: user.username,
-                prefix: const Icon(Icons.person_outline_rounded),
-                readOnly: !isEditing,
-              ),
-              AppSpacing.spacing_2.heightBox,
-
-              Row(
-                children: [
-                  Expanded(
-                    child: GenericInputField(
-                      label: 'personal_info.fields.first_name'.tr(),
-                      onChanged: isEditing ? cubit.onFirstNameChanged : null,
-                      initialValue: user.firstName,
-                      prefix: const Icon(Icons.badge_outlined),
-                      readOnly: !isEditing,
-                    ),
-                  ),
-                  16.widthBox,
-                  Expanded(
-                    child: GenericInputField(
-                      label: 'personal_info.fields.last_name'.tr(),
-                      onChanged: isEditing ? cubit.onLastNameChanged : null,
-                      initialValue: user.lastName,
-                      prefix: const Icon(Icons.badge_outlined),
-                      readOnly: !isEditing,
-                    ),
-                  ),
-                ],
-              ),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.email'.tr(),
-                onChanged: isEditing ? cubit.onEmailChanged : null,
-                initialValue: user.email,
-                prefix: const Icon(Icons.email_outlined),
-                readOnly: !isEditing,
-                errorMessage: state.emailError,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.phone'.tr(),
-                onChanged: isEditing ? cubit.onPhoneChanged : null,
-                initialValue: user.phone,
-                prefix: const Icon(Icons.phone_outlined),
-                readOnly: !isEditing,
-                errorMessage: state.phoneError,
-                keyboardType: TextInputType.phone,
-              ),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.birth_date'.tr(),
-                readOnly: true,
-                onTap: isEditing
-                    ? () async {
-                        final date = await showDatePicker(
-                          context: context,
-                          initialDate: user.birthDate ?? DateTime.now().subtract(const Duration(days: 365 * 18)),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime.now(),
-                          builder: (context, child) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
-                                colorScheme: ColorScheme.light(
-                                  primary: context.colorScheme.primary,
-                                  onPrimary: context.colorScheme.onPrimary,
-                                  surface: context.colorScheme.surface,
-                                  onSurface: context.colorScheme.onSurface,
-                                ),
-                              ),
-                              child: child!,
-                            );
-                          },
-                        );
-                        if (date != null) {
-                          cubit.onBirthDateChanged(date);
-                        }
-                      }
-                    : null,
-                prefix: const Icon(Icons.calendar_today_outlined),
-                hintText: 'personal_info.fields.tap_to_select_date'.tr(),
-                initialValue: user.birthDate != null ? DateFormat('dd/MM/yyyy').format(user.birthDate!) : '',
-              ),
-              AppSpacing.spacing_3.heightBox,
-
-              // Personal Details Section
-              _buildSectionHeader(context, 'personal_info.sections.personal_details'.tr()),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.birth_place'.tr(),
-                onChanged: isEditing ? cubit.onBirthPlaceChanged : null,
-                initialValue: user.birthPlace ?? '',
-                prefix: const Icon(Icons.place_outlined),
-                readOnly: !isEditing,
-              ),
-              AppSpacing.spacing_2.heightBox,
-
-              Row(
-                children: [
-                  Expanded(
-                    child: GenericInputField(
-                      label: 'personal_info.fields.country'.tr(),
-                      onChanged: isEditing ? cubit.onCountryChanged : null,
-                      initialValue: user.country ?? '',
-                      prefix: const Icon(Icons.flag_outlined),
-                      readOnly: !isEditing,
-                    ),
-                  ),
-                  16.widthBox,
-                  Expanded(
-                    child: GenericInputField(
-                      label: 'personal_info.fields.municipal'.tr(),
-                      onChanged: isEditing ? cubit.onMunicipalChanged : null,
-                      initialValue: user.municipal ?? '',
-                      prefix: const Icon(Icons.location_city_outlined),
-                      readOnly: !isEditing,
-                    ),
-                  ),
-                ],
-              ),
-              AppSpacing.spacing_3.heightBox,
-
-              // Professional Information Section
-              _buildSectionHeader(context, 'personal_info.sections.professional_information'.tr()),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.education'.tr(),
-                onChanged: isEditing ? cubit.onEducationChanged : null,
-                initialValue: user.education ?? '',
-                prefix: const Icon(Icons.school_outlined),
-                readOnly: !isEditing,
-              ),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.work_at'.tr(),
-                onChanged: isEditing ? cubit.onWorkerAtChanged : null,
-                initialValue: user.workerAt ?? '',
-                prefix: const Icon(Icons.work_outline),
-                readOnly: !isEditing,
-              ),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.institution'.tr(),
-                onChanged: isEditing ? cubit.onInstitutionChanged : null,
-                initialValue: user.institution ?? '',
-                prefix: const Icon(Icons.business_outlined),
-                readOnly: !isEditing,
-              ),
-              AppSpacing.spacing_2.heightBox,
-
-              GenericInputField(
-                label: 'personal_info.fields.social_status'.tr(),
-                onChanged: isEditing ? cubit.onSocialStatusChanged : null,
-                initialValue: user.socialStatus ?? '',
-                prefix: const Icon(Icons.people_outline),
-                readOnly: !isEditing,
-              ),
-              AppSpacing.spacing_3.heightBox,
-
-              // Save Button (only show when editing)
-              if (isEditing) ...[
-                if (state.status == Status.showLoading)
-                  const CircularProgressIndicator()
-                else
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: state.isValid && state.hasUnsavedChanges
-                          ? () {
-                              cubit.saveChanges();
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(56),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      child: Text(
-                        'personal_info.save_changes'.tr(),
-                        style: context.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: context.colorScheme.onPrimary,
-                        ),
-                      ),
-                    ),
-                  ),
+        return RefreshIndicator(
+          onRefresh: () => cubit.refreshUserData(),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                // Basic Information Section
+                _buildSectionHeader(context, 'personal_info.sections.basic_information'.tr()),
                 AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.username'.tr(),
+                  onChanged: isEditing ? cubit.onUsernameChanged : null,
+                  initialValue: user.username,
+                  prefix: const Icon(Icons.person_outline_rounded),
+                  readOnly: !isEditing,
+                ),
+                AppSpacing.spacing_2.heightBox,
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: GenericInputField(
+                        label: 'personal_info.fields.first_name'.tr(),
+                        onChanged: isEditing ? cubit.onFirstNameChanged : null,
+                        initialValue: user.firstName,
+                        prefix: const Icon(Icons.badge_outlined),
+                        readOnly: !isEditing,
+                      ),
+                    ),
+                    16.widthBox,
+                    Expanded(
+                      child: GenericInputField(
+                        label: 'personal_info.fields.last_name'.tr(),
+                        onChanged: isEditing ? cubit.onLastNameChanged : null,
+                        initialValue: user.lastName,
+                        prefix: const Icon(Icons.badge_outlined),
+                        readOnly: !isEditing,
+                      ),
+                    ),
+                  ],
+                ),
+                AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.email'.tr(),
+                  onChanged: isEditing ? cubit.onEmailChanged : null,
+                  initialValue: user.email,
+                  prefix: const Icon(Icons.email_outlined),
+                  readOnly: !isEditing,
+                  errorMessage: state.emailError,
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.phone'.tr(),
+                  onChanged: isEditing ? cubit.onPhoneChanged : null,
+                  initialValue: user.phone,
+                  prefix: const Icon(Icons.phone_outlined),
+                  readOnly: !isEditing,
+                  errorMessage: state.phoneError,
+                  keyboardType: TextInputType.phone,
+                ),
+                AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.birth_date'.tr(),
+                  readOnly: true,
+                  onTap: isEditing
+                      ? () async {
+                          final date = await showDatePicker(
+                            context: context,
+                            initialDate: user.birthDate ?? DateTime.now().subtract(const Duration(days: 365 * 18)),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                            builder: (context, child) {
+                              return Theme(
+                                data: Theme.of(context).copyWith(
+                                  colorScheme: ColorScheme.light(
+                                    primary: context.colorScheme.primary,
+                                    onPrimary: context.colorScheme.onPrimary,
+                                    surface: context.colorScheme.surface,
+                                    onSurface: context.colorScheme.onSurface,
+                                  ),
+                                ),
+                                child: child!,
+                              );
+                            },
+                          );
+                          if (date != null) {
+                            cubit.onBirthDateChanged(date);
+                          }
+                        }
+                      : null,
+                  prefix: const Icon(Icons.calendar_today_outlined),
+                  hintText: 'personal_info.fields.tap_to_select_date'.tr(),
+                  initialValue: user.birthDate != null ? DateFormat('dd/MM/yyyy').format(user.birthDate!) : '',
+                ),
+                AppSpacing.spacing_3.heightBox,
+
+                // Personal Details Section
+                _buildSectionHeader(context, 'personal_info.sections.personal_details'.tr()),
+                AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.birth_place'.tr(),
+                  onChanged: isEditing ? cubit.onBirthPlaceChanged : null,
+                  initialValue: user.birthPlace ?? '',
+                  prefix: const Icon(Icons.place_outlined),
+                  readOnly: !isEditing,
+                ),
+                AppSpacing.spacing_2.heightBox,
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: GenericInputField(
+                        label: 'personal_info.fields.country'.tr(),
+                        onChanged: isEditing ? cubit.onCountryChanged : null,
+                        initialValue: user.country ?? '',
+                        prefix: const Icon(Icons.flag_outlined),
+                        readOnly: !isEditing,
+                      ),
+                    ),
+                    16.widthBox,
+                    Expanded(
+                      child: GenericInputField(
+                        label: 'personal_info.fields.municipal'.tr(),
+                        onChanged: isEditing ? cubit.onMunicipalChanged : null,
+                        initialValue: user.municipal ?? '',
+                        prefix: const Icon(Icons.location_city_outlined),
+                        readOnly: !isEditing,
+                      ),
+                    ),
+                  ],
+                ),
+                AppSpacing.spacing_3.heightBox,
+
+                // Professional Information Section
+                _buildSectionHeader(context, 'personal_info.sections.professional_information'.tr()),
+                AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.education'.tr(),
+                  onChanged: isEditing ? cubit.onEducationChanged : null,
+                  initialValue: user.education ?? '',
+                  prefix: const Icon(Icons.school_outlined),
+                  readOnly: !isEditing,
+                ),
+                AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.work_at'.tr(),
+                  onChanged: isEditing ? cubit.onWorkerAtChanged : null,
+                  initialValue: user.workerAt ?? '',
+                  prefix: const Icon(Icons.work_outline),
+                  readOnly: !isEditing,
+                ),
+                AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.institution'.tr(),
+                  onChanged: isEditing ? cubit.onInstitutionChanged : null,
+                  initialValue: user.institution ?? '',
+                  prefix: const Icon(Icons.business_outlined),
+                  readOnly: !isEditing,
+                ),
+                AppSpacing.spacing_2.heightBox,
+
+                GenericInputField(
+                  label: 'personal_info.fields.social_status'.tr(),
+                  onChanged: isEditing ? cubit.onSocialStatusChanged : null,
+                  initialValue: user.socialStatus ?? '',
+                  prefix: const Icon(Icons.people_outline),
+                  readOnly: !isEditing,
+                ),
+                AppSpacing.spacing_3.heightBox,
+
+                // Save Button (only show when editing)
+                if (isEditing) ...[
+                  if (state.status == Status.showLoading)
+                    const CircularProgressIndicator()
+                  else
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: state.isValid && state.hasUnsavedChanges
+                            ? () {
+                                cubit.saveChanges();
+                              }
+                            : null,
+                        child: Text(
+                          'personal_info.save_changes'.tr(),
+                          style: context.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: context.colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  AppSpacing.spacing_2.heightBox,
+                ],
               ],
-            ],
+            ),
           ),
         );
       },

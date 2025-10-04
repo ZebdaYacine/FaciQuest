@@ -84,7 +84,8 @@
       "enterCode": "Enter verification code",
       "didntReceive": "Didn't receive the code?",
       "resendIn": "Resend in",
-      "submit": "Verify"
+      "submit": "Verify",
+      "resendCode": "Resend Code"
     },
     "signUp": {
       "title": "Create Account",
@@ -137,7 +138,18 @@
       "description": "Please enter your new password",
       "submit": "Reset Password",
       "password": "Password",
-      "confirmPassword": "Confirm Password"
+      "confirmPassword": "Confirm Password",
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong",
+      "passwordsMatch": "Passwords match",
+      "passwordsDontMatch": "Passwords don't match",
+      "passwordHint": "Enter a strong password",
+      "confirmPasswordHint": "Confirm your password",
+      "securityTips": "Security Tips",
+      "tip1": "Make sure your password is stronger than required",
+      "tip2": "Make sure your password doesn't contain any keywords",
+      "tip3": "Make sure your password doesn't contain any numbers"
     }
   },
   "survey": {
@@ -294,6 +306,12 @@
       "coming_soon": "Coming soon"
     },
     "collectors": {
+      "edit": "Edit",
+      "share": "Share",
+      "activate": "Activate",
+      "delete": "Delete",
+      "link_copied_to_clipboard": "Link copied to clipboard",
+      "views": "views",
       "web_link": "Web Link",
       "web_link_description": "Share via web link",
       "qr_code": "QR Code",
@@ -312,7 +330,9 @@
       "survey_link_will_be_automatically_included_in_the_email": "Survey link will be automatically included in the email",
       "email_invitations_sent_successfully": "Email invitations sent successfully!",
       "send_invites": "Send Invites",
-      "hi_there": "Hi there! You've been invited to participate in our survey. Your feedback is valuable to us."
+      "hi_there": "Hi there! You've been invited to participate in our survey. Your feedback is valuable to us.",
+      "no_collectors": "No collectors yet",
+      "create_your_first_collector": "Create your first collector"
     },
     "stats": {
       "performance": "Survey Performance",
@@ -447,6 +467,9 @@
       "income_range": "Income Range",
       "min": "Min: {}",
       "max": "Max: {}",
+      "country_title": "Country",
+      "gender_title": "Gender",
+      "age_range_title": "Age Range",
       "gender": {
         "title": "Gender",
         "both": "Both",
@@ -470,7 +493,8 @@
       "who_to_survey": "Who do you want to survey?",
       "add_criteria": "Add targeting criteria",
       "estimated_cost": "Estimated cost",
-      "proceed_checkout": "Proceed to Checkout"
+      "proceed_checkout": "Proceed to Checkout",
+      "error_loading_price": "Error"
     }
   },
   "analysis": {
@@ -561,8 +585,8 @@
     "survey_card": {
       "fallback_title": "Survey Title",
       "fallback_description": "Share your thoughts and earn rewards by participating in this engaging survey designed to understand your preferences.",
-      "fallback_price": "150.00 DZD",
-      "duration_text": "5-10 min",
+      "fallback_price": "1.00 DZD",
+      "duration_text": "2-5 min",
       "participants": "participants",
       "status_active": "Active",
       "earnings_label": "Earn up to"
@@ -571,6 +595,45 @@
   "wallet": {
     "balance": "Wallet Balance",
     "cash_out": "Cash Out"
+  },
+  "payment": {
+    "billing_details": "Billing Details *",
+    "billing_email": "Billing Email :",
+    "first_name": "First Name :",
+    "last_name": "Last Name :",
+    "send_renewal_receipts": "Send me renewal receipts by email",
+    "payment_method": "Payment Method *",
+    "baridi_mob": "Baridi Mob",
+    "rip": "Rip :",
+    "upload_proof": "Upload proof of payment",
+    "ccp_transfer": "CCP Transfer",
+    "ccp": "ccp :",
+    "key": "Key :",
+    "to": "to :",
+    "edahabia_card": "Edahabia card",
+    "ccp_card": "CCP card",
+    "coming_soon": "coming soon",
+    "bank_transfer_info": "Direct bank deposit or wire transfer (3-5 business days from when you send the transfer)",
+    "activation_info": "The collector will be activated once payment clears.",
+    "total": "Total :",
+    "pay": "Pay",
+    "copy_to_clipboard": "Copy to clipboard",
+    "copied_success": "Copied to clipboard successfully!",
+    "copy_failed": "Failed to copy to clipboard",
+    "upload_file_error": "Error uploading file",
+    "payment_processing_error": "Payment processing error",
+    "invalid_file_type": "Invalid file type. Please select JPG, PNG, or PDF files only.",
+    "file_too_large": "File is too large",
+    "payment_failed": "Payment failed. Please try again.",
+    "network_error": "Network error. Please check your connection.",
+    "file_source_title": "Select File Source",
+    "camera": "Camera",
+    "photo_gallery": "Photo Gallery",
+    "files": "Files",
+    "uploading": "Uploading...",
+    "file_uploaded_success": "File uploaded successfully",
+    "upload_proof_required": "Please upload proof of payment for at least one payment method",
+    "payment_submitted_success": "Payment submitted successfully! We will review your proof of payment."
   },
   "questionModal": {
     "Add Question": "Add Question",

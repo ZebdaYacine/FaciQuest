@@ -84,7 +84,8 @@
       "enterCode": "أدخل رمز التحقق",
       "didntReceive": "لم تتلق الرمز؟",
       "resendIn": "إعادة الإرسال خلال",
-      "submit": "تحقق"
+      "submit": "تحقق",
+      "resendCode": "إعادة الإرسال"
     },
     "signUp": {
       "title": "إنشاء حساب",
@@ -137,7 +138,18 @@
       "description": "يرجى إدخال كلمة المرور الجديدة",
       "submit": "إعادة تعيين كلمة المرور",
       "password": "كلمة المرور",
-      "confirmPassword": "تأكيد كلمة المرور"
+      "confirmPassword": "تأكيد كلمة المرور",
+      "weak": "ضعيف",
+      "medium": "متوسط",
+      "strong": "قوي",
+      "passwordsMatch": "كلمات المرور متطابقة",
+      "passwordsDontMatch": "كلمات المرور غير متطابقة",
+      "passwordHint": "أدخل كلمة المرور القوية",
+      "confirmPasswordHint": "تأكيد كلمة المرور",
+      "securityTips": "نصائح الأمان",
+      "tip1": "تأكد من أن كلمة المرور أقوى من المطلوب",
+      "tip2": "تأكد من أن كلمة المرور لا تحتوي على أي كلمات مفتاحية",
+      "tip3": "تأكد من أن كلمة المرور لا تحتوي على أي أرقام"
     }
   },
   "survey": {
@@ -170,6 +182,12 @@
       "next": "التالي"
     },
     "collectors": {
+      "edit": "تعديل",
+      "share": "شارك",
+      "activate": "تفعيل",
+      "delete": "حذف",
+      "link_copied_to_clipboard": "رابط الويب تم نسخه إلى الحافظة",
+      "views": "المشاهدات",
       "web_link": "رابط الويب",
       "web_link_description": "شارك عبر رابط الويب",
       "qr_code": "رمز QR",
@@ -444,6 +462,9 @@
       "income_range": "نطاق الدخل",
       "min": "الحد الأدنى: {}",
       "max": "الحد الأقصى: {}",
+      "country_title": "الدولة",
+      "gender_title": "الجنس",
+      "age_range_title": "الفئة العمرية",
       "gender": {
         "title": "الجنس",
         "both": "كلاهما",
@@ -467,7 +488,8 @@
       "who_to_survey": "من تريد أن تستطلع رأيه؟",
       "add_criteria": "إضافة معايير الاستهداف",
       "estimated_cost": "التكلفة التقديرية",
-      "proceed_checkout": "المتابعة إلى الدفع"
+      "proceed_checkout": "المتابعة إلى الدفع",
+      "error_loading_price": "خطأ"
     }
   },
   "analysis": {
@@ -558,8 +580,8 @@
     "survey_card": {
       "fallback_title": "عنوان الاستبيان",
       "fallback_description": "شارك أفكارك واحصل على مكافآت عبر المشاركة في هذا الاستبيان التفاعلي المصمم لفهم تفضيلاتك.",
-      "fallback_price": "150,00 دج",
-      "duration_text": "5-10 دقيقة",
+      "fallback_price": "1,00 دج",
+      "duration_text": "2-5 دقيقة",
       "participants": "مشارك",
       "status_active": "نشط",
       "earnings_label": "اربح حتى"
@@ -568,6 +590,45 @@
   "wallet": {
     "balance": "رصيد المحفظة",
     "cash_out": "سحب"
+  },
+  "payment": {
+    "billing_details": "تفاصيل الفاتورة *",
+    "billing_email": "بريد الفاتورة الإلكتروني :",
+    "first_name": "الاسم الأول :",
+    "last_name": "اسم العائلة :",
+    "send_renewal_receipts": "إرسال إيصالات التجديد عبر البريد الإلكتروني",
+    "payment_method": "طريقة الدفع *",
+    "baridi_mob": "بريدي موب",
+    "rip": "Rip :",
+    "upload_proof": "رفع إثبات الدفع",
+    "ccp_transfer": "تحويل CCP",
+    "ccp": "ccp :",
+    "key": "المفتاح :",
+    "to": "إلى :",
+    "edahabia_card": "بطاقة الذهبية",
+    "ccp_card": "بطاقة CCP",
+    "coming_soon": "قريباً",
+    "bank_transfer_info": "إيداع مصرفي مباشر أو تحويل (3-5 أيام عمل من وقت إرسال التحويل)",
+    "activation_info": "سيتم تفعيل أداة الجمع بمجرد قبول الدفع.",
+    "total": "الإجمالي :",
+    "pay": "ادفع",
+    "copy_to_clipboard": "نسخ إلى الحافظة",
+    "copied_success": "تم النسخ إلى الحافظة بنجاح!",
+    "copy_failed": "فشل في النسخ إلى الحافظة",
+    "upload_file_error": "خطأ في رفع الملف",
+    "payment_processing_error": "خطأ في معالجة الدفع",
+    "invalid_file_type": "نوع ملف غير صالح. يرجى اختيار ملفات JPG أو PNG أو PDF فقط.",
+    "file_too_large": "الملف كبير جداً",
+    "payment_failed": "فشل الدفع. يرجى المحاولة مرة أخرى.",
+    "network_error": "خطأ في الشبكة. يرجى فحص اتصالك.",
+    "file_source_title": "اختيار مصدر الملف",
+    "camera": "الكاميرا",
+    "photo_gallery": "معرض الصور",
+    "files": "الملفات",
+    "uploading": "جاري الرفع...",
+    "file_uploaded_success": "تم رفع الملف بنجاح",
+    "upload_proof_required": "يرجى رفع إثبات الدفع لطريقة دفع واحدة على الأقل",
+    "payment_submitted_success": "تم إرسال الدفع بنجاح! سنقوم بمراجعة إثبات الدفع الخاص بك."
   },
   "questionModal": {
     "Add Question": "إضافة سؤال",

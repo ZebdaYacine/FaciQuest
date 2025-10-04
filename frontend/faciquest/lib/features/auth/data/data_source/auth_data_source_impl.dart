@@ -146,8 +146,8 @@ class AuthDataSourceImpl implements AuthDataSource {
         );
         if (response.statusCode == 200) {
           logSuccess('Set New Password Successful');
-          final user = UserEntity.fromMap(response.data['date']['userdata']);
-          saveUserToLocal(user, response.data['date']['token']);
+          // final user = UserEntity.fromMap(response.data['date']['userdata']);
+          // saveUserToLocal(user, response.data['date']['token']);
           return;
         }
       },
@@ -190,13 +190,13 @@ class AuthDataSourceImpl implements AuthDataSource {
 
     return dioService.handleRequest(
       () async {
-        final response = await dioClient.put(
-          AppUrls.authUpdateUserUrl, // You'll need to add this URL
+        final response = await dioClient.post(
+          AppUrls.authUpdateUserUrl,
           data: user.toMap(),
         );
         if (response.statusCode == 200) {
           logSuccess('Update User Successful');
-          final updatedUser = UserEntity.fromMap(response.data['date']['userdata']);
+          final updatedUser = UserEntity.fromMap(response.data['date']['Data']);
 
           // Update local storage and stream
           saveUserToLocal(updatedUser, null); // Keep existing token

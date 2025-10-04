@@ -75,8 +75,20 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    final item = state.survey.questions.removeAt(oldIndex);
-    state.survey.questions.insert(newIndex, item);
+
+    // Create a copy of the questions list to avoid mutating state directly
+    final questions = List<QuestionEntity>.from(state.survey.questions);
+    final item = questions.removeAt(oldIndex);
+    questions.insert(newIndex, item);
+
+    // Emit the new state with the reordered questions
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(
+          questions: questions,
+        ),
+      ),
+    );
   }
 
   void removeQuestion(int index) {

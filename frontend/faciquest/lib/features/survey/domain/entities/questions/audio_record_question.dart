@@ -30,6 +30,7 @@ class AudioRecordQuestion extends QuestionEntity {
       id: map['id'],
       title: map['title'],
       order: map['order'],
+      isRequired: map['isrequired']??false,
     );
   }
 

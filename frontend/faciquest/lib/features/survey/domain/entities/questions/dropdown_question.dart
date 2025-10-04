@@ -35,6 +35,7 @@ class DropdownQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       choices: List<String>.from(map['choices']),
+      isRequired: map['isrequired']??false,
     );
   }
 

@@ -162,7 +162,7 @@ sealed class QuestionEntity extends Equatable {
       'title': title,
       'order': order,
       'type': type.name,
-      'isRequired': isRequired,
+      'isrequired': isRequired,
     };
   }
 

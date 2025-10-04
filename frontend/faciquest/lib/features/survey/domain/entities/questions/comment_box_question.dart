@@ -42,6 +42,7 @@ class CommentBoxQuestion extends QuestionEntity {
       order: map['order'],
       maxLength: map['maxLength'],
       maxLines: map['maxLines'],
+      isRequired: map['isrequired']??false,
     );
   }
 

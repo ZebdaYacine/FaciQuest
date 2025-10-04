@@ -5,6 +5,7 @@ import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SetNewPasswordView extends StatefulWidget {
   const SetNewPasswordView({super.key});
@@ -62,6 +63,9 @@ class _SetNewPasswordViewState extends State<SetNewPasswordView> with TickerProv
       child: BlocListener<SetNewPasswordCubit, SetNewPasswordState>(
         listener: (context, state) {
           statusHandler(context, state.status ?? Status.initial, msg: state.msg);
+          if (state.status == Status.success) {
+            context.goNamed(AppRoutes.signIn.name);
+          }
         },
         child: FadeTransition(
           opacity: _fadeAnimation,
@@ -96,7 +100,7 @@ class _Body extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: AppSpacing.spacing_4.padding,
+            padding: AppSpacing.spacing_2.horizontalPadding,
             child: Column(
               children: [
                 // Header with back button
@@ -467,7 +471,7 @@ class __ResetFormState extends State<_ResetForm> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'auth.setNewPassword.password'.tr(),
-                  hintText: 'Enter a strong password',
+                  hintText: 'auth.setNewPassword.passwordHint'.tr(),
                   prefixIcon: Icon(
                     Icons.lock_outline_rounded,
                     color: context.colorScheme.primary,
@@ -567,7 +571,7 @@ class __ResetFormState extends State<_ResetForm> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'auth.setNewPassword.confirmPassword'.tr(),
-                  hintText: 'Confirm your password',
+                  hintText: 'auth.setNewPassword.confirmPasswordHint'.tr(),
                   prefixIcon: Icon(
                     Icons.lock_reset_rounded,
                     color: context.colorScheme.primary,

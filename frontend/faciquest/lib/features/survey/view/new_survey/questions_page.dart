@@ -5,6 +5,7 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:objectid/objectid.dart';
 
 class QuestionsPage extends StatelessWidget {
   const QuestionsPage({super.key});
@@ -239,7 +240,7 @@ class _CopyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NewSurveyCubit, NewSurveyState>(
-      builder: (context, state) {
+      builder: (_, state) {
         return IconButton.filled(
           style: IconButton.styleFrom(
             backgroundColor: context.colorScheme.secondaryContainer,
@@ -254,7 +255,7 @@ class _CopyButton extends StatelessWidget {
               copy: true,
             );
 
-            if (newQuestions == null) return;
+            if (newQuestions == null || !context.mounted) return;
             context.read<NewSurveyCubit>().newQuestionsList(newQuestions);
           },
         );
@@ -283,7 +284,7 @@ class _DeleteButton extends StatelessWidget {
   void _showDeleteDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (_) {
         return AlertDialog(
           title: Text(
             'delete_dialog.delete_question_title'.tr(),
@@ -398,7 +399,7 @@ Future<List<QuestionEntity>?> showMoveBottomSheet(
   MoveQuestionAction? action = MoveQuestionAction.after;
   return showModalBottomSheet(
     context: context,
-    builder: (context) {
+    builder: (_) {
       return StatefulBuilder(builder: (context, setState) {
         return AppBackDrop(
           headerActions: BackdropHeaderActions.none,
@@ -430,10 +431,13 @@ Future<List<QuestionEntity>?> showMoveBottomSheet(
               }
 
               final temp = List<QuestionEntity>.from(questions ?? []);
-              final item = temp.elementAt(index);
+              var item = temp.elementAt(index);
 
               if (!copy) {
                 temp.removeAt(index);
+              } else {
+                // When copying, generate a new unique ID for the copied question
+                item = _createQuestionCopyWithNewId(item);
               }
 
               switch (action!) {
@@ -552,4 +556,13 @@ class MoveQuestionBottomSheetBody extends StatelessWidget {
 enum MoveQuestionAction {
   after,
   before,
+}
+
+/// Creates a copy of the given question with a new unique ID
+QuestionEntity _createQuestionCopyWithNewId(QuestionEntity question) {
+  // Convert the question to a map, replace the ID with a new one,
+  // then create a new question from the modified map
+  final questionMap = question.toMap();
+  questionMap['id'] = ObjectId().hexString;
+  return QuestionEntity.fromMap(questionMap);
 }

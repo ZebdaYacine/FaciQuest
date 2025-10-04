@@ -74,7 +74,7 @@ class NameQuestion extends QuestionEntity {
       showFirstName: map['showFirstName'],
       showLastName: map['showLastName'],
       showMiddleName: map['showMiddleName'],
-      isRequired: map['isRequired'],
+      isRequired: map['isrequired'] ?? false,
     );
   }
 

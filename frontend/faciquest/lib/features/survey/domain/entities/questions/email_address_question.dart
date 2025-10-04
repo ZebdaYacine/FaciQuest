@@ -46,6 +46,7 @@ class EmailAddressQuestion extends QuestionEntity {
       emailAddressLabel: map['emailAddressLabel'],
       emailAddressHint: map['emailAddressHint'],
       showEmailAddress: map['showEmailAddress'],
+      isRequired: map['isrequired']??false,
     );
   }
 

@@ -143,7 +143,7 @@ class _Body extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: AppSpacing.spacing_4.padding,
+            padding: AppSpacing.spacing_2.horizontalPadding,
             child: Column(
               children: [
                 // Header with back button

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -36,17 +37,16 @@ class _CashOutModalState extends State<CashOutModal> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextFormField(
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(
                 labelText: 'Email',
-                hintText: 'Enter your email address',
+                hintText: 'auth.signIn.emailHint'.tr(),
               ),
               keyboardType: TextInputType.emailAddress,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter an email';
                 }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                    .hasMatch(value)) {
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                   return 'Please enter a valid email';
                 }
                 return null;
@@ -76,8 +76,7 @@ class _CashOutModalState extends State<CashOutModal> {
                     }
                     return null;
                   },
-                  onSaved: (value) =>
-                      _amount = double.tryParse(value ?? '0') ?? 0,
+                  onSaved: (value) => _amount = double.tryParse(value ?? '0') ?? 0,
                 );
               },
             ),

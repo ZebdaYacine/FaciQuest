@@ -93,6 +93,7 @@ class FileUploadQuestion extends QuestionEntity {
       allowedExtensions: FileUploadType.fromMap(
         (map['allowedExtensions'] as List<dynamic>).map((e) => e.toString()).toList(),
       ),
+      isRequired: map['isrequired']??false,
     );
   }
 

@@ -38,6 +38,7 @@ class ImageQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       image: ImageChoice.fromMap(map['image']),
+      isRequired: map['isrequired'] ?? false,
     );
   }
 

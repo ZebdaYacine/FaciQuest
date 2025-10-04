@@ -55,7 +55,7 @@ class MatrixQuestion extends QuestionEntity {
       rows: List<String>.from(map['rows']),
       cols: List<String>.from(map['cols']),
       useCheckbox: map['useCheckbox'],
-      isRequired: map['isRequired'],
+      isRequired: map['isrequired'] ?? false,
     );
   }
 
@@ -66,7 +66,6 @@ class MatrixQuestion extends QuestionEntity {
       'rows': rows,
       'cols': cols,
       'useCheckbox': useCheckbox,
-
     };
   }
 

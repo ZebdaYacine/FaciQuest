@@ -11,7 +11,7 @@ String get printTime {
 void logInfo(dynamic msg) {
   developer.log(
     '\x1B[34m$msg\x1B[0m',
-    name: 'YassirX$printTime',
+    name: 'faciquest$printTime',
   );
 }
 
@@ -19,7 +19,7 @@ void logInfo(dynamic msg) {
 void logSuccess(dynamic msg) {
   developer.log(
     '\x1B[32m$msg\x1B[0m',
-    name: 'YassirX$printTime',
+    name: 'Faciquest$printTime',
   );
 }
 
@@ -27,7 +27,7 @@ void logSuccess(dynamic msg) {
 void logWarning(dynamic msg) {
   developer.log(
     '\x1B[33m$msg\x1B[0m',
-    name: 'YassirX$printTime',
+    name: 'Faciquest$printTime',
   );
 }
 
@@ -35,6 +35,6 @@ void logWarning(dynamic msg) {
 void logError(dynamic msg) {
   developer.log(
     '\x1B[31m$msg\x1B[0m',
-    name: 'YassirX$printTime',
+    name: 'Faciquest$printTime',
   );
 }

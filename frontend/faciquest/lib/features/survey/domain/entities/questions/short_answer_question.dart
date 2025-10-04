@@ -38,6 +38,7 @@ class ShortAnswerQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       maxLength: map['maxLength'],
+      isRequired: map['isrequired']??false,
     );
   }
 

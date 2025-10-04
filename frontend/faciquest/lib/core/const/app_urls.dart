@@ -9,7 +9,7 @@ class AppUrls {
   static const authLogoutUrl = '$baseUrl/profile/logout';
   static const authSetNewPasswordUrl = '$baseUrl/profile/set-new-pwd';
   static const authVerifyOtpUrl = '$baseUrl/confirm-account';
-  static const authUpdateUserUrl = '$baseUrl/profile/update-user';
+  static const authUpdateUserUrl = '$baseUrl/profile/update-profile';
 
   /// survey
   static const createSurvey = '$baseUrl/profile/create-survey';

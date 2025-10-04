@@ -25,6 +25,7 @@ class StarRatingQuestion extends QuestionEntity {
       maxRating: map['maxRating'],
       shape: StarRatingShape.values.firstWhere((element) => element.name == map['shape']),
       color: color != null ? Color(color) : Colors.amber,
+      isRequired: map['isrequired']??false,
     );
   }
 

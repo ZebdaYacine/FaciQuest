@@ -47,6 +47,7 @@ class ImageChoiceQuestion extends QuestionEntity {
       order: map['order'],
       choices: List<ImageChoice>.from(map['choices'].map((e) => ImageChoice.fromMap(e))),
       multipleSelect: map['useCheckbox'],
+      isRequired: map['isrequired']??false,
     );
   }
 

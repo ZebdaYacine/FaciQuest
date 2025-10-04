@@ -84,7 +84,8 @@
       "enterCode": "Saisissez le code de vérification",
       "didntReceive": "Vous n'avez pas reçu le code ?",
       "resendIn": "Renvoyer dans",
-      "submit": "Vérifier"
+      "submit": "Vérifier",
+      "resendCode": "Renvoyer le Code"
     },
     "signUp": {
       "title": "Créer un Compte",
@@ -137,7 +138,18 @@
       "description": "Veuillez saisir votre nouveau mot de passe",
       "submit": "Réinitialiser",
       "password": "Mot de passe",
-      "confirmPassword": "Confirmer le mot de passe"
+      "confirmPassword": "Confirmer le mot de passe",
+      "weak": "Faible",
+      "medium": "Moyen",
+      "strong": "Fort",
+      "passwordsMatch": "Les mots de passe correspondent",
+      "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+      "passwordHint": "Entrez un mot de passe fort",
+      "confirmPasswordHint": "Confirmez votre mot de passe",
+      "securityTips": "Conseils de Sécurité",
+      "tip1": "Assurez-vous que votre mot de passe est plus fort que requis",
+      "tip2": "Assurez-vous que votre mot de passe ne contient aucun mot-clé",
+      "tip3": "Assurez-vous que votre mot de passe ne contient aucun chiffre"
     }
   },
   "survey": {
@@ -170,6 +182,12 @@
       "next": "Suivant"
     },
     "collectors": {
+      "edit": "Modifier",
+      "share": "Partager",
+      "activate": "Activer",
+      "delete": "Supprimer",
+      "link_copied_to_clipboard": "Lien web copié dans le presse-papiers",
+      "views": "Vues",
       "web_link": "Lien Web",
       "web_link_description": "Partager via le lien web",
       "qr_code": "Code QR",
@@ -444,6 +462,9 @@
       "income_range": "Tranche de Revenus",
       "min": "Min : {}",
       "max": "Max : {}",
+      "country_title": "Pays",
+      "gender_title": "Genre",
+      "age_range_title": "Tranche d'Âge",
       "gender": {
         "title": "Genre",
         "both": "Les deux",
@@ -467,7 +488,8 @@
       "who_to_survey": "Qui souhaitez-vous interroger ?",
       "add_criteria": "Ajouter des critères de ciblage",
       "estimated_cost": "Coût estimé",
-      "proceed_checkout": "Procéder au Paiement"
+      "proceed_checkout": "Procéder au Paiement",
+      "error_loading_price": "Erreur"
     }
   },
   "analysis": {
@@ -559,7 +581,7 @@
       "fallback_title": "Titre du Sondage",
       "fallback_description": "Partagez vos pensées et gagnez des récompenses en participant à cette enquête engageante conçue pour comprendre vos préférences.",
       "fallback_price": "1,00 DZD",
-      "duration_text": "5-10 min",
+      "duration_text": "2-5 min",
       "participants": "participants",
       "status_active": "Actif",
       "earnings_label": "Gagnez jusqu'à"
@@ -568,6 +590,45 @@
   "wallet": {
     "balance": "Solde du Portefeuille",
     "cash_out": "Retrait"
+  },
+  "payment": {
+    "billing_details": "Détails de Facturation *",
+    "billing_email": "Email de Facturation :",
+    "first_name": "Prénom :",
+    "last_name": "Nom :",
+    "send_renewal_receipts": "M'envoyer les reçus de renouvellement par email",
+    "payment_method": "Méthode de Paiement *",
+    "baridi_mob": "Baridi Mob",
+    "rip": "Rip :",
+    "upload_proof": "Télécharger la preuve de paiement",
+    "ccp_transfer": "Virement CCP",
+    "ccp": "ccp :",
+    "key": "Clé :",
+    "to": "à :",
+    "edahabia_card": "Carte Edahabia",
+    "ccp_card": "Carte CCP",
+    "coming_soon": "bientôt disponible",
+    "bank_transfer_info": "Dépôt bancaire direct ou virement (3-5 jours ouvrables à partir de l'envoi du virement)",
+    "activation_info": "Le collecteur sera activé une fois le paiement effectué.",
+    "total": "Total :",
+    "pay": "Payer",
+    "copy_to_clipboard": "Copier dans le presse-papier",
+    "copied_success": "Copié dans le presse-papier avec succès !",
+    "copy_failed": "Échec de la copie dans le presse-papier",
+    "upload_file_error": "Erreur lors du téléchargement du fichier",
+    "payment_processing_error": "Erreur de traitement du paiement",
+    "invalid_file_type": "Type de fichier invalide. Veuillez sélectionner uniquement des fichiers JPG, PNG ou PDF.",
+    "file_too_large": "Le fichier est trop volumineux",
+    "payment_failed": "Échec du paiement. Veuillez réessayer.",
+    "network_error": "Erreur réseau. Veuillez vérifier votre connexion.",
+    "file_source_title": "Sélectionner la source du fichier",
+    "camera": "Appareil photo",
+    "photo_gallery": "Galerie photo",
+    "files": "Fichiers",
+    "uploading": "Téléchargement en cours...",
+    "file_uploaded_success": "Fichier téléchargé avec succès",
+    "upload_proof_required": "Veuillez télécharger une preuve de paiement pour au moins une méthode de paiement",
+    "payment_submitted_success": "Paiement soumis avec succès ! Nous examinerons votre preuve de paiement."
   },
   "questionModal": {
     "Add Question": "Ajouter une question",

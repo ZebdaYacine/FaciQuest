@@ -368,16 +368,16 @@ class _CollectorOptionsGrid extends StatelessWidget {
         //     _showQRCodeModal(context);
         //   },
         // ),
-        _CollectorOptionCard(
-          icon: Icons.email_outlined,
-          title: 'survey.collectors.email_invitation'.tr(),
-          description: 'survey.collectors.email_invitation_description'.tr(),
-          color: Colors.orange,
-          onTap: () {
-            Navigator.of(context).pop(); // Close bottom sheet
-            _showEmailModal(context);
-          },
-        ),
+        // _CollectorOptionCard(
+        //   icon: Icons.email_outlined,
+        //   title: 'survey.collectors.email_invitation'.tr(),
+        //   description: 'survey.collectors.email_invitation_description'.tr(),
+        //   color: Colors.orange,
+        //   onTap: () {
+        //     Navigator.of(context).pop(); // Close bottom sheet
+        //     _showEmailModal(context);
+        //   },
+        // ),
       ],
     );
   }

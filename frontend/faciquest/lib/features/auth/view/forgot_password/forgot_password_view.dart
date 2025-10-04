@@ -104,7 +104,7 @@ class _Body extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: AppSpacing.spacing_4.padding,
+            padding: AppSpacing.spacing_2.horizontalPadding,
             child: Column(
               children: [
                 // Header with back button
@@ -415,7 +415,7 @@ class _ResetForm extends StatelessWidget {
               return TextFormField(
                 decoration: InputDecoration(
                   labelText: 'auth.forgotPassword.email'.tr(),
-                  hintText: 'Enter your email address',
+                  hintText: 'auth.signIn.emailHint'.tr(),
                   prefixIcon: Icon(
                     Icons.email_outlined,
                     color: context.colorScheme.primary,

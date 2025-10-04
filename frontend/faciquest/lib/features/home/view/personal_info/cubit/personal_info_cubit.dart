@@ -19,6 +19,41 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     }
   }
 
+  Future<void> refreshUserData() async {
+    emit(state.copyWith(isRefreshing: true));
+
+    try {
+      // Get the latest user from AuthBloc
+      final currentUser = getIt<AuthBloc>().state.user;
+
+      if (currentUser != null) {
+        // Reset any editing state when refreshing
+        emit(state.copyWith(
+          user: currentUser,
+          isRefreshing: false,
+          isEditing: false,
+          hasUnsavedChanges: false,
+          emailError: null,
+          phoneError: null,
+          status: Status.initial,
+          message: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          isRefreshing: false,
+          status: Status.failure,
+          message: 'Unable to refresh user data',
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        isRefreshing: false,
+        status: Status.failure,
+        message: 'Failed to refresh user data: ${e.toString()}',
+      ));
+    }
+  }
+
   // Validation methods (reused from SignUpCubit)
   String? _validateEmail(String email) {
     if (email.isEmpty) {

@@ -142,6 +142,7 @@ class AddressQuestion extends QuestionEntity {
       streetAddress1Label: map['streetAddress1Label'],
       streetAddress1Hint: map['streetAddress1Hint'],
       showStreetAddress1: map['showStreetAddress1'] ?? true,
+      isRequired: map['isrequired'] ?? false,
     );
   }
 
