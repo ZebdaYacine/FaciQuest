@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'providers/dashboard_provider.dart';
 import 'providers/auth_provider.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/login_screen.dart';
 import 'models/models.dart';
+import 'services/app_config.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
+
   runApp(const FaciQuestDashboard());
 }
 
@@ -22,10 +29,13 @@ class FaciQuestDashboard extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
       ],
       child: MaterialApp(
-        title: 'FaciQuest Admin Dashboard',
-        debugShowCheckedModeBanner: false,
+        title: AppConfig.appName,
+        debugShowCheckedModeBanner: AppConfig.debugMode,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2196F3), brightness: Brightness.light),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Color(AppConfig.defaultThemeColor),
+            brightness: Brightness.light,
+          ),
           useMaterial3: true,
           appBarTheme: const AppBarTheme(centerTitle: false, elevation: 0),
           cardTheme: CardThemeData(

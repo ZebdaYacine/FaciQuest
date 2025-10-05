@@ -3,12 +3,13 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/models.dart';
+import 'app_config.dart';
 
 class AuthService {
-  static const String baseUrl = 'http://185.209.229.242:3000';
+  static String get baseUrl => AppConfig.apiBaseUrl;
 
   // SharedPreferences keys
-  static const String _tokenKey = 'auth_token';
+  static String get _tokenKey => AppConfig.authTokenKey;
   static const String _userKey = 'auth_user';
 
   static String? _cachedToken;

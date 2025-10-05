@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:dashboard/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'auth_service.dart';
+import 'app_config.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://185.209.230.104:3000';
+  static String get baseUrl => AppConfig.apiBaseUrl;
 
   static Map<String, String> get _headers {
     final headers = {'Content-Type': 'application/json'};
@@ -19,9 +20,10 @@ class ApiService {
   }
 
   // Users API
-  static Future<List<UserModel>> getUsers({UserFilters? filters, int page = 1, int limit = 10}) async {
+  static Future<List<UserModel>> getUsers({UserFilters? filters, int page = 1, int? limit}) async {
+    final actualLimit = limit ?? AppConfig.defaultPageSize;
     try {
-      final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
+      final queryParams = <String, String>{'page': page.toString(), 'limit': actualLimit.toString()};
 
       if (filters != null) {
         if (filters.isActive != null) {
@@ -89,7 +91,8 @@ class ApiService {
   }
 
   // Surveys API
-  static Future<List<SurveyEntity>> getSurveys({SurveyFilters? filters, int page = 1, int limit = 10}) async {
+  static Future<List<SurveyEntity>> getSurveys({SurveyFilters? filters, int page = 1, int? limit}) async {
+    final actualLimit = limit ?? AppConfig.defaultPageSize;
     try {
       // TODO: add filters
       // final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
@@ -154,8 +157,9 @@ class ApiService {
   static Future<List<CashoutRequestModel>> getCashoutRequests({
     CashoutFilters? filters,
     int page = 1,
-    int limit = 10,
+    int? limit,
   }) async {
+    final actualLimit = limit ?? AppConfig.defaultPageSize;
     try {
       // final queryParams = <String, String>{'page': page.toString(), 'limit': limit.toString()};
 
