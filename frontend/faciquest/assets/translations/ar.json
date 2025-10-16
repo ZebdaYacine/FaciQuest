@@ -589,7 +589,81 @@
   },
   "wallet": {
     "balance": "رصيد المحفظة",
-    "cash_out": "سحب"
+    "cash_out": "سحب",
+    "update_profile": "تحديث ملف المحفظة",
+    "available_balance": "الرصيد المتاح",
+    "temp_balance": "الرصيد المعلق",
+    "total_surveys": "إجمالي الاستطلاعات المكتملة",
+    "cashable_status": "حالة القابلية للسحب",
+    "payment_method": "طريقة الدفع",
+    "payment_details": "تفاصيل الدفع",
+    "ccp_number": "رقم الحساب البريدي الجاري",
+    "rip_number": "الرقم التعريفي البريدي",
+    "amount": "المبلغ",
+    "submit_request": "إرسال الطلب",
+    "request_submitted": "تم إرسال طلب السحب بنجاح",
+    "please_wait_loading": "الرجاء الانتظار، جاري تحميل معلومات المحفظة...",
+    "enter_amount": "أدخل المبلغ المراد سحبه",
+    "enter_ccp_number": "أدخل رقم حسابك البريدي الجاري",
+    "enter_rip_number": "أدخل رقمك التعريفي البريدي",
+    "select_payment_method": "اختر طريقة الدفع",
+    "baridimob": "بريدي موب",
+    "ccp": "حساب بريدي جاري",
+    "rip": "الرقم التعريفي البريدي",
+    "validation": {
+      "amount_required": "الرجاء إدخال المبلغ",
+      "amount_invalid": "الرجاء إدخال رقم صحيح",
+      "amount_positive": "يجب أن يكون المبلغ أكبر من صفر",
+      "amount_exceeds_balance": "المبلغ يتجاوز رصيد محفظتك",
+      "ccp_required": "الرجاء إدخال رقم حسابك البريدي الجاري",
+      "rip_required": "الرجاء إدخال رقمك التعريفي البريدي",
+      "payment_method_required": "الرجاء اختيار طريقة الدفع"
+    },
+    "error": {
+      "load_failed": "فشل تحميل المحفظة",
+      "update_failed": "فشل تحديث المحفظة",
+      "cashout_failed": "فشل إرسال طلب السحب",
+      "not_cashable": "المحفظة غير قابلة للسحب في الوقت الحالي",
+      "insufficient_balance": "رصيد غير كافٍ"
+    },
+    "success": {
+      "updated": "تم تحديث المحفظة بنجاح",
+      "cashout_submitted": "تم إرسال طلب السحب بنجاح"
+    },
+    "update_modal": {
+      "title": "تحديث ملف المحفظة",
+      "amount_label": "المبلغ",
+      "amount_hint": "أدخل مبلغ المحفظة",
+      "surveys_label": "عدد الاستطلاعات",
+      "surveys_hint": "أدخل عدد الاستطلاعات",
+      "payment_method_label": "طريقة الدفع",
+      "ccp_label": "رقم الحساب البريدي الجاري",
+      "ccp_hint": "أدخل رقم الحساب البريدي الجاري",
+      "rip_label": "الرقم التعريفي البريدي",
+      "rip_hint": "أدخل الرقم التعريفي البريدي",
+      "submit": "تحديث المحفظة"
+    },
+    "cashout_modal": {
+      "title": "طلب السحب",
+      "available_balance_info": "الرصيد المتاح: {} دج",
+      "amount_label": "المبلغ",
+      "amount_hint": "أدخل المبلغ المراد سحبه",
+      "payment_method_label": "طريقة الدفع",
+      "ccp_label": "رقم الحساب البريدي الجاري",
+      "ccp_hint": "أدخل رقم حسابك البريدي الجاري",
+      "rip_label": "الرقم التعريفي البريدي",
+      "rip_hint": "أدخل رقمك التعريفي البريدي",
+      "submit": "إرسال الطلب",
+      "info": "سيتم معالجة طلب السحب الخاص بك خلال 3-5 أيام عمل"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض",
+      "completed": "مكتمل",
+      "cashable": "قابل للسحب",
+      "not_cashable": "غير قابل للسحب"
+    }
   },
   "payment": {
     "billing_details": "تفاصيل الفاتورة *",

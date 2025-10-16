@@ -1,4 +1,7 @@
+import 'package:faciquest/features/features.dart';
+
 abstract class WalletRepository {
-  Future<double?> getWallet();
-  Future<void> cashOut(double amount);
+  Future<WalletEntity> getWallet();
+  Future<WalletEntity> updateWallet(UpdateWalletRequest request);
+  Future<void> cashOutRequest(CashOutRequest request);
 }

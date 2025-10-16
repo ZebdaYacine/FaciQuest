@@ -594,7 +594,81 @@
   },
   "wallet": {
     "balance": "Wallet Balance",
-    "cash_out": "Cash Out"
+    "cash_out": "Cash Out",
+    "update_profile": "Update Wallet Profile",
+    "available_balance": "Available Balance",
+    "temp_balance": "Pending Balance",
+    "total_surveys": "Total Surveys Completed",
+    "cashable_status": "Cashable Status",
+    "payment_method": "Payment Method",
+    "payment_details": "Payment Details",
+    "ccp_number": "CCP Number",
+    "rip_number": "RIP Number",
+    "amount": "Amount",
+    "submit_request": "Submit Request",
+    "request_submitted": "Cash out request submitted successfully",
+    "please_wait_loading": "Please wait, loading wallet information...",
+    "enter_amount": "Enter amount to cash out",
+    "enter_ccp_number": "Enter your CCP number",
+    "enter_rip_number": "Enter your RIP number",
+    "select_payment_method": "Select payment method",
+    "baridimob": "BaridiMob",
+    "ccp": "CCP",
+    "rip": "RIP",
+    "validation": {
+      "amount_required": "Please enter an amount",
+      "amount_invalid": "Please enter a valid number",
+      "amount_positive": "Amount must be greater than zero",
+      "amount_exceeds_balance": "Amount exceeds your wallet balance",
+      "ccp_required": "Please enter your CCP number",
+      "rip_required": "Please enter your RIP number",
+      "payment_method_required": "Please select a payment method"
+    },
+    "error": {
+      "load_failed": "Failed to load wallet",
+      "update_failed": "Failed to update wallet",
+      "cashout_failed": "Failed to submit cash out request",
+      "not_cashable": "Wallet is not cashable at the moment",
+      "insufficient_balance": "Insufficient balance"
+    },
+    "success": {
+      "updated": "Wallet updated successfully",
+      "cashout_submitted": "Cash out request submitted successfully"
+    },
+    "update_modal": {
+      "title": "Update Wallet Profile",
+      "amount_label": "Amount",
+      "amount_hint": "Enter wallet amount",
+      "surveys_label": "Number of Surveys",
+      "surveys_hint": "Enter number of surveys",
+      "payment_method_label": "Payment Method",
+      "ccp_label": "CCP Number",
+      "ccp_hint": "Enter CCP number",
+      "rip_label": "RIP Number",
+      "rip_hint": "Enter RIP number",
+      "submit": "Update Wallet"
+    },
+    "cashout_modal": {
+      "title": "Cash Out Request",
+      "available_balance_info": "Available Balance: {} DA",
+      "amount_label": "Amount",
+      "amount_hint": "Enter amount to cash out",
+      "payment_method_label": "Payment Method",
+      "ccp_label": "CCP Number",
+      "ccp_hint": "Enter your CCP number",
+      "rip_label": "RIP Number",
+      "rip_hint": "Enter your RIP number",
+      "submit": "Submit Request",
+      "info": "Your cash out request will be processed within 3-5 business days"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "cashable": "Cashable",
+      "not_cashable": "Not Cashable"
+    }
   },
   "payment": {
     "billing_details": "Billing Details *",

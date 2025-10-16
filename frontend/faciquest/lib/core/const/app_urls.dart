@@ -26,4 +26,9 @@ class AppUrls {
   static const createCollector = '$baseUrl/profile/create-collector';
   static const deleteCollector = '$baseUrl/profile/delete-collector';
   static const getSubmissions = '$baseUrl/profile/get-answers';
+
+  /// Wallet
+  static const getWallet = '$baseUrl/profile/get-wallet';
+  static const updateWallet = '$baseUrl/profile/update-wallet';
+  static const cashOutRequest = '$baseUrl/profile/cash-out-request';
 }

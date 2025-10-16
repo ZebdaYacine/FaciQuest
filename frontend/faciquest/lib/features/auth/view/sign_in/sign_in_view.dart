@@ -98,7 +98,7 @@ class _Body extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: AppSpacing.spacing_4.padding,
+            padding: AppSpacing.spacing_4.horizontalPadding,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -580,7 +580,7 @@ class _LanguageSelector extends StatelessWidget {
               ],
             ),
           ),
-           PopupMenuItem<String>(
+          PopupMenuItem<String>(
             value: 'fr',
             child: Row(
               children: [

@@ -78,7 +78,7 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
               Text(
                 showBalance
                     ? (state is WalletLoaded)
-                        ? '${state.walletBalance.toStringAsFixed(2).replaceAll('.', ',')} DA'
+                        ? '${state.wallet.amount.toStringAsFixed(2).replaceAll('.', ',')} DA'
                         : '.....'
                     : '***********',
                 style: context.textTheme.headlineMedium?.copyWith(

@@ -589,7 +589,81 @@
   },
   "wallet": {
     "balance": "Solde du Portefeuille",
-    "cash_out": "Retrait"
+    "cash_out": "Retrait",
+    "update_profile": "Mettre à jour le profil du portefeuille",
+    "available_balance": "Solde disponible",
+    "temp_balance": "Solde en attente",
+    "total_surveys": "Total des sondages complétés",
+    "cashable_status": "Statut encaissable",
+    "payment_method": "Méthode de paiement",
+    "payment_details": "Détails de paiement",
+    "ccp_number": "Numéro CCP",
+    "rip_number": "Numéro RIP",
+    "amount": "Montant",
+    "submit_request": "Soumettre la demande",
+    "request_submitted": "Demande de retrait soumise avec succès",
+    "please_wait_loading": "Veuillez patienter, chargement des informations du portefeuille...",
+    "enter_amount": "Entrez le montant à retirer",
+    "enter_ccp_number": "Entrez votre numéro CCP",
+    "enter_rip_number": "Entrez votre numéro RIP",
+    "select_payment_method": "Sélectionnez la méthode de paiement",
+    "baridimob": "BaridiMob",
+    "ccp": "CCP",
+    "rip": "RIP",
+    "validation": {
+      "amount_required": "Veuillez entrer un montant",
+      "amount_invalid": "Veuillez entrer un nombre valide",
+      "amount_positive": "Le montant doit être supérieur à zéro",
+      "amount_exceeds_balance": "Le montant dépasse votre solde de portefeuille",
+      "ccp_required": "Veuillez entrer votre numéro CCP",
+      "rip_required": "Veuillez entrer votre numéro RIP",
+      "payment_method_required": "Veuillez sélectionner une méthode de paiement"
+    },
+    "error": {
+      "load_failed": "Échec du chargement du portefeuille",
+      "update_failed": "Échec de la mise à jour du portefeuille",
+      "cashout_failed": "Échec de la soumission de la demande de retrait",
+      "not_cashable": "Le portefeuille n'est pas encaissable pour le moment",
+      "insufficient_balance": "Solde insuffisant"
+    },
+    "success": {
+      "updated": "Portefeuille mis à jour avec succès",
+      "cashout_submitted": "Demande de retrait soumise avec succès"
+    },
+    "update_modal": {
+      "title": "Mettre à jour le profil du portefeuille",
+      "amount_label": "Montant",
+      "amount_hint": "Entrez le montant du portefeuille",
+      "surveys_label": "Nombre de sondages",
+      "surveys_hint": "Entrez le nombre de sondages",
+      "payment_method_label": "Méthode de paiement",
+      "ccp_label": "Numéro CCP",
+      "ccp_hint": "Entrez le numéro CCP",
+      "rip_label": "Numéro RIP",
+      "rip_hint": "Entrez le numéro RIP",
+      "submit": "Mettre à jour le portefeuille"
+    },
+    "cashout_modal": {
+      "title": "Demande de retrait",
+      "available_balance_info": "Solde disponible : {} DA",
+      "amount_label": "Montant",
+      "amount_hint": "Entrez le montant à retirer",
+      "payment_method_label": "Méthode de paiement",
+      "ccp_label": "Numéro CCP",
+      "ccp_hint": "Entrez votre numéro CCP",
+      "rip_label": "Numéro RIP",
+      "rip_hint": "Entrez votre numéro RIP",
+      "submit": "Soumettre la demande",
+      "info": "Votre demande de retrait sera traitée dans un délai de 3 à 5 jours ouvrables"
+    },
+    "status": {
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "completed": "Complété",
+      "cashable": "Encaissable",
+      "not_cashable": "Non encaissable"
+    }
   },
   "payment": {
     "billing_details": "Détails de Facturation *",

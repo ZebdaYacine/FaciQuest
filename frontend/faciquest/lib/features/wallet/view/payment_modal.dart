@@ -5,10 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 
 Future<void> showPaymentModal(BuildContext context, {double? price, String? collectorId}) async {
@@ -60,12 +58,11 @@ class _PaymentModalState extends State<PaymentModal> {
   static const int _maxFileSizeInMB = 5;
   static const int _maxFileSizeInBytes = _maxFileSizeInMB * 1024 * 1024;
   static const List<String> _allowedImageExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
-  static const List<String> _allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
 
   @override
   void initState() {
     super.initState();
-    _surveyRepository = getIt<SurveyRepository>();
+    _surveyRepository = getIt.get<SurveyRepository>();
   }
 
   @override
