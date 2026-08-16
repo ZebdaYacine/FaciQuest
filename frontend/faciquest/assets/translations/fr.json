@@ -370,6 +370,29 @@
   },
   "manage": {
     "manage_my_surveys_title": "Gérer Mes Sondages",
+    "survey_count": {"one": "{} sondage", "other": "{} sondages"},
+    "response_count": {"one": "{} réponse", "other": "{} réponses"},
+    "question_count": {"one": "{} question", "other": "{} questions"},
+    "responses_label": "Réponses",
+    "updated_label": "Mis à jour",
+    "last_updated": "Mis à jour le {}",
+    "sort_options": "Options de tri",
+    "clear_search": "Effacer la recherche",
+    "grid_view": "Vue en grille",
+    "list_view": "Vue en liste",
+    "filters": {
+      "all": "Tous les sondages",
+      "active": "Actifs",
+      "draft": "Brouillons",
+      "closed": "Fermés"
+    },
+    "sort": {
+      "name": "Nom",
+      "date_created": "Date de création",
+      "date_updated": "Date de modification",
+      "responses": "Réponses",
+      "status": "Statut"
+    },
     "create_survey_button": "Créer un Sondage",
     "search_surveys_hint": "Rechercher des sondages...",
     "no_surveys_found": "Aucun sondage trouvé",
@@ -389,7 +412,14 @@
     "try_again": "Réessayer"
   },
   "status": {
-    "open_status": "Ouvert"
+    "open_status": "Ouvert",
+    "open": "Ouvert",
+    "active": "Actif",
+    "draft": "Brouillon",
+    "published": "Publié",
+    "closed": "Fermé",
+    "deleted": "Supprimé",
+    "checking_payment": "Vérification du paiement"
   },
   "actions": {
     "edit_survey": "Modifier le Sondage",
@@ -416,7 +446,10 @@
     "export_as_csv": "Exporter en CSV",
     "export_as_pdf": "Exporter en PDF",
     "export_as_excel": "Exporter en Excel",
-    "advanced_analytics": "Analyses Avancées"
+    "advanced_analytics": "Analyses Avancées",
+    "collect_responses": "Collecter des réponses",
+    "close": "Fermer",
+    "retry": "Réessayer"
   },
   "delete_dialog": {
     "delete_survey_title": "Supprimer le Sondage",
@@ -450,6 +483,24 @@
     "questions_section": "Section des Questions",
     "enter_details": "Veuillez saisir les détails ci-dessous"
   },
+  "summary": {
+    "updated": "Mis à jour le {}",
+    "responses": "Réponses",
+    "views": "Vues",
+    "collectors": "Collecteurs",
+    "questions": "Questions",
+    "actions_description": "Choisissez ce que vous souhaitez faire avec ce sondage.",
+    "edit_description": "Modifiez les détails et les paramètres du sondage.",
+    "collect_description": "Créez et gérez les collecteurs de réponses.",
+    "analyse_description": "Consultez les réponses et leurs distributions.",
+    "delete_description": "Supprimez définitivement ce sondage.",
+    "collectors_description": "Suivez les canaux qui recueillent les réponses.",
+    "questions_description": "Consultez la structure et les types de questions.",
+    "manage_collectors": "Gérer",
+    "edit_questions": "Modifier les questions",
+    "collector_responses": {"one": "{} réponse", "other": "{} réponses"},
+    "delete_failed": "Impossible de supprimer le sondage. Veuillez réessayer."
+  },
   "position": {
     "after": "Après",
     "before": "Avant"
@@ -471,6 +522,9 @@
   },
   "collectors": {
     "add_new": "Ajouter un nouveau collecteur",
+    "add_description": "Choisissez comment atteindre les participants.",
+    "load_failed": "Impossible de charger les collecteurs",
+    "load_failed_description": "Vérifiez votre connexion et réessayez.",
     "targeted_responses": "Réponses Ciblées",
     "targeted_description": "Trouvez des personnes qui correspondent à vos critères",
     "no_collectors": "Aucun collecteur pour le moment",
@@ -555,7 +609,23 @@
     "close": "Fermer",
     "advanced_analytics_coming_soon": "Fonctionnalités d'analyses avancées bientôt disponibles !",
     "detailed_statistical_analysis_description": "Cela inclura des analyses statistiques détaillées et des informations.",
-    "add_questions_detailed_analytics": "Ajoutez des questions pour voir les analyses détaillées"
+    "add_questions_detailed_analytics": "Ajoutez des questions pour voir les analyses détaillées",
+    "unavailable": "Indisponible",
+    "csv_ready": "Les données CSV sont prêtes à être partagées.",
+    "results_subtitle": "Réponses et analyses des questions",
+    "unknown_collector": "Collecteur inconnu",
+    "unknown_question": "Question inconnue",
+    "no_answers_recorded": "Aucune réponse n’a été enregistrée pour cette participation.",
+    "no_answer": "Aucune réponse",
+    "question_response_totals": "{} questions · {} réponses",
+    "completion_value": "{} % complété",
+    "collector_response_count": {"one": "{} réponse", "other": "{} réponses"},
+    "view_count": {"one": "{} vue", "other": "{} vues"},
+    "response_number": "Réponse {}",
+    "collector_value": "Collecteur : {}",
+    "question_completion": "{} % complété · {} réponses",
+    "trends_unavailable": "La source de données actuelle ne fournit pas l'heure des réponses ; aucune tendance fiable ne peut encore être calculée.",
+    "device_data_unavailable": "Les informations sur l'appareil ne sont pas collectées avec les réponses ; aucune répartition n'est disponible."
   },
   "personal_info": {
     "title": "Informations Personnelles",

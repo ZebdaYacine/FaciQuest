@@ -375,6 +375,38 @@
   },
   "manage": {
     "manage_my_surveys_title": "Manage My Surveys",
+    "survey_count": {
+      "one": "{} survey",
+      "other": "{} surveys"
+    },
+    "response_count": {
+      "one": "{} response",
+      "other": "{} responses"
+    },
+    "question_count": {
+      "one": "{} question",
+      "other": "{} questions"
+    },
+    "responses_label": "Responses",
+    "updated_label": "Updated",
+    "last_updated": "Updated {}",
+    "sort_options": "Sort options",
+    "clear_search": "Clear search",
+    "grid_view": "Grid view",
+    "list_view": "List view",
+    "filters": {
+      "all": "All surveys",
+      "active": "Active",
+      "draft": "Draft",
+      "closed": "Closed"
+    },
+    "sort": {
+      "name": "Name",
+      "date_created": "Date created",
+      "date_updated": "Date updated",
+      "responses": "Responses",
+      "status": "Status"
+    },
     "create_survey_button": "Create Survey",
     "search_surveys_hint": "Search surveys...",
     "no_surveys_found": "No surveys found",
@@ -394,7 +426,14 @@
     "try_again": "Try Again"
   },
   "status": {
-    "open_status": "Open"
+    "open_status": "Open",
+    "open": "Open",
+    "active": "Active",
+    "draft": "Draft",
+    "published": "Published",
+    "closed": "Closed",
+    "deleted": "Deleted",
+    "checking_payment": "Checking payment"
   },
   "actions": {
     "edit_survey": "Edit Survey",
@@ -421,7 +460,10 @@
     "export_as_csv": "Export as CSV",
     "export_as_pdf": "Export as PDF",
     "export_as_excel": "Export as Excel",
-    "advanced_analytics": "Advanced Analytics"
+    "advanced_analytics": "Advanced Analytics",
+    "collect_responses": "Collect Responses",
+    "close": "Close",
+    "retry": "Retry"
   },
   "delete_dialog": {
     "delete_survey_title": "Delete Survey",
@@ -455,6 +497,27 @@
     "questions_section": "Questions Section",
     "enter_details": "Please enter details below"
   },
+  "summary": {
+    "updated": "Updated {}",
+    "responses": "Responses",
+    "views": "Views",
+    "collectors": "Collectors",
+    "questions": "Questions",
+    "actions_description": "Choose what you want to do with this survey.",
+    "edit_description": "Update the survey details and settings.",
+    "collect_description": "Create and manage response collectors.",
+    "analyse_description": "Review answers and response distributions.",
+    "delete_description": "Permanently remove this survey.",
+    "collectors_description": "Track the channels gathering responses.",
+    "questions_description": "Review the survey structure and question types.",
+    "manage_collectors": "Manage",
+    "edit_questions": "Edit questions",
+    "collector_responses": {
+      "one": "{} response",
+      "other": "{} responses"
+    },
+    "delete_failed": "Unable to delete the survey. Please try again."
+  },
   "position": {
     "after": "After",
     "before": "Before"
@@ -476,6 +539,9 @@
   },
   "collectors": {
     "add_new": "Add a new collector",
+    "add_description": "Choose how you want to reach respondents.",
+    "load_failed": "Unable to load collectors",
+    "load_failed_description": "Check your connection and try again.",
     "targeted_responses": "Targeted Responses",
     "targeted_description": "Find people who fit your criteria",
     "no_collectors": "No collectors yet",
@@ -560,7 +626,29 @@
     "close": "Close",
     "advanced_analytics_coming_soon": "Advanced analytics features coming soon!",
     "detailed_statistical_analysis_description": "This will include detailed statistical analysis and insights.",
-    "add_questions_detailed_analytics": "Add questions to see detailed analytics"
+    "add_questions_detailed_analytics": "Add questions to see detailed analytics",
+    "unavailable": "Unavailable",
+    "csv_ready": "CSV data is ready to share.",
+    "results_subtitle": "Responses and question insights",
+    "unknown_collector": "Unknown collector",
+    "unknown_question": "Unknown question",
+    "no_answers_recorded": "No answers were recorded for this response.",
+    "no_answer": "No answer",
+    "question_response_totals": "{} questions · {} responses",
+    "completion_value": "{}% completion",
+    "collector_response_count": {
+      "one": "{} response",
+      "other": "{} responses"
+    },
+    "view_count": {
+      "one": "{} view",
+      "other": "{} views"
+    },
+    "response_number": "Response {}",
+    "collector_value": "Collector: {}",
+    "question_completion": "{}% completion · {} responses",
+    "trends_unavailable": "Response timestamps are not provided by the current data source, so a reliable trend cannot be calculated yet.",
+    "device_data_unavailable": "Device information is not collected with responses, so no device breakdown is available."
   },
   "personal_info": {
     "title": "Personal Info",

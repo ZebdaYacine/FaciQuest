@@ -370,6 +370,29 @@
   },
   "manage": {
     "manage_my_surveys_title": "إدارة استبياناتي",
+    "survey_count": {"one": "استبيان واحد", "other": "{} استبيانات"},
+    "response_count": {"one": "إجابة واحدة", "other": "{} إجابات"},
+    "question_count": {"one": "سؤال واحد", "other": "{} أسئلة"},
+    "responses_label": "الإجابات",
+    "updated_label": "آخر تحديث",
+    "last_updated": "تم التحديث في {}",
+    "sort_options": "خيارات الترتيب",
+    "clear_search": "مسح البحث",
+    "grid_view": "عرض شبكي",
+    "list_view": "عرض قائمة",
+    "filters": {
+      "all": "كل الاستبيانات",
+      "active": "النشطة",
+      "draft": "المسودات",
+      "closed": "المغلقة"
+    },
+    "sort": {
+      "name": "الاسم",
+      "date_created": "تاريخ الإنشاء",
+      "date_updated": "تاريخ التحديث",
+      "responses": "الإجابات",
+      "status": "الحالة"
+    },
     "create_survey_button": "إنشاء استبيان",
     "search_surveys_hint": "البحث في الاستبيانات...",
     "no_surveys_found": "لم يتم العثور على استبيانات",
@@ -389,7 +412,14 @@
     "try_again": "حاول مرة أخرى"
   },
   "status": {
-    "open_status": "مفتوح"
+    "open_status": "مفتوح",
+    "open": "مفتوح",
+    "active": "نشط",
+    "draft": "مسودة",
+    "published": "منشور",
+    "closed": "مغلق",
+    "deleted": "محذوف",
+    "checking_payment": "جارٍ التحقق من الدفع"
   },
   "actions": {
     "edit_survey": "تعديل الاستبيان",
@@ -416,7 +446,10 @@
     "export_as_csv": "تصدير كـ CSV",
     "export_as_pdf": "تصدير كـ PDF",
     "export_as_excel": "تصدير كـ Excel",
-    "advanced_analytics": "تحليلات متقدمة"
+    "advanced_analytics": "تحليلات متقدمة",
+    "collect_responses": "جمع الإجابات",
+    "close": "إغلاق",
+    "retry": "إعادة المحاولة"
   },
   "delete_dialog": {
     "delete_survey_title": "حذف الاستبيان",
@@ -450,6 +483,24 @@
     "questions_section": "قسم الأسئلة",
     "enter_details": "يرجى إدخال التفاصيل أدناه"
   },
+  "summary": {
+    "updated": "تم التحديث في {}",
+    "responses": "الإجابات",
+    "views": "المشاهدات",
+    "collectors": "أدوات الجمع",
+    "questions": "الأسئلة",
+    "actions_description": "اختر الإجراء الذي تريد تنفيذه على هذا الاستبيان.",
+    "edit_description": "حدّث تفاصيل الاستبيان وإعداداته.",
+    "collect_description": "أنشئ أدوات جمع الإجابات وأدرها.",
+    "analyse_description": "راجع الإجابات وتوزيعاتها.",
+    "delete_description": "احذف هذا الاستبيان نهائياً.",
+    "collectors_description": "تابع القنوات التي تجمع الإجابات.",
+    "questions_description": "راجع بنية الاستبيان وأنواع الأسئلة.",
+    "manage_collectors": "إدارة",
+    "edit_questions": "تعديل الأسئلة",
+    "collector_responses": {"one": "إجابة واحدة", "other": "{} إجابات"},
+    "delete_failed": "تعذر حذف الاستبيان. يرجى المحاولة مرة أخرى."
+  },
   "position": {
     "after": "بعد",
     "before": "قبل"
@@ -471,6 +522,9 @@
   },
   "collectors": {
     "add_new": "إضافة أداة جمع جديدة",
+    "add_description": "اختر الطريقة التي تريد بها الوصول إلى المشاركين.",
+    "load_failed": "تعذر تحميل أدوات الجمع",
+    "load_failed_description": "تحقق من الاتصال ثم حاول مرة أخرى.",
     "targeted_responses": "إجابات مستهدفة",
     "targeted_description": "ابحث عن أشخاص يناسبون معاييرك",
     "no_collectors": "لا توجد أدوات جمع حتى الآن",
@@ -555,7 +609,23 @@
     "close": "إغلاق",
     "advanced_analytics_coming_soon": "ميزات التحليلات المتقدمة قريباً!",
     "detailed_statistical_analysis_description": "سيشمل هذا تحليلاً إحصائياً مفصلاً ورؤى.",
-    "add_questions_detailed_analytics": "أضف أسئلة لرؤية التحليلات التفصيلية"
+    "add_questions_detailed_analytics": "أضف أسئلة لرؤية التحليلات التفصيلية",
+    "unavailable": "غير متاح",
+    "csv_ready": "بيانات CSV جاهزة للمشاركة.",
+    "results_subtitle": "الإجابات وتحليلات الأسئلة",
+    "unknown_collector": "أداة جمع غير معروفة",
+    "unknown_question": "سؤال غير معروف",
+    "no_answers_recorded": "لم يتم تسجيل إجابات لهذه المشاركة.",
+    "no_answer": "لا توجد إجابة",
+    "question_response_totals": "{} أسئلة · {} إجابات",
+    "completion_value": "اكتمال {}٪",
+    "collector_response_count": {"one": "إجابة واحدة", "other": "{} إجابات"},
+    "view_count": {"one": "مشاهدة واحدة", "other": "{} مشاهدات"},
+    "response_number": "الإجابة {}",
+    "collector_value": "أداة الجمع: {}",
+    "question_completion": "اكتمال {}٪ · {} إجابات",
+    "trends_unavailable": "لا يوفر مصدر البيانات الحالي وقت إرسال الإجابات، لذلك لا يمكن حساب اتجاه موثوق بعد.",
+    "device_data_unavailable": "لا يتم جمع معلومات الجهاز مع الإجابات، لذلك لا يتوفر تقسيم حسب الجهاز."
   },
   "personal_info": {
     "title": "المعلومات الشخصية",
