@@ -26,35 +26,25 @@ class _GenderModalState extends State<GenderModal> {
             style: context.textTheme.titleLarge,
           ),
           AppSpacing.spacing_2.heightBox,
-          RadioListTile<Gender>(
-            value: Gender.both,
+          RadioGroup<Gender>(
             groupValue: selectedGender,
-            title: Text('collectors.targeting.gender.both'.tr()),
-            onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
-            },
-          ),
-          RadioListTile<Gender>(
-            value: Gender.male,
-            groupValue: selectedGender,
-            title: Text('collectors.targeting.gender.male'.tr()),
-            onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
-            },
-          ),
-          RadioListTile<Gender>(
-            value: Gender.female,
-            groupValue: selectedGender,
-            title: Text('collectors.targeting.gender.female'.tr()),
-            onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
-            },
+            onChanged: (value) => setState(() => selectedGender = value),
+            child: Column(
+              children: [
+                RadioListTile<Gender>(
+                  value: Gender.both,
+                  title: Text('collectors.targeting.gender.both'.tr()),
+                ),
+                RadioListTile<Gender>(
+                  value: Gender.male,
+                  title: Text('collectors.targeting.gender.male'.tr()),
+                ),
+                RadioListTile<Gender>(
+                  value: Gender.female,
+                  title: Text('collectors.targeting.gender.female'.tr()),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -39,51 +39,76 @@ class NewSurveyView extends StatelessWidget {
                 elevation: 0,
                 backgroundColor: context.colorScheme.surface,
               ),
-              body: Builder(
-                builder: (context) {
-                  if (state.status.isFailure && state.survey.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.error_outline_rounded,
-                            size: 48,
-                            color: context.colorScheme.error,
-                          ),
-                          AppSpacing.spacing_2.heightBox,
-                          Text(
-                            'error.generic'.tr(),
-                            style: context.textTheme.titleMedium?.copyWith(
-                              color: context.colorScheme.error,
+              body: AdaptiveContentWidth(
+                child: Builder(
+                  builder: (context) {
+                    if (state.status.isFailure && state.survey.isEmpty) {
+                      return Center(
+                        child: Padding(
+                          padding: AppSpacing.spacing_3.padding,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 480),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.error_outline_rounded,
+                                  size: 56,
+                                  color: context.colorScheme.error,
+                                ),
+                                AppSpacing.spacing_2.heightBox,
+                                Text(
+                                  'survey.error.title'.tr(),
+                                  textAlign: TextAlign.center,
+                                  style: context.textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                AppSpacing.spacing_1.heightBox,
+                                Text(
+                                  'survey.error.message'.tr(),
+                                  textAlign: TextAlign.center,
+                                  style: context.textTheme.bodyLarge?.copyWith(
+                                    color: context.colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                                AppSpacing.spacing_3.heightBox,
+                                FilledButton.icon(
+                                  onPressed: () => context
+                                      .read<NewSurveyCubit>()
+                                      .fetchSurvey(),
+                                  icon: const Icon(Icons.refresh_rounded),
+                                  label: Text('survey.error.button.retry'.tr()),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    );
-                  } else if (state.status.isLoading && state.survey.isEmpty) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: context.colorScheme.primary,
-                      ),
-                    );
-                  }
-
-                  switch (state.page) {
-                    case NewSurveyPages.surveyDetails:
-                      return _SurveyDetails(surveyId);
-                    case NewSurveyPages.questions:
-                      return const QuestionsPage();
-                    case NewSurveyPages.collectResponses:
-                      return const CollectResponsesPage();
-                    case NewSurveyPages.analyseResults:
-                      return const AnalyseResultsPage();
-                    case NewSurveyPages.summary:
-                      return SummaryPage(
-                        survey: state.survey,
+                        ),
                       );
-                  }
-                },
+                    } else if (state.status.isLoading && state.survey.isEmpty) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: context.colorScheme.primary,
+                        ),
+                      );
+                    }
+
+                    switch (state.page) {
+                      case NewSurveyPages.surveyDetails:
+                        return _SurveyDetails(surveyId);
+                      case NewSurveyPages.questions:
+                        return const QuestionsPage();
+                      case NewSurveyPages.collectResponses:
+                        return const CollectResponsesPage();
+                      case NewSurveyPages.analyseResults:
+                        return const AnalyseResultsPage();
+                      case NewSurveyPages.summary:
+                        return SummaryPage(
+                          survey: state.survey,
+                        );
+                    }
+                  },
+                ),
               ),
             );
           },
@@ -99,80 +124,101 @@ class _SurveyDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: AppSpacing.spacing_3.padding,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'survey_details.create_new'.tr(),
-                    style: context.textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: context.colorScheme.primary,
-                    ),
+    return FocusTraversalGroup(
+      child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                child: AdaptivePageBody(
+                  maxWidth: 760,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'survey_details.create_new'.tr(),
+                        style: context.textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.colorScheme.primary,
+                        ),
+                      ),
+                      Text(
+                        'sections.enter_details'.tr(),
+                        style: context.textTheme.titleMedium?.copyWith(
+                          color: context.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      AppSpacing.spacing_3.heightBox,
+                      const _NewSurveyForm(),
+                    ],
                   ),
-                  Text(
-                    'sections.enter_details'.tr(),
-                    style: context.textTheme.titleMedium?.copyWith(
-                      color: context.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  AppSpacing.spacing_3.heightBox,
-                  const _NewSurveyForm(),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        Container(
-          padding: AppSpacing.spacing_2.padding,
-          decoration: BoxDecoration(
-            color: context.colorScheme.surface,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, -5),
+            Container(
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.spacing_2,
+                AppSpacing.spacing_2,
+                AppSpacing.spacing_2,
+                AppSpacing.spacing_2 + MediaQuery.paddingOf(context).bottom,
               ),
-            ],
-          ),
-          child: Column(
-            children: [
-              FilledButton.icon(
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(48),
-                ),
-                onPressed: () => context.read<NewSurveyCubit>().next(),
-                icon: const Icon(Icons.arrow_forward_rounded),
-                label: Text('actions.next'.tr()),
-              ),
-              AppSpacing.spacing_1.heightBox,
-              OutlinedButton.icon(
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(48),
-                  side: BorderSide(
-                    color: context.colorScheme.error,
+              decoration: BoxDecoration(
+                color: context.colorScheme.surface,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
                   ),
-                  foregroundColor: context.colorScheme.error,
-                ),
-                onPressed: () {
-                  if (surveyId.isEmpty || surveyId == '-1') {
-                    context.pop();
-                  } else {
-                    context.read<NewSurveyCubit>().goToSummary();
-                  }
-                },
-                icon: const Icon(Icons.close_rounded),
-                label: Text('actions.cancel'.tr()),
+                ],
               ),
-            ],
-          ),
-        )
-      ],
+              child: AdaptiveContentWidth(
+                maxWidth: 760,
+                child: Column(
+                  children: [
+                    Builder(
+                      builder: (formContext) => FilledButton.icon(
+                        style: FilledButton.styleFrom(
+                          minimumSize: const Size.fromHeight(48),
+                        ),
+                        onPressed: () {
+                          if (Form.of(formContext).validate()) {
+                            context.read<NewSurveyCubit>().next();
+                          }
+                        },
+                        icon: const Icon(Icons.arrow_forward_rounded),
+                        label: Text('actions.next'.tr()),
+                      ),
+                    ),
+                    AppSpacing.spacing_1.heightBox,
+                    OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(48),
+                        side: BorderSide(
+                          color: context.colorScheme.error,
+                        ),
+                        foregroundColor: context.colorScheme.error,
+                      ),
+                      onPressed: () {
+                        if (surveyId.isEmpty || surveyId == '-1') {
+                          context.pop();
+                        } else {
+                          context.read<NewSurveyCubit>().goToSummary();
+                        }
+                      },
+                      icon: const Icon(Icons.close_rounded),
+                      label: Text('actions.cancel'.tr()),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -191,7 +237,8 @@ class __NewSurveyFormState extends State<_NewSurveyForm> with BuildFormMixin {
     return Container(
       padding: AppSpacing.spacing_3.padding,
       decoration: BoxDecoration(
-        color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color:
+            context.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -208,6 +255,10 @@ class __NewSurveyFormState extends State<_NewSurveyForm> with BuildFormMixin {
             'survey_details.enter_name'.tr(),
             initialValue: cubit.state.survey.name,
             onChange: cubit.onSurveyNameChanged,
+            textInputAction: TextInputAction.next,
+            validator: (value) => value == null || value.trim().isEmpty
+                ? 'survey_details.name_required'.tr()
+                : null,
             decoration: InputDecoration(
               filled: true,
               fillColor: context.colorScheme.surface,
@@ -231,6 +282,10 @@ class __NewSurveyFormState extends State<_NewSurveyForm> with BuildFormMixin {
             initialValue: cubit.state.survey.description,
             maxLines: 3,
             onChange: cubit.onSurveyDescriptionChanged,
+            textInputAction: TextInputAction.done,
+            validator: (value) => value == null || value.trim().isEmpty
+                ? 'survey_details.description_required'.tr()
+                : null,
             decoration: InputDecoration(
               filled: true,
               fillColor: context.colorScheme.surface,

@@ -15,10 +15,12 @@ class MultipleChoiceQuestionBuilder extends QuestionBuilder {
   final LikertScale? likertScale;
 
   @override
-  State<MultipleChoiceQuestionBuilder> createState() => _MultipleChoiceQuestionBuilderState();
+  State<MultipleChoiceQuestionBuilder> createState() =>
+      _MultipleChoiceQuestionBuilderState();
 }
 
-class _MultipleChoiceQuestionBuilderState extends State<MultipleChoiceQuestionBuilder> {
+class _MultipleChoiceQuestionBuilderState
+    extends State<MultipleChoiceQuestionBuilder> {
   String? selectedType;
   late var question = widget.question as MultipleChoiceQuestion;
   // Add controllers list
@@ -91,16 +93,20 @@ class _MultipleChoiceQuestionBuilderState extends State<MultipleChoiceQuestionBu
               Expanded(
                 child: DropdownButton<int?>(
                   isExpanded: true,
-                  value: optionSizes.contains(question.choices.length) ? question.choices.length : null,
+                  value: optionSizes.contains(question.choices.length)
+                      ? question.choices.length
+                      : null,
                   items: [
                     DropdownMenuItem(
                       value: null,
-                      child: Text('survey.question.multiple_choice.select_scale'.tr()),
+                      child: Text(
+                          'survey.question.multiple_choice.select_scale'.tr()),
                     ),
-                    ...getScaleOptionsSize(selectedType).map((e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e.toString()),
-                        ))
+                    ...getScaleOptionsSize(selectedType)
+                        .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.toString()),
+                            ))
                   ],
                   onChanged: (e) {
                     if (e == null) {
@@ -125,7 +131,8 @@ class _MultipleChoiceQuestionBuilderState extends State<MultipleChoiceQuestionBu
                 items: [
                   DropdownMenuItem(
                     value: null,
-                    child: Text('survey.question.multiple_choice.select_type'.tr()),
+                    child: Text(
+                        'survey.question.multiple_choice.select_type'.tr()),
                   ),
                   ...scaleOptions.keys.map(
                     (e) => DropdownMenuItem(
@@ -153,17 +160,17 @@ class _MultipleChoiceQuestionBuilderState extends State<MultipleChoiceQuestionBu
           physics: const NeverScrollableScrollPhysics(),
           itemCount: question.choices.length,
           itemBuilder: (context, index) {
-            final item = question.choices[index];
             return Row(
               children: [
-                Radio(
-                  value: item,
-                  groupValue: null,
-                  onChanged: null,
-                ),
+                const Icon(Icons.radio_button_unchecked_rounded),
                 Expanded(
                   child: TextFormField(
                     controller: controllers[index],
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? 'survey.validation.option_required'.tr()
+                        : null,
                     onChanged: (value) {
                       var temp = List<String>.from(question.choices);
                       temp[index] = value;

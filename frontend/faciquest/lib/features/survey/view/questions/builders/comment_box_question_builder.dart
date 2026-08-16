@@ -19,7 +19,7 @@ class CommentBoxQuestionBuilder extends QuestionBuilder {
 
 class _CommentBoxQuestionBuilderState extends State<CommentBoxQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     int? maxLength,
     bool? isRequired,
     int? maxLines,

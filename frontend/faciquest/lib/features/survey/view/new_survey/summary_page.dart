@@ -95,7 +95,8 @@ class SummaryPage extends StatelessWidget {
           width: double.infinity,
           padding: AppSpacing.spacing_3.padding,
           decoration: BoxDecoration(
-            color: context.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+            color: context.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: context.colorScheme.outlineVariant,
@@ -148,7 +149,7 @@ class SummaryPage extends StatelessWidget {
               title: 'stats.status'.tr(),
               value: survey.status.name.capitalizeFirst,
               color: survey.status.color,
-              backgroundColor: survey.status.color.withOpacity(0.15),
+              backgroundColor: survey.status.color.withValues(alpha: 0.15),
             ),
           ),
         ],
@@ -445,7 +446,7 @@ class _CollectorStatusBadge extends StatelessWidget {
         vertical: 6,
       ),
       decoration: BoxDecoration(
-        color: (isOpen ? Colors.green : Colors.orange).withOpacity(0.1),
+        color: (isOpen ? Colors.green : Colors.orange).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(

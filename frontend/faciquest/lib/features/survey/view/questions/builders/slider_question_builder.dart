@@ -18,7 +18,7 @@ class SliderQuestionBuilder extends QuestionBuilder {
 
 class _SliderQuestionBuilderState extends State<SliderQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     double? min,
     double? max,
   }) {

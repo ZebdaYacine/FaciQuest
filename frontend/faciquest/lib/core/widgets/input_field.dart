@@ -37,6 +37,7 @@ class GenericInputField extends StatefulWidget {
     this.errorMaxLines,
     this.errorMessage,
     this.textDirection,
+    this.autovalidateMode,
   });
   final TextEditingController? controller;
   final int? maxLines;
@@ -77,27 +78,13 @@ class GenericInputField extends StatefulWidget {
   final void Function(String)? onFieldSubmitted;
   final bool showCounter;
   final TextDirection? textDirection;
+  final AutovalidateMode? autovalidateMode;
 
   @override
   State<GenericInputField> createState() => _GenericInputFieldState();
 }
 
 class _GenericInputFieldState extends State<GenericInputField> {
-  String? _error;
-
-  void validateField(String value) {
-    if (widget.validator == null) {
-      return;
-    }
-    setState(() {
-      _error = null;
-    });
-    final error = widget.validator?.call(value);
-    setState(() {
-      _error = error;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -111,7 +98,7 @@ class _GenericInputFieldState extends State<GenericInputField> {
           ),
         if (widget.label != null) 8.heightBox,
         Directionality(
-          textDirection: widget.textDirection ?? TextDirection.ltr,
+          textDirection: widget.textDirection ?? Directionality.of(context),
           child: Flexible(
             child: TextFormField(
               initialValue: widget.initialValue,
@@ -119,12 +106,12 @@ class _GenericInputFieldState extends State<GenericInputField> {
               maxLines: widget.maxLines,
               minLines: widget.minLines,
               validator: widget.validator,
+              autovalidateMode: widget.autovalidateMode,
               enabled: widget.enabled,
               readOnly: widget.readOnly,
               autofocus: widget.autofocus,
               onTap: widget.onTap,
               onChanged: (value) {
-                validateField(value);
                 widget.onChanged?.call(value);
               },
               // validator: widget.validator,
@@ -149,13 +136,14 @@ class _GenericInputFieldState extends State<GenericInputField> {
                           ],
                         )
                       : null,
-              decoration: widget.decoration ??
-                  InputDecoration(
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(),
-                    ),
-                    hintText: widget.hintText,
-                  ),
+              decoration: (widget.decoration ??
+                      InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                        hintText: widget.hintText,
+                      ))
+                  .copyWith(errorText: widget.errorMessage),
             ),
           ),
         ),

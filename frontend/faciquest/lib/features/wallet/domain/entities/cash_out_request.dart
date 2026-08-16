@@ -60,4 +60,3 @@ class CashOutRequestEntity extends Equatable {
         paymentDate,
       ];
 }
-

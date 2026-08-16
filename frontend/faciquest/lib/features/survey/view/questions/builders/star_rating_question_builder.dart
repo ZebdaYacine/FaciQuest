@@ -17,7 +17,7 @@ class StarRatingQuestionBuilder extends QuestionBuilder {
 }
 
 class _StarRatingQuestionBuilderState extends State<StarRatingQuestionBuilder> {
-  onChange({
+  void onChange({
     int? maxRating,
     StarRatingColors? color,
     StarRatingShape? shape,

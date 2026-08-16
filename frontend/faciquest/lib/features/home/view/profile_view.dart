@@ -27,24 +27,31 @@ class ProfileView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (user != null && user.isNotEmpty)
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        '${user.firstName} ${user.lastName}',
-                        style: context.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: context.colorScheme.onSurface,
+                  SizedBox(
+                    width: 140,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '${user.firstName} ${user.lastName}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: context.colorScheme.onSurface,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '+213${user.phone}',
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: context.colorScheme.onSurfaceVariant,
+                        Text(
+                          '+213${user.phone}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: context.colorScheme.onSurfaceVariant,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 AppSpacing.spacing_2.widthBox,
                 CircleAvatar(
@@ -69,97 +76,102 @@ class ProfileView extends StatelessWidget {
             end: Alignment.bottomCenter,
             colors: [
               context.colorScheme.surface,
-              context.colorScheme.surface.withOpacity(0.95),
+              context.colorScheme.surface.withValues(alpha: 0.95),
             ],
           ),
         ),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const WalletCardWidget(),
-              Padding(
-                padding: AppSpacing.spacing_3.padding,
-                child: Text(
-                  'profile.my_account'.tr(),
-                  style: context.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: context.colorScheme.primary,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: AdaptivePageBody(
+            maxWidth: 760,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const WalletCardWidget(),
+                Padding(
+                  padding: AppSpacing.spacing_3.padding,
+                  child: Text(
+                    'profile.my_account'.tr(),
+                    style: context.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.colorScheme.primary,
+                    ),
                   ),
                 ),
-              ),
-              _buildListTile(
-                context,
-                title: 'profile.menu.profile'.tr(),
-                icon: Icons.person_outline_rounded,
-                onTap: () => AppRoutes.personalInfo.push(context),
-              ),
-              _buildListTile(
-                context,
-                title: 'profile.menu.change_password'.tr(),
-                icon: Icons.lock_outline_rounded,
-                onTap: () => AppRoutes.setNewPassword.push(context),
-              ),
-              AppSpacing.spacing_2.heightBox,
-              Container(
-                height: 4,
-                margin: AppSpacing.spacing_2.horizontalPadding,
-                decoration: BoxDecoration(
-                  color: context.colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(2),
+                _buildListTile(
+                  context,
+                  title: 'profile.menu.profile'.tr(),
+                  icon: Icons.person_outline_rounded,
+                  onTap: () => AppRoutes.personalInfo.push(context),
                 ),
-              ),
-              AppSpacing.spacing_2.heightBox,
-              Padding(
-                padding: AppSpacing.spacing_3.padding,
-                child: Text(
-                  'profile.more_actions'.tr(),
-                  style: context.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: context.colorScheme.primary,
+                _buildListTile(
+                  context,
+                  title: 'profile.menu.change_password'.tr(),
+                  icon: Icons.lock_outline_rounded,
+                  onTap: () => AppRoutes.setNewPassword.push(context),
+                ),
+                AppSpacing.spacing_2.heightBox,
+                Container(
+                  height: 4,
+                  margin: AppSpacing.spacing_2.horizontalPadding,
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-              ),
-              _buildListTile(
-                context,
-                title: 'profile.menu.how_it_works'.tr(),
-                icon: Icons.info_outline_rounded,
-                onTap: () => AppRoutes.howItWorks.push(context),
-              ),
-              _buildListTile(
-                context,
-                title: 'profile.language'.tr(),
-                icon: Icons.language_rounded,
-                onTap: () => showLanguageModal(context),
-                showTrailing: false,
-              ),
-              BlocBuilder<ThemeBloc, ThemeState>(
-                builder: (context, state) {
-                  return _buildListTile(
-                    context,
-                    title: 'profile.menu.theme'.tr(),
-                    icon: state.themeMode == ThemeMode.light
-                        ? Icons.dark_mode_outlined
-                        : Icons.light_mode_outlined,
-                    onTap: () => getIt<ThemeBloc>().add(ThemeModeChanged(
-                      themeMode: state.themeMode == ThemeMode.light
-                          ? ThemeMode.dark
-                          : ThemeMode.light,
-                    )),
-                    showTrailing: false,
-                  );
-                },
-              ),
-              _buildListTile(
-                context,
-                title: 'profile.menu.logout'.tr(),
-                icon: Icons.logout_rounded,
-                onTap: () => getIt<AuthBloc>().add(SignOutRequested()),
-                showTrailing: false,
-                isDestructive: true,
-              ),
-              AppSpacing.spacing_3.heightBox,
-            ],
+                AppSpacing.spacing_2.heightBox,
+                Padding(
+                  padding: AppSpacing.spacing_3.padding,
+                  child: Text(
+                    'profile.more_actions'.tr(),
+                    style: context.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.colorScheme.primary,
+                    ),
+                  ),
+                ),
+                _buildListTile(
+                  context,
+                  title: 'profile.menu.how_it_works'.tr(),
+                  icon: Icons.info_outline_rounded,
+                  onTap: () => AppRoutes.howItWorks.push(context),
+                ),
+                _buildListTile(
+                  context,
+                  title: 'profile.language'.tr(),
+                  icon: Icons.language_rounded,
+                  onTap: () => showLanguageModal(context),
+                  showTrailing: false,
+                ),
+                BlocBuilder<ThemeBloc, ThemeState>(
+                  builder: (context, state) {
+                    return _buildListTile(
+                      context,
+                      title: 'profile.menu.theme'.tr(),
+                      icon: Theme.of(context).brightness == Brightness.light
+                          ? Icons.dark_mode_outlined
+                          : Icons.light_mode_outlined,
+                      onTap: () => getIt<ThemeBloc>().add(ThemeModeChanged(
+                        themeMode:
+                            Theme.of(context).brightness == Brightness.light
+                                ? ThemeMode.dark
+                                : ThemeMode.light,
+                      )),
+                      showTrailing: false,
+                    );
+                  },
+                ),
+                _buildListTile(
+                  context,
+                  title: 'profile.menu.logout'.tr(),
+                  icon: Icons.logout_rounded,
+                  onTap: () => _confirmLogout(context),
+                  showTrailing: false,
+                  isDestructive: true,
+                ),
+                AppSpacing.spacing_3.heightBox,
+              ],
+            ),
           ),
         ),
       ),
@@ -200,5 +212,37 @@ class ProfileView extends StatelessWidget {
             )
           : null,
     );
+  }
+
+  Future<void> _confirmLogout(BuildContext context) async {
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        icon: Icon(
+          Icons.logout_rounded,
+          color: context.colorScheme.error,
+        ),
+        title: Text('profile.logout_dialog.title'.tr()),
+        content: Text('profile.logout_dialog.message'.tr()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text('actions.cancel'.tr()),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: context.colorScheme.error,
+              foregroundColor: context.colorScheme.onError,
+            ),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text('profile.menu.logout'.tr()),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldLogout ?? false) {
+      getIt<AuthBloc>().add(SignOutRequested());
+    }
   }
 }

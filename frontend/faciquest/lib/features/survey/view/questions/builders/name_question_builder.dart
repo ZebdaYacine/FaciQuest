@@ -17,7 +17,7 @@ class NameQuestionBuilder extends QuestionBuilder {
 
 class _NameQuestionBuilderState extends State<NameQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     String? firstNameLabel,
     String? lastNameLabel,
     String? firstNameHint,

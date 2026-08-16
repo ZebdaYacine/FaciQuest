@@ -17,9 +17,9 @@ class ImageQuestionBuilder extends QuestionBuilder {
 
 class _ImageQuestionBuilderState extends State<ImageQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  Future<void> onChange({
     File? image,
-  }) async{
+  }) async {
     widget.onChanged?.call((widget.question as ImageQuestion).copyWith(
       image: ImageChoice(
         id: (widget.question as ImageQuestion).image.id,

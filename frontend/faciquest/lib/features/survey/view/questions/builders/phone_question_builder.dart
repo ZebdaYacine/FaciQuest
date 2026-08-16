@@ -17,7 +17,7 @@ class PhoneQuestionBuilder extends QuestionBuilder {
 
 class _PhoneQuestionBuilderState extends State<PhoneQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     String? phoneLabel,
     String? phoneHint,
     bool? showPhone,

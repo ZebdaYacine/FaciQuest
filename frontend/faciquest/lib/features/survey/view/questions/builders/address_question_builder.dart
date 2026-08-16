@@ -17,7 +17,7 @@ class AddressQuestionBuilder extends QuestionBuilder {
 
 class _AddressQuestionBuilderState extends State<AddressQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     String? streetAddress1Label,
     String? streetAddress1Hint,
     bool? showStreetAddress1,

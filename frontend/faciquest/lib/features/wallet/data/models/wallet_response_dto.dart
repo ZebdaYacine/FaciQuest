@@ -25,4 +25,3 @@ class WalletResponseDto {
 
   WalletEntity toEntity() => date.toEntity();
 }
-

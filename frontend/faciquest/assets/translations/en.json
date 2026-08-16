@@ -20,6 +20,10 @@
     "language": "Language",
     "my_account": "My Account",
     "more_actions": "More Actions",
+    "logout_dialog": {
+      "title": "Log out?",
+      "message": "You will need to sign in again to access your surveys."
+    },
     "menu": {
       "profile": "Profile",
       "change_password": "Change Password",
@@ -85,7 +89,8 @@
       "didntReceive": "Didn't receive the code?",
       "resendIn": "Resend in",
       "submit": "Verify",
-      "resendCode": "Resend Code"
+      "resendCode": "Resend Code",
+      "codeSent": "A new verification code was sent"
     },
     "signUp": {
       "title": "Create Account",
@@ -122,7 +127,16 @@
       "email": "Email",
       "emailHint": "Enter your email address",
       "password": "Password",
-      "passwordHint": "Enter your password"
+      "passwordHint": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    },
+    "validation": {
+      "emailInvalid": "Enter a valid email address",
+      "phoneTooShort": "Phone number must contain 10 digits",
+      "phoneTooLong": "Phone number cannot exceed 10 digits",
+      "passwordMin": "Password must contain at least 8 characters",
+      "passwordsDontMatch": "Passwords do not match"
     },
     "forgotPassword": {
       "title": "Reset Password",
@@ -147,9 +161,9 @@
       "passwordHint": "Enter a strong password",
       "confirmPasswordHint": "Confirm your password",
       "securityTips": "Security Tips",
-      "tip1": "Make sure your password is stronger than required",
-      "tip2": "Make sure your password doesn't contain any keywords",
-      "tip3": "Make sure your password doesn't contain any numbers"
+      "tip1": "Use at least 8 characters",
+      "tip2": "Mix uppercase and lowercase letters",
+      "tip3": "Add a number and a symbol"
     }
   },
   "survey": {
@@ -291,6 +305,11 @@
     },
     "validation": {
       "required_question": "Please answer this question before proceeding.",
+      "invalid_email": "Enter a valid email address",
+      "invalid_phone": "Enter a valid phone number",
+      "option_required": "Enter an option",
+      "row_required": "Enter a row label",
+      "column_required": "Enter a column label",
       "understood": "Got it"
     },
     "address": {
@@ -324,6 +343,11 @@
       "add_new": "Add New Collector",
       "create_first_collector": "Create First Collector",
       "email_addresses": "Email Addresses",
+      "email_required": "Enter at least one email address",
+      "email_list_invalid": "Check the comma-separated email addresses",
+      "subject_required": "Enter an invitation subject",
+      "message_required": "Enter an invitation message",
+      "collector_name_required": "Enter a collector name",
       "enter_email_addresses_separated_by_commas": "Enter email addresses separated by commas\nexample@email.com, another@email.com",
       "subject": "Subject",
       "message": "Message",
@@ -414,8 +438,10 @@
     "create_new": "Create New Survey",
     "name": "Survey Name *",
     "enter_name": "Enter survey name",
+    "name_required": "Enter a survey name",
     "description": "Survey Description",
     "enter_description": "Enter survey description",
+    "description_required": "Enter a survey description",
     "likert_scale": "Likert Scale *"
   },
   "stats": {
@@ -489,7 +515,9 @@
       "title": "Buy targeted responses",
       "collector_name": "Collector Name",
       "enter_name": "Enter a name for this collector",
+      "name_required": "Enter a collector name",
       "responses_needed": "How many responses do you need?",
+      "responses_required": "Choose at least one response",
       "who_to_survey": "Who do you want to survey?",
       "add_criteria": "Add targeting criteria",
       "estimated_cost": "Estimated cost",
@@ -539,6 +567,15 @@
     "save_changes": "Save Changes",
     "profile_updated_success": "Profile updated successfully",
     "profile_update_failed": "Failed to update profile",
+    "profile_refresh_failed": "Unable to refresh your profile",
+    "validation": {
+      "username_required": "Enter a username",
+      "first_name_required": "Enter your first name",
+      "last_name_required": "Enter your last name",
+      "email_required": "Enter your email address",
+      "phone_required": "Enter your phone number",
+      "fix_errors": "Fix the highlighted fields before saving"
+    },
     "tooltips": {
       "cancel": "Cancel",
       "save": "Save",
@@ -620,6 +657,10 @@
       "amount_invalid": "Please enter a valid number",
       "amount_positive": "Amount must be greater than zero",
       "amount_exceeds_balance": "Amount exceeds your wallet balance",
+      "amount_non_negative": "Amount cannot be negative",
+      "surveys_required": "Enter the number of surveys",
+      "surveys_invalid": "Enter a valid whole number",
+      "surveys_non_negative": "The number of surveys cannot be negative",
       "ccp_required": "Please enter your CCP number",
       "rip_required": "Please enter your RIP number",
       "payment_method_required": "Please select a payment method"
@@ -671,6 +712,12 @@
     }
   },
   "payment": {
+    "validation": {
+      "email_required": "Enter your billing email",
+      "email_invalid": "Enter a valid email address",
+      "first_name_required": "Enter your first name",
+      "last_name_required": "Enter your last name"
+    },
     "billing_details": "Billing Details *",
     "billing_email": "Billing Email :",
     "first_name": "First Name :",
@@ -714,6 +761,7 @@
     "Submit Question": "Submit Question",
     "Question Title": "Question Title",
     "Enter your question here": "Enter your question here",
+    "title_required": "Enter a question title",
     "Question Type": "Question Type",
     "Question Settings": "Question Settings",
     "Please select a question type to configure settings": "Please select a question type to configure settings",

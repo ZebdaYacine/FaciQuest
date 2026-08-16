@@ -81,7 +81,7 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
     super.dispose();
   }
 
-  onChange({
+  void onChange({
     List<String>? rows,
     List<String>? cols,
     bool? useCheckbox,
@@ -184,6 +184,11 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
                 Expanded(
                   child: TextFormField(
                     controller: rowControllers[index],
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? 'survey.validation.row_required'.tr()
+                        : null,
                     onChanged: (value) {
                       var temp = List<String>.from(question.rows);
                       temp[index] = value;
@@ -235,6 +240,11 @@ class _MatrixQuestionBuilderState extends State<MatrixQuestionBuilder> {
                 Expanded(
                   child: TextFormField(
                     controller: colControllers[index],
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? 'survey.validation.column_required'.tr()
+                        : null,
                     onChanged: (value) {
                       var temp = List<String>.from(question.cols);
                       temp[index] = value;

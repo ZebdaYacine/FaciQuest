@@ -17,7 +17,7 @@ class TextQuestionBuilder extends QuestionBuilder {
 
 class _AudioRecordQuestionBuilderState extends State<TextQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     String? text,
   }) {
     widget.onChanged?.call((widget.question as TextQuestion).copyWith(

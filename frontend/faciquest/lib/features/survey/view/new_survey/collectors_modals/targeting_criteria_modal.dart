@@ -15,6 +15,7 @@ Future<Set<TargetingCriteria>?> showTargetingCriteriaModal(
   return showModalBottomSheet<Set<TargetingCriteria>>(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     constraints: BoxConstraints(maxHeight: context.height * 0.9),
     builder: (BuildContext _) {
       return BlocProvider.value(
@@ -53,8 +54,14 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
     }
     return list
         .where((element) =>
-            (element.category?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
-            (element.description?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
+            (element.category
+                    ?.toLowerCase()
+                    .contains(searchQuery.toLowerCase()) ??
+                false) ||
+            (element.description
+                    ?.toLowerCase()
+                    .contains(searchQuery.toLowerCase()) ??
+                false) ||
             (element.title.toLowerCase().contains(searchQuery.toLowerCase())))
         .toList();
   }
@@ -140,7 +147,8 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
                                 children: [
                                   Text(
                                     criteria.title,
-                                    style: context.textTheme.titleMedium?.copyWith(
+                                    style:
+                                        context.textTheme.titleMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: context.colorScheme.primary,
                                     ),
@@ -153,12 +161,15 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: context.colorScheme.primaryContainer.withOpacity(0.3),
+                                        color: context
+                                            .colorScheme.primaryContainer
+                                            .withValues(alpha: 0.3),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
                                         criteria.category!,
-                                        style: context.textTheme.labelSmall?.copyWith(
+                                        style: context.textTheme.labelSmall
+                                            ?.copyWith(
                                           color: context.colorScheme.primary,
                                         ),
                                       ),
@@ -197,7 +208,8 @@ class _TargetingCriteriaModalState extends State<TargetingCriteriaModal> {
                             selectedChoices.removeWhere(
                               (element) => element.id == criteria.id,
                             );
-                            selectedChoices.add(criteria.copyWith(choices: selectedItems));
+                            selectedChoices
+                                .add(criteria.copyWith(choices: selectedItems));
                           },
                         ),
                       ],

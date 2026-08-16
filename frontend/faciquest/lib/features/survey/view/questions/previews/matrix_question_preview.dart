@@ -77,11 +77,10 @@ class MatrixQuestionPreview extends StatelessWidget {
                             }
                           },
                         )
-                      : Radio<String>(
-                          value: col,
+                      : RadioGroup<String>(
                           groupValue: answer?.getSelectedColumn(row),
-                          onChanged: (String? value) {
-                            if (value != null && onAnswerChanged != null) {
+                          onChanged: (value) {
+                            if (onAnswerChanged != null) {
                               final newAnswer = (answer ??
                                       MatrixAnswer.empty(
                                         questionId: question.id,
@@ -93,6 +92,7 @@ class MatrixQuestionPreview extends StatelessWidget {
                               onAnswerChanged!(newAnswer);
                             }
                           },
+                          child: Radio<String>(value: col),
                         ),
                 ),
               );

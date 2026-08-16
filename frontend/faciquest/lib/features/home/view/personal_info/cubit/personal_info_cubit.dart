@@ -42,14 +42,14 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
         emit(state.copyWith(
           isRefreshing: false,
           status: Status.failure,
-          message: 'Unable to refresh user data',
+          message: 'personal_info.profile_refresh_failed',
         ));
       }
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(
         isRefreshing: false,
         status: Status.failure,
-        message: 'Failed to refresh user data: ${e.toString()}',
+        message: 'personal_info.profile_refresh_failed',
       ));
     }
   }
@@ -71,7 +71,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     final emailRegex = RegExp(pattern, caseSensitive: false);
 
     if (!emailRegex.hasMatch(email)) {
-      return 'Please enter a valid email address';
+      return 'auth.validation.emailInvalid';
     }
 
     return null;
@@ -86,14 +86,9 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     final digitsOnly = phone.replaceAll(RegExp(r'[^\d]'), '');
 
     if (digitsOnly.length < 10) {
-      return 'Phone number must be at least 10 digits';
+      return 'auth.validation.phoneTooShort';
     } else if (digitsOnly.length > 10) {
-      return 'Phone number cannot exceed 10 digits';
-    }
-
-    // Check if it starts with a valid digit (not 0 or 1 for US numbers)
-    if (digitsOnly.startsWith('0') || digitsOnly.startsWith('1')) {
-      return 'Phone number cannot start with 0 or 1';
+      return 'auth.validation.phoneTooLong';
     }
 
     return null;
@@ -212,7 +207,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     if (!state.isValid) {
       emit(state.copyWith(
         status: Status.failure,
-        message: 'Please fix validation errors before saving',
+        message: 'personal_info.validation.fix_errors',
       ));
       return;
     }
@@ -225,14 +220,14 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
 
       emit(state.copyWith(
         status: Status.success,
-        message: 'Profile updated successfully',
+        message: 'personal_info.profile_updated_success',
         isEditing: false,
         hasUnsavedChanges: false,
       ));
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(
         status: Status.failure,
-        message: 'Failed to update profile: ${e.toString()}',
+        message: 'personal_info.profile_update_failed',
       ));
     }
   }

@@ -66,7 +66,7 @@ class _QuestionsList extends StatelessWidget {
         return ReorderableListView.builder(
           footer: _AddQuestionButton(likertScale: state.survey.likertScale),
           buildDefaultDragHandles: true,
-          onReorder: (oldIndex, newIndex) {
+          onReorderItem: (oldIndex, newIndex) {
             context.read<NewSurveyCubit>().reorder(oldIndex, newIndex);
           },
           itemBuilder: (context, index) {
@@ -135,8 +135,8 @@ class _QuestionCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
+            InkWell(
+              borderRadius: BorderRadius.circular(12),
               onTap: () => _showEditModal(context),
               child: IgnorePointer(
                 child: Row(
@@ -224,6 +224,7 @@ class _MoveButton extends StatelessWidget {
             );
 
             if (newQuestions == null) return;
+            if (!context.mounted) return;
             context.read<NewSurveyCubit>().newQuestionsList(newQuestions);
           },
         );
@@ -326,7 +327,7 @@ class _BottomActions extends StatelessWidget {
         color: context.colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -399,6 +400,7 @@ Future<List<QuestionEntity>?> showMoveBottomSheet(
   MoveQuestionAction? action = MoveQuestionAction.after;
   return showModalBottomSheet(
     context: context,
+    useSafeArea: true,
     builder: (_) {
       return StatefulBuilder(builder: (context, setState) {
         return AppBackDrop(
@@ -454,7 +456,8 @@ Future<List<QuestionEntity>?> showMoveBottomSheet(
               context.pop(temp);
             },
             icon: Icon(copy ? Icons.copy_rounded : Icons.move_up_rounded),
-            label: Text('${copy ? 'actions.copy' : 'actions.move'}_question'.tr()),
+            label:
+                Text('${copy ? 'actions.copy' : 'actions.move'}_question'.tr()),
           ),
         );
       });

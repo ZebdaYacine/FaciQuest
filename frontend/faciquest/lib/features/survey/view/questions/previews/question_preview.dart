@@ -45,7 +45,7 @@ class _QuestionPreviewState extends State<QuestionPreview> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: context.colorScheme.shadow.withOpacity(0.05),
+            color: context.colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

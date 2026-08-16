@@ -22,7 +22,7 @@ class ImageChoiceQuestionBuilder extends QuestionBuilder {
 class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
     with BuildFormMixin {
   String? selectedType;
-  onChange({
+  void onChange({
     List<ImageChoice>? choices,
     bool? useCheckbox,
   }) {
@@ -62,11 +62,7 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                             value: false,
                             onChanged: (value) {},
                           )
-                        : Radio(
-                            value: item,
-                            groupValue: null,
-                            onChanged: (value) {},
-                          ),
+                        : const Icon(Icons.radio_button_unchecked_rounded),
                     Expanded(
                       child: Column(
                         children: [
@@ -88,12 +84,13 @@ class _ImageChoiceQuestionBuilderState extends State<ImageChoiceQuestionBuilder>
                               imageBytes: item.image,
                               useImageBytes: true,
                               imageUrl: item.url,
-                              onImageSelected: (value) async{
+                              onImageSelected: (value) async {
                                 var choices = [
                                   ...(widget.question as ImageChoiceQuestion)
                                       .choices
                                 ];
-                                choices[index] = item.copyWith(image:( await value?.readAsBytes()));
+                                choices[index] = item.copyWith(
+                                    image: (await value?.readAsBytes()));
                                 onChange(
                                   choices: choices,
                                 );

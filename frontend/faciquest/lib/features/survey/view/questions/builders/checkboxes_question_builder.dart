@@ -60,7 +60,7 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
     super.dispose();
   }
 
-  onChange({
+  void onChange({
     List<String>? choices,
   }) {
     widget.onChanged?.call(
@@ -152,17 +152,17 @@ class _CheckboxesQuestionBuilderState extends State<CheckboxesQuestionBuilder> {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: question.choices.length,
           itemBuilder: (context, index) {
-            final item = question.choices[index];
             return Row(
               children: [
-                Radio(
-                  value: item,
-                  groupValue: null,
-                  onChanged: null,
-                ),
+                const Icon(Icons.radio_button_unchecked_rounded),
                 Expanded(
                   child: TextFormField(
                     controller: controllers[index],
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? 'survey.validation.option_required'.tr()
+                        : null,
                     onChanged: (value) {
                       var temp = List<String>.from(question.choices);
                       temp[index] = value;

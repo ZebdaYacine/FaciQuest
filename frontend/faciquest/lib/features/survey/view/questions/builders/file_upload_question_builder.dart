@@ -18,7 +18,7 @@ class FileUploadQuestionBuilder extends QuestionBuilder {
 
 class _FileUploadQuestionBuilderState extends State<FileUploadQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     String? instructions,
     List<FileUploadType>? allowedExtensions,
   }) {

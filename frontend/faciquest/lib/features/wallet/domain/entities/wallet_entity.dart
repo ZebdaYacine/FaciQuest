@@ -60,4 +60,3 @@ class WalletEntity extends Equatable {
     );
   }
 }
-

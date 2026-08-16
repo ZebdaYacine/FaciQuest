@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,12 @@ class AddressQuestionPreview extends StatelessWidget {
   final AddressAnswer? answer;
   final ValueChanged<AddressAnswer>? onAnswerChanged;
 
+  String? _required(String? value) {
+    return question.isRequired && (value == null || value.trim().isEmpty)
+        ? 'survey.validation.required_question'.tr()
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,6 +30,9 @@ class AddressQuestionPreview extends StatelessWidget {
           Text(question.streetAddress1Label),
           TextFormField(
             initialValue: answer?.streetAddress1,
+            textInputAction: TextInputAction.next,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: _required,
             decoration: InputDecoration(
               hintText: question.streetAddress1Hint,
             ),
@@ -42,6 +52,7 @@ class AddressQuestionPreview extends StatelessWidget {
           Text(question.streetAddress2Label),
           TextFormField(
             initialValue: answer?.streetAddress2,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               hintText: question.streetAddress2Hint,
             ),
@@ -62,6 +73,9 @@ class AddressQuestionPreview extends StatelessWidget {
               Text(question.cityLabel),
               TextFormField(
                 initialValue: answer?.city,
+                textInputAction: TextInputAction.next,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: _required,
                 decoration: InputDecoration(
                   hintText: question.cityHint,
                 ),
@@ -80,6 +94,9 @@ class AddressQuestionPreview extends StatelessWidget {
               Text(question.stateLabel),
               TextFormField(
                 initialValue: answer?.state,
+                textInputAction: TextInputAction.next,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: _required,
                 decoration: InputDecoration(
                   hintText: question.stateHint,
                 ),
@@ -98,6 +115,9 @@ class AddressQuestionPreview extends StatelessWidget {
               Text(question.postalCodeLabel),
               TextFormField(
                 initialValue: answer?.postalCode,
+                textInputAction: TextInputAction.next,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: _required,
                 decoration: InputDecoration(
                   hintText: question.postalCodeHint,
                 ),
@@ -116,6 +136,9 @@ class AddressQuestionPreview extends StatelessWidget {
               Text(question.countryLabel),
               TextFormField(
                 initialValue: answer?.country,
+                textInputAction: TextInputAction.done,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: _required,
                 decoration: InputDecoration(
                   hintText: question.countryHint,
                 ),

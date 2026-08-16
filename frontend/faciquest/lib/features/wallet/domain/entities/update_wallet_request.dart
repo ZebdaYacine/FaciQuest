@@ -24,4 +24,3 @@ class UpdateWalletRequest extends Equatable {
         paymentMethod,
       ];
 }
-

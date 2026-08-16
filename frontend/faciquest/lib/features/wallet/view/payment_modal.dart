@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<void> showPaymentModal(BuildContext context, {double? price, String? collectorId}) async {
+Future<void> showPaymentModal(BuildContext context,
+    {double? price, String? collectorId}) async {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     constraints: BoxConstraints(maxHeight: context.height * 0.9),
     builder: (context) {
       return PaymentModal(price: price ?? 0.0, collectorId: collectorId);
@@ -57,7 +59,12 @@ class _PaymentModalState extends State<PaymentModal> {
   // Constants for validation
   static const int _maxFileSizeInMB = 5;
   static const int _maxFileSizeInBytes = _maxFileSizeInMB * 1024 * 1024;
-  static const List<String> _allowedImageExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
+  static const List<String> _allowedImageExtensions = [
+    'jpg',
+    'jpeg',
+    'png',
+    'pdf'
+  ];
 
   @override
   void initState() {
@@ -128,7 +135,8 @@ class _PaymentModalState extends State<PaymentModal> {
         }
 
         if (!(await _isValidFileSize(result))) {
-          _showErrorSnackBar('${'payment.file_too_large'.tr()} (Max: $_maxFileSizeInMB MB)');
+          _showErrorSnackBar(
+              '${'payment.file_too_large'.tr()} (Max: $_maxFileSizeInMB MB)');
           return;
         }
 
@@ -160,6 +168,7 @@ class _PaymentModalState extends State<PaymentModal> {
   Future<XFile?> _showFilePickerOptions() async {
     return await showModalBottomSheet<XFile?>(
       context: context,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -189,13 +198,13 @@ class _PaymentModalState extends State<PaymentModal> {
                 icon: Icons.camera_alt,
                 title: 'payment.camera'.tr(),
                 onTap: () async {
-                  Navigator.pop(context);
                   final file = await _imagePicker.pickImage(
                     source: ImageSource.camera,
                     maxWidth: 1920,
                     maxHeight: 1080,
                     imageQuality: 85,
                   );
+                  if (!context.mounted) return;
                   Navigator.pop(context, file);
                 },
               ),
@@ -203,13 +212,13 @@ class _PaymentModalState extends State<PaymentModal> {
                 icon: Icons.photo_library,
                 title: 'payment.photo_gallery'.tr(),
                 onTap: () async {
-                  Navigator.pop(context);
                   final file = await _imagePicker.pickImage(
                     source: ImageSource.gallery,
                     maxWidth: 1920,
                     maxHeight: 1080,
                     imageQuality: 85,
                   );
+                  if (!context.mounted) return;
                   Navigator.pop(context, file);
                 },
               ),
@@ -217,12 +226,12 @@ class _PaymentModalState extends State<PaymentModal> {
                 icon: Icons.folder,
                 title: 'payment.files'.tr(),
                 onTap: () async {
-                  Navigator.pop(context);
                   final result = await FilePicker.platform.pickFiles(
                     type: FileType.custom,
                     allowedExtensions: _allowedImageExtensions,
                     allowMultiple: false,
                   );
+                  if (!context.mounted) return;
                   if (result?.files.single != null) {
                     final platformFile = result!.files.single;
                     final xFile = XFile(
@@ -292,7 +301,8 @@ class _PaymentModalState extends State<PaymentModal> {
     }
   }
 
-  Widget _buildUploadedFilePreview(XFile? file, {required VoidCallback onRemove}) {
+  Widget _buildUploadedFilePreview(XFile? file,
+      {required VoidCallback onRemove}) {
     if (file == null) return const SizedBox.shrink();
 
     return Card(
@@ -302,7 +312,9 @@ class _PaymentModalState extends State<PaymentModal> {
         child: Row(
           children: [
             Icon(
-              _getFileExtension(file.name) == 'pdf' ? Icons.picture_as_pdf : Icons.image,
+              _getFileExtension(file.name) == 'pdf'
+                  ? Icons.picture_as_pdf
+                  : Icons.image,
               color: context.colorScheme.primary,
               size: 32,
             ),
@@ -356,7 +368,8 @@ class _PaymentModalState extends State<PaymentModal> {
 
     // Check if collectorId is available
     if (widget.collectorId == null || widget.collectorId!.isEmpty) {
-      _showErrorSnackBar('Payment error: Collector ID not found. Please try again.');
+      _showErrorSnackBar(
+          'Payment error: Collector ID not found. Please try again.');
       return;
     }
 
@@ -387,13 +400,16 @@ class _PaymentModalState extends State<PaymentModal> {
 
         // Validate file exists
         if (!await baridiMobFile.exists()) {
-          throw Exception('Baridi Mob proof file not found. Please re-select the file.');
+          throw Exception(
+              'Baridi Mob proof file not found. Please re-select the file.');
         }
 
         // Show progress
-        _showInfoSnackBar('${'payment.uploading'.tr()} Baridi Mob... (${uploadedFiles + 1}/$totalFiles)');
+        _showInfoSnackBar(
+            '${'payment.uploading'.tr()} Baridi Mob... (${uploadedFiles + 1}/$totalFiles)');
 
-        await _surveyRepository.confirmPayment(widget.collectorId!, baridiMobFile);
+        await _surveyRepository.confirmPayment(
+            widget.collectorId!, baridiMobFile);
         uploadedFiles++;
 
         debugPrint('Successfully uploaded Baridi Mob proof');
@@ -406,11 +422,13 @@ class _PaymentModalState extends State<PaymentModal> {
 
         // Validate file exists
         if (!await ccpFile.exists()) {
-          throw Exception('CCP proof file not found. Please re-select the file.');
+          throw Exception(
+              'CCP proof file not found. Please re-select the file.');
         }
 
         // Show progress
-        _showInfoSnackBar('${'payment.uploading'.tr()} CCP... (${uploadedFiles + 1}/$totalFiles)');
+        _showInfoSnackBar(
+            '${'payment.uploading'.tr()} CCP... (${uploadedFiles + 1}/$totalFiles)');
 
         await _surveyRepository.confirmPayment(widget.collectorId!, ccpFile);
         uploadedFiles++;
@@ -427,9 +445,11 @@ class _PaymentModalState extends State<PaymentModal> {
       String errorMessage = 'payment.payment_failed'.tr();
 
       // Handle specific error types
-      if (e.toString().contains('network') || e.toString().contains('connection')) {
+      if (e.toString().contains('network') ||
+          e.toString().contains('connection')) {
         errorMessage = 'payment.network_error'.tr();
-      } else if (e.toString().contains('file') || e.toString().contains('upload')) {
+      } else if (e.toString().contains('file') ||
+          e.toString().contains('upload')) {
         errorMessage = 'payment.upload_file_error'.tr();
       }
 
@@ -462,21 +482,24 @@ class _PaymentModalState extends State<PaymentModal> {
                 padding: const EdgeInsets.all(8),
                 child: Form(
                   key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Column(
                     children: [
                       TextFormField(
                         controller: _billingEmailController,
                         keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           labelText: 'payment.billing_email'.tr(),
                           border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'auth.signIn.email'.tr();
+                            return 'payment.validation.email_required'.tr();
                           }
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                            return 'Please enter a valid email';
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                              .hasMatch(value)) {
+                            return 'payment.validation.email_invalid'.tr();
                           }
                           return null;
                         },
@@ -484,13 +507,15 @@ class _PaymentModalState extends State<PaymentModal> {
                       AppSpacing.spacing_1.heightBox,
                       TextFormField(
                         controller: _firstNameController,
+                        textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           labelText: 'payment.first_name'.tr(),
                           border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'auth.signUp.firstName'.tr();
+                            return 'payment.validation.first_name_required'
+                                .tr();
                           }
                           return null;
                         },
@@ -498,13 +523,16 @@ class _PaymentModalState extends State<PaymentModal> {
                       AppSpacing.spacing_1.heightBox,
                       TextFormField(
                         controller: _lastNameController,
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (_) =>
+                            FocusScope.of(context).unfocus(),
                         decoration: InputDecoration(
                           labelText: 'payment.last_name'.tr(),
                           border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'auth.signUp.lastName'.tr();
+                            return 'payment.validation.last_name_required'.tr();
                           }
                           return null;
                         },
@@ -545,7 +573,8 @@ class _PaymentModalState extends State<PaymentModal> {
                             children: [
                               Text('payment.rip'.tr()),
                               InkWell(
-                                onTap: () => _copyToClipboard('0799992017867632'),
+                                onTap: () =>
+                                    _copyToClipboard('0799992017867632'),
                                 child: Ink(
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
@@ -569,7 +598,10 @@ class _PaymentModalState extends State<PaymentModal> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                onPressed: _isUploadingBaridiMob ? null : () => _handleFileUpload(isBaridiMob: true),
+                                onPressed: _isUploadingBaridiMob
+                                    ? null
+                                    : () =>
+                                        _handleFileUpload(isBaridiMob: true),
                                 child: Center(
                                   child: Column(
                                     children: [
@@ -578,12 +610,15 @@ class _PaymentModalState extends State<PaymentModal> {
                                           ? const SizedBox(
                                               width: 20,
                                               height: 20,
-                                              child: CircularProgressIndicator(strokeWidth: 2),
+                                              child: CircularProgressIndicator(
+                                                  strokeWidth: 2),
                                             )
                                           : const Icon(Icons.upload_file),
                                       AppSpacing.spacing_1.heightBox,
                                       Text(
-                                        _isUploadingBaridiMob ? 'payment.uploading'.tr() : 'payment.upload_proof'.tr(),
+                                        _isUploadingBaridiMob
+                                            ? 'payment.uploading'.tr()
+                                            : 'payment.upload_proof'.tr(),
                                       ),
                                       AppSpacing.spacing_1.heightBox,
                                     ],
@@ -669,7 +704,10 @@ class _PaymentModalState extends State<PaymentModal> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                onPressed: _isUploadingCcp ? null : () => _handleFileUpload(isBaridiMob: false),
+                                onPressed: _isUploadingCcp
+                                    ? null
+                                    : () =>
+                                        _handleFileUpload(isBaridiMob: false),
                                 child: Center(
                                   child: Column(
                                     children: [
@@ -678,12 +716,15 @@ class _PaymentModalState extends State<PaymentModal> {
                                           ? const SizedBox(
                                               width: 20,
                                               height: 20,
-                                              child: CircularProgressIndicator(strokeWidth: 2),
+                                              child: CircularProgressIndicator(
+                                                  strokeWidth: 2),
                                             )
                                           : const Icon(Icons.upload_file),
                                       AppSpacing.spacing_1.heightBox,
                                       Text(
-                                        _isUploadingCcp ? 'payment.uploading'.tr() : 'payment.upload_proof'.tr(),
+                                        _isUploadingCcp
+                                            ? 'payment.uploading'.tr()
+                                            : 'payment.upload_proof'.tr(),
                                       ),
                                       AppSpacing.spacing_1.heightBox,
                                     ],

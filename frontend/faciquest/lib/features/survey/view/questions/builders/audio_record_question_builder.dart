@@ -17,7 +17,7 @@ class AudioRecordQuestionBuilder extends QuestionBuilder {
 
 class _AudioRecordQuestionBuilderState extends State<AudioRecordQuestionBuilder>
     with BuildFormMixin {
-  onChange() {
+  void onChange() {
     widget.onChanged?.call(widget.question.copyWith());
     setState(() {});
   }

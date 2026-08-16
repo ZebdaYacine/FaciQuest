@@ -1,4 +1,5 @@
 import 'package:faciquest/features/features.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CommentBoxQuestionPreview extends StatelessWidget {
@@ -18,6 +19,12 @@ class CommentBoxQuestionPreview extends StatelessWidget {
       initialValue: answer?.value,
       maxLength: question.maxLength,
       maxLines: question.maxLines,
+      textInputAction: TextInputAction.newline,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) =>
+          question.isRequired && (value == null || value.trim().isEmpty)
+              ? 'survey.validation.required_question'.tr()
+              : null,
       onChanged: (value) {
         onAnswerChanged?.call(
           CommentBoxAnswer(

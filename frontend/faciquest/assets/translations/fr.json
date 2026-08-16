@@ -20,6 +20,10 @@
     "language": "Langue",
     "my_account": "Mon Compte",
     "more_actions": "Plus d'Actions",
+    "logout_dialog": {
+      "title": "Se déconnecter ?",
+      "message": "Vous devrez vous reconnecter pour accéder à vos sondages."
+    },
     "menu": {
       "profile": "Profil",
       "change_password": "Changer le Mot de Passe",
@@ -85,7 +89,8 @@
       "didntReceive": "Vous n'avez pas reçu le code ?",
       "resendIn": "Renvoyer dans",
       "submit": "Vérifier",
-      "resendCode": "Renvoyer le Code"
+      "resendCode": "Renvoyer le Code",
+      "codeSent": "Un nouveau code de vérification a été envoyé"
     },
     "signUp": {
       "title": "Créer un Compte",
@@ -122,7 +127,16 @@
       "email": "Email",
       "emailHint": "Entrez votre adresse email",
       "password": "Mot de passe",
-      "passwordHint": "Entrez votre mot de passe"
+      "passwordHint": "Entrez votre mot de passe",
+      "showPassword": "Afficher le mot de passe",
+      "hidePassword": "Masquer le mot de passe"
+    },
+    "validation": {
+      "emailInvalid": "Saisissez une adresse e-mail valide",
+      "phoneTooShort": "Le numéro de téléphone doit contenir 10 chiffres",
+      "phoneTooLong": "Le numéro de téléphone ne peut pas dépasser 10 chiffres",
+      "passwordMin": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordsDontMatch": "Les mots de passe ne correspondent pas"
     },
     "forgotPassword": {
       "title": "Réinitialiser le Mot de Passe",
@@ -147,9 +161,9 @@
       "passwordHint": "Entrez un mot de passe fort",
       "confirmPasswordHint": "Confirmez votre mot de passe",
       "securityTips": "Conseils de Sécurité",
-      "tip1": "Assurez-vous que votre mot de passe est plus fort que requis",
-      "tip2": "Assurez-vous que votre mot de passe ne contient aucun mot-clé",
-      "tip3": "Assurez-vous que votre mot de passe ne contient aucun chiffre"
+      "tip1": "Utilisez au moins 8 caractères",
+      "tip2": "Mélangez lettres majuscules et minuscules",
+      "tip3": "Ajoutez un chiffre et un symbole"
     }
   },
   "survey": {
@@ -200,6 +214,11 @@
       "add_new": "Ajouter un nouveau collecteur",
       "create_first_collector": "Créer un premier collecteur",
       "email_addresses": "Adresses email",
+      "email_required": "Saisissez au moins une adresse e-mail",
+      "email_list_invalid": "Vérifiez les adresses e-mail séparées par des virgules",
+      "subject_required": "Saisissez l’objet de l’invitation",
+      "message_required": "Saisissez un message d’invitation",
+      "collector_name_required": "Saisissez un nom de collecteur",
       "enter_email_addresses_separated_by_commas": "Entrez les adresses email séparées par des virgules\nexample@email.com, another@email.com",
       "subject": "Sujet",
       "message": "Message",
@@ -329,6 +348,11 @@
     },
     "validation": {
       "required_question": "Veuillez répondre à cette question avant de continuer.",
+      "invalid_email": "Saisissez une adresse e-mail valide",
+      "invalid_phone": "Saisissez un numéro de téléphone valide",
+      "option_required": "Saisissez une option",
+      "row_required": "Saisissez le libellé de la ligne",
+      "column_required": "Saisissez le libellé de la colonne",
       "understood": "Compris"
     },
     "address": {
@@ -409,8 +433,10 @@
     "create_new": "Créer un Nouveau Sondage",
     "name": "Nom du Sondage *",
     "enter_name": "Saisir le nom du sondage",
+    "name_required": "Saisissez un nom de sondage",
     "description": "Description du Sondage",
     "enter_description": "Saisir la description du sondage",
+    "description_required": "Saisissez une description du sondage",
     "likert_scale": "Échelle de Likert *"
   },
   "stats": {
@@ -484,7 +510,9 @@
       "title": "Acheter des réponses ciblées",
       "collector_name": "Nom du Collecteur",
       "enter_name": "Saisir un nom pour ce collecteur",
+      "name_required": "Saisissez un nom de collecteur",
       "responses_needed": "Combien de réponses vous faut-il ?",
+      "responses_required": "Choisissez au moins une réponse",
       "who_to_survey": "Qui souhaitez-vous interroger ?",
       "add_criteria": "Ajouter des critères de ciblage",
       "estimated_cost": "Coût estimé",
@@ -534,6 +562,15 @@
     "save_changes": "Enregistrer les Modifications",
     "profile_updated_success": "Profil mis à jour avec succès",
     "profile_update_failed": "Échec de la mise à jour du profil",
+    "profile_refresh_failed": "Impossible d’actualiser votre profil",
+    "validation": {
+      "username_required": "Saisissez un nom d’utilisateur",
+      "first_name_required": "Saisissez votre prénom",
+      "last_name_required": "Saisissez votre nom",
+      "email_required": "Saisissez votre adresse e-mail",
+      "phone_required": "Saisissez votre numéro de téléphone",
+      "fix_errors": "Corrigez les champs indiqués avant d’enregistrer"
+    },
     "tooltips": {
       "cancel": "Annuler",
       "save": "Enregistrer",
@@ -615,6 +652,10 @@
       "amount_invalid": "Veuillez entrer un nombre valide",
       "amount_positive": "Le montant doit être supérieur à zéro",
       "amount_exceeds_balance": "Le montant dépasse votre solde de portefeuille",
+      "amount_non_negative": "Le montant ne peut pas être négatif",
+      "surveys_required": "Saisissez le nombre de sondages",
+      "surveys_invalid": "Saisissez un nombre entier valide",
+      "surveys_non_negative": "Le nombre de sondages ne peut pas être négatif",
       "ccp_required": "Veuillez entrer votre numéro CCP",
       "rip_required": "Veuillez entrer votre numéro RIP",
       "payment_method_required": "Veuillez sélectionner une méthode de paiement"
@@ -666,6 +707,12 @@
     }
   },
   "payment": {
+    "validation": {
+      "email_required": "Saisissez votre e-mail de facturation",
+      "email_invalid": "Saisissez une adresse e-mail valide",
+      "first_name_required": "Saisissez votre prénom",
+      "last_name_required": "Saisissez votre nom"
+    },
     "billing_details": "Détails de Facturation *",
     "billing_email": "Email de Facturation :",
     "first_name": "Prénom :",
@@ -709,6 +756,7 @@
     "Submit Question": "Soumettre la question",
     "Question Title": "Titre de la question",
     "Enter your question here": "Saisissez votre question ici",
+    "title_required": "Saisissez le titre de la question",
     "Question Type": "Type de question",
     "Question Settings": "Paramètres de la question",
     "Please select a question type to configure settings": "Veuillez sélectionner un type de question pour configurer les paramètres",

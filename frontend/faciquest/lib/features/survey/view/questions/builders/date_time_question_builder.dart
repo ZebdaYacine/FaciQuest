@@ -17,7 +17,7 @@ class DateTimeQuestionBuilder extends QuestionBuilder {
 
 class _DateTimeQuestionBuilderState extends State<DateTimeQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     bool? collectDateInfo,
     bool? collectTimeInfo,
   }) {

@@ -9,6 +9,7 @@ Future<void> cashOutModal(BuildContext context) {
   return showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     constraints: BoxConstraints(maxHeight: context.height * 0.9),
     builder: (_) => BlocProvider.value(
       value: context.read<WalletCubit>(),
@@ -93,12 +94,15 @@ class _CashOutModalState extends State<CashOutModal> {
           if (state is WalletLoaded && _ccpController.text.isEmpty) {
             _ccpController.text = state.wallet.ccp;
             _ripController.text = state.wallet.rip;
-            _selectedPaymentMethod = PaymentMethodExtension.fromString(state.wallet.paymentMethod);
+            _selectedPaymentMethod =
+                PaymentMethodExtension.fromString(state.wallet.paymentMethod);
           }
 
           return Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -107,7 +111,7 @@ class _CashOutModalState extends State<CashOutModal> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
+                        color: Colors.blue.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -116,8 +120,10 @@ class _CashOutModalState extends State<CashOutModal> {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'wallet.cashout_modal.available_balance_info'
-                                  .tr(args: [state.wallet.amount.toStringAsFixed(2)]),
+                              'wallet.cashout_modal.available_balance_info'.tr(
+                                  args: [
+                                    state.wallet.amount.toStringAsFixed(2)
+                                  ]),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -135,6 +141,7 @@ class _CashOutModalState extends State<CashOutModal> {
                       prefixText: 'DA ',
                     ),
                     keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'wallet.validation.amount_required'.tr();
@@ -146,7 +153,8 @@ class _CashOutModalState extends State<CashOutModal> {
                       if (amount <= 0) {
                         return 'wallet.validation.amount_positive'.tr();
                       }
-                      if (state is WalletLoaded && amount > state.wallet.amount) {
+                      if (state is WalletLoaded &&
+                          amount > state.wallet.amount) {
                         return 'wallet.validation.amount_exceeds_balance'.tr();
                       }
                       return null;
@@ -156,7 +164,8 @@ class _CashOutModalState extends State<CashOutModal> {
                   DropdownButtonFormField<PaymentMethod>(
                     initialValue: _selectedPaymentMethod,
                     decoration: InputDecoration(
-                      labelText: 'wallet.cashout_modal.payment_method_label'.tr(),
+                      labelText:
+                          'wallet.cashout_modal.payment_method_label'.tr(),
                       border: const OutlineInputBorder(),
                     ),
                     items: PaymentMethod.values.map((method) {
@@ -182,14 +191,18 @@ class _CashOutModalState extends State<CashOutModal> {
                         hintText: 'wallet.cashout_modal.ccp_hint'.tr(),
                       ),
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) => _handleSubmit(context, state),
                       validator: (value) {
-                        if (_selectedPaymentMethod == PaymentMethod.ccp && (value == null || value.isEmpty)) {
+                        if (_selectedPaymentMethod == PaymentMethod.ccp &&
+                            (value == null || value.isEmpty)) {
                           return 'wallet.validation.ccp_required'.tr();
                         }
                         return null;
                       },
                     ),
-                  if (_selectedPaymentMethod == PaymentMethod.rip || _selectedPaymentMethod == PaymentMethod.baridimob)
+                  if (_selectedPaymentMethod == PaymentMethod.rip ||
+                      _selectedPaymentMethod == PaymentMethod.baridimob)
                     TextFormField(
                       controller: _ripController,
                       decoration: InputDecoration(
@@ -197,9 +210,12 @@ class _CashOutModalState extends State<CashOutModal> {
                         hintText: 'wallet.cashout_modal.rip_hint'.tr(),
                       ),
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) => _handleSubmit(context, state),
                       validator: (value) {
                         if ((_selectedPaymentMethod == PaymentMethod.rip ||
-                                _selectedPaymentMethod == PaymentMethod.baridimob) &&
+                                _selectedPaymentMethod ==
+                                    PaymentMethod.baridimob) &&
                             (value == null || value.isEmpty)) {
                           return 'wallet.validation.rip_required'.tr();
                         }

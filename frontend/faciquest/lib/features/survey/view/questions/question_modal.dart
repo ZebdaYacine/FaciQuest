@@ -14,6 +14,7 @@ Future<void> showQuestionModal(
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     backgroundColor: Colors.transparent,
     builder: (context) => StatefulBuilder(builder: (context, setState) {
       return Container(
@@ -22,7 +23,7 @@ Future<void> showQuestionModal(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),
@@ -104,7 +105,8 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if ((widget.question.runtimeType != TextQuestion && widget.question.runtimeType != ImageQuestion)) ...[
+              if ((widget.question.runtimeType != TextQuestion &&
+                  widget.question.runtimeType != ImageQuestion)) ...[
                 Text(
                   'questionModal.Question Title'.tr(),
                   style: context.textTheme.titleMedium?.copyWith(
@@ -115,10 +117,16 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 AppSpacing.spacing_2.heightBox,
                 TextFormField(
                   initialValue: widget.question?.title,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.next,
+                  validator: (value) => value == null || value.trim().isEmpty
+                      ? 'questionModal.title_required'.tr()
+                      : null,
                   decoration: InputDecoration(
                     hintText: 'questionModal.Enter your question here'.tr(),
                     filled: true,
-                    fillColor: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                    fillColor: context.colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.3),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -136,14 +144,17 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 ),
                 AppSpacing.spacing_3.heightBox,
                 // Required Question Checkbox
-                if (widget.question?.runtimeType != TextQuestion && widget.question?.runtimeType != ImageQuestion)
+                if (widget.question?.runtimeType != TextQuestion &&
+                    widget.question?.runtimeType != ImageQuestion)
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                      color: context.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: context.colorScheme.outline.withOpacity(0.1),
+                        color:
+                            context.colorScheme.outline.withValues(alpha: 0.1),
                         width: 1,
                       ),
                     ),
@@ -180,7 +191,8 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'questionModal.required_question_description'.tr(),
+                                'questionModal.required_question_description'
+                                    .tr(),
                                 style: context.textTheme.bodySmall?.copyWith(
                                   color: context.colorScheme.onSurfaceVariant,
                                 ),
@@ -203,7 +215,8 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
               AppSpacing.spacing_2.heightBox,
               Container(
                 decoration: BoxDecoration(
-                  color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                  color: context.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -270,7 +283,8 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 Container(
                   padding: AppSpacing.spacing_3.padding,
                   decoration: BoxDecoration(
-                    color: context.colorScheme.errorContainer.withOpacity(0.3),
+                    color: context.colorScheme.errorContainer
+                        .withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -282,7 +296,8 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                       AppSpacing.spacing_2.widthBox,
                       Expanded(
                         child: Text(
-                          'questionModal.Please select a question type to configure settings'.tr(),
+                          'questionModal.Please select a question type to configure settings'
+                              .tr(),
                           style: context.textTheme.bodyMedium?.copyWith(
                             color: context.colorScheme.error,
                           ),
@@ -295,7 +310,8 @@ class _EditViewState extends State<EditView> with BuildFormMixin {
                 Container(
                   padding: AppSpacing.spacing_3.padding,
                   decoration: BoxDecoration(
-                    color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                    color: context.colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: QuestionBuilder.create(
@@ -355,22 +371,28 @@ QuestionEntity _applyIsRequired(QuestionEntity question, bool isRequired) {
 }
 
 extension on QuestionType {
-  QuestionEntity newQuestion(QuestionEntity question, {bool isRequired = false}) {
+  QuestionEntity newQuestion(QuestionEntity question,
+      {bool isRequired = false}) {
     switch (this) {
       case QuestionType.starRating:
         return StarRatingQuestion.copyFrom(question, isRequired: isRequired);
       case QuestionType.multipleChoice:
-        return MultipleChoiceQuestion.copyFrom(question, isRequired: isRequired);
+        return MultipleChoiceQuestion.copyFrom(question,
+            isRequired: isRequired);
       case QuestionType.shortAnswer:
         return ShortAnswerQuestion.copyFrom(question);
       default:
         final baseQuestion = switch (this) {
-          QuestionType.checkboxes => CheckboxesQuestion.copyFrom(question, isRequired: isRequired),
-          QuestionType.dropdown => DropdownQuestion.copyFrom(question, isRequired: isRequired),
-          QuestionType.commentBox => CommentBoxQuestion.copyFrom(question, isRequired: isRequired),
+          QuestionType.checkboxes =>
+            CheckboxesQuestion.copyFrom(question, isRequired: isRequired),
+          QuestionType.dropdown =>
+            DropdownQuestion.copyFrom(question, isRequired: isRequired),
+          QuestionType.commentBox =>
+            CommentBoxQuestion.copyFrom(question, isRequired: isRequired),
           QuestionType.fileUpload => FileUploadQuestion.copyFrom(question),
           QuestionType.audioRecord => AudioRecordQuestion.copyFrom(question),
-          QuestionType.slider => SliderQuestion.copyFrom(question, isRequired: isRequired),
+          QuestionType.slider =>
+            SliderQuestion.copyFrom(question, isRequired: isRequired),
           QuestionType.dateTime => DateTimeQuestion.copyFrom(question),
           QuestionType.matrix => MatrixQuestion.copyFrom(question),
           QuestionType.imageChoice => ImageChoiceQuestion.copyFrom(question),

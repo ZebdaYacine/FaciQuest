@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ Future<void> updateWalletModal(BuildContext context) {
   return showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     constraints: BoxConstraints(maxHeight: context.height * 0.9),
     builder: (_) => BlocProvider.value(
       value: context.read<WalletCubit>(),
@@ -59,7 +61,7 @@ class _UpdateWalletModalState extends State<UpdateWalletModal> {
   Widget build(BuildContext context) {
     return AppBackDrop(
       headerActions: BackdropHeaderActions.closeOnly,
-      titleText: 'Update Wallet Profile',
+      titleText: 'wallet.update_modal.title'.tr(),
       body: BlocConsumer<WalletCubit, WalletState>(
         listener: (context, state) {
           if (state is WalletError) {
@@ -72,7 +74,7 @@ class _UpdateWalletModalState extends State<UpdateWalletModal> {
           } else if (state is WalletLoaded) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text('Wallet updated successfully'),
+                content: Text('wallet.success.updated'.tr()),
                 backgroundColor: Colors.green,
               ),
             );
@@ -87,29 +89,32 @@ class _UpdateWalletModalState extends State<UpdateWalletModal> {
 
           return Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
                     controller: _amountController,
-                    decoration: const InputDecoration(
-                      labelText: 'Amount',
-                      hintText: 'Enter wallet amount',
+                    decoration: InputDecoration(
+                      labelText: 'wallet.update_modal.amount_label'.tr(),
+                      hintText: 'wallet.update_modal.amount_hint'.tr(),
                       prefixText: 'DA ',
                     ),
                     keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter an amount';
+                        return 'wallet.validation.amount_required'.tr();
                       }
                       final amount = double.tryParse(value);
                       if (amount == null) {
-                        return 'Please enter a valid number';
+                        return 'wallet.validation.amount_invalid'.tr();
                       }
                       if (amount < 0) {
-                        return 'Amount cannot be negative';
+                        return 'wallet.validation.amount_non_negative'.tr();
                       }
                       return null;
                     },
@@ -117,21 +122,22 @@ class _UpdateWalletModalState extends State<UpdateWalletModal> {
                   AppSpacing.spacing_2.heightBox,
                   TextFormField(
                     controller: _nbrSurveysController,
-                    decoration: const InputDecoration(
-                      labelText: 'Number of Surveys',
-                      hintText: 'Enter number of surveys',
+                    decoration: InputDecoration(
+                      labelText: 'wallet.update_modal.surveys_label'.tr(),
+                      hintText: 'wallet.update_modal.surveys_hint'.tr(),
                     ),
                     keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter number of surveys';
+                        return 'wallet.validation.surveys_required'.tr();
                       }
                       final number = int.tryParse(value);
                       if (number == null) {
-                        return 'Please enter a valid number';
+                        return 'wallet.validation.surveys_invalid'.tr();
                       }
                       if (number < 0) {
-                        return 'Number cannot be negative';
+                        return 'wallet.validation.surveys_non_negative'.tr();
                       }
                       return null;
                     },
@@ -139,8 +145,9 @@ class _UpdateWalletModalState extends State<UpdateWalletModal> {
                   AppSpacing.spacing_2.heightBox,
                   DropdownButtonFormField<PaymentMethod>(
                     initialValue: _selectedPaymentMethod,
-                    decoration: const InputDecoration(
-                      labelText: 'Payment Method',
+                    decoration: InputDecoration(
+                      labelText:
+                          'wallet.update_modal.payment_method_label'.tr(),
                       border: OutlineInputBorder(),
                     ),
                     items: PaymentMethod.values.map((method) {
@@ -161,31 +168,38 @@ class _UpdateWalletModalState extends State<UpdateWalletModal> {
                   if (_selectedPaymentMethod == PaymentMethod.ccp)
                     TextFormField(
                       controller: _ccpController,
-                      decoration: const InputDecoration(
-                        labelText: 'CCP Number',
-                        hintText: 'Enter CCP number',
+                      decoration: InputDecoration(
+                        labelText: 'wallet.update_modal.ccp_label'.tr(),
+                        hintText: 'wallet.update_modal.ccp_hint'.tr(),
                       ),
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) => _handleSubmit(),
                       validator: (value) {
-                        if (_selectedPaymentMethod == PaymentMethod.ccp && (value == null || value.isEmpty)) {
-                          return 'Please enter CCP number';
+                        if (_selectedPaymentMethod == PaymentMethod.ccp &&
+                            (value == null || value.isEmpty)) {
+                          return 'wallet.validation.ccp_required'.tr();
                         }
                         return null;
                       },
                     ),
-                  if (_selectedPaymentMethod == PaymentMethod.rip || _selectedPaymentMethod == PaymentMethod.baridimob)
+                  if (_selectedPaymentMethod == PaymentMethod.rip ||
+                      _selectedPaymentMethod == PaymentMethod.baridimob)
                     TextFormField(
                       controller: _ripController,
-                      decoration: const InputDecoration(
-                        labelText: 'RIP Number',
-                        hintText: 'Enter RIP number',
+                      decoration: InputDecoration(
+                        labelText: 'wallet.update_modal.rip_label'.tr(),
+                        hintText: 'wallet.update_modal.rip_hint'.tr(),
                       ),
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) => _handleSubmit(),
                       validator: (value) {
                         if ((_selectedPaymentMethod == PaymentMethod.rip ||
-                                _selectedPaymentMethod == PaymentMethod.baridimob) &&
+                                _selectedPaymentMethod ==
+                                    PaymentMethod.baridimob) &&
                             (value == null || value.isEmpty)) {
-                          return 'Please enter RIP number';
+                          return 'wallet.validation.rip_required'.tr();
                         }
                         return null;
                       },
@@ -199,7 +213,7 @@ class _UpdateWalletModalState extends State<UpdateWalletModal> {
       ),
       actions: ElevatedButton(
         onPressed: _handleSubmit,
-        child: const Center(child: Text('Update Wallet')),
+        child: Center(child: Text('wallet.update_modal.submit'.tr())),
       ),
     );
   }

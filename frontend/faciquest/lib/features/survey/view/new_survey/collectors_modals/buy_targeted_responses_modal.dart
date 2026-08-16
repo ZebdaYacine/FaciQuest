@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:objectid/objectid.dart';
 
-Future<void> showBuyTargetedResponsesModal(BuildContext context, {CollectorEntity? collector}) async {
+Future<void> showBuyTargetedResponsesModal(BuildContext context,
+    {CollectorEntity? collector}) async {
   try {
     // Get the cubit reference before opening the modal to avoid accessing deactivated context
     final cubit = context.read<NewSurveyCubit>();
@@ -16,6 +17,7 @@ Future<void> showBuyTargetedResponsesModal(BuildContext context, {CollectorEntit
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       constraints: BoxConstraints(maxHeight: context.height * 0.9),
       builder: (BuildContext _) {
         return BlocProvider.value(
@@ -31,7 +33,9 @@ Future<void> showBuyTargetedResponsesModal(BuildContext context, {CollectorEntit
     // Show error snackbar
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('error.error_showing_modal'.tr(args: [e.toString()]))),
+        SnackBar(
+            content:
+                Text('error.error_showing_modal'.tr(args: [e.toString()]))),
       );
     }
   }
@@ -43,7 +47,7 @@ CollectorEntity _createDefaultCollector(NewSurveyCubit cubit) {
 
     return CollectorEntity(
       id: ObjectId().hexString,
-      surveyId: survey.id ?? 'fallback',
+      surveyId: survey.id,
       name: '',
       status: CollectorStatus.draft,
       responsesCount: 0,
@@ -71,10 +75,12 @@ class BuyTargetedResponsesModal extends StatefulWidget {
   final CollectorEntity collector;
 
   @override
-  State<BuyTargetedResponsesModal> createState() => _BuyTargetedResponsesModalState();
+  State<BuyTargetedResponsesModal> createState() =>
+      _BuyTargetedResponsesModalState();
 }
 
 class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
+  final _formKey = GlobalKey<FormState>();
   late final NewSurveyCubit _cubit;
   late final TextEditingController _nameController;
 
@@ -86,6 +92,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
   Set<Province> _provinces = {};
   Set<City> _cities = {};
   Set<TargetingCriteria> _selectedCriteria = {};
+  bool _showPopulationError = false;
 
   @override
   void initState() {
@@ -98,17 +105,27 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
         _population = (widget.collector.population ?? 200.0).clamp(0.0, 5000.0);
         _gender = widget.collector.gender ?? Gender.both;
         _ageRange = widget.collector.ageRange ?? const RangeValues(18, 99);
-        _countries = Set.from(widget.collector.countries.where((c) => c.isNotEmpty) ?? ['Algeria']);
-        _provinces = Set.from(widget.collector.provinces.where((p) => p.name.isNotEmpty ?? false) ?? []);
-        _cities = Set.from(widget.collector.cities.where((c) => c.name.isNotEmpty ?? false) ?? []);
-        _selectedCriteria = Set.from(widget.collector.targetingCriteria.where((c) => c.title.isNotEmpty) ?? []);
+        _countries = widget.collector.countries
+            .where((country) => country.isNotEmpty)
+            .toSet();
+        _provinces = widget.collector.provinces
+            .where((province) => province.name.isNotEmpty)
+            .toSet();
+        _cities = widget.collector.cities
+            .where((city) => city.name.isNotEmpty)
+            .toSet();
+        _selectedCriteria = widget.collector.targetingCriteria
+            .where((criteria) => criteria.title.isNotEmpty)
+            .toSet();
       }
     } catch (e) {
       debugPrint('Error initializing state: $e');
       // Show error snackbar
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('error.error_initializing'.tr(args: [e.toString()]))),
+          SnackBar(
+              content:
+                  Text('error.error_initializing'.tr(args: [e.toString()]))),
         );
       });
     }
@@ -144,8 +161,8 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
     try {
       return {
         ..._countries,
-        ..._provinces.map((e) => e.name ?? ''),
-        ..._cities.map((e) => e.name ?? ''),
+        ..._provinces.map((e) => e.name),
+        ..._cities.map((e) => e.name),
       };
     } catch (e) {
       debugPrint('Error getting selected countries: $e');
@@ -164,14 +181,19 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildNameField(),
-            AppSpacing.spacing_3.heightBox,
-            _buildPopulationCard(),
-            AppSpacing.spacing_3.heightBox,
-            _buildTargetingCard(),
-          ],
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            children: [
+              _buildNameField(),
+              AppSpacing.spacing_3.heightBox,
+              _buildPopulationCard(),
+              AppSpacing.spacing_3.heightBox,
+              _buildTargetingCard(),
+            ],
+          ),
         ),
       ),
       actions: _buildCheckoutSection(),
@@ -181,8 +203,12 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
   Widget _buildNameField() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: TextField(
+      child: TextFormField(
         controller: _nameController,
+        textInputAction: TextInputAction.done,
+        validator: (value) => value == null || value.trim().isEmpty
+            ? 'collectors.buy_targeted.name_required'.tr()
+            : null,
         decoration: InputDecoration(
           labelText: 'collectors.buy_targeted.collector_name'.tr(),
           hintText: 'collectors.buy_targeted.enter_name'.tr(),
@@ -251,29 +277,44 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
   }
 
   Widget _buildPopulationInput() {
-    return InputQty(
-      maxVal: 5000,
-      initVal: _population,
-      steps: 10,
-      minVal: 0,
-      decoration: QtyDecorationProps(
-        isBordered: false,
-        minusBtn: Icon(
-          Icons.remove_circle_outline,
-          color: context.colorScheme.primary,
-          size: 28,
+    return Column(
+      children: [
+        InputQty(
+          maxVal: 5000,
+          initVal: _population,
+          steps: 10,
+          minVal: 0,
+          decoration: QtyDecorationProps(
+            isBordered: false,
+            minusBtn: Icon(
+              Icons.remove_circle_outline,
+              color: context.colorScheme.primary,
+              size: 28,
+            ),
+            plusBtn: Icon(
+              Icons.add_circle_outline,
+              color: context.colorScheme.primary,
+              size: 28,
+            ),
+          ),
+          onQtyChanged: (value) {
+            setState(() {
+              _population = value;
+              _showPopulationError = false;
+            });
+          },
         ),
-        plusBtn: Icon(
-          Icons.add_circle_outline,
-          color: context.colorScheme.primary,
-          size: 28,
-        ),
-      ),
-      onQtyChanged: (value) {
-        setState(() {
-          _population = value;
-        });
-      },
+        if (_showPopulationError && _population <= 0)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              'collectors.buy_targeted.responses_required'.tr(),
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.colorScheme.error,
+              ),
+            ),
+          ),
+      ],
     );
   }
 
@@ -352,7 +393,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -461,7 +502,9 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       final result = await showTargetingCriteriaModal(context);
       if (result != null && mounted) {
         // Filter out invalid criteria
-        final validCriteria = result.where((c) => c.title.isNotEmpty && c.choices.isNotEmpty).toSet();
+        final validCriteria = result
+            .where((c) => c.title.isNotEmpty && c.choices.isNotEmpty)
+            .toSet();
 
         setState(() {
           _selectedCriteria = validCriteria;
@@ -471,7 +514,9 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       debugPrint('Error adding criteria: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('error.error_adding_criteria'.tr(args: [e.toString()]))),
+          SnackBar(
+              content:
+                  Text('error.error_adding_criteria'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -483,6 +528,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
 
       final result = await showModalBottomSheet(
         context: context,
+        useSafeArea: true,
         builder: (context) => const CountryModal(),
       );
 
@@ -491,11 +537,13 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
         final provinces = result['provinces'];
         final cities = result['cities'];
 
-        if (countries is Set<String> && provinces is Set<Province> && cities is Set<City>) {
+        if (countries is Set<String> &&
+            provinces is Set<Province> &&
+            cities is Set<City>) {
           setState(() {
             _countries = countries.where((c) => c.isNotEmpty).toSet();
-            _provinces = provinces.where((p) => p.name.isNotEmpty ?? false).toSet();
-            _cities = cities.where((c) => c.name.isNotEmpty ?? false).toSet();
+            _provinces = provinces.where((p) => p.name.isNotEmpty).toSet();
+            _cities = cities.where((c) => c.name.isNotEmpty).toSet();
           });
         }
       }
@@ -503,7 +551,9 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       debugPrint('Error selecting country: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('error.error_selecting_country'.tr(args: [e.toString()]))),
+          SnackBar(
+              content: Text(
+                  'error.error_selecting_country'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -515,6 +565,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
 
       final result = await showModalBottomSheet(
         context: context,
+        useSafeArea: true,
         builder: (context) => const GenderModal(),
       );
 
@@ -527,7 +578,9 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       debugPrint('Error selecting gender: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('error.error_selecting_gender'.tr(args: [e.toString()]))),
+          SnackBar(
+              content: Text(
+                  'error.error_selecting_gender'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -539,6 +592,7 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
 
       final result = await showModalBottomSheet(
         context: context,
+        useSafeArea: true,
         builder: (context) => const AgeModal(),
       );
 
@@ -556,7 +610,9 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       debugPrint('Error selecting age: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('error.error_selecting_age'.tr(args: [e.toString()]))),
+          SnackBar(
+              content:
+                  Text('error.error_selecting_age'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -567,17 +623,12 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
       if (!mounted) return;
 
       // Validate required fields
-      if (_nameController.text.trim().isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('collectors.buy_targeted.enter_name'.tr())),
-        );
+      if (!(_formKey.currentState?.validate() ?? false)) {
         return;
       }
 
       if (_population <= 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('collectors.buy_targeted.responses_needed'.tr())),
-        );
+        setState(() => _showPopulationError = true);
         return;
       }
 
@@ -588,22 +639,23 @@ class _BuyTargetedResponsesModalState extends State<BuyTargetedResponsesModal> {
         gender: _gender,
         ageRange: _ageRange,
         countries: _countries.where((c) => c.isNotEmpty).toList(),
-        provinces: _provinces.where((p) => p.name.isNotEmpty ?? false).toList(),
-        cities: _cities.where((c) => c.name.isNotEmpty ?? false).toList(),
-        targetingCriteria: _selectedCriteria.where((c) => c.title.isNotEmpty).toList(),
+        provinces: _provinces.where((p) => p.name.isNotEmpty).toList(),
+        cities: _cities.where((c) => c.name.isNotEmpty).toList(),
+        targetingCriteria:
+            _selectedCriteria.where((c) => c.title.isNotEmpty).toList(),
       );
 
       await _cubit.createCollector(collector);
 
-      if (mounted) {
-        final price = await _estimatedPrice;
-        if (price is double && context.mounted) {
-          await showPaymentModal(
-            context,
-            price: price,
-            collectorId: collector.id,
-          );
-        }
+      if (!mounted) return;
+      final price = await _estimatedPrice;
+      if (!mounted) return;
+      if (price != null) {
+        await showPaymentModal(
+          context,
+          price: price,
+          collectorId: collector.id,
+        );
       }
     } catch (e) {
       debugPrint('Error during checkout: $e');

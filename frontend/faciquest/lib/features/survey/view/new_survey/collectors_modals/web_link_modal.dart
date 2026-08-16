@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/survey/survey.dart';
@@ -14,6 +15,7 @@ Future<void> showWebLinkModal(BuildContext context) async {
   await showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     constraints: BoxConstraints(maxHeight: context.height * 0.9),
     builder: (BuildContext _) {
       return BlocProvider.value(
@@ -36,6 +38,7 @@ class WebLinkModal extends StatefulWidget {
 }
 
 class _WebLinkModalState extends State<WebLinkModal> {
+  final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
   late final NewSurveyCubit _cubit;
@@ -114,41 +117,50 @@ class _WebLinkModalState extends State<WebLinkModal> {
   }
 
   Widget _buildCollectorForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Collector Details',
-          style: context.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        16.heightBox,
-        TextField(
-          controller: _nameController,
-          decoration: InputDecoration(
-            labelText: 'Collector Name',
-            hintText: 'Enter a name for this collector',
-            prefixIcon: const Icon(Icons.label_outline),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+    return Form(
+      key: _formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Collector Details',
+            style: context.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        16.heightBox,
-        TextField(
-          controller: _descriptionController,
-          maxLines: 2,
-          decoration: InputDecoration(
-            labelText: 'Description (Optional)',
-            hintText: 'Brief description of this collector',
-            prefixIcon: const Icon(Icons.description_outlined),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+          16.heightBox,
+          TextFormField(
+            controller: _nameController,
+            textInputAction: TextInputAction.next,
+            validator: (value) => value == null || value.trim().isEmpty
+                ? 'survey.collectors.collector_name_required'.tr()
+                : null,
+            decoration: InputDecoration(
+              labelText: 'Collector Name',
+              hintText: 'Enter a name for this collector',
+              prefixIcon: const Icon(Icons.label_outline),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
-        ),
-      ],
+          16.heightBox,
+          TextFormField(
+            controller: _descriptionController,
+            maxLines: 2,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              labelText: 'Description (Optional)',
+              hintText: 'Brief description of this collector',
+              prefixIcon: const Icon(Icons.description_outlined),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -156,10 +168,10 @@ class _WebLinkModalState extends State<WebLinkModal> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: context.colorScheme.primaryContainer.withOpacity(0.3),
+        color: context.colorScheme.primaryContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: context.colorScheme.primary.withOpacity(0.3),
+          color: context.colorScheme.primary.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -195,7 +207,7 @@ class _WebLinkModalState extends State<WebLinkModal> {
               color: context.colorScheme.surface,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: context.colorScheme.outline.withOpacity(0.3),
+                color: context.colorScheme.outline.withValues(alpha: 0.3),
               ),
             ),
             child: Row(
@@ -294,7 +306,7 @@ class _WebLinkModalState extends State<WebLinkModal> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: context.colorScheme.secondary.withOpacity(0.1),
+              color: context.colorScheme.secondary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
@@ -387,7 +399,9 @@ class _WebLinkModalState extends State<WebLinkModal> {
   }
 
   void _shareLink(String link) {
-    Share.share(link, subject: 'Survey Invitation');
+    SharePlus.instance.share(
+      ShareParams(text: link, subject: 'Survey Invitation'),
+    );
   }
 
   void _previewSurvey() {
@@ -401,13 +415,7 @@ class _WebLinkModalState extends State<WebLinkModal> {
   }
 
   Future<void> _createWebLinkCollector() async {
-    if (_nameController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please enter a collector name'),
-          backgroundColor: context.colorScheme.error,
-        ),
-      );
+    if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
 
@@ -419,6 +427,7 @@ class _WebLinkModalState extends State<WebLinkModal> {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 2));
 
+      if (!mounted) return;
       setState(() {
         _generatedLink = _surveyUrl;
         _isCreating = false;
@@ -432,6 +441,7 @@ class _WebLinkModalState extends State<WebLinkModal> {
         ),
       );
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isCreating = false;
       });
@@ -446,6 +456,9 @@ class _WebLinkModalState extends State<WebLinkModal> {
   }
 
   Future<void> _updateCollector() async {
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      return;
+    }
     // Update collector with new name/description
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(

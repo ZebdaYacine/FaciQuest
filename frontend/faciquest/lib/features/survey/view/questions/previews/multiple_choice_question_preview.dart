@@ -14,27 +14,32 @@ class MultipleChoiceQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ...question.choices.map(
-          (choice) {
-            return RadioListTile<String>(
-              value: choice,
-              groupValue: answer?.selectedChoice,
-              onChanged: (value) {
-                if (value == null) return;
-                onAnswerChanged?.call(MultipleChoiceAnswer(
-                  questionId: question.id,
-                  selectedChoice: value,
-                ));
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              title: Text(choice),
-            );
-          },
-        )
-      ],
+    return RadioGroup<String>(
+      groupValue: answer?.selectedChoice,
+      onChanged: (value) {
+        if (value == null) return;
+        onAnswerChanged?.call(
+          MultipleChoiceAnswer(
+            questionId: question.id,
+            selectedChoice: value,
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...question.choices.map(
+            (choice) => Material(
+              color: Colors.transparent,
+              child: RadioListTile<String>(
+                value: choice,
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text(choice),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

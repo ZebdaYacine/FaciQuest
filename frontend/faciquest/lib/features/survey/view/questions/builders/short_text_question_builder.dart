@@ -19,7 +19,7 @@ class ShortAnswerQuestionBuilder extends QuestionBuilder {
 
 class _ShortAnswerQuestionBuilderState extends State<ShortAnswerQuestionBuilder>
     with BuildFormMixin {
-  onChange({
+  void onChange({
     int? maxLength,
   }) {
     widget.onChanged?.call((widget.question as ShortAnswerQuestion).copyWith(

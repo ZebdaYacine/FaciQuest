@@ -27,7 +27,7 @@ class ImageChoiceQuestionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    final choices = Wrap(
       runSpacing: 4,
       spacing: 4,
       children: [
@@ -42,8 +42,9 @@ class ImageChoiceQuestionPreview extends StatelessWidget {
                   padding: 2.padding,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color:
-                          answer?.getSelectedChoice(image.id) == image.id ? Colors.green : context.colorScheme.primary,
+                      color: answer?.getSelectedChoice(image.id) == image.id
+                          ? Colors.green
+                          : context.colorScheme.primary,
                       width: 4,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -76,16 +77,18 @@ class ImageChoiceQuestionPreview extends StatelessWidget {
                         })
                     : Radio(
                         value: image.id,
-                        groupValue: answer?.getSelectedChoice(image.id),
-                        onChanged: (value) {
-                          _handleAnswerChanged(image.id);
-                        },
                       ),
               ),
             ],
           )
         ]
       ],
+    );
+    if (question.multipleSelect) return choices;
+    return RadioGroup<String>(
+      groupValue: answer?.selectedChoices.firstOrNull,
+      onChanged: _handleAnswerChanged,
+      child: choices,
     );
   }
 }

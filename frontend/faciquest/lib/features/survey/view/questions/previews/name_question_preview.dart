@@ -1,4 +1,5 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,12 @@ class NameQuestionPreview extends StatelessWidget {
               labelText: question.firstNameLabel,
               hintText: question.firstNameHint,
             ),
+            textInputAction: TextInputAction.next,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) =>
+                question.isRequired && (value == null || value.trim().isEmpty)
+                    ? 'survey.validation.required_question'.tr()
+                    : null,
             onChanged: (value) {
               onAnswerChanged?.call(
                 (answer ??
@@ -44,6 +51,14 @@ class NameQuestionPreview extends StatelessWidget {
               labelText: question.lastNameLabel,
               hintText: question.lastNameHint,
             ),
+            textInputAction: question.showMiddleName
+                ? TextInputAction.next
+                : TextInputAction.done,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) =>
+                question.isRequired && (value == null || value.trim().isEmpty)
+                    ? 'survey.validation.required_question'.tr()
+                    : null,
             onChanged: (value) {
               onAnswerChanged?.call(
                 (answer ??
@@ -63,6 +78,12 @@ class NameQuestionPreview extends StatelessWidget {
               labelText: question.middleNameLabel,
               hintText: question.middleNameHint,
             ),
+            textInputAction: TextInputAction.done,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) =>
+                question.isRequired && (value == null || value.trim().isEmpty)
+                    ? 'survey.validation.required_question'.tr()
+                    : null,
             onChanged: (value) {
               onAnswerChanged?.call(
                 (answer ??

@@ -29,6 +29,7 @@ class ImagePickerWidget extends StatelessWidget {
     return InkWell(onTap: () {
       showModalBottomSheet(
         context: context,
+        useSafeArea: true,
         builder: (context) {
           return AppBackDrop(
             headerActions: BackdropHeaderActions.none,

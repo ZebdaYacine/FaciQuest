@@ -42,21 +42,21 @@ class WalletCubit extends Cubit<WalletState> {
     try {
       if (state is WalletLoaded) {
         final currentWallet = (state as WalletLoaded).wallet;
-        
+
         // Validate amount
         if (request.amount > currentWallet.amount) {
           emit(WalletError('Amount exceeds wallet balance'));
           return;
         }
-        
+
         if (!currentWallet.isCashable) {
           emit(WalletError('Wallet is not cashable at the moment'));
           return;
         }
       }
-      
+
       await walletRepository.cashOutRequest(request);
-      
+
       // Refresh wallet to get updated balance
       await getWallet();
     } on ApiException catch (e) {

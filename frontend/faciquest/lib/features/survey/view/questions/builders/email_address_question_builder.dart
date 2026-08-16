@@ -18,7 +18,7 @@ class EmailAddressQuestionBuilder extends QuestionBuilder {
 
 class _EmailAddressQuestionBuilderState
     extends State<EmailAddressQuestionBuilder> with BuildFormMixin {
-  onChange({
+  void onChange({
     String? emailAddressLabel,
     String? emailAddressHint,
     bool? showEmailAddress,

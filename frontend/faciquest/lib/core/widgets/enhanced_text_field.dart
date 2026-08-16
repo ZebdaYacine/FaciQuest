@@ -67,45 +67,15 @@ class EnhancedTextField extends StatefulWidget {
   State<EnhancedTextField> createState() => _EnhancedTextFieldState();
 }
 
-class _EnhancedTextFieldState extends State<EnhancedTextField> with SingleTickerProviderStateMixin {
+class _EnhancedTextFieldState extends State<EnhancedTextField> {
   late FocusNode _focusNode;
   bool _isFocused = false;
-  bool _hasText = false;
-  late AnimationController _animationController;
-  late Animation<double> _labelAnimation;
-  late Animation<Color?> _borderColorAnimation;
 
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_onFocusChange);
-
-    if (widget.controller != null) {
-      widget.controller!.addListener(_onTextChange);
-      _hasText = widget.controller!.text.isNotEmpty;
-    }
-
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-
-    _labelAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-
-    _borderColorAnimation = ColorTween(
-      begin: Colors.transparent,
-      end: Colors.blue,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
   }
 
   @override
@@ -114,10 +84,6 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> with SingleTicker
     if (widget.focusNode == null) {
       _focusNode.dispose();
     }
-    if (widget.controller != null) {
-      widget.controller!.removeListener(_onTextChange);
-    }
-    _animationController.dispose();
     super.dispose();
   }
 
@@ -125,27 +91,6 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> with SingleTicker
     setState(() {
       _isFocused = _focusNode.hasFocus;
     });
-
-    if (_isFocused || _hasText) {
-      _animationController.forward();
-    } else {
-      _animationController.reverse();
-    }
-  }
-
-  void _onTextChange() {
-    final hasText = widget.controller!.text.isNotEmpty;
-    if (hasText != _hasText) {
-      setState(() {
-        _hasText = hasText;
-      });
-
-      if (_hasText || _isFocused) {
-        _animationController.forward();
-      } else {
-        _animationController.reverse();
-      }
-    }
   }
 
   @override
@@ -160,142 +105,142 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> with SingleTicker
           vertical: 20,
         );
 
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                boxShadow: _isFocused
-                    ? [
-                        BoxShadow(
-                          color: theme.primary.withOpacity(0.1),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ]
-                    : [
-                        BoxShadow(
-                          color: theme.shadow.withOpacity(0.02),
-                          blurRadius: 4,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-              ),
-              child: TextFormField(
-                controller: widget.controller,
-                focusNode: _focusNode,
-                obscureText: widget.obscureText,
-                keyboardType: widget.keyboardType,
-                textInputAction: widget.textInputAction,
-                onChanged: widget.onChanged,
-                onFieldSubmitted: widget.onSubmitted,
-                validator: widget.validator,
-                enabled: widget.enabled && !widget.isLoading,
-                maxLines: widget.maxLines,
-                minLines: widget.minLines,
-                maxLength: widget.maxLength,
-                inputFormatters: widget.inputFormatters,
-                autofocus: widget.autofocus,
-                textCapitalization: widget.textCapitalization,
-                style: widget.style ??
-                    textTheme.bodyLarge?.copyWith(
-                      color: widget.enabled ? theme.onSurface : theme.onSurface.withOpacity(0.5),
-                      fontWeight: FontWeight.w500,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: borderRadius,
+            boxShadow: _isFocused
+                ? [
+                    BoxShadow(
+                      color: theme.primary.withValues(alpha: 0.1),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
-                decoration: InputDecoration(
-                  labelText: widget.labelText,
-                  hintText: widget.hintText,
-                  prefixIcon: widget.prefixIcon != null
-                      ? Container(
-                          margin: const EdgeInsets.only(right: 12),
-                          child: widget.prefixIcon,
-                        )
-                      : null,
-                  suffixIcon: widget.isLoading
-                      ? Container(
-                          width: 20,
-                          height: 20,
-                          margin: const EdgeInsets.all(12),
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: theme.primary,
-                          ),
-                        )
-                      : widget.suffixIcon,
-                  filled: true,
-                  fillColor: widget.fillColor ?? (_isFocused ? theme.surface : theme.surfaceContainerLowest),
-                  contentPadding: contentPadding,
-                  labelStyle: textTheme.bodyMedium?.copyWith(
-                    color: _isFocused ? theme.primary : theme.onSurfaceVariant,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  hintStyle: textTheme.bodyMedium?.copyWith(
-                    color: theme.onSurfaceVariant.withOpacity(0.6),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: borderRadius,
-                    borderSide: BorderSide(
-                      color: theme.outline.withOpacity(0.2),
+                  ]
+                : [
+                    BoxShadow(
+                      color: theme.shadow.withValues(alpha: 0.02),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1),
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: borderRadius,
-                    borderSide: BorderSide(
-                      color: theme.outline.withOpacity(0.2),
-                      width: 1.5,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: borderRadius,
-                    borderSide: BorderSide(
-                      color: theme.primary,
-                      width: 2,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: borderRadius,
-                    borderSide: BorderSide(
-                      color: theme.error,
-                      width: 1.5,
-                    ),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: borderRadius,
-                    borderSide: BorderSide(
-                      color: theme.error,
-                      width: 2,
-                    ),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderRadius: borderRadius,
-                    borderSide: BorderSide(
-                      color: theme.outline.withOpacity(0.1),
-                    ),
-                  ),
-                  errorText: widget.errorText,
-                  counterText: widget.showCounter ? '${widget.controller?.text.length ?? 0}/${widget.maxLength}' : '',
+                  ],
+          ),
+          child: TextFormField(
+            controller: widget.controller,
+            focusNode: _focusNode,
+            obscureText: widget.obscureText,
+            keyboardType: widget.keyboardType,
+            textInputAction: widget.textInputAction,
+            onChanged: widget.onChanged,
+            onFieldSubmitted: widget.onSubmitted,
+            validator: widget.validator,
+            enabled: widget.enabled && !widget.isLoading,
+            maxLines: widget.maxLines,
+            minLines: widget.minLines,
+            maxLength: widget.maxLength,
+            inputFormatters: widget.inputFormatters,
+            autofocus: widget.autofocus,
+            textCapitalization: widget.textCapitalization,
+            style: widget.style ??
+                textTheme.bodyLarge?.copyWith(
+                  color: widget.enabled
+                      ? theme.onSurface
+                      : theme.onSurface.withValues(alpha: 0.5),
+                  fontWeight: FontWeight.w500,
                 ),
+            decoration: InputDecoration(
+              labelText: widget.labelText,
+              hintText: widget.hintText,
+              prefixIcon: widget.prefixIcon != null
+                  ? Container(
+                      margin: const EdgeInsets.only(right: 12),
+                      child: widget.prefixIcon,
+                    )
+                  : null,
+              suffixIcon: widget.isLoading
+                  ? Container(
+                      width: 20,
+                      height: 20,
+                      margin: const EdgeInsets.all(12),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: theme.primary,
+                      ),
+                    )
+                  : widget.suffixIcon,
+              filled: true,
+              fillColor: widget.fillColor ??
+                  (_isFocused ? theme.surface : theme.surfaceContainerLowest),
+              contentPadding: contentPadding,
+              labelStyle: textTheme.bodyMedium?.copyWith(
+                color: _isFocused ? theme.primary : theme.onSurfaceVariant,
+                fontWeight: FontWeight.w500,
+              ),
+              hintStyle: textTheme.bodyMedium?.copyWith(
+                color: theme.onSurfaceVariant.withValues(alpha: 0.6),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: theme.outline.withValues(alpha: 0.2),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: theme.outline.withValues(alpha: 0.2),
+                  width: 1.5,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: theme.primary,
+                  width: 2,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: theme.error,
+                  width: 1.5,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: theme.error,
+                  width: 2,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: theme.outline.withValues(alpha: 0.1),
+                ),
+              ),
+              errorText: widget.errorText,
+              counterText: widget.showCounter
+                  ? '${widget.controller?.text.length ?? 0}/${widget.maxLength}'
+                  : '',
+            ),
+          ),
+        ),
+        if (widget.helperText != null) ...[
+          const SizedBox(height: 6),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              widget.helperText!,
+              style: textTheme.bodySmall?.copyWith(
+                color: theme.onSurfaceVariant.withValues(alpha: 0.8),
               ),
             ),
-            if (widget.helperText != null) ...[
-              const SizedBox(height: 6),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  widget.helperText!,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: theme.onSurfaceVariant.withOpacity(0.8),
-                  ),
-                ),
-              ),
-            ],
-          ],
-        );
-      },
+          ),
+        ],
+      ],
     );
   }
 }
@@ -374,7 +319,9 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           ),
           suffixIcon: IconButton(
             icon: Icon(
-              _obscureText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+              _obscureText
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
               color: context.colorScheme.onSurfaceVariant,
             ),
             onPressed: () {
@@ -401,7 +348,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
                     Expanded(
                       child: LinearProgressIndicator(
                         value: _strength,
-                        backgroundColor: context.colorScheme.surfaceContainerHighest,
+                        backgroundColor:
+                            context.colorScheme.surfaceContainerHighest,
                         valueColor: AlwaysStoppedAnimation<Color>(
                           _getStrengthColor(context),
                         ),

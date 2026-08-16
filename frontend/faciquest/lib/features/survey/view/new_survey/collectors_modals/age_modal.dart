@@ -32,8 +32,10 @@ class _AgeModalState extends State<AgeModal> {
             min: 0,
             max: 120,
             labels: RangeLabels(
-              'collectors.targeting.min'.tr(args: [values.start.toStringAsFixed(0)]),
-              'collectors.targeting.max'.tr(args: [values.end.toStringAsFixed(0)]),
+              'collectors.targeting.min'
+                  .tr(args: [values.start.toStringAsFixed(0)]),
+              'collectors.targeting.max'
+                  .tr(args: [values.end.toStringAsFixed(0)]),
             ),
             divisions: 120,
             onChanged: (value) {
@@ -47,8 +49,10 @@ class _AgeModalState extends State<AgeModal> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('collectors.targeting.min'.tr(args: [values.start.toStringAsFixed(0)])),
-                Text('collectors.targeting.max'.tr(args: [values.end.toStringAsFixed(0)])),
+                Text('collectors.targeting.min'
+                    .tr(args: [values.start.toStringAsFixed(0)])),
+                Text('collectors.targeting.max'
+                    .tr(args: [values.end.toStringAsFixed(0)])),
               ],
             ),
           )

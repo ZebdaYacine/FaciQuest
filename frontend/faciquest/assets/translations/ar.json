@@ -20,6 +20,10 @@
     "language": "اللغة",
     "my_account": "حسابي",
     "more_actions": "المزيد من الإجراءات",
+    "logout_dialog": {
+      "title": "تسجيل الخروج؟",
+      "message": "ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى استبياناتك."
+    },
     "menu": {
       "profile": "الملف الشخصي",
       "change_password": "تغيير كلمة المرور",
@@ -85,7 +89,8 @@
       "didntReceive": "لم تتلق الرمز؟",
       "resendIn": "إعادة الإرسال خلال",
       "submit": "تحقق",
-      "resendCode": "إعادة الإرسال"
+      "resendCode": "إعادة الإرسال",
+      "codeSent": "تم إرسال رمز تحقق جديد"
     },
     "signUp": {
       "title": "إنشاء حساب",
@@ -122,7 +127,16 @@
       "email": "البريد الإلكتروني",
       "emailHint": "أدخل عنوان بريدك الإلكتروني",
       "passwordHint": "أدخل كلمة المرور القوية",
-      "password": "كلمة المرور"
+      "password": "كلمة المرور",
+      "showPassword": "إظهار كلمة المرور",
+      "hidePassword": "إخفاء كلمة المرور"
+    },
+    "validation": {
+      "emailInvalid": "أدخل عنوان بريد إلكتروني صالحًا",
+      "phoneTooShort": "يجب أن يتكون رقم الهاتف من 10 أرقام",
+      "phoneTooLong": "لا يمكن أن يتجاوز رقم الهاتف 10 أرقام",
+      "passwordMin": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+      "passwordsDontMatch": "كلمتا المرور غير متطابقتين"
     },
     "forgotPassword": {
       "title": "إعادة تعيين كلمة المرور",
@@ -147,9 +161,9 @@
       "passwordHint": "أدخل كلمة المرور القوية",
       "confirmPasswordHint": "تأكيد كلمة المرور",
       "securityTips": "نصائح الأمان",
-      "tip1": "تأكد من أن كلمة المرور أقوى من المطلوب",
-      "tip2": "تأكد من أن كلمة المرور لا تحتوي على أي كلمات مفتاحية",
-      "tip3": "تأكد من أن كلمة المرور لا تحتوي على أي أرقام"
+      "tip1": "استخدم 8 أحرف على الأقل",
+      "tip2": "اخلط بين الأحرف الكبيرة والصغيرة",
+      "tip3": "أضف رقمًا ورمزًا"
     }
   },
   "survey": {
@@ -200,6 +214,11 @@
       "add_new": "إضافة أداة الجمع الجديدة",
       "create_first_collector": "إنشاء أداة الجمع الأولى",
       "email_addresses": "البريد الإلكتروني",
+      "email_required": "أدخل عنوان بريد إلكتروني واحداً على الأقل",
+      "email_list_invalid": "تحقق من عناوين البريد الإلكتروني المفصولة بفواصل",
+      "subject_required": "أدخل موضوع الدعوة",
+      "message_required": "أدخل رسالة الدعوة",
+      "collector_name_required": "أدخل اسم أداة الجمع",
       "enter_email_addresses_separated_by_commas": "أدخل البريد الإلكتروني منفصلة بفواصل\nexample@email.com, another@email.com",
       "subject": "الموضوع",
       "message": "الرسالة",
@@ -329,6 +348,11 @@
     },
     "validation": {
       "required_question": "يرجى الإجابة على هذا السؤال قبل المتابعة.",
+      "invalid_email": "أدخل عنوان بريد إلكتروني صالحاً",
+      "invalid_phone": "أدخل رقم هاتف صالحاً",
+      "option_required": "أدخل خياراً",
+      "row_required": "أدخل تسمية الصف",
+      "column_required": "أدخل تسمية العمود",
       "understood": "فهمت"
     },
     "address": {
@@ -409,8 +433,10 @@
     "create_new": "إنشاء استبيان جديد",
     "name": "اسم الاستبيان *",
     "enter_name": "أدخل اسم الاستبيان",
+    "name_required": "أدخل اسماً للاستبيان",
     "description": "وصف الاستبيان",
     "enter_description": "أدخل وصف الاستبيان",
+    "description_required": "أدخل وصفاً للاستبيان",
     "likert_scale": "مقياس ليكرت *"
   },
   "stats": {
@@ -484,7 +510,9 @@
       "title": "شراء إجابات مستهدفة",
       "collector_name": "اسم أداة الجمع",
       "enter_name": "أدخل اسماً لأداة الجمع هذه",
+      "name_required": "أدخل اسم أداة الجمع",
       "responses_needed": "كم عدد الإجابات التي تحتاجها؟",
+      "responses_required": "اختر إجابة واحدة على الأقل",
       "who_to_survey": "من تريد أن تستطلع رأيه؟",
       "add_criteria": "إضافة معايير الاستهداف",
       "estimated_cost": "التكلفة التقديرية",
@@ -534,6 +562,15 @@
     "save_changes": "حفظ التغييرات",
     "profile_updated_success": "تم تحديث الملف الشخصي بنجاح",
     "profile_update_failed": "فشل في تحديث الملف الشخصي",
+    "profile_refresh_failed": "تعذر تحديث ملفك الشخصي",
+    "validation": {
+      "username_required": "أدخل اسم المستخدم",
+      "first_name_required": "أدخل اسمك الأول",
+      "last_name_required": "أدخل اسم العائلة",
+      "email_required": "أدخل بريدك الإلكتروني",
+      "phone_required": "أدخل رقم هاتفك",
+      "fix_errors": "صحح الحقول المحددة قبل الحفظ"
+    },
     "tooltips": {
       "cancel": "إلغاء",
       "save": "حفظ",
@@ -615,6 +652,10 @@
       "amount_invalid": "الرجاء إدخال رقم صحيح",
       "amount_positive": "يجب أن يكون المبلغ أكبر من صفر",
       "amount_exceeds_balance": "المبلغ يتجاوز رصيد محفظتك",
+      "amount_non_negative": "لا يمكن أن يكون المبلغ سالباً",
+      "surveys_required": "أدخل عدد الاستبيانات",
+      "surveys_invalid": "أدخل عدداً صحيحاً صالحاً",
+      "surveys_non_negative": "لا يمكن أن يكون عدد الاستبيانات سالباً",
       "ccp_required": "الرجاء إدخال رقم حسابك البريدي الجاري",
       "rip_required": "الرجاء إدخال رقمك التعريفي البريدي",
       "payment_method_required": "الرجاء اختيار طريقة الدفع"
@@ -666,6 +707,12 @@
     }
   },
   "payment": {
+    "validation": {
+      "email_required": "أدخل بريد الفاتورة الإلكتروني",
+      "email_invalid": "أدخل عنوان بريد إلكتروني صالحاً",
+      "first_name_required": "أدخل اسمك الأول",
+      "last_name_required": "أدخل اسم العائلة"
+    },
     "billing_details": "تفاصيل الفاتورة *",
     "billing_email": "بريد الفاتورة الإلكتروني :",
     "first_name": "الاسم الأول :",
@@ -709,6 +756,7 @@
     "Submit Question": "إرسال السؤال",
     "Question Title": "عنوان السؤال",
     "Enter your question here": "أدخل سؤالك هنا",
+    "title_required": "أدخل عنوان السؤال",
     "Question Type": "نوع السؤال",
     "Question Settings": "إعدادات السؤال",
     "Please select a question type to configure settings": "الرجاء اختيار نوع السؤال لتكوين الإعدادات",
