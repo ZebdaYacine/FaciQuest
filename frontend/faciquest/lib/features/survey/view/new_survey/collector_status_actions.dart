@@ -11,48 +11,18 @@ extension _CollectorStatusActions on _CollectorListTile {
         borderRadius: BorderRadius.circular(12),
       ),
       itemBuilder: (context) => [
-        PopupMenuItem<String>(
-          value: 'edit',
-          child: Row(
-            children: [
-              Icon(Icons.edit_outlined,
-                  size: 20, color: context.colorScheme.primary),
-              12.widthBox,
-              Text('survey.collectors.edit'.tr()),
-            ],
+        if (collector.webUrl?.isNotEmpty == true)
+          PopupMenuItem<String>(
+            value: 'share',
+            child: Row(
+              children: [
+                Icon(Icons.share_outlined,
+                    size: 20, color: context.colorScheme.secondary),
+                12.widthBox,
+                Text('survey.collectors.share'.tr()),
+              ],
+            ),
           ),
-        ),
-        PopupMenuItem<String>(
-          value: 'share',
-          child: Row(
-            children: [
-              Icon(Icons.share_outlined,
-                  size: 20, color: context.colorScheme.secondary),
-              12.widthBox,
-              Text('survey.collectors.share'.tr()),
-            ],
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: 'toggle',
-          child: Row(
-            children: [
-              Icon(
-                collector.status == CollectorStatus.open
-                    ? Icons.pause_circle_outline
-                    : Icons.play_circle_outline,
-                size: 20,
-                color: collector.status == CollectorStatus.open
-                    ? Colors.orange
-                    : Colors.green,
-              ),
-              12.widthBox,
-              Text(collector.status == CollectorStatus.open
-                  ? 'survey.collectors.pause'.tr()
-                  : 'survey.collectors.activate'.tr()),
-            ],
-          ),
-        ),
         const PopupMenuDivider(),
         PopupMenuItem<String>(
           value: 'delete',
@@ -84,14 +54,8 @@ extension _CollectorStatusActions on _CollectorListTile {
 
   void _handleMenuAction(BuildContext context, String action) async {
     switch (action) {
-      case 'edit':
-        await _editCollector(context);
-        break;
       case 'share':
         await _shareCollector(context);
-        break;
-      case 'toggle':
-        await _toggleCollectorStatus(context);
         break;
       case 'delete':
         await _deleteCollector(context);
@@ -99,28 +63,10 @@ extension _CollectorStatusActions on _CollectorListTile {
     }
   }
 
-  Future<void> _editCollector(BuildContext context) async {
-    await showBuyTargetedResponsesModal(context, collector: collector);
-    if (context.mounted) {
-      context.read<NewSurveyCubit>().fetchCollectors();
-    }
-  }
-
   Future<void> _shareCollector(BuildContext context) async {
     if (collector.webUrl != null) {
       await SharePlus.instance.share(ShareParams(text: collector.webUrl!));
     }
-  }
-
-  Future<void> _toggleCollectorStatus(BuildContext context) async {
-    // Implement toggle status functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-            '${collector.status == CollectorStatus.open ? 'survey.collectors.paused'.tr() : 'survey.collectors.activated'.tr()} ${'survey.collectors.collector'.tr()}'),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   Future<void> _deleteCollector(BuildContext context) async {
@@ -153,13 +99,16 @@ extension _CollectorStatusActions on _CollectorListTile {
     );
 
     if (confirmed == true && context.mounted) {
-      context.read<NewSurveyCubit>().deleteCollector(collector.id);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('survey.collectors.deleted_successfully'.tr()),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      final deleted =
+          await context.read<NewSurveyCubit>().deleteCollector(collector.id);
+      if (deleted && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('survey.collectors.deleted_successfully'.tr()),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     }
   }
 }

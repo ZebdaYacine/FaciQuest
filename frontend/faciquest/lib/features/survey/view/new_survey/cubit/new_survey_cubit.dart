@@ -197,11 +197,22 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     ));
   }
 
-  Future<void> deleteSurvey() async {
+  void goToPage(NewSurveyPages page) {
+    if (page == state.page) return;
+    emit(state.copyWith(page: page, previousPage: state.page));
+  }
+
+  Future<bool> deleteSurvey() async {
     try {
+      emit(state.copyWith(status: Status.showLoading));
       await repository.deleteSurvey(surveyId);
+      if (isClosed) return false;
+      emit(state.copyWith(status: Status.success));
+      return true;
     } catch (e) {
+      if (isClosed) return false;
       emit(state.copyWith(status: Status.failure, msg: e.toString()));
+      return false;
     }
   }
 
@@ -212,15 +223,24 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     ));
   }
 
-  void fetchCollectors() async {
-    final collectors = await repository.getSurveyCollectors(state.survey.id);
-    emit(
-      state.copyWith(
-        survey: state.survey.copyWith(
-          collectors: collectors,
+  Future<void> fetchCollectors() async {
+    if (state.survey.id.isEmpty) return;
+    emit(state.copyWith(status: Status.showLoading));
+    try {
+      final collectors = await repository.getSurveyCollectors(state.survey.id);
+      if (isClosed) return;
+      emit(
+        state.copyWith(
+          status: Status.success,
+          survey: state.survey.copyWith(
+            collectors: collectors,
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      if (isClosed) return;
+      emit(state.copyWith(status: Status.failure, msg: e.toString()));
+    }
   }
 
   Future<List<TargetingCriteria>> fetchTargetingCriteria() {
@@ -243,8 +263,24 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     await repository.createCollector(collector);
   }
 
-  void deleteCollector(String id) {
-    // todo implement delete collector
+  Future<bool> deleteCollector(String id) async {
+    emit(state.copyWith(status: Status.showLoading));
+    try {
+      await repository.deleteCollector(id);
+      final collectors = await repository.getSurveyCollectors(state.survey.id);
+      if (isClosed) return false;
+      emit(
+        state.copyWith(
+          status: Status.success,
+          survey: state.survey.copyWith(collectors: collectors),
+        ),
+      );
+      return true;
+    } catch (e) {
+      if (isClosed) return false;
+      emit(state.copyWith(status: Status.failure, msg: e.toString()));
+      return false;
+    }
   }
 
   Future<List<SubmissionEntity>> fetchSubmissionPage(

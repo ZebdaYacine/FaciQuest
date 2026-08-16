@@ -37,9 +37,9 @@ class NewSurveyState extends Equatable {
       survey: survey ?? this.survey,
       page: page ?? this.page,
       previousPage: previousPage ?? this.previousPage,
-      status: status ?? Status.initial,
+      status: status ?? this.status,
       targetingCriteria: targetingCriteria ?? this.targetingCriteria,
-      msg: msg,
+      msg: msg ?? this.msg,
       shouldShowCollectorModal:
           shouldShowCollectorModal ?? this.shouldShowCollectorModal,
     );

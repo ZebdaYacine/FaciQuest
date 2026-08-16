@@ -154,6 +154,13 @@ class SurveyEntity extends Equatable {
     List<QuestionEntity>? questions,
     List<SubmissionEntity>? submissions,
     List<CollectorEntity>? collectors,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? collectorId,
+    double? price,
+    int? responseCount,
+    int? viewCount,
+    int? questionCount,
   }) {
     return SurveyEntity(
       id: id ?? this.id,
@@ -166,6 +173,13 @@ class SurveyEntity extends Equatable {
       questions: questions ?? this.questions,
       submissions: submissions ?? this.submissions,
       collectors: collectors ?? this.collectors,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      collectorId: collectorId ?? this.collectorId,
+      price: price ?? this.price,
+      responseCount: responseCount ?? this.responseCount,
+      viewCount: viewCount ?? this.viewCount,
+      questionCount: questionCount ?? this.questionCount,
     );
   }
 

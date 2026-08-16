@@ -8,18 +8,21 @@ class SurveyStatsCard extends StatelessWidget {
     return BlocBuilder<NewSurveyCubit, NewSurveyState>(
       builder: (context, state) {
         final survey = state.survey;
-        final totalResponses = survey.submissions.length;
+        final totalResponses = survey.responseCount > survey.submissions.length
+            ? survey.responseCount
+            : survey.submissions.length;
         final totalCollectors = survey.collectors.length;
         final activeCollectors = survey.collectors
             .where((c) => c.status == CollectorStatus.open)
             .length;
 
         return Container(
-          margin: const EdgeInsets.all(16),
+          margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Card(
-            elevation: 4,
+            elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
+              side: BorderSide(color: context.colorScheme.outlineVariant),
             ),
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -34,11 +37,13 @@ class SurveyStatsCard extends StatelessWidget {
                         size: 28,
                       ),
                       12.widthBox,
-                      Text(
-                        'survey.stats.performance'.tr(),
-                        style: context.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: context.colorScheme.primary,
+                      Expanded(
+                        child: Text(
+                          'survey.stats.performance'.tr(),
+                          style: context.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: context.colorScheme.primary,
+                          ),
                         ),
                       ),
                     ],
@@ -74,6 +79,7 @@ class SurveyStatsCard extends StatelessWidget {
                           context.colorScheme.surfaceContainerHighest,
                       valueColor:
                           AlwaysStoppedAnimation(context.colorScheme.primary),
+                      borderRadius: BorderRadius.circular(999),
                     ),
                     8.heightBox,
                     Text(

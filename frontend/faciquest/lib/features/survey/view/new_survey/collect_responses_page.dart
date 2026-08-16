@@ -30,20 +30,8 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
   }
 
   Future<void> _refreshCollectors() async {
-    try {
-      if (mounted) {
-        context.read<NewSurveyCubit>().fetchCollectors();
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error loading collectors: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
-      }
-    }
+    if (!mounted) return;
+    await context.read<NewSurveyCubit>().fetchCollectors();
   }
 
   @override
@@ -84,8 +72,7 @@ class _CollectResponsesPageState extends State<CollectResponsesPage> {
                   children: [
                     const SurveyStatsCard(),
                     const CollectorsTable(),
-                    SizedBox(
-                        height: MediaQuery.of(context).padding.bottom + 200),
+                    AppSpacing.spacing_3.heightBox,
                   ],
                 ),
               ),

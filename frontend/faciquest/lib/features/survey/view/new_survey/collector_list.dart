@@ -21,6 +21,12 @@ class _CollectorsTableState extends State<CollectorsTable> {
           return const CollectorsLoadingStateView();
         }
 
+        if (state.status == Status.failure && state.survey.collectors.isEmpty) {
+          return CollectorsFailureStateView(
+            onRetry: context.read<NewSurveyCubit>().fetchCollectors,
+          );
+        }
+
         if (state.survey.collectors.isEmpty) {
           return const EmptyCollectorsStateView();
         }
@@ -28,9 +34,10 @@ class _CollectorsTableState extends State<CollectorsTable> {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: Card(
-            elevation: 4,
+            elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
+              side: BorderSide(color: context.colorScheme.outlineVariant),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,13 +67,14 @@ class _CollectorsTableState extends State<CollectorsTable> {
             size: 24,
           ),
           12.widthBox,
-          Text(
-            'survey.collectors.active_collectors'.tr(),
-            style: context.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Text(
+              'survey.collectors.active_collectors'.tr(),
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          const Spacer(),
           IconButton(
             onPressed: () => context.read<NewSurveyCubit>().fetchCollectors(),
             icon: Icon(
@@ -168,79 +176,78 @@ class _CollectorListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      leading: _buildCollectorIcon(context),
-      title: Text(
-        collector.name.isNotEmpty
-            ? collector.name
-            : 'survey.collectors.unnamed'.tr(),
-        style: context.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      subtitle: Column(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 14, 8, 14),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          4.heightBox,
           Row(
             children: [
-              _buildStatusBadge(context),
+              _buildCollectorIcon(context),
               12.widthBox,
-              Icon(
-                Icons.visibility_outlined,
-                size: 16,
-                color: context.colorScheme.onSurfaceVariant,
-              ),
-              4.widthBox,
-              Text(
-                '${collector.viewsCount} ${'survey.collectors.views'.tr()}',
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: context.colorScheme.onSurfaceVariant,
+              Expanded(
+                child: Text(
+                  collector.name.isNotEmpty
+                      ? collector.name
+                      : 'survey.collectors.unnamed'.tr(),
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
+              ),
+              _buildActionMenu(context),
+            ],
+          ),
+          12.heightBox,
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              _buildStatusBadge(context),
+              _buildResponsesChip(context),
+              _CollectorMetric(
+                icon: Icons.visibility_outlined,
+                label:
+                    '${collector.viewsCount} ${'survey.collectors.views'.tr()}',
               ),
             ],
           ),
-          if (collector.webUrl != null) ...[
-            4.heightBox,
-            Row(
-              children: [
-                Icon(
-                  Icons.link,
-                  size: 16,
-                  color: context.colorScheme.onSurfaceVariant,
-                ),
-                4.widthBox,
-                Expanded(
-                  child: Text(
-                    collector.webUrl!,
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: context.colorScheme.primary,
+          if (collector.webUrl?.isNotEmpty == true) ...[
+            8.heightBox,
+            Container(
+              padding: const EdgeInsetsDirectional.only(start: 12),
+              decoration: BoxDecoration(
+                color: context.colorScheme.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.link_rounded,
+                      size: 18, color: context.colorScheme.primary),
+                  8.widthBox,
+                  Expanded(
+                    child: Text(
+                      collector.webUrl!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.colorScheme.primary,
+                      ),
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                IconButton(
-                  onPressed: () => _copyToClipboard(context, collector.webUrl!),
-                  icon: Icon(
-                    Icons.copy_rounded,
-                    size: 16,
-                    color: context.colorScheme.onSurfaceVariant,
+                  IconButton(
+                    onPressed: () =>
+                        _copyToClipboard(context, collector.webUrl!),
+                    icon: const Icon(Icons.copy_rounded),
+                    tooltip: 'actions.copy'.tr(),
                   ),
-                  constraints: const BoxConstraints(),
-                  padding: EdgeInsets.zero,
-                ),
-              ],
+                ],
+              ),
             ),
           ],
-        ],
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildResponsesChip(context),
-          8.widthBox,
-          _buildActionMenu(context),
         ],
       ),
     );
@@ -283,7 +290,7 @@ class _CollectorListTile extends StatelessWidget {
           ),
           6.widthBox,
           Text(
-            collector.status.displayName,
+            collector.status.labelKey.tr(),
             style: context.textTheme.bodySmall?.copyWith(
               color: isActive ? Colors.green : Colors.orange,
               fontWeight: FontWeight.w500,
@@ -320,5 +327,44 @@ class _CollectorListTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _CollectorMetric extends StatelessWidget {
+  const _CollectorMetric({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 16, color: context.colorScheme.onSurfaceVariant),
+        4.widthBox,
+        Text(
+          label,
+          style: context.textTheme.bodySmall?.copyWith(
+            color: context.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+extension on CollectorStatus {
+  String get labelKey {
+    switch (this) {
+      case CollectorStatus.open:
+        return 'status.open';
+      case CollectorStatus.draft:
+        return 'status.draft';
+      case CollectorStatus.deleted:
+        return 'status.deleted';
+      case CollectorStatus.checkingPayment:
+        return 'status.checking_payment';
+    }
   }
 }

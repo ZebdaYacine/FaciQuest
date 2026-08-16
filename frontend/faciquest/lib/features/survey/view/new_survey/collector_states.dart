@@ -140,6 +140,56 @@ class CollectorsLoadingStateView extends StatelessWidget {
   }
 }
 
+class CollectorsFailureStateView extends StatelessWidget {
+  const CollectorsFailureStateView({super.key, required this.onRetry});
+
+  final Future<void> Function() onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: context.colorScheme.errorContainer.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: context.colorScheme.outlineVariant),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.cloud_off_outlined,
+            size: 44,
+            color: context.colorScheme.error,
+          ),
+          12.heightBox,
+          Text(
+            'collectors.load_failed'.tr(),
+            textAlign: TextAlign.center,
+            style: context.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          4.heightBox,
+          Text(
+            'collectors.load_failed_description'.tr(),
+            textAlign: TextAlign.center,
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: context.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          16.heightBox,
+          FilledButton.icon(
+            onPressed: onRetry,
+            icon: const Icon(Icons.refresh_rounded),
+            label: Text('actions.retry'.tr()),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _ShimmerBox extends StatelessWidget {
   const _ShimmerBox({
     required this.width,

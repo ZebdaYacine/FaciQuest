@@ -39,82 +39,160 @@ class NewSurveyView extends StatelessWidget {
                 elevation: 0,
                 backgroundColor: context.colorScheme.surface,
               ),
-              body: AdaptiveContentWidth(
-                child: Builder(
-                  builder: (context) {
-                    if (state.status.isFailure && state.survey.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: AppSpacing.spacing_3.padding,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 480),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.error_outline_rounded,
-                                  size: 56,
-                                  color: context.colorScheme.error,
-                                ),
-                                AppSpacing.spacing_2.heightBox,
-                                Text(
-                                  'survey.error.title'.tr(),
-                                  textAlign: TextAlign.center,
-                                  style: context.textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
+              body: Column(
+                children: [
+                  if (surveyId.isNotEmpty &&
+                      surveyId != '-1' &&
+                      state.survey.isNotEmpty)
+                    _SurveyWorkspaceNavigation(currentPage: state.page),
+                  Expanded(
+                    child: AdaptiveContentWidth(
+                      child: Builder(
+                        builder: (context) {
+                          if (state.status.isFailure && state.survey.isEmpty) {
+                            return Center(
+                              child: Padding(
+                                padding: AppSpacing.spacing_3.padding,
+                                child: ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 480),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.error_outline_rounded,
+                                        size: 56,
+                                        color: context.colorScheme.error,
+                                      ),
+                                      AppSpacing.spacing_2.heightBox,
+                                      Text(
+                                        'survey.error.title'.tr(),
+                                        textAlign: TextAlign.center,
+                                        style: context.textTheme.titleLarge
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      AppSpacing.spacing_1.heightBox,
+                                      Text(
+                                        'survey.error.message'.tr(),
+                                        textAlign: TextAlign.center,
+                                        style: context.textTheme.bodyLarge
+                                            ?.copyWith(
+                                          color: context
+                                              .colorScheme.onSurfaceVariant,
+                                        ),
+                                      ),
+                                      AppSpacing.spacing_3.heightBox,
+                                      FilledButton.icon(
+                                        onPressed: () => context
+                                            .read<NewSurveyCubit>()
+                                            .fetchSurvey(),
+                                        icon: const Icon(Icons.refresh_rounded),
+                                        label: Text(
+                                            'survey.error.button.retry'.tr()),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                AppSpacing.spacing_1.heightBox,
-                                Text(
-                                  'survey.error.message'.tr(),
-                                  textAlign: TextAlign.center,
-                                  style: context.textTheme.bodyLarge?.copyWith(
-                                    color: context.colorScheme.onSurfaceVariant,
-                                  ),
-                                ),
-                                AppSpacing.spacing_3.heightBox,
-                                FilledButton.icon(
-                                  onPressed: () => context
-                                      .read<NewSurveyCubit>()
-                                      .fetchSurvey(),
-                                  icon: const Icon(Icons.refresh_rounded),
-                                  label: Text('survey.error.button.retry'.tr()),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    } else if (state.status.isLoading && state.survey.isEmpty) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: context.colorScheme.primary,
-                        ),
-                      );
-                    }
+                              ),
+                            );
+                          } else if (state.status.isLoading &&
+                              state.survey.isEmpty) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: context.colorScheme.primary,
+                              ),
+                            );
+                          }
 
-                    switch (state.page) {
-                      case NewSurveyPages.surveyDetails:
-                        return _SurveyDetails(surveyId);
-                      case NewSurveyPages.questions:
-                        return const QuestionsPage();
-                      case NewSurveyPages.collectResponses:
-                        return const CollectResponsesPage();
-                      case NewSurveyPages.analyseResults:
-                        return const AnalyseResultsPage();
-                      case NewSurveyPages.summary:
-                        return SummaryPage(
-                          survey: state.survey,
-                        );
-                    }
-                  },
-                ),
+                          switch (state.page) {
+                            case NewSurveyPages.surveyDetails:
+                              return _SurveyDetails(surveyId);
+                            case NewSurveyPages.questions:
+                              return const QuestionsPage();
+                            case NewSurveyPages.collectResponses:
+                              return const CollectResponsesPage();
+                            case NewSurveyPages.analyseResults:
+                              return const AnalyseResultsPage();
+                            case NewSurveyPages.summary:
+                              return SummaryPage(
+                                survey: state.survey,
+                              );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },
         ),
       ),
     );
+  }
+}
+
+class _SurveyWorkspaceNavigation extends StatelessWidget {
+  const _SurveyWorkspaceNavigation({required this.currentPage});
+
+  final NewSurveyPages currentPage;
+
+  @override
+  Widget build(BuildContext context) {
+    const destinations = [
+      NewSurveyPages.summary,
+      NewSurveyPages.surveyDetails,
+      NewSurveyPages.questions,
+      NewSurveyPages.collectResponses,
+      NewSurveyPages.analyseResults,
+    ];
+
+    return Material(
+      color: context.colorScheme.surface,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: context.colorScheme.outlineVariant),
+          ),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          child: Row(
+            spacing: 8,
+            children: destinations.map((page) {
+              return ChoiceChip(
+                selected: page == currentPage,
+                onSelected: (_) =>
+                    context.read<NewSurveyCubit>().goToPage(page),
+                avatar: Icon(page.icon, size: 18),
+                label: Text('survey.${page.title}'.tr()),
+                showCheckmark: false,
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+extension on NewSurveyPages {
+  IconData get icon {
+    switch (this) {
+      case NewSurveyPages.summary:
+        return Icons.dashboard_outlined;
+      case NewSurveyPages.surveyDetails:
+        return Icons.tune_rounded;
+      case NewSurveyPages.questions:
+        return Icons.quiz_outlined;
+      case NewSurveyPages.collectResponses:
+        return Icons.campaign_outlined;
+      case NewSurveyPages.analyseResults:
+        return Icons.analytics_outlined;
+    }
   }
 }
 
