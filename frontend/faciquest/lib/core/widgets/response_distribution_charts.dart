@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:faciquest/core/core.dart';
-import 'package:faciquest/core/widgets/response_distribution_analyzer.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -88,7 +87,8 @@ class ResponseDistributionChart extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color:
+            context.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -135,7 +135,8 @@ class ResponseDistributionChart extends StatelessWidget {
         spacing: 16,
         runSpacing: 8,
         children: distribution.distributionItems.map((item) {
-          final color = _getColorForIndex(distribution.distributionItems.indexOf(item));
+          final color =
+              _getColorForIndex(distribution.distributionItems.indexOf(item));
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -188,8 +189,9 @@ class _BarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sortedItems = List<DistributionItem>.from(distribution.distributionItems)
-      ..sort((a, b) => b.value.compareTo(a.value));
+    final sortedItems =
+        List<DistributionItem>.from(distribution.distributionItems)
+          ..sort((a, b) => b.value.compareTo(a.value));
 
     final maxValue = sortedItems.isNotEmpty ? sortedItems.first.value : 0;
 
@@ -233,7 +235,9 @@ class _BarChart extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      item.label.length > 10 ? '${item.label.substring(0, 10)}...' : item.label,
+                      item.label.length > 10
+                          ? '${item.label.substring(0, 10)}...'
+                          : item.label,
                       style: context.textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
@@ -243,8 +247,10 @@ class _BarChart extends StatelessWidget {
               },
             ),
           ),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         borderData: FlBorderData(show: false),
         gridData: FlGridData(
@@ -252,7 +258,7 @@ class _BarChart extends StatelessWidget {
           drawVerticalLine: false,
           horizontalInterval: maxValue / 5,
           getDrawingHorizontalLine: (value) => FlLine(
-            color: context.colorScheme.outlineVariant.withOpacity(0.5),
+            color: context.colorScheme.outlineVariant.withValues(alpha: 0.5),
             strokeWidth: 1,
           ),
         ),
@@ -282,8 +288,9 @@ class _PieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sortedItems = List<DistributionItem>.from(distribution.distributionItems)
-      ..sort((a, b) => b.value.compareTo(a.value));
+    final sortedItems =
+        List<DistributionItem>.from(distribution.distributionItems)
+          ..sort((a, b) => b.value.compareTo(a.value));
 
     return PieChart(
       PieChartData(
@@ -338,8 +345,9 @@ class _HistogramChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxValue =
-        distribution.distributionItems.isNotEmpty ? distribution.distributionItems.map((e) => e.value).reduce(max) : 0;
+    final maxValue = distribution.distributionItems.isNotEmpty
+        ? distribution.distributionItems.map((e) => e.value).reduce(max)
+        : 0;
 
     return BarChart(
       BarChartData(
@@ -353,7 +361,7 @@ class _HistogramChart extends StatelessWidget {
             barRods: [
               BarChartRodData(
                 toY: item.value,
-                color: Colors.blue.withOpacity(0.8),
+                color: Colors.blue.withValues(alpha: 0.8),
                 width: 30,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(4),
@@ -379,7 +387,8 @@ class _HistogramChart extends StatelessWidget {
               showTitles: true,
               reservedSize: 60,
               getTitlesWidget: (value, meta) {
-                if (value.toInt() >= 0 && value.toInt() < distribution.distributionItems.length) {
+                if (value.toInt() >= 0 &&
+                    value.toInt() < distribution.distributionItems.length) {
                   final item = distribution.distributionItems[value.toInt()];
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
@@ -394,8 +403,10 @@ class _HistogramChart extends StatelessWidget {
               },
             ),
           ),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         borderData: FlBorderData(show: false),
         gridData: FlGridData(
@@ -403,7 +414,7 @@ class _HistogramChart extends StatelessWidget {
           drawVerticalLine: false,
           horizontalInterval: maxValue / 5,
           getDrawingHorizontalLine: (value) => FlLine(
-            color: context.colorScheme.outlineVariant.withOpacity(0.5),
+            color: context.colorScheme.outlineVariant.withValues(alpha: 0.5),
             strokeWidth: 1,
           ),
         ),
@@ -427,9 +438,13 @@ class _MatrixChart extends StatelessWidget {
           BarChartData(
             alignment: BarChartAlignment.spaceEvenly,
             maxY: distribution.distributionItems.isNotEmpty
-                ? distribution.distributionItems.map((e) => e.value).reduce(max) * 1.1
+                ? distribution.distributionItems
+                        .map((e) => e.value)
+                        .reduce(max) *
+                    1.1
                 : 0,
-            barGroups: distribution.distributionItems.asMap().entries.map((entry) {
+            barGroups:
+                distribution.distributionItems.asMap().entries.map((entry) {
               final index = entry.key;
               final item = entry.value;
               return BarChartGroupData(
@@ -460,14 +475,18 @@ class _MatrixChart extends StatelessWidget {
                   showTitles: true,
                   reservedSize: 80,
                   getTitlesWidget: (value, meta) {
-                    if (value.toInt() >= 0 && value.toInt() < distribution.distributionItems.length) {
-                      final item = distribution.distributionItems[value.toInt()];
+                    if (value.toInt() >= 0 &&
+                        value.toInt() < distribution.distributionItems.length) {
+                      final item =
+                          distribution.distributionItems[value.toInt()];
                       return Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: RotatedBox(
                           quarterTurns: 1,
                           child: Text(
-                            item.label.length > 15 ? '${item.label.substring(0, 15)}...' : item.label,
+                            item.label.length > 15
+                                ? '${item.label.substring(0, 15)}...'
+                                : item.label,
                             style: context.textTheme.bodySmall,
                             textAlign: TextAlign.center,
                           ),
@@ -478,8 +497,10 @@ class _MatrixChart extends StatelessWidget {
                   },
                 ),
               ),
-              rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              rightTitles:
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              topTitles:
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             ),
             borderData: FlBorderData(show: false),
           ),
@@ -578,7 +599,8 @@ class _EmptyDistributionWidget extends StatelessWidget {
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color:
+            context.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: context.colorScheme.outlineVariant,

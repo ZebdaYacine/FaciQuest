@@ -20,7 +20,7 @@ void statusHandler(
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor:
-                context.colorScheme.primaryContainer.withOpacity(0.95),
+                context.colorScheme.primaryContainer.withValues(alpha: 0.95),
             elevation: 2,
             behavior: SnackBarBehavior.floating,
             shape:
@@ -53,7 +53,7 @@ void statusHandler(
           builder: (BuildContext context) {
             return Center(
               child: Card(
-                color: context.colorScheme.surface.withOpacity(0.9),
+                color: context.colorScheme.surface.withValues(alpha: 0.9),
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16)),
@@ -89,7 +89,7 @@ void statusHandler(
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor:
-                context.colorScheme.secondaryContainer.withOpacity(0.95),
+                context.colorScheme.secondaryContainer.withValues(alpha: 0.95),
             elevation: 2,
             behavior: SnackBarBehavior.floating,
             shape:
@@ -119,7 +119,7 @@ void statusHandler(
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor:
-                context.colorScheme.errorContainer.withOpacity(0.95),
+                context.colorScheme.errorContainer.withValues(alpha: 0.95),
             elevation: 2,
             behavior: SnackBarBehavior.floating,
             shape:

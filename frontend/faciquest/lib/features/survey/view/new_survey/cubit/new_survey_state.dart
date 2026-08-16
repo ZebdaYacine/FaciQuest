@@ -21,7 +21,8 @@ class NewSurveyState extends Equatable {
         previousPage = previousPage ?? page;
 
   @override
-  List<Object?> get props => [survey, status, page, msg, targetingCriteria, shouldShowCollectorModal];
+  List<Object?> get props =>
+      [survey, status, page, msg, targetingCriteria, shouldShowCollectorModal];
 
   NewSurveyState copyWith({
     SurveyEntity? survey,
@@ -39,7 +40,8 @@ class NewSurveyState extends Equatable {
       status: status ?? Status.initial,
       targetingCriteria: targetingCriteria ?? this.targetingCriteria,
       msg: msg,
-      shouldShowCollectorModal: shouldShowCollectorModal ?? this.shouldShowCollectorModal,
+      shouldShowCollectorModal:
+          shouldShowCollectorModal ?? this.shouldShowCollectorModal,
     );
   }
 }

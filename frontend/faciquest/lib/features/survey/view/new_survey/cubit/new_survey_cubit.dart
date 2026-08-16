@@ -49,14 +49,17 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
   void next() {
     emit(state.copyWith(
       previousPage: state.page,
-      page: NewSurveyPages.values[(state.page.index + 1) % NewSurveyPages.values.length],
+      page: NewSurveyPages
+          .values[(state.page.index + 1) % NewSurveyPages.values.length],
     ));
   }
 
   void back() {
     emit(
       state.copyWith(
-        page: (state.page == NewSurveyPages.questions) ? NewSurveyPages.surveyDetails : state.previousPage,
+        page: (state.page == NewSurveyPages.questions)
+            ? NewSurveyPages.surveyDetails
+            : state.previousPage,
       ),
     );
   }
@@ -130,7 +133,8 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
         survey: result,
         page: NewSurveyPages.collectResponses,
         previousPage: state.page,
-        shouldShowCollectorModal: action == SurveyAction.newSurvey, // Only show for new surveys
+        shouldShowCollectorModal:
+            action == SurveyAction.newSurvey, // Only show for new surveys
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -243,7 +247,8 @@ class NewSurveyCubit extends Cubit<NewSurveyState> {
     // todo implement delete collector
   }
 
-  Future<List<SubmissionEntity>> fetchSubmissionPage({required int page, required pageSize}) async {
+  Future<List<SubmissionEntity>> fetchSubmissionPage(
+      {required int page, required pageSize}) async {
     final submissions = await repository.getSubmissions(
       surveyId: state.survey.id,
       page: page,

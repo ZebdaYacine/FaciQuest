@@ -3,7 +3,6 @@ part of '../question_entity.dart';
 class CommentBoxQuestion extends QuestionEntity {
   const CommentBoxQuestion({
     required super.id,
-
     required super.title,
     required super.order,
     super.type = QuestionType.commentBox,
@@ -42,7 +41,7 @@ class CommentBoxQuestion extends QuestionEntity {
       order: map['order'],
       maxLength: map['maxLength'],
       maxLines: map['maxLines'],
-      isRequired: map['isrequired']??false,
+      isRequired: map['isrequired'] ?? false,
     );
   }
 
@@ -55,7 +54,8 @@ class CommentBoxQuestion extends QuestionEntity {
     };
   }
 
-  static CommentBoxQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
+  static CommentBoxQuestion copyFrom(QuestionEntity question,
+      {bool isRequired = false}) {
     return CommentBoxQuestion(
       id: question.id,
       title: question.title,

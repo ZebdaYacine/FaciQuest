@@ -23,9 +23,10 @@ class StarRatingQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       maxRating: map['maxRating'],
-      shape: StarRatingShape.values.firstWhere((element) => element.name == map['shape']),
+      shape: StarRatingShape.values
+          .firstWhere((element) => element.name == map['shape']),
       color: color != null ? Color(color) : Colors.amber,
-      isRequired: map['isrequired']??false,
+      isRequired: map['isrequired'] ?? false,
     );
   }
 
@@ -35,7 +36,7 @@ class StarRatingQuestion extends QuestionEntity {
       ...super.toMap(),
       'maxRating': maxRating,
       'shape': shape.name,
-      'color': color.value.toString(),
+      'color': color.toARGB32().toString(),
     };
   }
 
@@ -65,7 +66,8 @@ class StarRatingQuestion extends QuestionEntity {
   @override
   List<Object?> get props => [title, maxRating, shape, color];
 
-  static StarRatingQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
+  static StarRatingQuestion copyFrom(QuestionEntity question,
+      {bool isRequired = false}) {
     return StarRatingQuestion(
       id: question.id,
       title: question.title,

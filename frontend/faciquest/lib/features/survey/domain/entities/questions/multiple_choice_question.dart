@@ -45,7 +45,7 @@ class MultipleChoiceQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       choices: List<String>.from(map['choices']),
-      isRequired: map['isrequired']??false,
+      isRequired: map['isrequired'] ?? false,
     );
   }
 
@@ -59,7 +59,8 @@ class MultipleChoiceQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [...super.props, choices];
-  static MultipleChoiceQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
+  static MultipleChoiceQuestion copyFrom(QuestionEntity question,
+      {bool isRequired = false}) {
     return MultipleChoiceQuestion(
       id: question.id,
       title: question.title,

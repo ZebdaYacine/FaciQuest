@@ -27,7 +27,8 @@ class RouteManager {
           (context, goRouterState) {
             return MaterialPage(
               child: VerifyOtpView(
-                from: VerifyOtpFrom.fromMap(goRouterState.pathParameters['from']),
+                from:
+                    VerifyOtpFrom.fromMap(goRouterState.pathParameters['from']),
               ),
             );
           },
@@ -39,7 +40,8 @@ class RouteManager {
         AppRoutes.wallet.goRoute(),
         AppRoutes.howItWorks.goRoute(),
         AppRoutes.newSurvey.goRoute([], (context, goRouterState) {
-          final surveyAction = goRouterState.extra as SurveyAction? ?? SurveyAction.newSurvey;
+          final surveyAction =
+              goRouterState.extra as SurveyAction? ?? SurveyAction.newSurvey;
 
           return MaterialPage(
             child: NewSurveyView(

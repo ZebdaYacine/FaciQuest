@@ -42,12 +42,7 @@ enum AppRoutes {
   ),
   ;
 
-  const AppRoutes(
-    this.path,
-    this.name,
-    this.view, {
-    this.supportProps = false,
-  });
+  const AppRoutes(this.path, this.name, this.view) : supportProps = false;
 
   ///
   final String path;

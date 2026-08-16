@@ -20,7 +20,8 @@ class ResponseDistributionAnalyzer {
 
     switch (question.type) {
       case QuestionType.multipleChoice:
-        return _analyzeMultipleChoice(question as MultipleChoiceQuestion, answers);
+        return _analyzeMultipleChoice(
+            question as MultipleChoiceQuestion, answers);
       case QuestionType.checkboxes:
         return _analyzeCheckboxes(question as CheckboxesQuestion, answers);
       case QuestionType.starRating:
@@ -53,7 +54,8 @@ class ResponseDistributionAnalyzer {
     for (final answer in answers) {
       if (answer is MultipleChoiceAnswer) {
         final selectedChoice = answer.selectedChoice;
-        if (selectedChoice.isNotEmpty && question.choices.contains(selectedChoice)) {
+        if (selectedChoice.isNotEmpty &&
+            question.choices.contains(selectedChoice)) {
           choiceCount[selectedChoice] = (choiceCount[selectedChoice] ?? 0) + 1;
         }
       }
@@ -63,7 +65,8 @@ class ResponseDistributionAnalyzer {
         .map((entry) => DistributionItem(
               label: entry.key,
               value: entry.value.toDouble(),
-              percentage: totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
+              percentage:
+                  totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
             ))
         .toList();
 
@@ -91,7 +94,8 @@ class ResponseDistributionAnalyzer {
       if (answer is CheckboxesAnswer) {
         for (final selectedChoice in answer.selectedChoices) {
           if (question.choices.contains(selectedChoice)) {
-            choiceCount[selectedChoice] = (choiceCount[selectedChoice] ?? 0) + 1;
+            choiceCount[selectedChoice] =
+                (choiceCount[selectedChoice] ?? 0) + 1;
           }
         }
       }
@@ -101,7 +105,8 @@ class ResponseDistributionAnalyzer {
         .map((entry) => DistributionItem(
               label: entry.key,
               value: entry.value.toDouble(),
-              percentage: totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
+              percentage:
+                  totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
             ))
         .toList();
 
@@ -138,7 +143,8 @@ class ResponseDistributionAnalyzer {
         .map((entry) => DistributionItem(
               label: '${entry.key} Star${entry.key > 1 ? 's' : ''}',
               value: entry.value.toDouble(),
-              percentage: totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
+              percentage:
+                  totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
             ))
         .toList();
 
@@ -156,10 +162,16 @@ class ResponseDistributionAnalyzer {
       chartType: ChartType.bar,
       statistics: DistributionStatistics(
         average: averageRating,
-        median: _calculateMedian(answers.cast<StarRatingAnswer>().map((a) => a.rating.toDouble()).toList()),
+        median: _calculateMedian(answers
+            .cast<StarRatingAnswer>()
+            .map((a) => a.rating.toDouble())
+            .toList()),
         mode: _calculateMode(distributionItems),
         standardDeviation: _calculateStandardDeviation(
-          answers.cast<StarRatingAnswer>().map((a) => a.rating.toDouble()).toList(),
+          answers
+              .cast<StarRatingAnswer>()
+              .map((a) => a.rating.toDouble())
+              .toList(),
           averageRating,
         ),
       ),
@@ -180,7 +192,8 @@ class ResponseDistributionAnalyzer {
     for (final answer in answers) {
       if (answer is DropdownAnswer) {
         final selectedChoice = answer.selectedChoice;
-        if (selectedChoice != null && question.choices.contains(selectedChoice)) {
+        if (selectedChoice != null &&
+            question.choices.contains(selectedChoice)) {
           choiceCount[selectedChoice] = (choiceCount[selectedChoice] ?? 0) + 1;
         }
       }
@@ -190,7 +203,8 @@ class ResponseDistributionAnalyzer {
         .map((entry) => DistributionItem(
               label: entry.key,
               value: entry.value.toDouble(),
-              percentage: totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
+              percentage:
+                  totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
             ))
         .toList();
 
@@ -230,7 +244,8 @@ class ResponseDistributionAnalyzer {
     }
 
     for (final value in values) {
-      final bucketIndex = ((value - question.min) / bucketSize).floor().clamp(0, buckets - 1);
+      final bucketIndex =
+          ((value - question.min) / bucketSize).floor().clamp(0, buckets - 1);
       final start = question.min + (bucketIndex * bucketSize);
       final end = question.min + ((bucketIndex + 1) * bucketSize);
       final label = '${start.toStringAsFixed(1)} - ${end.toStringAsFixed(1)}';
@@ -241,11 +256,14 @@ class ResponseDistributionAnalyzer {
         .map((entry) => DistributionItem(
               label: entry.key,
               value: entry.value.toDouble(),
-              percentage: totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
+              percentage:
+                  totalResponses > 0 ? (entry.value / totalResponses) * 100 : 0,
             ))
         .toList();
 
-    final average = values.isNotEmpty ? values.reduce((a, b) => a + b) / values.length : 0.0;
+    final average = values.isNotEmpty
+        ? values.reduce((a, b) => a + b) / values.length
+        : 0.0;
 
     return ResponseDistribution(
       question: question,
@@ -288,12 +306,14 @@ class ResponseDistributionAnalyzer {
       DistributionItem(
         label: 'Filled Responses',
         value: filledResponses.toDouble(),
-        percentage: totalResponses > 0 ? (filledResponses / totalResponses) * 100 : 0,
+        percentage:
+            totalResponses > 0 ? (filledResponses / totalResponses) * 100 : 0,
       ),
       DistributionItem(
         label: 'Empty Responses',
         value: emptyResponses.toDouble(),
-        percentage: totalResponses > 0 ? (emptyResponses / totalResponses) * 100 : 0,
+        percentage:
+            totalResponses > 0 ? (emptyResponses / totalResponses) * 100 : 0,
       ),
     ];
 
@@ -326,12 +346,12 @@ class ResponseDistributionAnalyzer {
         for (final rowEntry in answer.values.entries) {
           final row = rowEntry.key;
           final colValues = rowEntry.value;
-          
+
           if (responseCount.containsKey(row)) {
             for (final colEntry in colValues.entries) {
               final col = colEntry.key;
               final isSelected = colEntry.value;
-              
+
               if (isSelected && responseCount[row]!.containsKey(col)) {
                 responseCount[row]![col] = responseCount[row]![col]! + 1;
               }
@@ -388,7 +408,8 @@ class ResponseDistributionAnalyzer {
     );
   }
 
-  static DistributionStatistics _calculateBasicStats(List<DistributionItem> items) {
+  static DistributionStatistics _calculateBasicStats(
+      List<DistributionItem> items) {
     if (items.isEmpty) {
       return DistributionStatistics(
         average: 0,
@@ -411,10 +432,10 @@ class ResponseDistributionAnalyzer {
 
   static double _calculateMedian(List<double> values) {
     if (values.isEmpty) return 0;
-    
+
     final sortedValues = List<double>.from(values)..sort();
     final middle = sortedValues.length ~/ 2;
-    
+
     if (sortedValues.length % 2 == 0) {
       return (sortedValues[middle - 1] + sortedValues[middle]) / 2;
     } else {
@@ -424,19 +445,21 @@ class ResponseDistributionAnalyzer {
 
   static String? _calculateMode(List<DistributionItem> items) {
     if (items.isEmpty) return null;
-    
+
     final maxValue = items.map((item) => item.value).reduce(max);
     final modeItem = items.firstWhereOrNull((item) => item.value == maxValue);
-    
+
     return modeItem?.label;
   }
 
-  static double _calculateStandardDeviation(List<double> values, double average) {
+  static double _calculateStandardDeviation(
+      List<double> values, double average) {
     if (values.length <= 1) return 0;
-    
-    final squaredDiffs = values.map((value) => pow(value - average, 2)).toList();
+
+    final squaredDiffs =
+        values.map((value) => pow(value - average, 2)).toList();
     final variance = squaredDiffs.reduce((a, b) => a + b) / values.length;
-    
+
     return sqrt(variance);
   }
 }
@@ -473,7 +496,8 @@ class ResponseDistribution extends Equatable {
   }
 
   @override
-  List<Object?> get props => [question, totalResponses, distributionItems, chartType, statistics];
+  List<Object?> get props =>
+      [question, totalResponses, distributionItems, chartType, statistics];
 }
 
 /// Represents a single item in the distribution

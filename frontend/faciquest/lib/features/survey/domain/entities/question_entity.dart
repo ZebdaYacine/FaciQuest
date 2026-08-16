@@ -368,7 +368,11 @@ sealed class QuestionEntity extends Equatable {
 final Map<String, List<List<String>>> scaleOptions = {
   'Agree - Disagree': [
     ['Agree', 'Disagree'], // Scale 2
-    ['Strongly agree', 'Neither agree nor disagree', 'Strongly disagree'], // Scale 3
+    [
+      'Strongly agree',
+      'Neither agree nor disagree',
+      'Strongly disagree'
+    ], // Scale 3
 
     [
       'Strongly agree',
@@ -389,7 +393,11 @@ final Map<String, List<List<String>>> scaleOptions = {
   ],
   'Satisfied - Dissatisfied': [
     ['Satisfied', 'Dissatisfied'], // Scale 2
-    ['Very satisfied', 'Neither satisfied nor dissatisfied', 'Very dissatisfied'], // Scale 3
+    [
+      'Very satisfied',
+      'Neither satisfied nor dissatisfied',
+      'Very dissatisfied'
+    ], // Scale 3
 
     [
       'Very satisfied',
@@ -415,7 +423,13 @@ final Map<String, List<List<String>>> scaleOptions = {
     ['Likely', 'Unlikely'], // Scale 2
     ['Very likely', 'Neither likely nor unlikely', 'Very unlikely'], // Scale 3
 
-    ['Very likely', 'Likely', 'Neither likely nor unlikely', 'Unlikely', 'Very unlikely'], // Scale 5
+    [
+      'Very likely',
+      'Likely',
+      'Neither likely nor unlikely',
+      'Unlikely',
+      'Very unlikely'
+    ], // Scale 5
     [
       'Very likely',
       'Likely',
@@ -451,7 +465,13 @@ final Map<String, List<List<String>>> scaleOptions = {
     ['Easy', 'Difficult'], // Scale 2
     ['Very easy', 'Neither easy nor difficult', 'Very difficult'], // Scale 3
 
-    ['Very easy', 'Easy', 'Neither easy nor difficult', 'Difficult', 'Very difficult'], // Scale 5
+    [
+      'Very easy',
+      'Easy',
+      'Neither easy nor difficult',
+      'Difficult',
+      'Very difficult'
+    ], // Scale 5
     [
       'Very easy',
       'Easy',
@@ -469,24 +489,59 @@ final Map<String, List<List<String>>> scaleOptions = {
     ['Better', 'Worse'], // Scale 2
     ['Better', 'About the same', 'Worse'], // Scale 3
 
-    ['Much better', 'Better', 'About the same', 'Worse', 'Much worse'], // Scale 5
+    [
+      'Much better',
+      'Better',
+      'About the same',
+      'Worse',
+      'Much worse'
+    ], // Scale 5
   ],
   'Approve - Disapprove': [
     ['Approve', 'Disapprove'], // Scale 2
     ['Approve', 'Somewhat Approve', 'Somewhat Disapprove', 'Disapprove'],
     // Scale 3
-    ['Approve', 'Somewhat Approve', 'Neither Approve nor Disapprove', 'Somewhat Disapprove', 'Disapprove'], // Scale 5
-    ['Approve', 'Somewhat Approve', 'Neither Approve nor Disapprove', 'Somewhat Disapprove', 'Disapprove'], // Scale 7
+    [
+      'Approve',
+      'Somewhat Approve',
+      'Neither Approve nor Disapprove',
+      'Somewhat Disapprove',
+      'Disapprove'
+    ], // Scale 5
+    [
+      'Approve',
+      'Somewhat Approve',
+      'Neither Approve nor Disapprove',
+      'Somewhat Disapprove',
+      'Disapprove'
+    ], // Scale 7
   ],
   'Above average - Below average': [
     ['Above average', 'Average', 'Below average'],
-    ['Far above average', 'Above average', 'Average', 'Below average', 'Far below average'],
+    [
+      'Far above average',
+      'Above average',
+      'Average',
+      'Below average',
+      'Far below average'
+    ],
   ],
   'High quality - Low quality': [
     ['High quality', 'Low quality'], // Scale 2
     ['High quality', 'Neither high nor low quality', 'Low quality'], // Scale 3
-    ['Very high quality', 'High quality', 'Low quality', 'Very low quality'], // scale 4
-    ['Very high quality', 'High quality', 'Neither high nor low quality', 'Low quality', 'Very low quality'], // scale 5
+    [
+      'Very high quality',
+      'High quality',
+      'Low quality',
+      'Very low quality'
+    ], // scale 4
+    [
+      'Very high quality',
+      'High quality',
+      'Neither high nor low quality',
+      'Low quality',
+      'Very low quality'
+    ], // scale 5
     [
       'Very high quality',
       'High quality',
@@ -501,10 +556,21 @@ final Map<String, List<List<String>>> scaleOptions = {
     ['True', 'False']
   ],
   'Definitely would - Definitely would not': [
-    ['Definitely would', 'Probably would', 'Probably would not', 'Definitely would not']
+    [
+      'Definitely would',
+      'Probably would',
+      'Probably would not',
+      'Definitely would not'
+    ]
   ],
   'Useful - Not useful': [
-    ['Extremely useful', 'Very Useful', 'Somewhat useful', 'Not so useful', 'Not at all useful']
+    [
+      'Extremely useful',
+      'Very Useful',
+      'Somewhat useful',
+      'Not so useful',
+      'Not at all useful'
+    ]
   ],
   'Valuable - Not valuable': [
     [
@@ -559,11 +625,25 @@ final Map<String, List<List<String>>> scaleOptions = {
     ['Positive', 'Neutral', 'Negative'],
     ['Very Positive', 'Positive', 'Negative', 'Very Negative'],
     ['Very Positive', 'Positive', 'Neutral', 'Negative', 'Very Negative'],
-    ['Very Positive', 'Positive', 'Somewhat Positive', 'Neutral', 'Somewhat Negative', 'Negative', 'Very Negative'],
+    [
+      'Very Positive',
+      'Positive',
+      'Somewhat Positive',
+      'Neutral',
+      'Somewhat Negative',
+      'Negative',
+      'Very Negative'
+    ],
   ],
   'Too short - Too long': [
     ['Too short', 'About the right length', 'Too long'],
-    ['Much too short', 'Too short', 'About the right length', 'Too long', 'Much too long'],
+    [
+      'Much too short',
+      'Too short',
+      'About the right length',
+      'Too long',
+      'Much too long'
+    ],
   ],
   'Responsive - Not responsive': [
     [
@@ -686,13 +766,29 @@ final Map<String, List<List<String>>> scaleOptions = {
     ],
   ],
   'Age': [
-    ['Under 18', '18-24', '25-34', '35-44', '45-54', '55-64', '65+', 'Prefer not to say'],
+    [
+      'Under 18',
+      '18-24',
+      '25-34',
+      '35-44',
+      '45-54',
+      '55-64',
+      '65+',
+      'Prefer not to say'
+    ],
   ],
   'Quarters': [
     ['Monthly', 'Twice annually', 'Quarterly', 'Yearly']
   ],
   'Frequency': [
-    ['Every day', 'A few times a week', 'About once a week', 'A few times a month', 'Once a month', 'Never'],
+    [
+      'Every day',
+      'A few times a week',
+      'About once a week',
+      'A few times a month',
+      'Once a month',
+      'Never'
+    ],
   ],
   'Recent Experience': [
     [

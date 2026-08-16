@@ -37,7 +37,7 @@ class CheckboxesQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       choices: List<String>.from(map['choices']),
-      isRequired: map['isrequired']??false,
+      isRequired: map['isrequired'] ?? false,
     );
   }
 
@@ -58,7 +58,8 @@ class CheckboxesQuestion extends QuestionEntity {
 
   @override
   List<Object?> get props => [title, choices];
-  static CheckboxesQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
+  static CheckboxesQuestion copyFrom(QuestionEntity question,
+      {bool isRequired = false}) {
     return CheckboxesQuestion(
       id: question.id,
       title: question.title,

@@ -39,7 +39,7 @@ class DateTimeQuestion extends QuestionEntity {
       order: map['order'],
       collectDateInfo: map['collectDateInfo'],
       collectTimeInfo: map['collectTimeInfo'],
-      isRequired: map['isrequired']??false,
+      isRequired: map['isrequired'] ?? false,
     );
   }
 

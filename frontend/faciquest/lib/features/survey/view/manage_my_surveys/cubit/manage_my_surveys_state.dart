@@ -113,7 +113,8 @@ class ManageMySurveysState {
           comparison = a.createdAt.compareTo(b.createdAt);
           break;
         case SortOption.dateUpdated:
-          comparison = a.updatedAt?.compareTo(b.updatedAt ?? DateTime.now()) ?? 0;
+          comparison =
+              a.updatedAt?.compareTo(b.updatedAt ?? DateTime.now()) ?? 0;
           break;
         case SortOption.responseCount:
           comparison = a.responseCount.compareTo(b.responseCount);

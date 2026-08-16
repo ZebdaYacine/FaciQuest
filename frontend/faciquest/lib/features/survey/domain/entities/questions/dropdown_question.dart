@@ -35,7 +35,7 @@ class DropdownQuestion extends QuestionEntity {
       title: map['title'],
       order: map['order'],
       choices: List<String>.from(map['choices']),
-      isRequired: map['isrequired']??false,
+      isRequired: map['isrequired'] ?? false,
     );
   }
 
@@ -58,7 +58,8 @@ class DropdownQuestion extends QuestionEntity {
   @override
   List<Object?> get props => [title, choices];
 
-  static DropdownQuestion copyFrom(QuestionEntity question, {bool isRequired = false}) {
+  static DropdownQuestion copyFrom(QuestionEntity question,
+      {bool isRequired = false}) {
     return DropdownQuestion(
       id: question.id,
       title: question.title,

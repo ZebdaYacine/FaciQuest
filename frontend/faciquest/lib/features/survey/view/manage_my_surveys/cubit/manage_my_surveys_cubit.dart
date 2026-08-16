@@ -41,8 +41,10 @@ class ManageMySurveysCubit extends Cubit<ManageMySurveysState> {
     emit(state.copyWith(status: Status.showLoading));
     try {
       final surveys = await repository.fetchMySurveys();
+      if (isClosed) return;
       emit(state.copyWith(status: Status.success, surveys: surveys));
     } catch (e) {
+      if (isClosed) return;
       emit(state.copyWith(
         status: Status.failure,
         msg: e.toString(),
@@ -53,8 +55,10 @@ class ManageMySurveysCubit extends Cubit<ManageMySurveysState> {
   Future<void> refreshSurveys() async {
     try {
       final surveys = await repository.fetchMySurveys();
+      if (isClosed) return;
       emit(state.copyWith(surveys: surveys));
     } catch (e) {
+      if (isClosed) return;
       emit(state.copyWith(
         status: Status.failure,
         msg: e.toString(),

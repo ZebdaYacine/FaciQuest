@@ -45,9 +45,10 @@ class ImageChoiceQuestion extends QuestionEntity {
       id: map['_id'] ?? ObjectId().hexString,
       title: map['title'],
       order: map['order'],
-      choices: List<ImageChoice>.from(map['choices'].map((e) => ImageChoice.fromMap(e))),
+      choices: List<ImageChoice>.from(
+          map['choices'].map((e) => ImageChoice.fromMap(e))),
       multipleSelect: map['useCheckbox'],
-      isRequired: map['isrequired']??false,
+      isRequired: map['isrequired'] ?? false,
     );
   }
 
@@ -116,7 +117,8 @@ class ImageChoice with EquatableMixin {
       base64Source = rawImage.trim();
     } else if (rawUrl is String && rawUrl.isNotEmpty) {
       final trimmedUrl = rawUrl.trim();
-      final isHttpUrl = trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://');
+      final isHttpUrl =
+          trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://');
       if (isHttpUrl) {
         resolvedUrl = trimmedUrl;
       } else {

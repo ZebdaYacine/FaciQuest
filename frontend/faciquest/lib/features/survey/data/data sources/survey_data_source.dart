@@ -45,7 +45,9 @@ class SurveyDataSourceImpl implements SurveyDataSource {
       data: survey.toMap(),
     );
 
-    if (response.statusCode == 200 && response.data?['date'] != null && response.data?['date'] is Map) {
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is Map) {
       return SurveyEntity.fromMap(response.data['date']);
     }
     return null;
@@ -72,7 +74,9 @@ class SurveyDataSourceImpl implements SurveyDataSource {
         'surveyId': surveyId,
       },
     );
-    if (response.statusCode == 200 && response.data?['date'] != null && response.data?['date'] is Map) {
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is Map) {
       return SurveyEntity.fromMap(response.data['date']);
     }
     return null;
@@ -99,8 +103,12 @@ class SurveyDataSourceImpl implements SurveyDataSource {
       );
 
       // Check if the response is successful and contains a valid 'data' list
-      if (response.statusCode == 200 && response.data?['date'] != null && response.data?['date'] is List) {
-        return (response.data!['date'] as List).map((e) => SurveyEntity.fromMap(e)).toList();
+      if (response.statusCode == 200 &&
+          response.data?['date'] != null &&
+          response.data?['date'] is List) {
+        return (response.data!['date'] as List)
+            .map((e) => SurveyEntity.fromMap(e))
+            .toList();
       } else {
         // If data is missing or the status code is not 200, return an empty list
         return <SurveyEntity>[];
@@ -121,7 +129,9 @@ class SurveyDataSourceImpl implements SurveyDataSource {
       data: survey.toMap(),
     );
 
-    if (response.statusCode == 200 && response.data?['date'] != null && response.data?['date'] is Map) {
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is Map) {
       return SurveyEntity.fromMap(response.data['date']);
     }
     return null;
@@ -143,8 +153,12 @@ class SurveyDataSourceImpl implements SurveyDataSource {
     final response = await dioClient.get<Map<String, dynamic>>(
       AppUrls.getMySurveys,
     );
-    if (response.statusCode == 200 && response.data?['date'] != null && response.data?['date'] is List) {
-      return (response.data!['date'] as List? ?? []).map((e) => SurveyEntity.fromMap(e)).toList();
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is List) {
+      return (response.data!['date'] as List? ?? [])
+          .map((e) => SurveyEntity.fromMap(e))
+          .toList();
     }
     return [];
   }
@@ -200,8 +214,12 @@ class SurveyDataSourceImpl implements SurveyDataSource {
         'surveyId': surveyId,
       },
     );
-    if (response.statusCode == 200 && response.data?['date'] != null && response.data?['date'] is List) {
-      return (response.data!['date'] as List? ?? []).map((e) => CollectorEntity.fromMap(e)).toList();
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is List) {
+      return (response.data!['date'] as List? ?? [])
+          .map((e) => CollectorEntity.fromMap(e))
+          .toList();
     }
     return [];
   }
@@ -213,8 +231,12 @@ class SurveyDataSourceImpl implements SurveyDataSource {
     final response = await dioClient.get<Map<String, dynamic>>(
       AppUrls.getTargetingCriteria,
     );
-    if (response.statusCode == 200 && response.data?['date'] != null && response.data?['date'] is List) {
-      return (response.data!['date'] as List? ?? []).map((e) => TargetingCriteria.fromMap(e)).toList();
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is List) {
+      return (response.data!['date'] as List? ?? [])
+          .map((e) => TargetingCriteria.fromMap(e))
+          .toList();
     }
     return [];
   }
@@ -250,8 +272,12 @@ class SurveyDataSourceImpl implements SurveyDataSource {
         // 'pageSize': pageSize,
       },
     );
-    if (response.statusCode == 200 && response.data?['date'] != null && response.data?['date'] is List) {
-      return (response.data!['date'] as List).map((e) => SubmissionEntity.fromMap(e)).toList();
+    if (response.statusCode == 200 &&
+        response.data?['date'] != null &&
+        response.data?['date'] is List) {
+      return (response.data!['date'] as List)
+          .map((e) => SubmissionEntity.fromMap(e))
+          .toList();
     }
     return [];
   }
