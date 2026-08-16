@@ -44,8 +44,10 @@ class SurveyCubit extends Cubit<SurveyState> {
     try {
       emit(state.copyWith(status: Status.showLoading));
       final survey = await repository.getSurveyById(surveyId);
-      emit(state.copyWith(survey: survey));
+      if (isClosed) return;
+      emit(state.copyWith(survey: survey, status: Status.success));
     } catch (e) {
+      if (isClosed) return;
       emit(state.copyWith(status: Status.failure));
     }
   }
