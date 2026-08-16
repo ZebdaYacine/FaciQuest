@@ -186,31 +186,34 @@ class ProfileView extends StatelessWidget {
     bool showTrailing = true,
     bool isDestructive = false,
   }) {
-    return ListTile(
-      onTap: onTap,
-      contentPadding: AppSpacing.spacing_3.horizontalPadding,
-      title: Text(
-        title,
-        style: context.textTheme.titleMedium?.copyWith(
+    return Material(
+      color: Colors.transparent,
+      child: ListTile(
+        onTap: onTap,
+        contentPadding: AppSpacing.spacing_3.horizontalPadding,
+        title: Text(
+          title,
+          style: context.textTheme.titleMedium?.copyWith(
+            color: isDestructive
+                ? context.colorScheme.error
+                : context.colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        leading: Icon(
+          icon,
           color: isDestructive
               ? context.colorScheme.error
-              : context.colorScheme.onSurface,
-          fontWeight: FontWeight.w500,
+              : context.colorScheme.primary,
         ),
+        trailing: showTrailing
+            ? Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 18,
+                color: context.colorScheme.onSurfaceVariant,
+              )
+            : null,
       ),
-      leading: Icon(
-        icon,
-        color: isDestructive
-            ? context.colorScheme.error
-            : context.colorScheme.primary,
-      ),
-      trailing: showTrailing
-          ? Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 18,
-              color: context.colorScheme.onSurfaceVariant,
-            )
-          : null,
     );
   }
 

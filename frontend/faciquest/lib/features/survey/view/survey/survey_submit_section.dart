@@ -51,67 +51,80 @@ class _SubmitSectionState extends State<_SubmitSection>
                   ? 1.0
                   : _pulseAnimation.value,
               child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      context.colorScheme.primaryContainer
-                          .withValues(alpha: 0.8),
-                      context.colorScheme.secondaryContainer
-                          .withValues(alpha: 0.6),
-                    ],
-                  ),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: context.colorScheme.primary.withValues(alpha: 0.1),
-                      blurRadius: 20,
+                      color: context.colorScheme.primaryContainer
+                          .withValues(alpha: 0.15),
+                      blurRadius: 32,
                       offset: const Offset(0, 8),
-                    ),
-                    BoxShadow(
-                      color: context.colorScheme.shadow.withValues(alpha: 0.05),
-                      blurRadius: 40,
-                      offset: const Offset(0, 16),
+                      spreadRadius: -4,
                     ),
                   ],
-                  border: Border.all(
-                    color: context.colorScheme.primary.withValues(alpha: 0.1),
-                    width: 1,
-                  ),
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(24),
-                  child: Stack(
-                    children: [
-                      // Background pattern
-                      Positioned(
-                        top: -40,
-                        right: -40,
-                        child: Container(
-                          width: 150,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: context.colorScheme.primary
-                                .withValues(alpha: 0.05),
-                          ),
-                        ),
-                      ),
-                      // Content
-                      Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Column(
-                          children: [
-                            _buildHeader(context),
-                            const SizedBox(height: 20),
-                            _buildDescription(context),
-                            const SizedBox(height: 32),
-                            _buildSubmitButton(context, state),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            context.colorScheme.primaryContainer
+                                .withValues(alpha: 0.6),
+                            context.colorScheme.tertiaryContainer
+                                .withValues(alpha: 0.4),
                           ],
                         ),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: context.colorScheme.primary
+                              .withValues(alpha: 0.2),
+                          width: 1.5,
+                        ),
                       ),
-                    ],
+                      child: Stack(
+                        children: [
+                          // Background pattern
+                          Positioned(
+                            top: -40,
+                            right: -40,
+                            child: Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: RadialGradient(
+                                  colors: [
+                                    context.colorScheme.primary
+                                        .withValues(alpha: 0.15),
+                                    context.colorScheme.primary
+                                        .withValues(alpha: 0.0),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Content
+                          Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Column(
+                              children: [
+                                _buildHeader(context),
+                                const SizedBox(height: 20),
+                                _buildDescription(context),
+                                const SizedBox(height: 32),
+                                _buildSubmitButton(context, state),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

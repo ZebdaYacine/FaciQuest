@@ -109,36 +109,66 @@ class _CashOutModalState extends State<CashOutModal> {
                 children: [
                   if (state is WalletLoaded)
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
+                        gradient: LinearGradient(
+                          colors: [
+                            context.colorScheme.primaryContainer
+                                .withValues(alpha: 0.8),
+                            context.colorScheme.secondaryContainer
+                                .withValues(alpha: 0.4),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: context.colorScheme.primary
+                              .withValues(alpha: 0.2),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.info_outline, color: Colors.blue),
-                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: context.colorScheme.primary
+                                  .withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.account_balance_wallet_rounded,
+                              color: context.colorScheme.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               'wallet.cashout_modal.available_balance_info'.tr(
                                   args: [
                                     state.wallet.amount.toStringAsFixed(2)
                                   ]),
-                              style: const TextStyle(
+                              style: context.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
+                                color: context.colorScheme.primary,
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  const SizedBox(height: 16),
-                  TextFormField(
+                  const SizedBox(height: 24),
+                  EnhancedTextField(
                     controller: _amountController,
-                    decoration: InputDecoration(
-                      labelText: 'wallet.cashout_modal.amount_label'.tr(),
-                      hintText: 'wallet.cashout_modal.amount_hint'.tr(),
-                      prefixText: 'DA ',
+                    labelText: 'wallet.cashout_modal.amount_label'.tr(),
+                    hintText: 'wallet.cashout_modal.amount_hint'.tr(),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 8, top: 12, bottom: 12),
+                      child: Text(
+                        'DA',
+                        style: context.textTheme.titleMedium?.copyWith(
+                          color: context.colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
@@ -160,18 +190,52 @@ class _CashOutModalState extends State<CashOutModal> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   DropdownButtonFormField<PaymentMethod>(
                     initialValue: _selectedPaymentMethod,
                     decoration: InputDecoration(
                       labelText:
                           'wallet.cashout_modal.payment_method_label'.tr(),
-                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: context.colorScheme.surface,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(
+                          color: context.colorScheme.outline
+                              .withValues(alpha: 0.2),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(
+                          color: context.colorScheme.outline
+                              .withValues(alpha: 0.2),
+                          width: 1.5,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(
+                          color: context.colorScheme.primary,
+                          width: 2,
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 20,
+                      ),
                     ),
+                    icon: Icon(Icons.keyboard_arrow_down_rounded,
+                        color: context.colorScheme.primary),
                     items: PaymentMethod.values.map((method) {
                       return DropdownMenuItem(
                         value: method,
-                        child: Text(method.displayName),
+                        child: Text(
+                          method.displayName,
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -182,17 +246,16 @@ class _CashOutModalState extends State<CashOutModal> {
                       }
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   if (_selectedPaymentMethod == PaymentMethod.ccp)
-                    TextFormField(
+                    EnhancedTextField(
                       controller: _ccpController,
-                      decoration: InputDecoration(
-                        labelText: 'wallet.cashout_modal.ccp_label'.tr(),
-                        hintText: 'wallet.cashout_modal.ccp_hint'.tr(),
-                      ),
+                      labelText: 'wallet.cashout_modal.ccp_label'.tr(),
+                      hintText: 'wallet.cashout_modal.ccp_hint'.tr(),
+                      prefixIcon: const Icon(Icons.numbers_rounded),
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (_) => _handleSubmit(context, state),
+                      onSubmitted: (_) => _handleSubmit(context, state),
                       validator: (value) {
                         if (_selectedPaymentMethod == PaymentMethod.ccp &&
                             (value == null || value.isEmpty)) {
@@ -203,15 +266,14 @@ class _CashOutModalState extends State<CashOutModal> {
                     ),
                   if (_selectedPaymentMethod == PaymentMethod.rip ||
                       _selectedPaymentMethod == PaymentMethod.baridimob)
-                    TextFormField(
+                    EnhancedTextField(
                       controller: _ripController,
-                      decoration: InputDecoration(
-                        labelText: 'wallet.cashout_modal.rip_label'.tr(),
-                        hintText: 'wallet.cashout_modal.rip_hint'.tr(),
-                      ),
+                      labelText: 'wallet.cashout_modal.rip_label'.tr(),
+                      hintText: 'wallet.cashout_modal.rip_hint'.tr(),
+                      prefixIcon: const Icon(Icons.numbers_rounded),
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (_) => _handleSubmit(context, state),
+                      onSubmitted: (_) => _handleSubmit(context, state),
                       validator: (value) {
                         if ((_selectedPaymentMethod == PaymentMethod.rip ||
                                 _selectedPaymentMethod ==
@@ -222,7 +284,7 @@ class _CashOutModalState extends State<CashOutModal> {
                         return null;
                       },
                     ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
                 ],
               ),
             ),
@@ -231,9 +293,59 @@ class _CashOutModalState extends State<CashOutModal> {
       ),
       actions: BlocBuilder<WalletCubit, WalletState>(
         builder: (context, state) {
-          return ElevatedButton(
-            onPressed: () => _handleSubmit(context, state),
-            child: Center(child: Text('wallet.cashout_modal.submit'.tr())),
+          final isLoading = state is WalletLoading;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: BouncyButton(
+              onTap: isLoading ? null : () => _handleSubmit(context, state),
+              child: Container(
+                width: double.infinity,
+                height: 56,
+                decoration: BoxDecoration(
+                  gradient: isLoading
+                      ? null
+                      : LinearGradient(
+                          colors: [
+                            context.colorScheme.primary,
+                            context.colorScheme.primary.withValues(alpha: 0.8),
+                          ],
+                        ),
+                  color: isLoading
+                      ? context.colorScheme.onSurface.withValues(alpha: 0.12)
+                      : null,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: isLoading
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: context.colorScheme.primary
+                                .withValues(alpha: 0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                ),
+                child: Center(
+                  child: isLoading
+                      ? SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: context.colorScheme.onSurface
+                                .withValues(alpha: 0.6),
+                          ),
+                        )
+                      : Text(
+                          'wallet.cashout_modal.submit'.tr(),
+                          style: context.textTheme.titleMedium?.copyWith(
+                            color: context.colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                ),
+              ),
+            ),
           );
         },
       ),

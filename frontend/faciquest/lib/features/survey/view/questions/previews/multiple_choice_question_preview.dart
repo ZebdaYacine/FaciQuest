@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class MultipleChoiceQuestionPreview extends StatelessWidget {
               child: RadioListTile<String>(
                 value: choice,
                 controlAffinity: ListTileControlAffinity.leading,
-                title: Text(choice),
+                title: Text(choice).tr(),
               ),
             ),
           ),

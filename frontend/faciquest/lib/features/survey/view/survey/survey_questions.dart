@@ -276,56 +276,78 @@ class _SurveyQuestionsState extends State<_SurveyQuestions>
   }
 
   Widget _buildProgressSection(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: context.colorScheme.surface,
-        border: Border(
-          bottom: BorderSide(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? context.colorScheme.surface.withValues(alpha: 0.8)
+              : Colors.white.withValues(alpha: 0.9),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: context.colorScheme.shadow.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+          border: Border.all(
             color: context.colorScheme.outline.withValues(alpha: 0.1),
-            width: 1,
           ),
         ),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'survey.question.progress'.tr(args: [
-                  (_currentIndex + 1).toString(),
-                  widget.state.survey.questions.length.toString()
-                ]),
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: context.colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'survey.question.progress'.tr(args: [
+                    (_currentIndex + 1).toString(),
+                    widget.state.survey.questions.length.toString()
+                  ]),
+                  style: context.textTheme.titleSmall?.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              Text(
-                '${((_currentIndex + 1) / widget.state.survey.questions.length * 100).round()}%',
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: context.colorScheme.primary,
-                  fontWeight: FontWeight.bold,
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    '${((_currentIndex + 1) / widget.state.survey.questions.length * 100).round()}%',
+                    style: context.textTheme.labelMedium?.copyWith(
+                      color: context.colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: AnimatedBuilder(
+                animation: _progressAnimation,
+                builder: (context, child) {
+                  return LinearProgressIndicator(
+                    value: (_currentIndex + _progressAnimation.value) /
+                        widget.state.survey.questions.length,
+                    backgroundColor:
+                        context.colorScheme.surfaceContainerHighest,
+                    valueColor:
+                        AlwaysStoppedAnimation(context.colorScheme.primary),
+                    minHeight: 8,
+                  );
+                },
               ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          AnimatedBuilder(
-            animation: _progressAnimation,
-            builder: (context, child) {
-              return LinearProgressIndicator(
-                value: (_currentIndex + _progressAnimation.value) /
-                    widget.state.survey.questions.length,
-                backgroundColor: context.colorScheme.surfaceContainerHighest,
-                valueColor: AlwaysStoppedAnimation(context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(8),
-                minHeight: 8,
-              );
-            },
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -335,53 +357,53 @@ class _SurveyQuestionsState extends State<_SurveyQuestions>
     final isLastQuestion =
         _currentIndex == widget.state.survey.questions.length - 1;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: context.colorScheme.surface,
-        border: Border(
-          top: BorderSide(
-            color: context.colorScheme.outline.withValues(alpha: 0.1),
-            width: 1,
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? context.colorScheme.surface.withValues(alpha: 0.7)
+                : Colors.white.withValues(alpha: 0.7),
+            border: Border(
+              top: BorderSide(
+                color: context.colorScheme.outline.withValues(alpha: 0.1),
+                width: 1,
+              ),
+            ),
           ),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: context.colorScheme.shadow.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        child: AdaptiveContentWidth(
-          maxWidth: 800,
-          child: Row(
-            children: [
-              if (!isFirstQuestion)
-                Expanded(
-                  child: EnhancedButton(
-                    onPressed: _previousQuestion,
-                    variant: ButtonVariant.outline,
-                    size: ButtonSize.large,
-                    icon: const Icon(Icons.arrow_back_rounded),
-                    child: Text('survey.button.previous'.tr()),
-                  ),
-                ),
-              if (!isFirstQuestion && !isLastQuestion)
-                const SizedBox(width: 16),
-              if (!isLastQuestion)
-                Expanded(
-                  flex: isFirstQuestion ? 1 : 1,
-                  child: EnhancedButton(
-                    onPressed: _nextQuestion,
-                    variant: ButtonVariant.primary,
-                    size: ButtonSize.large,
-                    suffixIcon: const Icon(Icons.arrow_forward_rounded),
-                    child: Text('survey.button.next'.tr()),
-                  ),
-                ),
-            ],
+          child: SafeArea(
+            child: AdaptiveContentWidth(
+              maxWidth: 800,
+              child: Row(
+                children: [
+                  if (!isFirstQuestion)
+                    Expanded(
+                      child: EnhancedButton(
+                        onPressed: _previousQuestion,
+                        variant: ButtonVariant.outline,
+                        size: ButtonSize.large,
+                        icon: const Icon(Icons.arrow_back_rounded),
+                        child: Text('survey.button.previous'.tr()),
+                      ),
+                    ),
+                  if (!isFirstQuestion && !isLastQuestion)
+                    const SizedBox(width: 16),
+                  if (!isLastQuestion)
+                    Expanded(
+                      flex: isFirstQuestion ? 1 : 1,
+                      child: EnhancedButton(
+                        onPressed: _nextQuestion,
+                        variant: ButtonVariant.primary,
+                        size: ButtonSize.large,
+                        suffixIcon: const Icon(Icons.arrow_forward_rounded),
+                        child: Text('survey.button.next'.tr()),
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

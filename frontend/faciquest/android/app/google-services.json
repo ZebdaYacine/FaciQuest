@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "976687439846",
+    "project_id": "faciquest-b38af",
+    "storage_bucket": "faciquest-b38af.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976687439846:android:9809d10ea3fd52e5844027",
+        "android_client_info": {
+          "package_name": "com.example.faciquest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl3o0wlI-xTq5P_451P9jWVCCFaBYNEbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

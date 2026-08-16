@@ -21,7 +21,7 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
     return Container(
       margin: AppSpacing.spacing_2.padding,
       padding: AppSpacing.spacing_3.padding,
-      height: 196,
+      height: 200,
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(

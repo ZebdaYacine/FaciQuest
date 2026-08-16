@@ -20,6 +20,7 @@ class SurveyCubit extends Cubit<SurveyState> {
         SubmissionEntity(
           collectorId: state.survey.collectorId ?? state.survey.id,
           surveyId: surveyId,
+          rewarded: state.survey.price,
           answers: state.answers.values.toList(),
         ),
       );

@@ -1,6 +1,8 @@
 class AppUrls {
   static const useLocalhost = false;
-  static const baseUrl = useLocalhost ? 'http://localhost:9000' : 'http://185.209.230.104:3000';
+  static const baseUrl = useLocalhost
+      ? 'http://localhost:9000'
+      : 'https://faciquest-api.youcef-goudjal.site';
 
   /// Auth Urls
   static const authLoginUrl = '$baseUrl/login';
