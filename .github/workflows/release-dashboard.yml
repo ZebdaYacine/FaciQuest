@@ -1,0 +1,202 @@
+name: Release dashboard image
+
+# Builds the admin dashboard image, pushes it to GHCR, then tells Dokploy to
+# pull. This is the deploy path.
+#
+# The VPS never builds. That is deliberate and it is Dokploy's own advice: a
+# `flutter build web` competing with the running containers for RAM is the usual
+# way a single-node Dokploy host falls over, taking every app on it down with
+# it. That risk is concrete here — the box already runs Jenkins, Keycloak,
+# Postgres, Mongo and three other app containers on 8GB. It only ever pulls a
+# finished image and starts a container.
+#
+# One app, so this is a single build job with no matrix and no deploy ordering.
+# The wasel workflow this is modelled on needs both because it ships three
+# interdependent services behind an api-migrates-first gate; the dashboard is a
+# static bundle that depends on nothing at deploy time.
+#
+# Image: ghcr.io/<owner>/faciquest-dashboard   frontend/dashboard/Dockerfile
+#
+# Required repo secrets: DOKPLOY_URL, DOKPLOY_API_KEY, DOKPLOY_APP_ID_DASHBOARD.
+# Required repo variable: API_BASE_URL.
+# Leave "Auto Deploy" OFF on the Dokploy Application — Dokploy's own git webhook
+# fires on push, minutes before the image exists, and would redeploy the
+# previous build. This workflow is the trigger.
+
+on:
+  push:
+    branches: [frontend]
+    paths:
+      - "frontend/dashboard/**"
+      - ".github/workflows/release-dashboard.yml"
+  workflow_dispatch:
+    inputs:
+      api_base_url:
+        description: "API base URL baked into the browser bundle (overrides the API_BASE_URL repo variable)"
+        required: false
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      # API_BASE_URL is inlined into the bundled .env asset at build time, so a
+      # wrong or empty value here becomes a silent runtime failure: app_config
+      # falls back to http://185.209.230.104:3000 and every request from a
+      # user's browser goes to the wrong host. Fail the build instead.
+      - name: Resolve API base URL
+        id: api_url
+        env:
+          FROM_INPUT: ${{ inputs.api_base_url }}
+          FROM_VARS: ${{ vars.API_BASE_URL }}
+        run: |
+          URL="${FROM_INPUT:-$FROM_VARS}"
+          if [ -z "$URL" ]; then
+            echo "::error::API_BASE_URL is not set. Add it under Settings → Secrets and variables → Actions → Variables, or pass it to workflow_dispatch."
+            exit 1
+          fi
+          case "$URL" in
+            http://*)
+              # The dashboard is served over HTTPS; a plain-http API is blocked
+              # as mixed content by the browser before a request is ever sent.
+              echo "::warning::API_BASE_URL is http:// — browsers will block these as mixed content once the dashboard is served over HTTPS." ;;
+          esac
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Baking API_BASE_URL=$URL into the dashboard bundle"
+
+      - name: Lowercase image namespace
+        id: ns
+        # GHCR rejects uppercase in image paths; this owner (ZebdaYacine) has it.
+        run: echo "owner=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute tags and labels
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ steps.ns.outputs.owner }}/faciquest-dashboard
+          # `frontend` is the moving tag the Dokploy Application is pointed at;
+          # `sha-<short>` is the immutable one to pin for a rollback.
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=sha-,format=short
+
+      - name: Build and push
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          # The dashboard is a standalone Flutter package — context is its own
+          # directory, not the repo root.
+          context: frontend/dashboard
+          file: frontend/dashboard/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            API_BASE_URL=${{ steps.api_url.outputs.url }}
+            APP_VERSION=1.0.0
+            DEBUG_MODE=false
+            LOG_LEVEL=info
+            SHOW_DETAILED_ERRORS=false
+          cache-from: type=gha,scope=faciquest-dashboard
+          cache-to: type=gha,mode=max,scope=faciquest-dashboard
+
+      # Cheapest possible proof that the artifact is actually serviceable, run
+      # before anything on the VPS is told to pull it: the container starts,
+      # nginx answers, index.html is the Flutter shell, and the baked .env holds
+      # the URL we intended rather than the hardcoded fallback.
+      - name: Smoke-test the pushed image
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ steps.ns.outputs.owner }}/faciquest-dashboard@${{ steps.push.outputs.digest }}
+          EXPECTED_URL: ${{ steps.api_url.outputs.url }}
+        run: |
+          set -euo pipefail
+          docker run -d --name smoke -p 8080:80 "$IMAGE"
+          for i in $(seq 1 20); do
+            curl -fsS --max-time 5 http://127.0.0.1:8080/healthz >/dev/null && break
+            [ "$i" = 20 ] && { docker logs smoke; echo "::error::container never answered /healthz"; exit 1; }
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/ | grep -q "flutter_bootstrap.js" \
+            || { echo "::error::index.html is not the Flutter shell"; exit 1; }
+          curl -fsS http://127.0.0.1:8080/assets/.env | grep -qx "API_BASE_URL=${EXPECTED_URL}" \
+            || { echo "::error::baked .env does not contain the expected API_BASE_URL"; exit 1; }
+          # Deep-link refresh must hit the SPA fallback, not a 404.
+          curl -fsS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8080/users | grep -qx 200 \
+            || { echo "::error::SPA fallback is not working"; exit 1; }
+          docker rm -f smoke
+
+  # Tells Dokploy to pull, once the image exists in the registry and passed the
+  # smoke test. `needs: build` is the whole point.
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/frontend'
+    runs-on: ubuntu-latest
+    env:
+      DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
+      DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
+    steps:
+      - name: Check deploy credentials
+        run: |
+          for v in DOKPLOY_URL DOKPLOY_API_KEY; do
+            if [ -z "${!v}" ]; then
+              echo "::error::$v is not set. Settings → Secrets and variables → Actions → Secrets."
+              exit 1
+            fi
+          done
+
+      - name: Deploy dashboard
+        run: |
+          curl -fsS -X POST "$DOKPLOY_URL/api/application.deploy" \
+            -H 'accept: application/json' \
+            -H "x-api-key: $DOKPLOY_API_KEY" \
+            -H 'Content-Type: application/json' \
+            -d '{"applicationId":"${{ secrets.DOKPLOY_APP_ID_DASHBOARD }}"}' -o /dev/null
+
+      # The deploy call returns as soon as Dokploy accepts it, so "deployed" is
+      # not "pulled and serving". Poll the public URL for the real answer.
+      - name: Wait for the dashboard to answer
+        env:
+          HEALTH_URL: ${{ vars.DASHBOARD_HEALTH_URL }}
+        run: |
+          if [ -z "$HEALTH_URL" ]; then
+            echo "::warning::DASHBOARD_HEALTH_URL variable not set — deploy was triggered but not verified."
+            exit 0
+          fi
+          for i in $(seq 1 20); do
+            if curl -fsS --max-time 10 "$HEALTH_URL" -o /dev/null; then
+              echo "dashboard healthy after $((i * 15))s"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::dashboard did not answer at $HEALTH_URL. Check its Dokploy logs."
+          exit 1
+
+      - name: Summary
+        run: |
+          SHA_TAG="sha-$(echo ${{ github.sha }} | cut -c1-7)"
+          {
+            echo "### Deployed"
+            echo
+            echo "The dashboard Application pulled \`frontend\`, which now resolves to \`$SHA_TAG\`."
+            echo
+            echo "To roll back, set the image tag on the Application to a previous"
+            echo "\`sha-\` tag and press **Deploy**."
+          } >> "$GITHUB_STEP_SUMMARY"
