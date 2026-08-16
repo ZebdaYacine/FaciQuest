@@ -67,6 +67,82 @@ void main() {
     expect(cubit.state.survey.name, 'Research survey');
   });
 
+  test('survey copyWith preserves loaded metrics while collectors refresh',
+      () async {
+    final collector = CollectorEntity(
+      id: 'collector-1',
+      name: 'Target audience',
+      surveyId: survey.id,
+    );
+    final loadedSurvey = SurveyEntity(
+      id: survey.id,
+      name: survey.name,
+      responseCount: 42,
+      viewCount: 80,
+      questionCount: 5,
+      createdAt: DateTime(2026),
+      updatedAt: DateTime(2026, 8),
+    );
+    final repository = FakeSurveyRepository()
+      ..survey = loadedSurvey
+      ..collectors = [collector];
+    addTearDown(repository.close);
+    final cubit = NewSurveyCubit(
+      action: SurveyAction.edit,
+      surveyId: survey.id,
+      repository: repository,
+    );
+    addTearDown(cubit.close);
+
+    await cubit.fetchSurvey();
+    await cubit.fetchCollectors();
+
+    expect(cubit.state.status, Status.success);
+    expect(cubit.state.survey.collectors, [collector]);
+    expect(cubit.state.survey.responseCount, 42);
+    expect(cubit.state.survey.viewCount, 80);
+    expect(cubit.state.survey.createdAt, DateTime(2026));
+  });
+
+  test('collector deletion persists and reconciles the collector list',
+      () async {
+    final repository = FakeSurveyRepository()
+      ..survey = survey
+      ..collectors = const [];
+    addTearDown(repository.close);
+    final cubit = NewSurveyCubit(
+      action: SurveyAction.collectResponses,
+      surveyId: survey.id,
+      repository: repository,
+    );
+    addTearDown(cubit.close);
+
+    await cubit.fetchSurvey();
+    final deleted = await cubit.deleteCollector('collector-1');
+
+    expect(deleted, isTrue);
+    expect(repository.deletedCollectorId, 'collector-1');
+    expect(cubit.state.status, Status.success);
+    expect(cubit.state.survey.collectors, isEmpty);
+  });
+
+  test('workspace navigation preserves successful survey state', () async {
+    final repository = FakeSurveyRepository()..survey = survey;
+    addTearDown(repository.close);
+    final cubit = NewSurveyCubit(
+      action: SurveyAction.edit,
+      surveyId: survey.id,
+      repository: repository,
+    );
+    addTearDown(cubit.close);
+
+    await cubit.fetchSurvey();
+    cubit.goToPage(NewSurveyPages.collectResponses);
+
+    expect(cubit.state.page, NewSurveyPages.collectResponses);
+    expect(cubit.state.status, Status.success);
+  });
+
   test('survey cubit loads the survey used by the question renderer', () async {
     final repository = FakeSurveyRepository()..survey = survey;
     addTearDown(repository.close);

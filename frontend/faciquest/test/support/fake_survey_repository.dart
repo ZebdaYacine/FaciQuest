@@ -12,7 +12,10 @@ class FakeSurveyRepository implements SurveyRepository {
   List<TargetingCriteria> criteria = const [];
   SurveyEntity survey = SurveyEntity.empty;
   Object? fetchError;
+  Object? collectorError;
   SubmissionEntity? submittedAnswers;
+  String? deletedSurveyId;
+  String? deletedCollectorId;
 
   @override
   Stream<List<SurveyEntity>> getSurveys() => surveysController.stream;
@@ -36,7 +39,9 @@ class FakeSurveyRepository implements SurveyRepository {
   Future<SurveyEntity?> updateSurvey(SurveyEntity survey) async => survey;
 
   @override
-  Future<void> deleteSurvey(String surveyId) async {}
+  Future<void> deleteSurvey(String surveyId) async {
+    deletedSurveyId = surveyId;
+  }
 
   @override
   Future<void> submitAnswers(SubmissionEntity submission) async {
@@ -52,8 +57,10 @@ class FakeSurveyRepository implements SurveyRepository {
       submissions;
 
   @override
-  Future<List<CollectorEntity>> getSurveyCollectors(String surveyId) async =>
-      collectors;
+  Future<List<CollectorEntity>> getSurveyCollectors(String surveyId) async {
+    if (collectorError case final error?) throw error;
+    return collectors;
+  }
 
   @override
   Future<List<TargetingCriteria>> getTargetingCriteria() async => criteria;
@@ -62,7 +69,10 @@ class FakeSurveyRepository implements SurveyRepository {
   Future<void> createCollector(CollectorEntity collector) async {}
 
   @override
-  Future<void> deleteCollector(String collectorId) async {}
+  Future<void> deleteCollector(String collectorId) async {
+    if (collectorError case final error?) throw error;
+    deletedCollectorId = collectorId;
+  }
 
   @override
   Future<void> confirmPayment(String collectorId, File profOfPayment) async {}
