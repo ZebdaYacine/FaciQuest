@@ -21,9 +21,10 @@ class SortOptionsBottomSheet extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  BouncyButton(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    tooltip: 'actions.close'.tr(),
+                    icon: Icon(
                       Icons.close_rounded,
                       color: context.colorScheme.onSurfaceVariant,
                     ),
@@ -33,59 +34,63 @@ class SortOptionsBottomSheet extends StatelessWidget {
               AppSpacing.spacing_3.heightBox,
               ...SortOption.values.map((option) {
                 final isSelected = state.sortOption == option;
-                return BouncyButton(
-                  onTap: () {
-                    context
-                        .read<ManageMySurveysCubit>()
-                        .updateSortOption(option);
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? context.colorScheme.primaryContainer
-                          : context.colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
+                return Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      context
+                          .read<ManageMySurveysCubit>()
+                          .updateSortOption(option);
+                      Navigator.pop(context);
+                    },
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
                         color: isSelected
-                            ? context.colorScheme.primary
-                            : Colors.transparent,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          option.icon,
+                            ? context.colorScheme.primaryContainer
+                            : context.colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
                           color: isSelected
                               ? context.colorScheme.primary
-                              : context.colorScheme.onSurfaceVariant,
+                              : Colors.transparent,
+                          width: 2,
                         ),
-                        AppSpacing.spacing_3.widthBox,
-                        Expanded(
-                          child: Text(
-                            option.name.tr(),
-                            style: context.textTheme.titleMedium?.copyWith(
-                              color: isSelected
-                                  ? context.colorScheme.primary
-                                  : context.colorScheme.onSurface,
-                              fontWeight: isSelected
-                                  ? FontWeight.w600
-                                  : FontWeight.w500,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            option.icon,
+                            color: isSelected
+                                ? context.colorScheme.primary
+                                : context.colorScheme.onSurfaceVariant,
+                          ),
+                          AppSpacing.spacing_3.widthBox,
+                          Expanded(
+                            child: Text(
+                              option.labelKey.tr(),
+                              style: context.textTheme.titleMedium?.copyWith(
+                                color: isSelected
+                                    ? context.colorScheme.primary
+                                    : context.colorScheme.onSurface,
+                                fontWeight: isSelected
+                                    ? FontWeight.w600
+                                    : FontWeight.w500,
+                              ),
                             ),
                           ),
-                        ),
-                        if (isSelected)
-                          Icon(
-                            state.isAscending
-                                ? Icons.arrow_upward
-                                : Icons.arrow_downward,
-                            color: context.colorScheme.primary,
-                            size: 20,
-                          ),
-                      ],
+                          if (isSelected)
+                            Icon(
+                              state.isAscending
+                                  ? Icons.arrow_upward
+                                  : Icons.arrow_downward,
+                              color: context.colorScheme.primary,
+                              size: 20,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 );

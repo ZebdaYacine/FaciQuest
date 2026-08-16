@@ -7,9 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-part 'manage_survey_grid.dart';
 part 'survey_actions_menu.dart';
-part 'manage_survey_list.dart';
 part 'survey_sort_sheet.dart';
 part 'enhanced_survey_collections.dart';
 part 'enhanced_survey_cards.dart';
@@ -38,7 +36,7 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView>
     super.initState();
     _cubit.fetchSurveys();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 240),
       vsync: this,
     );
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -83,7 +81,9 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView>
         backgroundColor: context.colorScheme.surfaceContainerLowest,
         appBar: _buildAppBar(context),
         floatingActionButton: TweenAnimationBuilder<double>(
-          duration: const Duration(milliseconds: 800),
+          duration: context.prefersReducedMotion
+              ? Duration.zero
+              : const Duration(milliseconds: 240),
           tween: Tween(begin: 0.0, end: 1.0),
           builder: (context, value, child) {
             return Transform.scale(
@@ -91,17 +91,10 @@ class _ManageMySurveysViewState extends State<ManageMySurveysView>
               child: Opacity(
                 opacity: value,
                 child: FloatingActionButton.extended(
-                  onPressed: () {
-                    AppRoutes.newSurvey.push(
-                      context,
-                      pathParameters: {
-                        'id': '-1',
-                      },
-                    );
-                  },
-                  backgroundColor: context.colorScheme.primaryContainer,
-                  foregroundColor: context.colorScheme.onPrimaryContainer,
-                  elevation: 6,
+                  onPressed: () => _handleCreateSurvey(context),
+                  backgroundColor: context.colorScheme.primary,
+                  foregroundColor: context.colorScheme.onPrimary,
+                  elevation: 2,
                   extendedPadding: const EdgeInsets.symmetric(horizontal: 20),
                   icon: const Icon(Icons.add_circle_outline_rounded),
                   label: Text(

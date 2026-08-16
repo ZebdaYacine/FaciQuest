@@ -1,605 +1,320 @@
 part of 'manage_my_surveys_view.dart';
 
 class EnhancedSurveyCard extends StatelessWidget {
-  const EnhancedSurveyCard({
-    super.key,
-    required this.survey,
-  });
+  const EnhancedSurveyCard({super.key, required this.survey});
 
   final SurveyEntity survey;
 
   @override
   Widget build(BuildContext context) {
-    return BouncyButton(
-      onTap: () => _handleSurveyTap(context, survey),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              context.colorScheme.surface,
-              context.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.3),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: context.colorScheme.shadow.withValues(alpha: 0.06),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-            ),
-            BoxShadow(
-              color: context.colorScheme.primary.withValues(alpha: 0.02),
-              blurRadius: 32,
-              offset: const Offset(0, 8),
-            ),
-          ],
-          border: Border.all(
-            color: context.colorScheme.outline.withValues(alpha: 0.08),
-            width: 1,
-          ),
+    return Semantics(
+      button: true,
+      label: '${survey.name}, ${survey.status.labelKey.tr()}',
+      child: Card(
+        margin: EdgeInsets.zero,
+        elevation: 0,
+        clipBehavior: Clip.antiAlias,
+        color: context.colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: context.colorScheme.outlineVariant),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: Stack(
-            children: [
-              // Background pattern
-              Positioned(
-                top: -20,
-                right: -20,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: survey.status.color.withValues(alpha: 0.05),
-                  ),
-                ),
-              ),
-              // Content
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: InkWell(
+          onTap: () => _openSurvey(context, SurveyAction.edit),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    _buildHeader(context),
-                    const SizedBox(height: 16),
-                    _buildTitle(context),
-                    const SizedBox(height: 12),
-                    _buildDescription(context),
+                    _SurveyStatusChip(status: survey.status),
                     const Spacer(),
-                    _buildMetricsAndDate(context),
-                    const SizedBox(height: 16),
-                    _buildActionButtons(context),
+                    SurveyActions(surveyId: survey.id),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: survey.status.color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: survey.status.color.withValues(alpha: 0.2),
-              width: 1,
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 6,
-                height: 6,
-                decoration: BoxDecoration(
-                  color: survey.status.color,
-                  shape: BoxShape.circle,
+                const SizedBox(height: 16),
+                Text(
+                  survey.name,
+                  style: context.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              const SizedBox(width: 6),
-              Text(
-                _getStatusText(),
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: survey.status.color,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Spacer(),
-        SurveyActions(surveyId: survey.id),
-      ],
-    );
-  }
-
-  String _getStatusText() {
-    switch (survey.status) {
-      case SurveyStatus.active:
-        return 'Active';
-      case SurveyStatus.draft:
-        return 'Draft';
-      case SurveyStatus.published:
-        return 'Published';
-      case SurveyStatus.deleted:
-        return 'Deleted';
-    }
-  }
-
-  Widget _buildTitle(BuildContext context) {
-    return Text(
-      survey.name,
-      style: context.textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.bold,
-        color: context.colorScheme.onSurface,
-        height: 1.2,
-      ),
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
-
-  Widget _buildDescription(BuildContext context) {
-    return Text(
-      'manage.survey_with_questions'
-          .tr()
-          .replaceFirst('{}', '${survey.questions.length}')
-          .replaceFirst(
-              '{}',
-              survey.questions.length == 1
-                  ? 'manage.question'.tr()
-                  : 'manage.questions'.tr()),
-      style: context.textTheme.bodyMedium?.copyWith(
-        color: context.colorScheme.onSurfaceVariant,
-        height: 1.3,
-      ),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
-
-  Widget _buildMetricsAndDate(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildMetricItem(
-            context,
-            icon: Icons.bar_chart_rounded,
-            value: '${survey.responseCount}',
-            label: 'Responses',
-            color: context.colorScheme.primary,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _buildMetricItem(
-            context,
-            icon: Icons.schedule_rounded,
-            value:
-                DateFormat('MMM dd').format(survey.updatedAt ?? DateTime.now()),
-            label: 'Updated',
-            color: context.colorScheme.tertiary,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMetricItem(
-    BuildContext context, {
-    required IconData icon,
-    required String value,
-    required String label,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withValues(alpha: 0.15),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                icon,
-                color: color,
-                size: 16,
-              ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Text(
-                  value,
-                  style: context.textTheme.titleSmall?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(height: 8),
+                Text(
+                  'manage.survey_with_questions'.tr(args: [
+                    '${survey.questions.length}',
+                    survey.questions.length == 1
+                        ? 'manage.question'.tr()
+                        : 'manage.questions'.tr(),
+                  ]),
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: context.textTheme.bodySmall?.copyWith(
-              color: color.withValues(alpha: 0.8),
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
+                const Spacer(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _SurveyMetric(
+                        icon: Icons.forum_outlined,
+                        value: '${survey.responseCount}',
+                        label: 'manage.responses_label'.tr(),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _SurveyMetric(
+                        icon: Icons.schedule_rounded,
+                        value: DateFormat.MMMd(
+                          Localizations.localeOf(context).toString(),
+                        ).format(survey.updatedAt ?? survey.createdAt),
+                        label: 'manage.updated_label'.tr(),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: FilledButton.tonalIcon(
+                        onPressed: () =>
+                            _openSurvey(context, SurveyAction.analyze),
+                        icon: const Icon(Icons.analytics_outlined),
+                        label: Text('actions.analyze_results'.tr()),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton.outlined(
+                      onPressed: () =>
+                          _openSurvey(context, SurveyAction.preview),
+                      icon: const Icon(Icons.visibility_outlined),
+                      tooltip: 'actions.preview_survey'.tr(),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildActionButtons(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: EnhancedButton(
-            onPressed: () => _handleAnalyzeResults(context),
-            variant: ButtonVariant.outline,
-            size: ButtonSize.small,
-            icon: Icon(
-              Icons.analytics_rounded,
-              size: 16,
-              color: context.colorScheme.primary,
-            ),
-            child: Text(
-              'Analyze',
-              style: TextStyle(
-                color: context.colorScheme.primary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        EnhancedButton(
-          onPressed: () => _handlePreview(context),
-          variant: ButtonVariant.ghost,
-          size: ButtonSize.small,
-          icon: Icon(
-            Icons.visibility_rounded,
-            size: 16,
-            color: context.colorScheme.onSurfaceVariant,
-          ),
-          child: const Text(''),
-        ),
-      ],
-    );
-  }
-
-  Future<void> _handleSurveyTap(
-      BuildContext context, SurveyEntity survey) async {
-    HapticFeedback.lightImpact();
+  Future<void> _openSurvey(BuildContext context, SurveyAction action) async {
+    HapticFeedback.selectionClick();
     await context.pushNamed(
       AppRoutes.newSurvey.name,
-      extra: SurveyAction.edit,
+      extra: action,
       pathParameters: {'id': survey.id},
     );
     if (context.mounted) {
       context.read<ManageMySurveysCubit>().fetchSurveys();
     }
   }
-
-  void _handleAnalyzeResults(BuildContext context) {
-    HapticFeedback.selectionClick();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('manage.analytics_coming_soon'.tr()),
-        backgroundColor: context.colorScheme.secondaryContainer,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
-
-  void _handlePreview(BuildContext context) {
-    HapticFeedback.selectionClick();
-    // TODO: Navigate to preview
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('manage.preview_coming_soon'.tr()),
-        backgroundColor: context.colorScheme.secondaryContainer,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
 }
 
-// Enhanced Survey List Item
 class EnhancedSurveyListItem extends StatelessWidget {
-  const EnhancedSurveyListItem({
-    super.key,
-    required this.survey,
-  });
+  const EnhancedSurveyListItem({super.key, required this.survey});
 
   final SurveyEntity survey;
 
   @override
   Widget build(BuildContext context) {
-    return BouncyButton(
-      onTap: () => _handleSurveyTap(context, survey),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              context.colorScheme.surface,
-              context.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.2),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: context.colorScheme.shadow.withValues(alpha: 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 2),
-            ),
-            BoxShadow(
-              color: survey.status.color.withValues(alpha: 0.03),
-              blurRadius: 24,
-              offset: const Offset(0, 4),
-            ),
-          ],
-          border: Border.all(
-            color: context.colorScheme.outline.withValues(alpha: 0.08),
-            width: 1,
-          ),
+    return Semantics(
+      button: true,
+      label: '${survey.name}, ${survey.status.labelKey.tr()}',
+      child: Card(
+        margin: EdgeInsets.zero,
+        elevation: 0,
+        clipBehavior: Clip.antiAlias,
+        color: context.colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: BorderSide(color: context.colorScheme.outlineVariant),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Stack(
-            children: [
-              // Status color indicator
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                child: Container(
-                  width: 4,
+        child: InkWell(
+          onTap: () => _openSurvey(context, SurveyAction.edit),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
-                    color: survey.status.color,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    ),
+                    color: context.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Icon(
+                    Icons.description_outlined,
+                    color: context.colorScheme.primary,
                   ),
                 ),
-              ),
-              // Background pattern
-              Positioned(
-                top: -30,
-                right: -30,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: survey.status.color.withValues(alpha: 0.03),
-                  ),
-                ),
-              ),
-              // Content
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 16, 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          _buildHeader(context),
-                          const SizedBox(height: 12),
-                          _buildTitle(context),
-                          const SizedBox(height: 8),
-                          _buildDescription(context),
-                          const SizedBox(height: 12),
-                          _buildMetrics(context),
+                          Expanded(
+                            child: Text(
+                              survey.name,
+                              style: context.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          SurveyActions(surveyId: survey.id),
                         ],
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    _buildActions(context),
-                  ],
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          _SurveyStatusChip(status: survey.status),
+                          _CompactMetric(
+                            icon: Icons.forum_outlined,
+                            label: 'manage.response_count'.plural(
+                              survey.responseCount,
+                              args: ['${survey.responseCount}'],
+                            ),
+                          ),
+                          _CompactMetric(
+                            icon: Icons.quiz_outlined,
+                            label: 'manage.question_count'.plural(
+                              survey.questions.length,
+                              args: ['${survey.questions.length}'],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'manage.last_updated'.tr(args: [
+                          DateFormat.yMMMd(
+                            Localizations.localeOf(context).toString(),
+                          ).format(survey.updatedAt ?? survey.createdAt),
+                        ]),
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: survey.status.color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: survey.status.color.withValues(alpha: 0.2),
-              width: 1,
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 5,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: survey.status.color,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 5),
-              Text(
-                _getStatusText(),
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: survey.status.color,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Spacer(),
-        Expanded(
-          child: Text(
-            DateFormat('MMM dd, yyyy').format(survey.updatedAt ?? DateTime.now()),
-            style: context.textTheme.bodySmall?.copyWith(
-              color: context.colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.end,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
+  Future<void> _openSurvey(BuildContext context, SurveyAction action) async {
+    HapticFeedback.selectionClick();
+    await context.pushNamed(
+      AppRoutes.newSurvey.name,
+      extra: action,
+      pathParameters: {'id': survey.id},
     );
-  }
-
-  String _getStatusText() {
-    switch (survey.status) {
-      case SurveyStatus.active:
-        return 'Active';
-      case SurveyStatus.draft:
-        return 'Draft';
-      case SurveyStatus.published:
-        return 'Published';
-      case SurveyStatus.deleted:
-        return 'Deleted';
+    if (context.mounted) {
+      context.read<ManageMySurveysCubit>().fetchSurveys();
     }
   }
+}
 
-  Widget _buildTitle(BuildContext context) {
-    return Text(
-      survey.name,
-      style: context.textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.bold,
-        color: context.colorScheme.onSurface,
-        height: 1.2,
-      ),
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
+class _SurveyStatusChip extends StatelessWidget {
+  const _SurveyStatusChip({required this.status});
 
-  Widget _buildDescription(BuildContext context) {
-    return Text(
-      'manage.survey_with_questions'
-          .tr()
-          .replaceFirst('{}', '${survey.questions.length}')
-          .replaceFirst(
-              '{}',
-              survey.questions.length == 1
-                  ? 'manage.question'.tr()
-                  : 'manage.questions'.tr()),
-      style: context.textTheme.bodyMedium?.copyWith(
-        color: context.colorScheme.onSurfaceVariant,
-        height: 1.3,
-      ),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
+  final SurveyStatus status;
 
-  Widget _buildMetrics(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        _buildMetricChip(
-          context,
-          icon: Icons.bar_chart_rounded,
-          value: '${survey.responseCount}',
-          label: 'responses',
-          color: context.colorScheme.primary,
-        ),
-        _buildMetricChip(
-          context,
-          icon: Icons.quiz_rounded,
-          value: '${survey.questions.length}',
-          label: 'questions',
-          color: context.colorScheme.secondary,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMetricChip(
-    BuildContext context, {
-    required IconData icon,
-    required String value,
-    required String label,
-    required Color color,
-  }) {
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: color.withValues(alpha: 0.2),
-          width: 1,
-        ),
+        color: status.color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            color: color,
-            size: 14,
+          Container(
+            width: 7,
+            height: 7,
+            decoration: BoxDecoration(
+              color: status.color,
+              shape: BoxShape.circle,
+            ),
           ),
-          const SizedBox(width: 4),
-          RichText(
-            text: TextSpan(
-              text: value,
-              style: context.textTheme.bodySmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.bold,
-              ),
+          const SizedBox(width: 6),
+          Text(
+            status.labelKey.tr(),
+            style: context.textTheme.labelMedium?.copyWith(
+              color: status.color,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SurveyMetric extends StatelessWidget {
+  const _SurveyMetric({
+    required this.icon,
+    required this.value,
+    required this.label,
+  });
+
+  final IconData icon;
+  final String value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: context.colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: context.colorScheme.primary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextSpan(
-                  text: ' $label',
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: color.withValues(alpha: 0.8),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 10,
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textTheme.labelSmall?.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -609,51 +324,43 @@ class EnhancedSurveyListItem extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildActions(BuildContext context) {
-    return Column(
+class _CompactMetric extends StatelessWidget {
+  const _CompactMetric({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SurveyActions(surveyId: survey.id),
-        const SizedBox(height: 8),
-        Container(
-          width: 32,
-          height: 32,
-          decoration: BoxDecoration(
-            color: context.colorScheme.primaryContainer.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: BouncyButton(
-            onTap: () => _handleQuickAction(context),
-            child: Icon(
-              Icons.arrow_forward_rounded,
-              color: context.colorScheme.primary,
-              size: 16,
-            ),
+        Icon(icon, size: 16, color: context.colorScheme.onSurfaceVariant),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: context.textTheme.bodySmall?.copyWith(
+            color: context.colorScheme.onSurfaceVariant,
           ),
         ),
       ],
     );
   }
-
-  Future<void> _handleSurveyTap(
-      BuildContext context, SurveyEntity survey) async {
-    HapticFeedback.lightImpact();
-    await context.pushNamed(
-      AppRoutes.newSurvey.name,
-      extra: SurveyAction.edit,
-      pathParameters: {'id': survey.id},
-    );
-    if (context.mounted) {
-      context.read<ManageMySurveysCubit>().fetchSurveys();
-    }
-  }
-
-  void _handleQuickAction(BuildContext context) {
-    HapticFeedback.selectionClick();
-    // Quick access to edit
-    _handleSurveyTap(context, survey);
-  }
 }
 
-// Enhanced Error Widget
+extension on SurveyStatus {
+  String get labelKey {
+    switch (this) {
+      case SurveyStatus.active:
+        return 'status.active';
+      case SurveyStatus.draft:
+        return 'status.draft';
+      case SurveyStatus.published:
+        return 'status.published';
+      case SurveyStatus.deleted:
+        return 'status.closed';
+    }
+  }
+}

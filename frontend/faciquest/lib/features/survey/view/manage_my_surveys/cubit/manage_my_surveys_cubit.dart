@@ -66,9 +66,16 @@ class ManageMySurveysCubit extends Cubit<ManageMySurveysState> {
     }
   }
 
-  void deleteSurvey(String surveyId) {
-    repository.deleteSurvey(surveyId);
-    fetchSurveys();
+  Future<void> deleteSurvey(String surveyId) async {
+    emit(state.copyWith(status: Status.showLoading));
+    try {
+      await repository.deleteSurvey(surveyId);
+      if (isClosed) return;
+      await fetchSurveys();
+    } catch (e) {
+      if (isClosed) return;
+      emit(state.copyWith(status: Status.failure, msg: e.toString()));
+    }
   }
 
   @override

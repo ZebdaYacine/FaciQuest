@@ -44,15 +44,15 @@ extension _ManageSurveyFilters on _ManageMySurveysViewState {
             color: context.colorScheme.primary,
           ),
           suffixIcon: state.searchQuery?.isNotEmpty == true
-              ? BouncyButton(
-                  onTap: () {
+              ? IconButton(
+                  onPressed: () {
                     _searchController.clear();
                     _cubit.clearSearch();
                   },
-                  child: Icon(
+                  tooltip: 'manage.clear_search'.tr(),
+                  icon: Icon(
                     Icons.clear_rounded,
                     color: context.colorScheme.onSurfaceVariant,
-                    size: 20,
                   ),
                 )
               : null,
@@ -71,54 +71,18 @@ extension _ManageSurveyFilters on _ManageMySurveysViewState {
       builder: (context, state) {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
+          padding: AppSpacing.spacing_2.horizontalPadding,
           child: Row(
-            spacing: AppSpacing.spacing_2,
+            spacing: AppSpacing.spacing_1,
             children: FilterOption.values.map((filter) {
               final isSelected = state.selectedFilter == filter;
-              return BouncyButton(
-                onTap: () => _cubit.updateFilter(filter),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? context.colorScheme.primaryContainer
-                        : context.colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: isSelected
-                          ? context.colorScheme.primary
-                          : context.colorScheme.outline.withValues(alpha: 0.3),
-                      width: isSelected ? 2 : 1,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        filter.icon,
-                        size: 16,
-                        color: isSelected
-                            ? context.colorScheme.primary
-                            : context.colorScheme.onSurfaceVariant,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        filter.name.tr(),
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: isSelected
-                              ? context.colorScheme.primary
-                              : context.colorScheme.onSurfaceVariant,
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              return FilterChip(
+                selected: isSelected,
+                onSelected: (_) => _cubit.updateFilter(filter),
+                avatar: Icon(filter.icon, size: 18),
+                label: Text(filter.labelKey.tr()),
+                showCheckmark: false,
+                visualDensity: VisualDensity.standard,
               );
             }).toList(),
           ),
@@ -143,43 +107,21 @@ extension _ManageSurveyFilters on _ManageMySurveysViewState {
   }
 
   Widget _buildViewStyleToggle(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: context.colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: context.colorScheme.outline.withValues(alpha: 0.5),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: ViewStyle.values.map((style) {
-          final isSelected = style == _viewStyle;
-          return InkWell(
-            onTap: () => _handleViewStyleChange({style}),
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-              ),
-              decoration: BoxDecoration(
-                color: isSelected ? context.colorScheme.primaryContainer : null,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                style.icon,
-                color: isSelected
-                    ? context.colorScheme.primary
-                    : context.colorScheme.onSurfaceVariant,
-                size: 20,
-              ),
+    return SegmentedButton<ViewStyle>(
+      segments: ViewStyle.values
+          .map(
+            (style) => ButtonSegment(
+              value: style,
+              icon: Icon(style.icon),
+              tooltip: style == ViewStyle.grid
+                  ? 'manage.grid_view'.tr()
+                  : 'manage.list_view'.tr(),
             ),
-          );
-        }).toList(),
-      ),
+          )
+          .toList(),
+      selected: {_viewStyle},
+      showSelectedIcon: false,
+      onSelectionChanged: _handleViewStyleChange,
     );
   }
 }

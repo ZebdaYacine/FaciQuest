@@ -44,6 +44,12 @@ class SurveyActions extends StatelessWidget {
       ),
       _buildMenuItem(
         context,
+        SurveyAction.collectResponses,
+        Icons.campaign_outlined,
+        'actions.collect_responses'.tr(),
+      ),
+      _buildMenuItem(
+        context,
         SurveyAction.delete,
         Icons.delete_rounded,
         'actions.delete'.tr(),
@@ -85,15 +91,14 @@ class SurveyActions extends StatelessWidget {
       await _showDeleteConfirmation(context);
     } else {
       await _handleNonDeleteAction(context, action);
-    }
-
-    if (context.mounted) {
-      context.read<ManageMySurveysCubit>().fetchSurveys();
+      if (context.mounted) {
+        await context.read<ManageMySurveysCubit>().fetchSurveys();
+      }
     }
   }
 
   Future<void> _showDeleteConfirmation(BuildContext context) async {
-    await showDialog(
+    final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(
@@ -114,7 +119,7 @@ class SurveyActions extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
+            onPressed: () => Navigator.of(ctx).pop(false),
             child: Text(
               'actions.cancel'.tr(),
               style: TextStyle(
@@ -126,15 +131,15 @@ class SurveyActions extends StatelessWidget {
             style: FilledButton.styleFrom(
               backgroundColor: context.colorScheme.error,
             ),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              context.read<ManageMySurveysCubit>().deleteSurvey(surveyId);
-            },
+            onPressed: () => Navigator.of(ctx).pop(true),
             child: Text('actions.delete_button'.tr()),
           ),
         ],
       ),
     );
+    if (confirmed == true && context.mounted) {
+      await context.read<ManageMySurveysCubit>().deleteSurvey(surveyId);
+    }
   }
 
   Future<void> _handleNonDeleteAction(

@@ -16,18 +16,18 @@ enum FilterOption {
 }
 
 extension SortOptionExtension on SortOption {
-  String get name {
+  String get labelKey {
     switch (this) {
       case SortOption.name:
-        return 'Name';
+        return 'manage.sort.name';
       case SortOption.dateCreated:
-        return 'Date Created';
+        return 'manage.sort.date_created';
       case SortOption.dateUpdated:
-        return 'Date Updated';
+        return 'manage.sort.date_updated';
       case SortOption.responseCount:
-        return 'Responses';
+        return 'manage.sort.responses';
       case SortOption.status:
-        return 'Status';
+        return 'manage.sort.status';
     }
   }
 
@@ -47,16 +47,16 @@ extension SortOptionExtension on SortOption {
 }
 
 extension FilterOptionExtension on FilterOption {
-  String get name {
+  String get labelKey {
     switch (this) {
       case FilterOption.all:
-        return 'All Surveys';
+        return 'manage.filters.all';
       case FilterOption.active:
-        return 'Active';
+        return 'manage.filters.active';
       case FilterOption.draft:
-        return 'Draft';
+        return 'manage.filters.draft';
       case FilterOption.closed:
-        return 'Closed';
+        return 'manage.filters.closed';
     }
   }
 

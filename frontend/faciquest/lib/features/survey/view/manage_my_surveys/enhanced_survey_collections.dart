@@ -10,28 +10,33 @@ class EnhancedGridSurveys extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: AppSpacing.spacing_3.padding,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: _getGridCrossAxisCount(context),
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 1.2,
+    return LayoutBuilder(
+      builder: (context, constraints) => GridView.builder(
+        padding: AppSpacing.spacing_3.padding,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: _getGridCrossAxisCount(constraints.maxWidth),
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          mainAxisExtent: 330,
+        ),
+        itemCount: surveys.length,
+        itemBuilder: (context, index) {
+          final card = EnhancedSurveyCard(survey: surveys[index]);
+          if (context.prefersReducedMotion || index > 5) return card;
+          return SlideInAnimation(
+            delay: Duration(milliseconds: index * 35),
+            direction: SlideDirection.bottom,
+            child: card,
+          );
+        },
       ),
-      itemCount: surveys.length,
-      itemBuilder: (context, index) {
-        return SlideInAnimation(
-          delay: Duration(milliseconds: index * 50),
-          direction: SlideDirection.bottom,
-          child: EnhancedSurveyCard(survey: surveys[index]),
-        );
-      },
     );
   }
 
-  int _getGridCrossAxisCount(BuildContext context) {
-    if (context.isPhone) return 1;
-    if (context.isTablet) return 3;
+  int _getGridCrossAxisCount(double width) {
+    if (width < 680) return 1;
+    if (width < 1040) return 2;
+    if (width < 1360) return 3;
     return 4;
   }
 }
@@ -52,10 +57,12 @@ class EnhancedListSurveys extends StatelessWidget {
       itemCount: surveys.length,
       separatorBuilder: (_, __) => AppSpacing.spacing_3.heightBox,
       itemBuilder: (context, index) {
+        final item = EnhancedSurveyListItem(survey: surveys[index]);
+        if (context.prefersReducedMotion || index > 5) return item;
         return SlideInAnimation(
-          delay: Duration(milliseconds: index * 50),
+          delay: Duration(milliseconds: index * 35),
           direction: SlideDirection.left,
-          child: EnhancedSurveyListItem(survey: surveys[index]),
+          child: item,
         );
       },
     );

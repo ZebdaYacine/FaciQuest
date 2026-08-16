@@ -7,7 +7,7 @@ extension _ManageSurveyContent on _ManageMySurveysViewState {
         if (state.status.isFailure) {
           return Expanded(
             child: EnhancedErrorWidget(
-              message: state.msg ?? 'An error occurred',
+              message: state.msg ?? 'error.generic'.tr(),
               onRetry: () => _cubit.fetchSurveys(),
             ),
           );
@@ -29,7 +29,9 @@ extension _ManageSurveyContent on _ManageMySurveysViewState {
 
         return Expanded(
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: context.prefersReducedMotion
+                ? Duration.zero
+                : const Duration(milliseconds: 200),
             child: _viewStyle == ViewStyle.grid
                 ? EnhancedGridSurveys(
                     key: const ValueKey('grid'),

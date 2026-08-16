@@ -17,7 +17,10 @@ extension _ManageSurveyToolbar on _ManageMySurveysViewState {
               ),
               if (state.surveys.isNotEmpty)
                 Text(
-                  '${state.filteredSurveys.length} ${state.filteredSurveys.length == 1 ? 'survey '.tr() : 'surveys'.tr()}',
+                  'manage.survey_count'.plural(
+                    state.filteredSurveys.length,
+                    args: ['${state.filteredSurveys.length}'],
+                  ),
                   style: context.textTheme.bodySmall?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -39,7 +42,7 @@ extension _ManageSurveyToolbar on _ManageMySurveysViewState {
                 Icons.sort_rounded,
                 color: context.colorScheme.onSurfaceVariant,
               ),
-              tooltip: 'Sort options'.tr(),
+              tooltip: 'manage.sort_options'.tr(),
             );
           },
         ),
