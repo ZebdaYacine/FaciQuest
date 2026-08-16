@@ -14,7 +14,10 @@ class SetNewPasswordState with EquatableMixin {
   });
 
   bool get isValid =>
-      password != null && cPassword != null && password == cPassword;
+      password != null &&
+      password!.length >= 8 &&
+      cPassword != null &&
+      password == cPassword;
 
   SetNewPasswordState copyWith({
     String? password,

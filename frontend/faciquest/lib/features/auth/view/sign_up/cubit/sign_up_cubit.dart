@@ -30,7 +30,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     final emailRegex = RegExp(pattern, caseSensitive: false);
 
     if (!emailRegex.hasMatch(email)) {
-      return 'Please enter a valid email address';
+      return 'auth.validation.emailInvalid';
     }
 
     return null;
@@ -45,9 +45,9 @@ class SignUpCubit extends Cubit<SignUpState> {
     final digitsOnly = phone.replaceAll(RegExp(r'[^\d]'), '');
 
     if (digitsOnly.length < 10) {
-      return 'Phone number must be at least 10 digits';
+      return 'auth.validation.phoneTooShort';
     } else if (digitsOnly.length > 10) {
-      return 'Phone number cannot exceed 10 digits';
+      return 'auth.validation.phoneTooLong';
     }
 
     return null;

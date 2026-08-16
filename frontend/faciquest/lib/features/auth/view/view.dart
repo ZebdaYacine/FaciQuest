@@ -4,3 +4,4 @@ export 'sign_in/sign_in.dart';
 export 'sign_up/sign_up.dart';
 export 'verify_otp/verify_otp.dart';
 export 'set_new_password/set_new_password.dart';
+export 'widgets/widgets.dart';

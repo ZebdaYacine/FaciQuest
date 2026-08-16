@@ -18,14 +18,15 @@ class SignUpState extends Equatable {
     this.phoneError,
   });
   @override
-  List<Object?> get props => [user, agreeToTerms, cPassword, status, msg, emailError, phoneError];
+  List<Object?> get props =>
+      [user, agreeToTerms, cPassword, status, msg, emailError, phoneError];
 
   bool get isValid =>
       user.username.isNotEmpty &&
       user.email.isNotEmpty &&
       user.email.isEmail &&
       emailError == null &&
-      user.password.isNotEmpty &&
+      user.password.length >= 8 &&
       user.phone.isNotEmpty &&
       phoneError == null &&
       user.password == cPassword &&

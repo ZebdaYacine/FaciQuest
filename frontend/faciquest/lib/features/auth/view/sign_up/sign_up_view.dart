@@ -1,4 +1,3 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
@@ -19,12 +18,9 @@ class SignUpView extends StatelessWidget {
             statusHandler(context, state.status, msg: state.msg);
             AppRoutes.verifyOtp.push(
               context,
-              pathParameters: {
-                'from': VerifyOtpFrom.signUp.name,
-              },
+              pathParameters: {'from': VerifyOtpFrom.signUp.name},
             );
           }
-
           statusHandler(
             context,
             state.status,
@@ -32,349 +28,20 @@ class SignUpView extends StatelessWidget {
             handleSuccess: false,
           );
         },
-        child: const _Body(),
-      ),
-    );
-  }
-}
-
-class _Body extends StatelessWidget {
-  const _Body();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              context.colorScheme.primary.withOpacity(0.08),
-              context.colorScheme.surface,
-              context.colorScheme.primary.withOpacity(0.05),
-            ],
-            stops: const [0.0, 0.6, 1.0],
-          ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: AppSpacing.spacing_2.horizontalPadding,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header with back button
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.surface.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: context.colorScheme.outline.withOpacity(0.1),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: context.colorScheme.shadow.withOpacity(0.05),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            Navigator.of(context).pop();
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            color: context.colorScheme.onSurface,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Welcome section with better typography
-                  _WelcomeSection(),
-
-                  const SizedBox(height: 32),
-
-                  // Enhanced form
-                  const _SignUpForm(),
-
-                  const SizedBox(height: 24),
-
-                  // Enhanced terms section
-                  _TermsSection(),
-
-                  const SizedBox(height: 32),
-
-                  // Enhanced sign up button
-                  _SignUpButton(),
-
-                  const SizedBox(height: 24),
-
-                  // Sign in prompt
-                  _SignInPrompt(),
-
-                  const SizedBox(height: 16),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _WelcomeSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'auth.signUp.title'.tr(),
-          style: context.textTheme.headlineLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: context.colorScheme.primary,
-            fontSize: 32,
-            letterSpacing: -0.5,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'auth.signUp.subtitle'.tr(),
-          style: context.textTheme.bodyLarge?.copyWith(
-            color: context.colorScheme.onSurface.withOpacity(0.7),
-            height: 1.4,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _TermsSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<SignUpCubit>();
-    return BlocBuilder<SignUpCubit, SignUpState>(
-      buildWhen: (previous, current) => previous.agreeToTerms != current.agreeToTerms,
-      builder: (context, state) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: context.colorScheme.surface.withOpacity(0.8),
-            border: Border.all(
-              color: context.colorScheme.outline.withOpacity(0.1),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: context.colorScheme.shadow.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        child: AuthPageScaffold(
+          title: 'auth.signUp.title'.tr(),
+          description: 'auth.signUp.subtitle'.tr(),
+          icon: Icons.person_add_alt_1_rounded,
+          footer: const _SignInPrompt(),
+          child: const Column(
             children: [
-              Container(
-                margin: const EdgeInsets.only(top: 2),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color:
-                        state.agreeToTerms ? context.colorScheme.primary : context.colorScheme.outline.withOpacity(0.3),
-                    width: 2,
-                  ),
-                  color: state.agreeToTerms ? context.colorScheme.primary : Colors.transparent,
-                ),
-                child: InkWell(
-                  onTap: () {
-                    HapticFeedback.lightImpact();
-                    cubit.onAgreeToTermsChanged(!state.agreeToTerms);
-                  },
-                  borderRadius: BorderRadius.circular(6),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: state.agreeToTerms
-                        ? Icon(
-                            Icons.check_rounded,
-                            color: context.colorScheme.onPrimary,
-                            size: 16,
-                          )
-                        : null,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.lightImpact();
-                    cubit.onAgreeToTermsChanged(!state.agreeToTerms);
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: context.colorScheme.onSurface,
-                          ),
-                          children: [
-                            TextSpan(text: 'auth.signUp.agreeToThe'.tr()),
-                            const TextSpan(text: ' '),
-                            TextSpan(
-                              text: 'auth.signUp.termsAndConditions'.tr(),
-                              style: TextStyle(
-                                color: context.colorScheme.primary,
-                                decoration: TextDecoration.underline,
-                                decorationThickness: 1.5,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const TextSpan(text: ' '),
-                            TextSpan(text: 'auth.signUp.and'.tr()),
-                            const TextSpan(text: ' '),
-                            TextSpan(
-                              text: 'auth.signUp.privacyPolicy'.tr(),
-                              style: TextStyle(
-                                color: context.colorScheme.primary,
-                                decoration: TextDecoration.underline,
-                                decorationThickness: 1.5,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              _SignUpForm(),
+              SizedBox(height: 16),
+              _TermsSection(),
+              SizedBox(height: 20),
+              _SubmitButton(),
             ],
           ),
-        );
-      },
-    );
-  }
-}
-
-class _SignUpButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<SignUpCubit>();
-    return BlocBuilder<SignUpCubit, SignUpState>(
-      builder: (context, state) {
-        return Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: state.isValid
-                ? [
-                    BoxShadow(
-                      color: context.colorScheme.primary.withOpacity(0.3),
-                      blurRadius: 15,
-                      offset: const Offset(0, 8),
-                    ),
-                  ]
-                : [],
-          ),
-          child: ElevatedButton.icon(
-            onPressed: state.isValid
-                ? () {
-                    HapticFeedback.mediumImpact();
-                    cubit.submit();
-                  }
-                : null,
-            icon: state.status.isLoading
-                ? SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: context.colorScheme.onPrimary,
-                    ),
-                  )
-                : Icon(
-                    Icons.person_add_rounded,
-                    color:
-                        state.isValid ? context.colorScheme.onPrimary : context.colorScheme.onSurface.withOpacity(0.4),
-                  ),
-            label: Text(
-              'auth.signUp.submit'.tr(),
-              style: context.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: state.isValid ? context.colorScheme.onPrimary : context.colorScheme.onSurface.withOpacity(0.4),
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: context.colorScheme.primary,
-              foregroundColor: context.colorScheme.onPrimary,
-              disabledBackgroundColor: context.colorScheme.outline.withOpacity(0.2),
-              disabledForegroundColor: context.colorScheme.onSurface.withOpacity(0.4),
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: state.isValid ? 6 : 0,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _SignInPrompt extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: context.colorScheme.surface.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: context.colorScheme.outline.withOpacity(0.1),
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'auth.signUp.alreadyMember'.tr(),
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: context.colorScheme.onSurface.withOpacity(0.7),
-              ),
-            ),
-            const SizedBox(width: 8),
-            GestureDetector(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'auth.signUp.login'.tr(),
-                style: TextStyle(
-                  color: context.colorScheme.primary,
-                  fontWeight: FontWeight.w700,
-                  decoration: TextDecoration.underline,
-                  decorationThickness: 2,
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -385,203 +52,315 @@ class _SignUpForm extends StatefulWidget {
   const _SignUpForm();
 
   @override
-  _SignUpFormState createState() => _SignUpFormState();
+  State<_SignUpForm> createState() => _SignUpFormState();
 }
 
-class _SignUpFormState extends State<_SignUpForm> with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late List<Animation<double>> _fieldAnimations;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    );
-
-    _fieldAnimations = List.generate(7, (index) {
-      return Tween<double>(
-        begin: 0.0,
-        end: 1.0,
-      ).animate(CurvedAnimation(
-        parent: _animationController,
-        curve: Interval(
-          (index * 0.1).clamp(0.0, 1.0),
-          (0.5 + (index * 0.1)).clamp(0.0, 1.0),
-          curve: Curves.easeOutCubic,
-        ),
-      ));
-    });
-
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+class _SignUpFormState extends State<_SignUpForm> {
+  bool _obscurePassword = true;
+  bool _obscureConfirmation = true;
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SignUpCubit>();
-    return Container(
-      padding: AppSpacing.spacing_2.padding,
-      decoration: BoxDecoration(
-        color: context.colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: context.colorScheme.primary.withOpacity(0.08),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-          BoxShadow(
-            color: context.colorScheme.shadow.withOpacity(0.04),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-        border: Border.all(
-          color: context.colorScheme.outline.withOpacity(0.1),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        children: [
-          _buildAnimatedField(
-            0,
-            EnhancedTextField(
-              labelText: 'auth.signUp.username'.tr(),
-              hintText: 'auth.signUp.usernameHint'.tr(),
-              prefixIcon: Icon(
-                Icons.person_outline_rounded,
-                color: context.colorScheme.primary,
-              ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              onChanged: cubit.onUsernameChanged,
-            ),
-          ),
-          AppSpacing.spacing_3.heightBox,
-          Row(
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: AutofillGroup(
+          child: Column(
             children: [
-              Expanded(
-                child: _buildAnimatedField(
-                  1,
-                  EnhancedTextField(
-                    labelText: 'auth.signUp.firstName'.tr(),
-                    hintText: 'auth.signUp.firstNameHint'.tr(),
-                    prefixIcon: Icon(
-                      Icons.badge_outlined,
-                      color: context.colorScheme.primary,
-                    ),
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    textCapitalization: TextCapitalization.words,
-                    onChanged: cubit.onFirstNameChanged,
-                  ),
+              TextFormField(
+                autofillHints: const [AutofillHints.newUsername],
+                decoration: InputDecoration(
+                  labelText: 'auth.signUp.username'.tr(),
+                  hintText: 'auth.signUp.usernameHint'.tr(),
+                  prefixIcon: const Icon(Icons.person_outline_rounded),
                 ),
+                textInputAction: TextInputAction.next,
+                onChanged: cubit.onUsernameChanged,
               ),
-              AppSpacing.spacing_2.widthBox,
-              Expanded(
-                child: _buildAnimatedField(
-                  2,
-                  EnhancedTextField(
-                    labelText: 'auth.signUp.lastName'.tr(),
-                    hintText: 'auth.signUp.lastNameHint'.tr(),
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    textCapitalization: TextCapitalization.words,
+              const SizedBox(height: 16),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final firstName = _NameField(
+                    label: 'auth.signUp.firstName'.tr(),
+                    hint: 'auth.signUp.firstNameHint'.tr(),
+                    autofillHint: AutofillHints.givenName,
+                    onChanged: cubit.onFirstNameChanged,
+                    prefixIcon: Icons.badge_outlined,
+                  );
+                  final lastName = _NameField(
+                    label: 'auth.signUp.lastName'.tr(),
+                    hint: 'auth.signUp.lastNameHint'.tr(),
+                    autofillHint: AutofillHints.familyName,
                     onChanged: cubit.onLastNameChanged,
-                  ),
-                ),
+                  );
+                  if (constraints.maxWidth < 520) {
+                    return Column(
+                      children: [
+                        firstName,
+                        const SizedBox(height: 16),
+                        lastName,
+                      ],
+                    );
+                  }
+                  return Row(
+                    children: [
+                      Expanded(child: firstName),
+                      const SizedBox(width: 16),
+                      Expanded(child: lastName),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              BlocBuilder<SignUpCubit, SignUpState>(
+                buildWhen: (previous, current) =>
+                    previous.emailError != current.emailError,
+                builder: (context, state) {
+                  return TextFormField(
+                    autofillHints: const [AutofillHints.email],
+                    decoration: InputDecoration(
+                      labelText: 'auth.signUp.email'.tr(),
+                      hintText: 'auth.signUp.emailHint'.tr(),
+                      prefixIcon: const Icon(Icons.email_outlined),
+                      errorText: state.emailError?.tr(),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    onChanged: cubit.onEmailChanged,
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              BlocBuilder<SignUpCubit, SignUpState>(
+                buildWhen: (previous, current) =>
+                    previous.phoneError != current.phoneError,
+                builder: (context, state) {
+                  return TextFormField(
+                    autofillHints: const [AutofillHints.telephoneNumber],
+                    decoration: InputDecoration(
+                      labelText: 'auth.signUp.phone'.tr(),
+                      hintText: 'auth.signUp.phoneHint'.tr(),
+                      prefixIcon: const Icon(Icons.phone_outlined),
+                      errorText: state.phoneError?.tr(),
+                    ),
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10),
+                    ],
+                    onChanged: cubit.onPhoneChanged,
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              BlocBuilder<SignUpCubit, SignUpState>(
+                buildWhen: (previous, current) =>
+                    previous.user.password != current.user.password,
+                builder: (context, state) {
+                  final password = state.user.password;
+                  return TextFormField(
+                    autofillHints: const [AutofillHints.newPassword],
+                    decoration: InputDecoration(
+                      labelText: 'auth.signUp.password'.tr(),
+                      hintText: 'auth.signUp.passwordHint'.tr(),
+                      prefixIcon: const Icon(Icons.lock_outline_rounded),
+                      errorText: password.isNotEmpty && password.length < 8
+                          ? 'auth.validation.passwordMin'.tr()
+                          : null,
+                      suffixIcon: IconButton(
+                        tooltip: _obscurePassword
+                            ? 'auth.signIn.showPassword'.tr()
+                            : 'auth.signIn.hidePassword'.tr(),
+                        onPressed: () => setState(
+                          () => _obscurePassword = !_obscurePassword,
+                        ),
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                      ),
+                    ),
+                    obscureText: _obscurePassword,
+                    textInputAction: TextInputAction.next,
+                    onChanged: cubit.onPasswordChanged,
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              BlocBuilder<SignUpCubit, SignUpState>(
+                buildWhen: (previous, current) =>
+                    previous.cPassword != current.cPassword ||
+                    previous.user.password != current.user.password,
+                builder: (context, state) {
+                  final mismatch = state.cPassword.isNotEmpty &&
+                      state.user.password != state.cPassword;
+                  return TextFormField(
+                    autofillHints: const [AutofillHints.newPassword],
+                    decoration: InputDecoration(
+                      labelText: 'auth.signUp.confirmPassword'.tr(),
+                      hintText: 'auth.signUp.confirmPasswordHint'.tr(),
+                      prefixIcon: const Icon(Icons.lock_reset_rounded),
+                      errorText: mismatch
+                          ? 'auth.validation.passwordsDontMatch'.tr()
+                          : null,
+                      suffixIcon: IconButton(
+                        tooltip: _obscureConfirmation
+                            ? 'auth.signIn.showPassword'.tr()
+                            : 'auth.signIn.hidePassword'.tr(),
+                        onPressed: () => setState(
+                          () => _obscureConfirmation = !_obscureConfirmation,
+                        ),
+                        icon: Icon(
+                          _obscureConfirmation
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                      ),
+                    ),
+                    obscureText: _obscureConfirmation,
+                    textInputAction: TextInputAction.done,
+                    onChanged: cubit.onCPasswordChanged,
+                    onFieldSubmitted: (_) {
+                      if (context.read<SignUpCubit>().state.isValid) {
+                        TextInput.finishAutofillContext();
+                        cubit.submit();
+                      }
+                    },
+                  );
+                },
               ),
             ],
           ),
-          AppSpacing.spacing_3.heightBox,
-          _buildAnimatedField(
-            3,
-            BlocBuilder<SignUpCubit, SignUpState>(
-              buildWhen: (previous, current) =>
-                  previous.user.email != current.user.email || previous.emailError != current.emailError,
-              builder: (context, state) {
-                return EnhancedTextField(
-                  labelText: 'auth.signUp.email'.tr(),
-                  hintText: 'auth.signUp.emailHint'.tr(),
-                  prefixIcon: Icon(
-                    Icons.email_outlined,
-                    color: state.emailError != null ? context.colorScheme.error : context.colorScheme.primary,
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  onChanged: cubit.onEmailChanged,
-                  errorText: state.emailError,
-                );
-              },
-            ),
-          ),
-          AppSpacing.spacing_3.heightBox,
-          _buildAnimatedField(
-            4,
-            BlocBuilder<SignUpCubit, SignUpState>(
-              buildWhen: (previous, current) =>
-                  previous.user.phone != current.user.phone || previous.phoneError != current.phoneError,
-              builder: (context, state) {
-                return EnhancedTextField(
-                  labelText: 'auth.signUp.phone'.tr(),
-                  hintText: 'auth.signUp.phoneHint'.tr(),
-                  prefixIcon: Icon(
-                    Icons.phone_outlined,
-                    color: state.phoneError != null ? context.colorScheme.error : context.colorScheme.primary,
-                  ),
-                  keyboardType: TextInputType.phone,
-                  textInputAction: TextInputAction.next,
-                  onChanged: cubit.onPhoneChanged,
-                  maxLength: 10,
-                  showCounter: true,
-                  errorText: state.phoneError,
-                );
-              },
-            ),
-          ),
-          AppSpacing.spacing_3.heightBox,
-          _buildAnimatedField(
-            5,
-            PasswordTextField(
-              labelText: 'auth.signUp.password'.tr(),
-              hintText: 'auth.signUp.passwordHint'.tr(),
-              showStrengthIndicator: true,
-              onChanged: cubit.onPasswordChanged,
-            ),
-          ),
-          AppSpacing.spacing_3.heightBox,
-          _buildAnimatedField(
-            6,
-            PasswordTextField(
-              labelText: 'auth.signUp.confirmPassword'.tr(),
-              hintText: 'auth.signUp.confirmPasswordHint'.tr(),
-              onChanged: cubit.onCPasswordChanged,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
+}
 
-  Widget _buildAnimatedField(int index, Widget child) {
-    return AnimatedBuilder(
-      animation: _fieldAnimations[index],
-      builder: (context, _) {
-        return Transform.translate(
-          offset: Offset(0, 20 * (1 - _fieldAnimations[index].value)),
-          child: Opacity(
-            opacity: _fieldAnimations[index].value,
-            child: child,
+class _NameField extends StatelessWidget {
+  const _NameField({
+    required this.label,
+    required this.hint,
+    required this.autofillHint,
+    required this.onChanged,
+    this.prefixIcon,
+  });
+
+  final String label;
+  final String hint;
+  final String autofillHint;
+  final ValueChanged<String> onChanged;
+  final IconData? prefixIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      autofillHints: [autofillHint],
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
+      ),
+      textCapitalization: TextCapitalization.words,
+      textInputAction: TextInputAction.next,
+      onChanged: onChanged,
+    );
+  }
+}
+
+class _TermsSection extends StatelessWidget {
+  const _TermsSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) =>
+          previous.agreeToTerms != current.agreeToTerms,
+      builder: (context, state) {
+        return Card(
+          child: CheckboxListTile(
+            value: state.agreeToTerms,
+            onChanged: context.read<SignUpCubit>().onAgreeToTermsChanged,
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+            title: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: '${'auth.signUp.agreeToThe'.tr()} '),
+                  TextSpan(
+                    text: 'auth.signUp.termsAndConditions'.tr(),
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  TextSpan(text: ' ${'auth.signUp.and'.tr()} '),
+                  TextSpan(
+                    text: 'auth.signUp.privacyPolicy'.tr(),
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },
+    );
+  }
+}
+
+class _SubmitButton extends StatelessWidget {
+  const _SubmitButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      builder: (context, state) {
+        final loading = state.status.isLoading;
+        return SizedBox(
+          width: double.infinity,
+          child: FilledButton.icon(
+            onPressed: state.isValid && !loading
+                ? () {
+                    HapticFeedback.mediumImpact();
+                    TextInput.finishAutofillContext();
+                    context.read<SignUpCubit>().submit();
+                  }
+                : null,
+            icon: loading
+                ? const SizedBox.square(
+                    dimension: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.person_add_rounded),
+            label: Text('auth.signUp.submit'.tr()),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SignInPrompt extends StatelessWidget {
+  const _SignInPrompt();
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Text(
+          'auth.signUp.alreadyMember'.tr(),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: context.colorScheme.onSurfaceVariant,
+              ),
+        ),
+        TextButton(
+          onPressed: () => Navigator.maybePop(context),
+          child: Text('auth.signUp.login'.tr()),
+        ),
+      ],
     );
   }
 }

@@ -11,19 +11,19 @@ class SignInCubit extends Cubit<SignInState> {
 
   final AuthRepository authRepository;
 
-  onEmailChanged(String value) {
+  void onEmailChanged(String value) {
     emit(state.copyWith(
       email: value,
     ));
   }
 
-  onPasswordChanged(String value) {
+  void onPasswordChanged(String value) {
     emit(state.copyWith(
       password: value,
     ));
   }
 
-  submit() async {
+  Future<void> submit() async {
     if (!state.isValid) return;
     emit(state.copyWith(status: Status.showLoading));
     try {
