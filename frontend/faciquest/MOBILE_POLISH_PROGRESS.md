@@ -83,18 +83,32 @@ workspace files that were already modified before this pass are outside scope.
 - [x] Extracted reusable public seams for home sections, survey question
   rendering, collector loading, survey lifecycle, management failure, and
   analysis empty/failure states so they can be tested without mounting a route.
-- [x] Added a reusable fake survey repository, four focused Cubit tests, two
-  extracted-widget interaction tests, and five checked-in mobile golden baselines.
+- [x] Added a reusable fake survey repository, four focused Cubit tests, three
+  extracted-widget interaction tests, and six checked-in mobile golden baselines.
+- [x] Polished survey management with responsive cards, semantic filters and view
+  controls, localized status/metric labels, real Analyze/Preview/Collect routes,
+  awaited deletion, and removal of the redundant legacy grid/list implementations.
+- [x] Added an adaptive survey workspace navigator and rebuilt the summary around
+  flexible metrics, clear action cards, honest empty states, working collector and
+  question navigation, and confirmed survey deletion.
+- [x] Made collector refresh and deletion use explicit Cubit lifecycle state and
+  real repository calls, with responsive collector rows, localized statuses,
+  truthful menus, and retryable failure feedback.
+- [x] Polished analysis with compact metrics and tabs, real CSV sharing,
+  expandable mobile response cards, focused question charts, localized summaries,
+  and no invented device percentages, fake trends, or false export success.
+- [x] Fixed `SurveyEntity.copyWith` so collector refreshes preserve loaded dates,
+  response counts, views, ownership, pricing, and question metadata.
 
 ## Validation
 
 - [x] `dart format` on authored/refactored files.
 - [x] `flutter analyze` compiles the app after the refactor.
 - [x] Analyzer diagnostics reduced from 380 to 0.
-- [x] `flutter test` — 20 tests passed, including blue-theme identity, compact and
+- [x] `flutter test` — 27 tests passed, including blue-theme identity, compact and
   expanded adaptive widths, short-screen, large-text, reduced-motion, RTL, and
   password-state rules, form traversal, Cubit behavior, extracted-widget
-  interactions, and five golden comparisons.
+  interactions, and six golden comparisons.
 - [x] Debug build launched successfully on an iPhone 17 Pro simulator; the
   polished blue sign-in screen was visually smoke-tested without overflow.
 - [ ] Manual device pass at 375px portrait and landscape.
@@ -133,6 +147,15 @@ workspace files that were already modified before this pass are outside scope.
 - [x] Split `analyse_results_page.dart` into filters, summaries, charts, export,
   and failure/empty states.
 - [x] Add focused Cubit, widget, and golden tests for each extracted slice.
+
+### P3 — survey owner workspace
+
+- [x] Polish Manage My Surveys search, filters, cards, menus, and responsive states.
+- [x] Make survey-card Preview, Analyze, Collect, and Delete actions functional.
+- [x] Add clear navigation between summary, details, questions, collectors, and analysis.
+- [x] Rebuild the summary with responsive metrics, actions, collectors, and questions.
+- [x] Persist collector deletion and expose loading, failure, retry, copy, and share feedback.
+- [x] Remove fabricated analysis values and make CSV export/share functional.
 
 ## Guardrails
 
