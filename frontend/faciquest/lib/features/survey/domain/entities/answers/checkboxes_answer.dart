@@ -14,8 +14,9 @@ class CheckboxesAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
-      'type': 'checkboxes',
-      'selectedOptions': selectedChoices.toList(),
+      'type': 'Checkboxes',
+      'selectedChoices': selectedChoices.toList(),
+      'multipleSelect': true,
     };
   }
 

@@ -12,8 +12,8 @@ class StarRatingAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
-      'type': 'starRating',
-      'rating': rating.toString(),
+      'type': 'Star Rating',
+      'value': rating.toString(),
     };
   }
 

@@ -43,17 +43,23 @@ class SubmissionEntity {
   final List<AnswerEntity> answers;
   final String surveyId;
   final String collectorId;
+  final String? userId;
+  final double? rewarded;
 
   SubmissionEntity({
     required this.answers,
     required this.surveyId,
     required this.collectorId,
+    this.userId,
+    this.rewarded,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'surveyId': surveyId,
       'collectorId': collectorId,
+      if (userId != null) 'userId': userId,
+      if (rewarded != null) 'rewarded': rewarded,
       'answers': answers.map((answer) => answer.toMap()).toList(),
     };
   }

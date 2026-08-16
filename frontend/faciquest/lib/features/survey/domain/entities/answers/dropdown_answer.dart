@@ -15,7 +15,7 @@ class DropdownAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
-      'type': 'dropdown',
+      'type': 'Dropdown',
       'selectedChoice': selectedChoice,
     };
   }

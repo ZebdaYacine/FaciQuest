@@ -12,7 +12,7 @@ class ShortAnswerAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
-      'type': 'shortAnswer',
+      'type': 'Short Answer',
       'value': value,
     };
   }

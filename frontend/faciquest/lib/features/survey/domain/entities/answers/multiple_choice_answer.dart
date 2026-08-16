@@ -14,7 +14,7 @@ class MultipleChoiceAnswer extends AnswerEntity {
   Map<String, dynamic> toMap() {
     return {
       ...super.toMap(),
-      'type': 'multipleChoice',
+      'type': 'Multiple Choice',
       'selectedChoice': selectedChoice,
     };
   }
