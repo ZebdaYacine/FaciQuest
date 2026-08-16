@@ -50,45 +50,49 @@ class AppBackDrop extends StatelessWidget {
   final bool showDivider;
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-          // color: SDSPallet.surfaceNeutralDefault.getColor(context.isDarkTheme),
-          // borderRadius: 16.borderRadiusOnlyTop,
+    return SafeArea(
+      top: false,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.viewInsetsOf(context).bottom,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (showHeader)
+                  BackdropHeader(
+                    title: title,
+                    subtitle: subtitle,
+                    titleText: titleText,
+                    subtitleText: subtitleText,
+                    actions: headerActions,
+                    alignment: headerAlignment,
+                    isRTL: isRTL,
+                    showContent: showHeaderContent,
+                    showHandle: showHandle,
+                    showSubtitle: showSubtitle,
+                    showTitle: showTitle,
+                    showDivider: showDivider,
+                  ),
+                if (body != null)
+                  Flexible(
+                    child: Padding(
+                      padding: paddingBody,
+                      child: body,
+                    ),
+                  ),
+                if (actions != null)
+                  Padding(
+                    padding: paddingActions,
+                    child: actions,
+                  ),
+              ],
+            ),
           ),
-      child: Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (showHeader)
-              BackdropHeader(
-                title: title,
-                subtitle: subtitle,
-                titleText: titleText,
-                subtitleText: subtitleText,
-                actions: headerActions,
-                alignment: headerAlignment,
-                isRTL: isRTL,
-                showContent: showHeaderContent,
-                showHandle: showHandle,
-                showSubtitle: showSubtitle,
-                showTitle: showTitle,
-                showDivider: showDivider,
-              ),
-            if (body != null)
-              Flexible(
-                child: Padding(
-                  padding: paddingBody,
-                  child: body,
-                ),
-              ),
-            if (actions != null)
-              Padding(
-                padding: paddingActions,
-                child: actions,
-              ),
-          ],
         ),
       ),
     );

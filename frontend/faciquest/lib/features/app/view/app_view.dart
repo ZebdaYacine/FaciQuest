@@ -1,7 +1,7 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faciquest/core/core.dart';
-import 'package:faciquest/features/features.dart' hide State;
+import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,8 +21,8 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    getIt<AppBloc>().add(AppLifecycleStateChanged(state));
     super.didChangeAppLifecycleState(state);
+    getIt<AppBloc>().add(AppLifecycleStateChanged(state));
   }
 
   @override
@@ -38,8 +38,8 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
           locale: context.locale,
           // theme
           themeAnimationStyle: AnimationStyle(
-            curve: Curves.fastOutSlowIn,
-            duration: 400.milliseconds,
+            curve: Curves.easeInOutCubic,
+            duration: 200.milliseconds,
           ),
           themeMode: themeState.themeMode,
           theme: themeState.lightTheme,
@@ -47,9 +47,7 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
           // route
           routerConfig: getIt<RouteManager>().router,
           builder: (context, child) {
-            return Unfocus(
-              child: child!,
-            );
+            return Unfocus(child: child ?? const SizedBox.shrink());
           },
         );
       },

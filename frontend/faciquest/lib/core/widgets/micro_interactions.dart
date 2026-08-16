@@ -25,7 +25,8 @@ class BouncyButton extends StatefulWidget {
   State<BouncyButton> createState() => _BouncyButtonState();
 }
 
-class _BouncyButtonState extends State<BouncyButton> with SingleTickerProviderStateMixin {
+class _BouncyButtonState extends State<BouncyButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -70,19 +71,27 @@ class _BouncyButtonState extends State<BouncyButton> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: _onTapDown,
-      onTapUp: _onTapUp,
-      onTapCancel: _onTapCancel,
-      onTap: widget.onTap,
-      child: AnimatedBuilder(
-        animation: _scaleAnimation,
-        builder: (context, child) {
-          return Transform.scale(
-            scale: _scaleAnimation.value,
-            child: widget.child,
-          );
-        },
+    return Semantics(
+      button: widget.onTap != null,
+      enabled: widget.onTap != null,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTapDown: _onTapDown,
+          onTapUp: _onTapUp,
+          onTapCancel: _onTapCancel,
+          onTap: widget.onTap,
+          child: AnimatedBuilder(
+            animation: _scaleAnimation,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: context.prefersReducedMotion ? 1 : _scaleAnimation.value,
+                child: widget.child,
+              );
+            },
+          ),
+        ),
       ),
     );
   }
@@ -113,7 +122,8 @@ class SlideInAnimation extends StatefulWidget {
   State<SlideInAnimation> createState() => _SlideInAnimationState();
 }
 
-class _SlideInAnimationState extends State<SlideInAnimation> with SingleTickerProviderStateMixin {
+class _SlideInAnimationState extends State<SlideInAnimation>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _fadeAnimation;
@@ -173,6 +183,10 @@ class _SlideInAnimationState extends State<SlideInAnimation> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    if (context.prefersReducedMotion) {
+      return widget.child;
+    }
+
     return SlideTransition(
       position: _slideAnimation,
       child: FadeTransition(
@@ -235,7 +249,8 @@ class ExpandableFAB extends StatefulWidget {
   State<ExpandableFAB> createState() => _ExpandableFABState();
 }
 
-class _ExpandableFABState extends State<ExpandableFAB> with SingleTickerProviderStateMixin {
+class _ExpandableFABState extends State<ExpandableFAB>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _expandAnimation;
   bool _open = false;
@@ -293,7 +308,8 @@ class _ExpandableFABState extends State<ExpandableFAB> with SingleTickerProvider
         child: Material(
           shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
-          color: widget.backgroundColor ?? context.colorScheme.secondaryContainer,
+          color:
+              widget.backgroundColor ?? context.colorScheme.secondaryContainer,
           elevation: 4.0,
           child: InkWell(
             onTap: _toggle,
@@ -342,8 +358,10 @@ class _ExpandableFABState extends State<ExpandableFAB> with SingleTickerProvider
         curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
         child: FloatingActionButton(
           onPressed: _toggle,
-          backgroundColor: widget.backgroundColor ?? context.colorScheme.primary,
-          foregroundColor: widget.foregroundColor ?? context.colorScheme.onPrimary,
+          backgroundColor:
+              widget.backgroundColor ?? context.colorScheme.primary,
+          foregroundColor:
+              widget.foregroundColor ?? context.colorScheme.onPrimary,
           child: widget.icon,
         ),
       ),
@@ -409,7 +427,8 @@ class ShakeAnimation extends StatefulWidget {
   State<ShakeAnimation> createState() => _ShakeAnimationState();
 }
 
-class _ShakeAnimationState extends State<ShakeAnimation> with SingleTickerProviderStateMixin {
+class _ShakeAnimationState extends State<ShakeAnimation>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _offsetAnimation;
 
@@ -483,7 +502,8 @@ class PulseAnimation extends StatefulWidget {
   State<PulseAnimation> createState() => _PulseAnimationState();
 }
 
-class _PulseAnimationState extends State<PulseAnimation> with SingleTickerProviderStateMixin {
+class _PulseAnimationState extends State<PulseAnimation>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 

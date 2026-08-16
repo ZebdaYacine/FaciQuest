@@ -1,11 +1,10 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
-// Primary Colors - Modern teal/green palette
-const kPrimaryColor = Color(0xFF2DD4BF); // Teal-400
-const kPrimaryDarkColor = Color(0xFF0F766E); // Teal-700
-const kPrimaryLightColor = Color(0xFF5EEAD4); // Teal-200
-const kPrimaryContainerColor = Color(0xFFCCFDF9); // Teal-100
+// Primary Colors - Accessible blue palette
+const kPrimaryColor = Color(0xFF2563EB); // Blue-600
+const kPrimaryDarkColor = Color(0xFF1D4ED8); // Blue-700
+const kPrimaryLightColor = Color(0xFF93C5FD); // Blue-300
+const kPrimaryContainerColor = Color(0xFFDBEAFE); // Blue-100
 
 // Secondary Colors - Complementary purple palette
 const kSecondaryColor = Color(0xFF8B5CF6); // Violet-500
@@ -85,10 +84,14 @@ class AppColors {
 
   // Dynamic colors that adapt to theme mode
   static Color adaptiveText(BuildContext context, {double opacity = 1.0}) {
-    return kOnSurfaceColor.withOpacity(opacity);
+    return Theme.of(context).colorScheme.onSurface.withValues(alpha: opacity);
   }
 
-  static Color adaptiveTextSecondary(BuildContext context, {double opacity = 0.7}) {
-    return kOnSurfaceVariantColor.withOpacity(opacity);
+  static Color adaptiveTextSecondary(BuildContext context,
+      {double opacity = 0.7}) {
+    return Theme.of(context)
+        .colorScheme
+        .onSurfaceVariant
+        .withValues(alpha: opacity);
   }
 }

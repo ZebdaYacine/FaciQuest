@@ -11,7 +11,8 @@ class HowItWorksView extends StatefulWidget {
   State<HowItWorksView> createState() => _HowItWorksViewState();
 }
 
-class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStateMixin {
+class _HowItWorksViewState extends State<HowItWorksView>
+    with TickerProviderStateMixin {
   late AnimationController _headerAnimationController;
   late AnimationController _contentAnimationController;
   late Animation<double> _fadeAnimation;
@@ -67,7 +68,8 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
 
   Future<void> _launchYouTubeVideo() async {
     // Replace with your actual YouTube video URL
-    const String youtubeUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; // Example URL
+    const String youtubeUrl =
+        'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; // Example URL
 
     try {
       final Uri uri = Uri.parse(youtubeUrl);
@@ -111,7 +113,7 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
             colors: [
               context.colorScheme.surface,
               context.colorScheme.surfaceContainerLowest,
-              context.colorScheme.surface.withOpacity(0.98),
+              context.colorScheme.surface.withValues(alpha: 0.98),
             ],
           ),
         ),
@@ -134,78 +136,88 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        context.colorScheme.primary.withOpacity(0.1),
-                        context.colorScheme.primaryContainer.withOpacity(0.15),
+                        context.colorScheme.primary.withValues(alpha: 0.1),
+                        context.colorScheme.primaryContainer
+                            .withValues(alpha: 0.15),
                         Colors.transparent,
                       ],
                     ),
                   ),
                   child: SafeArea(
-                    child: Padding(
-                      padding: AppSpacing.spacing_3.padding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          AppSpacing.spacing_4.heightBox,
-                          FadeTransition(
-                            opacity: _headerAnimationController,
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        context.colorScheme.primary,
-                                        context.colorScheme.primaryContainer,
+                    child: AdaptiveContentWidth(
+                      maxWidth: 900,
+                      child: Padding(
+                        padding: AppSpacing.spacing_3.padding,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            AppSpacing.spacing_4.heightBox,
+                            FadeTransition(
+                              opacity: _headerAnimationController,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          context.colorScheme.primary,
+                                          context.colorScheme.primaryContainer,
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: context.colorScheme.primary
+                                              .withValues(alpha: 0.3),
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 4),
+                                        ),
                                       ],
                                     ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: context.colorScheme.primary.withOpacity(0.3),
-                                        blurRadius: 12,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
+                                    child: Icon(
+                                      Icons.lightbulb_rounded,
+                                      size: 32,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                  child: Icon(
-                                    Icons.lightbulb_rounded,
-                                    size: 32,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                AppSpacing.spacing_3.widthBox,
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'profile.menu.how_it_works'.tr(),
-                                        style: context.textTheme.headlineLarge?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: context.colorScheme.onSurface,
-                                          letterSpacing: -0.5,
+                                  AppSpacing.spacing_3.widthBox,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'profile.menu.how_it_works'.tr(),
+                                          style: context.textTheme.headlineLarge
+                                              ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                context.colorScheme.onSurface,
+                                            letterSpacing: -0.5,
+                                          ),
                                         ),
-                                      ),
-                                      AppSpacing.spacing_1.heightBox,
-                                      Text(
-                                        'how_it_works.subtitle'.tr(),
-                                        style: context.textTheme.bodyLarge?.copyWith(
-                                          color: context.colorScheme.onSurfaceVariant,
-                                          height: 1.4,
+                                        AppSpacing.spacing_1.heightBox,
+                                        Text(
+                                          'how_it_works.subtitle'.tr(),
+                                          style: context.textTheme.bodyLarge
+                                              ?.copyWith(
+                                            color: context
+                                                .colorScheme.onSurfaceVariant,
+                                            height: 1.4,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -214,8 +226,8 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
             ),
 
             // Content Section
-            SliverPadding(
-              padding: AppSpacing.spacing_3.padding,
+            AdaptiveSliverPadding(
+              maxWidth: 900,
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   SlideTransition(
@@ -329,17 +341,17 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
                 color: context.colorScheme.surface,
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     blurRadius: 16,
                     offset: const Offset(0, 4),
                   ),
                   BoxShadow(
-                    color: context.colorScheme.shadow.withOpacity(0.05),
+                    color: context.colorScheme.shadow.withValues(alpha: 0.05),
                     blurRadius: 32,
                     offset: const Offset(0, 8),
                   ),
@@ -355,14 +367,14 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          color.withOpacity(0.8),
+                          color.withValues(alpha: 0.8),
                           color,
                         ],
                       ),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: color.withOpacity(0.3),
+                          color: color.withValues(alpha: 0.3),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -384,7 +396,7 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
                             width: 24,
                             height: 24,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Center(
@@ -469,13 +481,14 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    context.colorScheme.primaryContainer.withOpacity(0.3),
-                    context.colorScheme.secondaryContainer.withOpacity(0.3),
+                    context.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                    context.colorScheme.secondaryContainer
+                        .withValues(alpha: 0.3),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(
-                  color: context.colorScheme.primary.withOpacity(0.1),
+                  color: context.colorScheme.primary.withValues(alpha: 0.1),
                   width: 1,
                 ),
               ),
@@ -506,7 +519,9 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
                     final feature = entry.value;
                     return Padding(
                       padding: EdgeInsets.only(
-                        bottom: index == features.length - 1 ? 0 : AppSpacing.spacing_3,
+                        bottom: index == features.length - 1
+                            ? 0
+                            : AppSpacing.spacing_3,
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -519,7 +534,8 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: context.colorScheme.shadow.withOpacity(0.1),
+                                  color: context.colorScheme.shadow
+                                      .withValues(alpha: 0.1),
                                   blurRadius: 8,
                                   offset: const Offset(0, 2),
                                 ),
@@ -538,7 +554,8 @@ class _HowItWorksViewState extends State<HowItWorksView> with TickerProviderStat
                               children: [
                                 Text(
                                   feature['title'] as String,
-                                  style: context.textTheme.titleMedium?.copyWith(
+                                  style:
+                                      context.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: context.colorScheme.onSurface,
                                   ),

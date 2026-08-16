@@ -52,7 +52,8 @@ class EnhancedButton extends StatefulWidget {
   State<EnhancedButton> createState() => _EnhancedButtonState();
 }
 
-class _EnhancedButtonState extends State<EnhancedButton> with SingleTickerProviderStateMixin {
+class _EnhancedButtonState extends State<EnhancedButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _elevationAnimation;
@@ -115,7 +116,6 @@ class _EnhancedButtonState extends State<EnhancedButton> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     final theme = context.colorScheme;
-    final textTheme = context.textTheme;
 
     final isEnabled = widget.onPressed != null && !widget.isLoading;
 
@@ -141,7 +141,8 @@ class _EnhancedButtonState extends State<EnhancedButton> with SingleTickerProvid
               boxShadow: isEnabled
                   ? [
                       BoxShadow(
-                        color: (buttonConfig.shadowColor ?? theme.shadow).withOpacity(0.1),
+                        color: (buttonConfig.shadowColor ?? theme.shadow)
+                            .withValues(alpha: 0.1),
                         blurRadius: _elevationAnimation.value * 2,
                         offset: Offset(0, _elevationAnimation.value),
                       ),
@@ -159,7 +160,8 @@ class _EnhancedButtonState extends State<EnhancedButton> with SingleTickerProvid
                 child: Padding(
                   padding: sizeConfig.padding,
                   child: Row(
-                    mainAxisSize: widget.fullWidth ? MainAxisSize.max : MainAxisSize.min,
+                    mainAxisSize:
+                        widget.fullWidth ? MainAxisSize.max : MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (widget.icon != null && !widget.isLoading) ...[
@@ -188,7 +190,8 @@ class _EnhancedButtonState extends State<EnhancedButton> with SingleTickerProvid
                           style: sizeConfig.textStyle.copyWith(
                             color: isEnabled
                                 ? buttonConfig.foregroundColor
-                                : buttonConfig.foregroundColor?.withOpacity(0.6),
+                                : buttonConfig.foregroundColor
+                                    ?.withValues(alpha: 0.6),
                           ),
                           child: widget.child,
                         ),
@@ -227,7 +230,7 @@ class _EnhancedButtonState extends State<EnhancedButton> with SingleTickerProvid
             end: Alignment.bottomRight,
             colors: [
               baseColor,
-              baseColor.withOpacity(0.8),
+              baseColor.withValues(alpha: 0.8),
             ],
           ),
           shadowColor: baseColor,
@@ -244,7 +247,7 @@ class _EnhancedButtonState extends State<EnhancedButton> with SingleTickerProvid
           backgroundColor: Colors.transparent,
           foregroundColor: baseColor,
           border: Border.all(
-            color: theme.outline.withOpacity(0.3),
+            color: theme.outline.withValues(alpha: 0.3),
             width: 1.5,
           ),
         );
@@ -264,7 +267,7 @@ class _EnhancedButtonState extends State<EnhancedButton> with SingleTickerProvid
             end: Alignment.bottomRight,
             colors: [
               theme.error,
-              theme.error.withOpacity(0.8),
+              theme.error.withValues(alpha: 0.8),
             ],
           ),
           shadowColor: theme.error,

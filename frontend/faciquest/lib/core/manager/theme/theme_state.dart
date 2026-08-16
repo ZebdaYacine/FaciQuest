@@ -5,20 +5,8 @@ class ThemeState extends Equatable {
     this.themeMode = ThemeMode.system,
     ThemeData? lightTheme,
     ThemeData? darkTheme,
-  })  : lightTheme = lightTheme ??
-            ThemeData.from(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.blue,
-                brightness: Brightness.light,
-              ),
-            ),
-        darkTheme = darkTheme ??
-            ThemeData.from(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.blue,
-                brightness: Brightness.dark,
-              ),
-            );
+  })  : lightTheme = lightTheme ?? AppTheme.light,
+        darkTheme = darkTheme ?? AppTheme.dark;
 
   ///
   final ThemeMode themeMode;

@@ -25,31 +25,27 @@ class RatingWidget extends StatelessWidget {
       children: List.generate(
         length,
         (index) {
+          final IconData icon;
           if (index < value.floor()) {
-            return GestureDetector(
-              onTap: () => onChanged?.call(index.toDouble() + 1),
-              child: Icon(
-                shape.fullIcon,
-                color: color,
-                size: size.size,
-              ),
-            );
+            icon = shape.fullIcon;
           } else if (index == value.floor() && value % 1 != 0) {
-            return GestureDetector(
-              onTap: () => onChanged?.call(index.toDouble() + 1),
-              child: Icon(
-                shape.halfIcon,
-                color: color,
-                size: size.size,
-              ),
-            );
+            icon = shape.halfIcon;
+          } else {
+            icon = shape.outlinedIcon;
           }
-          return GestureDetector(
-            onTap: () => onChanged?.call(index.toDouble() + 1),
-            child: Icon(
-              shape.outlinedIcon,
-              color: color,
-              size: size.size,
+
+          final label = '${index + 1} / $length';
+          return Semantics(
+            button: onChanged != null,
+            selected: index < value.ceil(),
+            label: label,
+            excludeSemantics: true,
+            child: IconButton(
+              tooltip: label,
+              onPressed: onChanged == null
+                  ? null
+                  : () => onChanged?.call(index.toDouble() + 1),
+              icon: Icon(icon, color: color, size: size.size),
             ),
           );
         },
@@ -75,4 +71,3 @@ enum RatingSize {
     }
   }
 }
-

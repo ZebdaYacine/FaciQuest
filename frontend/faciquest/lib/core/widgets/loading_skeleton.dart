@@ -23,7 +23,8 @@ class LoadingSkeleton extends StatefulWidget {
   State<LoadingSkeleton> createState() => _LoadingSkeletonState();
 }
 
-class _LoadingSkeletonState extends State<LoadingSkeleton> with SingleTickerProviderStateMixin {
+class _LoadingSkeletonState extends State<LoadingSkeleton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -52,8 +53,10 @@ class _LoadingSkeletonState extends State<LoadingSkeleton> with SingleTickerProv
       return widget.child;
     }
 
-    final shimmerColor = widget.shimmerColor ?? context.colorScheme.surfaceContainerHighest.withOpacity(0.3);
-    final highlightColor = widget.highlightColor ?? context.colorScheme.surface.withOpacity(0.8);
+    final shimmerColor = widget.shimmerColor ??
+        context.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3);
+    final highlightColor = widget.highlightColor ??
+        context.colorScheme.surface.withValues(alpha: 0.8);
 
     return AnimatedBuilder(
       animation: _animation,
@@ -114,7 +117,8 @@ class SkeletonBox extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: context.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+          color: context.colorScheme.surfaceContainerHighest
+              .withValues(alpha: 0.3),
           borderRadius: borderRadius ?? BorderRadius.circular(8),
         ),
       ),
@@ -190,7 +194,7 @@ class SkeletonCard extends StatelessWidget {
         color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: context.colorScheme.outline.withOpacity(0.1),
+          color: context.colorScheme.outline.withValues(alpha: 0.1),
         ),
       ),
       child: Column(
@@ -293,7 +297,8 @@ class LoadingState extends StatelessWidget {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: context.colorScheme.primaryContainer.withOpacity(0.2),
+                color:
+                    context.colorScheme.primaryContainer.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
@@ -345,7 +350,8 @@ class PulsingDot extends StatefulWidget {
   State<PulsingDot> createState() => _PulsingDotState();
 }
 
-class _PulsingDotState extends State<PulsingDot> with SingleTickerProviderStateMixin {
+class _PulsingDotState extends State<PulsingDot>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -405,7 +411,8 @@ class TypingIndicator extends StatefulWidget {
   State<TypingIndicator> createState() => _TypingIndicatorState();
 }
 
-class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderStateMixin {
+class _TypingIndicatorState extends State<TypingIndicator>
+    with TickerProviderStateMixin {
   late List<AnimationController> _controllers;
   late List<Animation<double>> _animations;
 

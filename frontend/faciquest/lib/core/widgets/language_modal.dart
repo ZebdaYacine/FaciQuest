@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 Future<void> showLanguageModal(BuildContext context) async {
   showModalBottomSheet(
     context: context,
+    useSafeArea: true,
     builder: (context) {
       return AppBackDrop(
         headerActions: BackdropHeaderActions.none,
@@ -26,7 +27,7 @@ Future<void> showLanguageModal(BuildContext context) async {
                     border: Border.all(
                       color: isSelected
                           ? context.colorScheme.primary
-                          : context.colorScheme.outline.withOpacity(0.5),
+                          : context.colorScheme.outline.withValues(alpha: 0.5),
                     ),
                   ),
                   child: ListTile(
@@ -52,7 +53,7 @@ Future<void> showLanguageModal(BuildContext context) async {
                       e.countryCode ?? '',
                       style: TextStyle(
                         color: isSelected
-                            ? context.colorScheme.primary.withOpacity(0.8)
+                            ? context.colorScheme.primary.withValues(alpha: 0.8)
                             : context.colorScheme.onSurfaceVariant,
                       ),
                     ),
