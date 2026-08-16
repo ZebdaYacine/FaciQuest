@@ -1,182 +1,194 @@
 part of 'analyse_results_page.dart';
 
 class _ResultsTable extends StatelessWidget {
-  const _ResultsTable();
+  const _ResultsTable({required this.survey});
+
+  final SurveyEntity survey;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: AppSpacing.spacing_2.horizontalPadding,
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+    if (survey.submissions.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: AppSpacing.spacing_4.padding,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.inbox_outlined,
+                size: 48,
+                color: context.colorScheme.primary,
+              ),
+              12.heightBox,
+              Text(
+                'analysis.no_responses'.tr(),
+                textAlign: TextAlign.center,
+                style: context.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              4.heightBox,
+              Text(
+                'analysis.distributions_appear_when_responses_collected'.tr(),
+                textAlign: TextAlign.center,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: context.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      );
+    }
+
+    return ListView.separated(
+      padding: const EdgeInsets.all(16),
+      itemCount: survey.submissions.length + 1,
+      separatorBuilder: (_, __) => 12.heightBox,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'analysis.responses'.tr(),
+                    style: context.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                Text(
+                  '${survey.submissions.length}',
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: context.colorScheme.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        final submission = survey.submissions[index - 1];
+        return _ResponseCard(
+          index: index,
+          submission: submission,
+          survey: survey,
+        );
+      },
+    );
+  }
+}
+
+class _ResponseCard extends StatelessWidget {
+  const _ResponseCard({
+    required this.index,
+    required this.submission,
+    required this.survey,
+  });
+
+  final int index;
+  final SubmissionEntity submission;
+  final SurveyEntity survey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: context.colorScheme.outlineVariant),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: ExpansionTile(
+        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        leading: CircleAvatar(
+          backgroundColor: context.colorScheme.primaryContainer,
+          foregroundColor: context.colorScheme.onPrimaryContainer,
+          child: Text('$index'),
+        ),
+        title: Text(
+          'analysis.response_number'.tr(args: ['$index']),
+          style: context.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        subtitle: Text(
+          'analysis.collector_value'.tr(
+            args: [
+              submission.collectorId.isEmpty
+                  ? 'analysis.unknown_collector'.tr()
+                  : submission.collectorId,
+            ],
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        children: [
+          Divider(color: context.colorScheme.outlineVariant),
+          if (submission.answers.isEmpty)
             Padding(
-              padding: AppSpacing.spacing_2.padding,
+              padding: const EdgeInsets.only(top: 12),
               child: Text(
-                'analysis.survey_results'.tr(),
-                style: context.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                'analysis.no_answers_recorded'.tr(),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: context.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            )
+          else
+            ...submission.answers.map(
+              (answer) => Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Text(
+                        _questionTitle(answer.questionId),
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                    12.widthBox,
+                    Expanded(
+                      flex: 5,
+                      child: Text(
+                        _answerText(answer),
+                        textAlign: TextAlign.end,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            const Divider(),
-            const Expanded(child: _AnswersGrid()),
-          ],
-        ),
+        ],
       ),
     );
   }
-}
 
-class _AnswersGrid extends StatefulWidget {
-  const _AnswersGrid();
-
-  @override
-  State<_AnswersGrid> createState() => _AnswersGridState();
-}
-
-class _AnswersGridState extends State<_AnswersGrid> {
-  TrinaGridStateManager? stateManager;
-  late final survey = context.read<NewSurveyCubit>().state.survey;
-
-  Future<TrinaLazyPaginationResponse> fetch(
-    TrinaLazyPaginationRequest request,
-  ) async {
-    try {
-      final cubit = context.read<NewSurveyCubit>();
-      final result = await cubit.fetchSubmissionPage(
-        page: request.page,
-        pageSize: 10,
-      );
-
-      final paginatedRows = result
-          .map(
-            (submission) => TrinaRow(
-              cells: {
-                for (final answer in submission.answers)
-                  answer.questionId: answer.plutoCell,
-              },
-            ),
-          )
-          .toList();
-
-      return TrinaLazyPaginationResponse(
-        rows: paginatedRows,
-        totalPage: result.length + 1,
-      );
-    } catch (e) {
-      debugPrint('Error fetching data: $e');
-      return TrinaLazyPaginationResponse(
-        rows: [],
-        totalPage: 1,
-      );
+  String _questionTitle(String questionId) {
+    for (final question in survey.questions) {
+      if (question.id == questionId) return question.title;
     }
+    return 'analysis.unknown_question'.tr();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (survey.questions.isEmpty) {
-      return Center(
-        child: Text(
-          'analysis.no_questions'.tr(),
-          style: context.textTheme.titleMedium,
-        ),
-      );
+  String _answerText(AnswerEntity answer) {
+    final value = answer.plutoCell.value;
+    if (value == null || value.toString().trim().isEmpty) {
+      return 'analysis.no_answer'.tr();
     }
-
-    // if (survey.submissions.isEmpty) {
-    //   return Center(
-    //     child: Text(
-    //       'analysis.no_responses'.tr(),
-    //       style: context.textTheme.titleMedium,
-    //     ),
-    //   );
-    // }
-
-    return TrinaGrid(
-      key: const ValueKey('TrinaGrid'),
-      columns: buildColumns(),
-      configuration: buildConfiguration(context),
-      rows: buildRows(),
-      createFooter: (stateManager) {
-        return TrinaLazyPagination(
-          initialPage: 1,
-          initialFetch: true,
-          fetchWithSorting: true,
-          fetchWithFiltering: true,
-          pageSizeToMove: null,
-          fetch: fetch,
-          stateManager: stateManager,
-        );
-      },
-      onLoaded: (event) {
-        stateManager = event.stateManager;
-      },
-    );
-  }
-
-  List<TrinaColumn> buildColumns() {
-    return survey.questions.map((question) {
-      return TrinaColumn(
-        title: question.title,
-        field: question.id,
-        type: TrinaColumnType.text(),
-        titleTextAlign: TrinaColumnTextAlign.center,
-        textAlign: TrinaColumnTextAlign.center,
-        backgroundColor:
-            context.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        titleSpan: TextSpan(
-          text: question.title,
-          style: context.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        frozen: TrinaColumnFrozen.none,
-        width: 200,
-        minWidth: 150,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        enableAutoEditing: false,
-        enableEditingMode: false,
-      );
-    }).toList();
-  }
-
-  TrinaGridConfiguration buildConfiguration(BuildContext context) {
-    return TrinaGridConfiguration(
-      style: TrinaGridStyleConfig(
-        borderColor: context.colorScheme.outlineVariant,
-        gridBackgroundColor: context.colorScheme.surface,
-        rowColor: context.colorScheme.surface,
-        columnTextStyle: context.textTheme.bodyMedium!,
-        cellTextStyle: context.textTheme.bodyMedium!,
-        iconColor: context.colorScheme.primary,
-        activatedColor: context.colorScheme.primaryContainer,
-      ),
-      scrollbar: const TrinaGridScrollbarConfig(
-        isAlwaysShown: true,
-      ),
-      columnSize: const TrinaGridColumnSizeConfig(
-        autoSizeMode: TrinaAutoSizeMode.scale,
-      ),
-    );
-  }
-
-  List<TrinaRow> buildRows() {
-    return survey.submissions
-        .map(
-          (submission) => TrinaRow(
-            cells: {
-              for (final answer in submission.answers)
-                answer.questionId: answer.plutoCell,
-            },
-          ),
-        )
-        .toList();
+    if (value is Iterable) return value.join(', ');
+    return value.toString();
   }
 }

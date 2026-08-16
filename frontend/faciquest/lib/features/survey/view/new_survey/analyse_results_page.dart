@@ -4,8 +4,8 @@ import 'package:faciquest/core/core.dart';
 import 'package:faciquest/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trina_grid/trina_grid.dart';
 import 'package:csv/csv.dart';
+import 'package:share_plus/share_plus.dart';
 
 part 'analysis_modals.dart';
 part 'analysis_tables.dart';
@@ -65,7 +65,6 @@ class _AnalyseResultsPageState extends State<AnalyseResultsPage>
                 ],
               ),
             ),
-            _buildBottomActions(state.survey),
           ],
         );
       },

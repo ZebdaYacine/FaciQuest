@@ -25,7 +25,7 @@ class ResponseDistributionChart extends StatelessWidget {
         _buildHeader(context),
         16.heightBox,
         SizedBox(
-          height: 300,
+          height: 220,
           child: _buildChart(context),
         ),
         16.heightBox,
@@ -91,40 +91,40 @@ class ResponseDistributionChart extends StatelessWidget {
             context.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _StatItem(
-              label: 'Average',
-              value: stats.average.toStringAsFixed(2),
-              icon: Icons.trending_up_rounded,
-            ),
-          ),
-          12.widthBox,
-          Expanded(
-            child: _StatItem(
-              label: 'Median',
-              value: stats.median.toStringAsFixed(2),
-              icon: Icons.analytics_outlined,
-            ),
-          ),
-          12.widthBox,
-          Expanded(
-            child: _StatItem(
-              label: 'Most Popular',
-              value: stats.mode ?? 'N/A',
-              icon: Icons.star_outline_rounded,
-            ),
-          ),
-          12.widthBox,
-          Expanded(
-            child: _StatItem(
-              label: 'Std Dev',
-              value: stats.standardDeviation.toStringAsFixed(2),
-              icon: Icons.scatter_plot_outlined,
-            ),
-          ),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final itemWidth = (constraints.maxWidth - 12) / 2;
+          return Wrap(
+            spacing: 12,
+            runSpacing: 16,
+            children: [
+              _StatItem(
+                width: itemWidth,
+                label: 'Average',
+                value: stats.average.toStringAsFixed(2),
+                icon: Icons.trending_up_rounded,
+              ),
+              _StatItem(
+                width: itemWidth,
+                label: 'Median',
+                value: stats.median.toStringAsFixed(2),
+                icon: Icons.analytics_outlined,
+              ),
+              _StatItem(
+                width: itemWidth,
+                label: 'Most Popular',
+                value: stats.mode ?? 'N/A',
+                icon: Icons.star_outline_rounded,
+              ),
+              _StatItem(
+                width: itemWidth,
+                label: 'Std Dev',
+                value: stats.standardDeviation.toStringAsFixed(2),
+                icon: Icons.scatter_plot_outlined,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -308,13 +308,6 @@ class _PieChart extends StatelessWidget {
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
-            badgeWidget: item.percentage > 5
-                ? _Badge(
-                    '${item.value.toInt()}',
-                    borderColor: color,
-                  )
-                : null,
-            badgePositionPercentageOffset: 1.3,
           );
         }).toList(),
         centerSpaceRadius: 40,
@@ -525,11 +518,13 @@ class _MatrixChart extends StatelessWidget {
 }
 
 class _StatItem extends StatelessWidget {
+  final double width;
   final String label;
   final String value;
   final IconData icon;
 
   const _StatItem({
+    required this.width,
     required this.label,
     required this.value,
     required this.icon,
@@ -537,55 +532,37 @@ class _StatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          size: 20,
-          color: context.colorScheme.primary,
-        ),
-        4.heightBox,
-        Text(
-          value,
-          style: context.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: context.colorScheme.primary,
+    return SizedBox(
+      width: width,
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: context.colorScheme.primary),
+          8.widthBox,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.colorScheme.primary,
+                  ),
+                ),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        2.heightBox,
-        Text(
-          label,
-          style: context.textTheme.bodySmall?.copyWith(
-            color: context.colorScheme.onSurfaceVariant,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
-}
-
-class _Badge extends StatelessWidget {
-  final String text;
-  final Color borderColor;
-
-  const _Badge(this.text, {required this.borderColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: borderColor, width: 2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        text,
-        style: context.textTheme.bodySmall?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: borderColor,
-        ),
+        ],
       ),
     );
   }

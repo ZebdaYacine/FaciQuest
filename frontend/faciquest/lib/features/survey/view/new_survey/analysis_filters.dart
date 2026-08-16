@@ -2,32 +2,28 @@ part of 'analyse_results_page.dart';
 
 extension _AnalysisHeaderAndFilters on _AnalyseResultsPageState {
   Widget _buildHeader(BuildContext context, SurveyEntity survey) {
-    return Container(
-      padding: const EdgeInsets.all(20),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(
-                Icons.analytics_rounded,
-                color: context.colorScheme.primary,
-                size: 28,
-              ),
-              12.widthBox,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'analysis.survey_analysis'.tr(),
-                      style: context.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                      survey.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     Text(
-                      '${'analysis.detailed_insights'.tr()} "${survey.name}"',
-                      style: context.textTheme.bodyMedium?.copyWith(
+                      'analysis.results_subtitle'.tr(),
+                      style: context.textTheme.bodySmall?.copyWith(
                         color: context.colorScheme.onSurfaceVariant,
                       ),
                     ),
@@ -37,73 +33,35 @@ extension _AnalysisHeaderAndFilters on _AnalyseResultsPageState {
               _buildExportButton(survey),
             ],
           ),
-          16.heightBox,
-          // _buildQuickStats(survey),
+          12.heightBox,
+          _buildQuickStats(survey),
         ],
       ),
     );
   }
 
   Widget _buildExportButton(SurveyEntity survey) {
-    return PopupMenuButton<String>(
-      icon: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: context.colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(
-          Icons.file_download_outlined,
-          color: context.colorScheme.primary,
-        ),
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 'csv',
-          child: Row(
-            children: [
-              Icon(Icons.table_chart_outlined, color: Colors.green),
-              12.widthBox,
-              Text('actions.export_as_csv'.tr()),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 'pdf',
-          child: Row(
-            children: [
-              Icon(Icons.picture_as_pdf_outlined, color: Colors.red),
-              12.widthBox,
-              Text('actions.export_as_pdf'.tr()),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 'excel',
-          child: Row(
-            children: [
-              Icon(Icons.grid_on_outlined, color: Colors.blue),
-              12.widthBox,
-              Text('actions.export_as_excel'.tr()),
-            ],
-          ),
-        ),
-      ],
-      onSelected: (value) => _handleExport(value, survey),
+    return IconButton.filledTonal(
+      tooltip: 'actions.export_results'.tr(),
+      onPressed: survey.submissions.isEmpty
+          ? null
+          : () => _handleExport('csv', survey),
+      icon: const Icon(Icons.ios_share_rounded),
     );
   }
 
   Widget _buildTabBar() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color:
-            context.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        color: context.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
       ),
       child: TabBar(
         controller: _tabController,
+        dividerColor: Colors.transparent,
+        indicatorSize: TabBarIndicatorSize.tab,
         indicator: BoxDecoration(
           color: context.colorScheme.primary,
           borderRadius: BorderRadius.circular(8),
@@ -111,10 +69,106 @@ extension _AnalysisHeaderAndFilters on _AnalyseResultsPageState {
         labelColor: context.colorScheme.onPrimary,
         unselectedLabelColor: context.colorScheme.onSurfaceVariant,
         tabs: [
-          Tab(text: 'analysis.overview'.tr()),
-          Tab(text: 'analysis.responses'.tr()),
-          Tab(text: 'analysis.analytics'.tr()),
+          _AnalysisTabLabel(label: 'analysis.overview'.tr()),
+          _AnalysisTabLabel(label: 'analysis.responses'.tr()),
+          _AnalysisTabLabel(label: 'analysis.analytics'.tr()),
         ],
+      ),
+    );
+  }
+
+  Widget _buildQuickStats(SurveyEntity survey) {
+    final responses = survey.responseCount > survey.submissions.length
+        ? survey.responseCount
+        : survey.submissions.length;
+    final items = [
+      (Icons.forum_outlined, '$responses', 'analysis.responses'.tr()),
+      (
+        Icons.quiz_outlined,
+        '${survey.questions.length}',
+        'summary.questions'.tr()
+      ),
+      (
+        Icons.campaign_outlined,
+        '${survey.collectors.length}',
+        'summary.collectors'.tr()
+      ),
+      (Icons.visibility_outlined, '${survey.viewCount}', 'summary.views'.tr()),
+    ];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final itemWidth = (constraints.maxWidth - 12) / 2;
+        return Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          children: items.map((item) {
+            return SizedBox(
+              width: itemWidth,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: context.colorScheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        item.$1,
+                        size: 20,
+                        color: context.colorScheme.primary,
+                      ),
+                      10.widthBox,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.$2,
+                              style: context.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            Text(
+                              item.$3,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.textTheme.labelSmall?.copyWith(
+                                color: context.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+}
+
+class _AnalysisTabLabel extends StatelessWidget {
+  const _AnalysisTabLabel({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tab(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(label),
+        ),
       ),
     );
   }

@@ -1,101 +1,22 @@
 part of 'analyse_results_page.dart';
 
 extension _AnalysisCharts on _AnalyseResultsPageState {
-  Widget _buildResponseOverview(SurveyEntity survey) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'analysis.response_distribution_overview'.tr(),
-              style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            16.heightBox,
-            if (survey.questions.isNotEmpty && survey.submissions.isNotEmpty)
-              ...survey.questions.take(3).map((question) {
-                final distribution =
-                    ResponseDistributionAnalyzer.analyzeQuestion(
-                  question,
-                  survey.submissions,
-                );
-                return Column(
-                  children: [
-                    ResponseDistributionChart(distribution: distribution),
-                    24.heightBox,
-                  ],
-                );
-              })
-            else
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  color: context.colorScheme.surfaceContainerHighest
-                      .withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: context.colorScheme.outlineVariant,
-                    style: BorderStyle.solid,
-                    width: 1,
-                  ),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.bar_chart_outlined,
-                        size: 48,
-                        color: context.colorScheme.onSurfaceVariant,
-                      ),
-                      16.heightBox,
-                      Text(
-                        survey.questions.isEmpty
-                            ? 'analysis.no_questions_in_survey'.tr()
-                            : 'analysis.no_responses'.tr(),
-                        style: context.textTheme.titleMedium?.copyWith(
-                          color: context.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      8.heightBox,
-                      Text(
-                        survey.questions.isEmpty
-                            ? 'analysis.add_questions_to_see_distributions'.tr()
-                            : 'analysis.distributions_appear_when_responses_collected'
-                                .tr(),
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: context.colorScheme.onSurfaceVariant,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildCollectorPerformance(SurveyEntity survey) {
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: context.colorScheme.outlineVariant),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'analysis.collector_performance'.tr(),
-              style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
               ),
             ),
             16.heightBox,
@@ -104,10 +25,31 @@ extension _AnalysisCharts on _AnalyseResultsPageState {
             else
               ...survey.collectors.map(
                 (collector) => ListTile(
-                  leading: Icon(collector.type.icon),
-                  title: Text(collector.name),
-                  subtitle: Text('${collector.responsesCount} responses'),
-                  trailing: Text('${collector.viewsCount} views'),
+                  contentPadding: EdgeInsets.zero,
+                  leading: CircleAvatar(
+                    backgroundColor: context.colorScheme.primaryContainer,
+                    child: Icon(
+                      collector.type.icon,
+                      color: context.colorScheme.primary,
+                    ),
+                  ),
+                  title: Text(
+                    collector.name.isEmpty
+                        ? 'survey.collectors.unnamed'.tr()
+                        : collector.name,
+                  ),
+                  subtitle: Text(
+                    'analysis.collector_response_count'.plural(
+                      collector.responsesCount,
+                      args: ['${collector.responsesCount}'],
+                    ),
+                  ),
+                  trailing: Text(
+                    'analysis.view_count'.plural(
+                      collector.viewsCount,
+                      args: ['${collector.viewsCount}'],
+                    ),
+                  ),
                 ),
               ),
           ],
@@ -118,58 +60,45 @@ extension _AnalysisCharts on _AnalyseResultsPageState {
 
   Widget _buildRecentResponses(SurveyEntity survey) {
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: context.colorScheme.outlineVariant),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'analysis.recent_responses'.tr(),
-              style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
               ),
             ),
             16.heightBox,
             if (survey.submissions.isEmpty)
               Center(child: Text('analysis.no_responses'.tr()))
             else
-              ...survey.submissions.take(3).map(
-                    (response) => ListTile(
+              ...survey.submissions.take(3).toList().asMap().entries.map(
+                    (entry) => ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: CircleAvatar(
+                        backgroundColor: context.colorScheme.primaryContainer,
+                        child: Text('${entry.key + 1}'),
+                      ),
                       title: Text(
-                          '${'analysis.response'.tr()} ${response.surveyId}'),
+                        'analysis.response_number'.tr(
+                          args: ['${entry.key + 1}'],
+                        ),
+                      ),
                       subtitle: Text(
-                          '${'analysis.collector'.tr()} ${response.collectorId}'),
+                        'analysis.collector_value'.tr(
+                          args: [entry.value.collectorId],
+                        ),
+                      ),
                     ),
                   ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildResponseTrends() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'analysis.response_trends'.tr(),
-              style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            16.heightBox,
-            SizedBox(
-              height: 200,
-              child:
-                  Center(child: Text('analysis.trends_chart_placeholder'.tr())),
-            ),
           ],
         ),
       ),
@@ -178,31 +107,30 @@ extension _AnalysisCharts on _AnalyseResultsPageState {
 
   Widget _buildQuestionAnalytics(SurveyEntity survey) {
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: context.colorScheme.outlineVariant),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Text(
-                  'analysis.question_analytics'.tr(),
-                  style: context.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    'analysis.question_analytics'.tr(),
+                    style: context.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
-                const Spacer(),
                 if (survey.questions.isNotEmpty)
-                  FilledButton.tonalIcon(
+                  TextButton(
                     onPressed: () => _showAllQuestionAnalytics(survey),
-                    icon: const Icon(Icons.analytics_outlined),
-                    label: Text('analysis.view_all'.tr()),
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                    ),
+                    child: Text('analysis.view_all'.tr()),
                   ),
               ],
             ),
@@ -235,7 +163,10 @@ extension _AnalysisCharts on _AnalyseResultsPageState {
                         ),
                       ),
                       subtitle: Text(
-                        '${completionRate.toStringAsFixed(1)}% completion rate • ${distribution.totalResponses} responses',
+                        'analysis.question_completion'.tr(args: [
+                          completionRate.toStringAsFixed(1),
+                          '${distribution.totalResponses}',
+                        ]),
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                         ),
@@ -326,43 +257,6 @@ extension _AnalysisCharts on _AnalyseResultsPageState {
                   ),
                 ),
               ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDeviceBreakdown() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'analysis.device_breakdown'.tr(),
-              style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            16.heightBox,
-            ListTile(
-              leading: const Icon(Icons.smartphone),
-              title: Text('analysis.mobile'.tr()),
-              trailing: const Text('65%'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.computer),
-              title: Text('analysis.desktop'.tr()),
-              trailing: const Text('25%'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.tablet),
-              title: Text('analysis.tablet'.tr()),
-              trailing: const Text('10%'),
-            ),
           ],
         ),
       ),

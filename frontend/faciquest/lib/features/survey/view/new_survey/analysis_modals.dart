@@ -1,51 +1,5 @@
 part of 'analyse_results_page.dart';
 
-class _AdvancedAnalyticsModal extends StatelessWidget {
-  const _AdvancedAnalyticsModal({required this.survey});
-
-  final SurveyEntity survey;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBackDrop(
-      headerActions: BackdropHeaderActions.none,
-      title: Text(
-        'analysis.advanced_analytics'.tr(),
-        style: context.textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text('analysis.advanced_analytics_coming_soon'.tr()),
-                    const SizedBox(height: 20),
-                    Text('analysis.detailed_statistical_analysis_description'
-                        .tr()),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: FilledButton.icon(
-        onPressed: () => Navigator.pop(context),
-        icon: const Icon(Icons.close_rounded),
-        label: Text('analysis.close'.tr()),
-        style: FilledButton.styleFrom(
-          minimumSize: const Size.fromHeight(48),
-        ),
-      ),
-    );
-  }
-}
-
 class _AllQuestionAnalyticsModal extends StatelessWidget {
   const _AllQuestionAnalyticsModal({required this.survey});
 
@@ -62,7 +16,12 @@ class _AllQuestionAnalyticsModal extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        '${survey.questions.length} questions • ${survey.submissions.length} total responses',
+        'analysis.question_response_totals'.tr(
+          args: [
+            '${survey.questions.length}',
+            '${survey.submissions.length}',
+          ],
+        ),
         style: context.textTheme.bodyMedium?.copyWith(
           color: context.colorScheme.onSurfaceVariant,
         ),
@@ -113,9 +72,13 @@ class _AllQuestionAnalyticsModal extends StatelessWidget {
                   return Column(
                     children: [
                       Card(
-                        elevation: 2,
+                        elevation: 0,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
+                          borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(
+                            color: context.colorScheme.outlineVariant,
+                          ),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Column(
@@ -163,7 +126,12 @@ class _AllQuestionAnalyticsModal extends StatelessWidget {
                                             ),
                                             8.widthBox,
                                             Text(
-                                              '${completionRate.toStringAsFixed(1)}% completion',
+                                              'analysis.completion_value'.tr(
+                                                args: [
+                                                  completionRate
+                                                      .toStringAsFixed(1),
+                                                ],
+                                              ),
                                               style: context.textTheme.bodySmall
                                                   ?.copyWith(
                                                 color: context.colorScheme

@@ -3,24 +3,13 @@ part of 'analyse_results_page.dart';
 extension _AnalysisExport on _AnalyseResultsPageState {
   void _handleExport(String format, SurveyEntity survey) async {
     try {
-      switch (format) {
-        case 'csv':
-          await _exportToCSV(survey);
-          break;
-        case 'pdf':
-          await _exportToPDF(survey);
-          break;
-        case 'excel':
-          await _exportToExcel(survey);
-          break;
-      }
+      if (format != 'csv') return;
+      await _exportToCSV(survey);
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-              'error.export_data_success'.tr(args: [format.toUpperCase()])),
-          backgroundColor: Colors.green,
+          content: Text('analysis.csv_ready'.tr()),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -49,38 +38,11 @@ extension _AnalysisExport on _AnalyseResultsPageState {
     ];
 
     final csvString = const ListToCsvConverter().convert(csvData);
-    // TODO: Save and share the CSV file
-    debugPrint('CSV export prepared: ${csvString.length} characters');
-  }
-
-  Future<void> _exportToPDF(SurveyEntity survey) async {
-    // Implement PDF export
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('error.pdf_export_coming_soon'.tr()),
-        behavior: SnackBarBehavior.floating,
+    await SharePlus.instance.share(
+      ShareParams(
+        text: csvString,
+        subject: '${survey.name} - ${'analysis.responses'.tr()}',
       ),
-    );
-  }
-
-  Future<void> _exportToExcel(SurveyEntity survey) async {
-    // Implement Excel export
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('error.excel_export_coming_soon'.tr()),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
-  void _showAdvancedAnalytics(SurveyEntity survey) {
-    // Show advanced analytics modal
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      constraints: BoxConstraints(maxHeight: context.height * 0.9),
-      builder: (context) => _AdvancedAnalyticsModal(survey: survey),
     );
   }
 
